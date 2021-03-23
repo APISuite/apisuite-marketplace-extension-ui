@@ -1,0 +1,2 @@
+declare const _default: (props?: any) => import("@material-ui/styles").ClassNameMap<"appCatalogEntry" | "appCatalogEntryAvatar" | "appCatalogEntryBottomDetails" | "appCatalogEntryDescription" | "appCatalogEntryImage" | "appCatalogEntryLabel" | "appCatalogEntryLink" | "appCatalogEntryNameAndOwnerContainer" | "appCatalogEntryTopDetails" | "appCatalogEntryName" | "appCatalogEntryOwner" | "appCatalogEntryText" | "appCatalogEntryVersion" | "appCatalogEntryVersionAndAccess">;
+export default _default;

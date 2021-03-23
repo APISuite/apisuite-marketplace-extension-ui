@@ -1,0 +1,42 @@
+import { AppData, Filters, MarketplaceActions, MarketplacePublishers, MarketplaceStore } from './types';
+/** Action types */
+export declare const GET_ALL_MARKETPLACE_APPS_ACTION = "Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION";
+export declare const GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS = "Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS";
+export declare const GET_ALL_MARKETPLACE_LABELS_ACTION = "Marketplace/GET_ALL_MARKETPLACE_LABELS_ACTION";
+export declare const GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS = "Marketplace/GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS";
+export declare const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION = "Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION";
+export declare const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS = "Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS";
+export declare const GET_FILTERED_MARKETPLACE_APPS_ACTION = "Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION";
+export declare const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS = "Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS";
+/** Reducer */
+export default function reducer(state: MarketplaceStore, action: MarketplaceActions): MarketplaceStore;
+/** Action builders */
+export declare function getAllMarketplaceAppsAction(): {
+    type: string;
+};
+export declare function getAllMarketplaceAppsActionSuccess(allMarketplaceApps: AppData[]): {
+    type: string;
+    allMarketplaceApps: AppData[];
+};
+export declare function getAllMarketplaceLabelsAction(): {
+    type: string;
+};
+export declare function getAllMarketplaceLabelsActionSuccess(allMarketplaceLabels: string[]): {
+    type: string;
+    allMarketplaceLabels: string[];
+};
+export declare function getAllMarketplacePublishersAction(): {
+    type: string;
+};
+export declare function getAllMarketplacePublishersActionSuccess(allMarketplacePublishers: MarketplacePublishers[]): {
+    type: string;
+    allMarketplacePublishers: MarketplacePublishers[];
+};
+export declare function getFilteredMarketplaceAppsAction(filters: Filters): {
+    type: string;
+    filters: Filters;
+};
+export declare function getFilteredMarketplaceAppsActionSuccess(filteredMarketplaceApps: AppData[]): {
+    type: string;
+    filteredMarketplaceApps: AppData[];
+};
