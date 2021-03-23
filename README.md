@@ -61,7 +61,7 @@ Then, don't forget the push the repo and the tags:
 While developing the extension, you might want to test it in the APISuite portal. You can install it there with
 
 ```
-npm i --save-dev ../../apisuite-marketplace-extension-ui/dev-symlink-target
+npm i --save-dev "../../apisuite-marketplace-extension-ui/dev-symlink-target"
 ```
 
 The reason for referencing the `dev-symlink-target` folder is because itself references only the `package.json` file and the `build` folder. It leaves the `node_modules` folder out which allows us to use the same React instance that is installed by the APISuite portal for both the portal and the extension.
