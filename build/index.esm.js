@@ -305,7 +305,7 @@ exports.Extension = Extension;
 });
 
 var name$1 = "@apisuite/apisuite-marketplace-extension-ui";
-var version$1 = "0.0.0";
+var version$1 = "1.0.0";
 
 var EXT_NAME = name$1;
 var BASE_URI = '/marketplace';
