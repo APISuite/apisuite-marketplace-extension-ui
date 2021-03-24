@@ -81,7 +81,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
               ? app.shortDescription
               : app.description.length > 0
               ? app.description
-              : 'No description available.',
+              : t('appMarketplace.noDescriptionAvailableText'),
           appID: app.id,
           appLabel: 'Some label',
           appLogo: app.logo,
@@ -199,9 +199,6 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   React.useEffect(() => {
     const newPublisherFilterElements = publisherNames.map(
       (publisher, index) => {
-        console.log('publisher', publisher)
-        console.log('publisherFilters[publisher]', publisherFilters[publisher])
-
         return (
           <FormControlLabel
             className={
@@ -253,7 +250,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
               ? filteredApp.shortDescription
               : filteredApp.description.length > 0
               ? filteredApp.description
-              : 'No description available.',
+              : t('appMarketplace.noDescriptionAvailableText'),
           appID: filteredApp.id,
           appLabel: 'Some label',
           appLogo: filteredApp.logo,

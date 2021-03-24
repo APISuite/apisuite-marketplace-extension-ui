@@ -120,6 +120,7 @@
     "amountOfAppsTextPartTwo": "available",
     "noAppsToDisplayText": "No apps to display!",
     "retrievingAppsToDisplayText": "Retrieving all apps, please hold...",
+    "noDescriptionAvailableText": "No description available",
     "featuredAppsTitle": "Featured apps",
     "featuredAppsSubtitle": "Ready to try? Subscribe to one of your featured apps to get started!"
   }
