@@ -71,18 +71,6 @@ export default makeStyles({
     },
   },
 
-  appCatalogEntryNameAndOwnerContainer: {
-    display: 'block',
-    width: '110px',
-  },
-
-  appCatalogEntryTopDetails: {
-    display: 'flex',
-    marginBottom: '15px',
-    maxWidth: '175px',
-    width: '100%',
-  },
-
   appCatalogEntryName: {
     color: '#14283C',
     fontSize: '16px',
@@ -91,6 +79,11 @@ export default makeStyles({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+  },
+
+  appCatalogEntryNameAndOwnerContainer: {
+    display: 'block',
+    width: '110px',
   },
 
   appCatalogEntryOwner: {
@@ -105,6 +98,13 @@ export default makeStyles({
   appCatalogEntryText: {
     padding: '15px 12.5px 15px 0px',
     width: '130px',
+  },
+
+  appCatalogEntryTopDetails: {
+    display: 'flex',
+    marginBottom: '15px',
+    maxWidth: '175px',
+    width: '100%',
   },
 
   appCatalogEntryVersion: {

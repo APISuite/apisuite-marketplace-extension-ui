@@ -29,6 +29,22 @@ export default makeStyles({
     width: '100%',
   },
 
+  appMarketFilters: {
+    borderRight: '1px solid #E3E3E3',
+    maxWidth: '250px',
+    padding: '60px 0px',
+    width: '100%',
+  },
+
+  appMarketFiltersAndAppsSection: {
+    display: 'flex',
+    margin: '0px auto',
+    maxWidth: '1200px',
+    minHeight: '630px',
+    padding: '0px 60px',
+    width: '100%',
+  },
+
   appMarketHeader: {
     // First color is a fallback one - do not remove!
     background:
@@ -86,22 +102,6 @@ export default makeStyles({
     width: '100%',
   },
 
-  appMarketFilters: {
-    borderRight: '1px solid #E3E3E3',
-    maxWidth: '250px',
-    padding: '60px 0px',
-    width: '100%',
-  },
-
-  appMarketFiltersAndAppsSection: {
-    display: 'flex',
-    margin: '0px auto',
-    maxWidth: '1200px',
-    minHeight: '630px',
-    padding: '0px 60px',
-    width: '100%',
-  },
-
   featuredAppCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: '4px',
@@ -141,28 +141,6 @@ export default makeStyles({
   featuredAppCardsSlider: {
     display: 'flex',
     justifyContent: 'center',
-  },
-
-  invisibleFeaturedAppCardsSliderButton: {
-    cursor: 'auto',
-    margin: 'auto 0px',
-
-    '& > svg': {
-      color: 'transparent',
-      fontSize: '35px',
-      verticalAlign: 'middle',
-    },
-  },
-
-  visibleFeaturedAppCardsSliderButton: {
-    cursor: 'pointer',
-    margin: 'auto 0px',
-
-    '& > svg': {
-      color: '#FFFFFF',
-      fontSize: '35px',
-      verticalAlign: 'middle',
-    },
   },
 
   featuredAppsInnerContainer: {
@@ -243,6 +221,17 @@ export default makeStyles({
     fontWeight: 500,
   },
 
+  invisibleFeaturedAppCardsSliderButton: {
+    cursor: 'auto',
+    margin: 'auto 0px',
+
+    '& > svg': {
+      color: 'transparent',
+      fontSize: '35px',
+      verticalAlign: 'middle',
+    },
+  },
+
   noAppsToDisplay: {
     color: '#4E616F',
     fontSize: '16px',
@@ -281,6 +270,17 @@ export default makeStyles({
     '& > :last-child': {
       color: '#19B3EE',
       fontWeight: 500,
+    },
+  },
+
+  visibleFeaturedAppCardsSliderButton: {
+    cursor: 'pointer',
+    margin: 'auto 0px',
+
+    '& > svg': {
+      color: '#FFFFFF',
+      fontSize: '35px',
+      verticalAlign: 'middle',
     },
   },
 })
