@@ -58,8 +58,6 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   const [t] = useTranslation()
 
-  const [allAppsList, setAllAppsList] = React.useState([])
-
   React.useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
     of all information we presently have on public apps, and their respective labels & publishers. */
@@ -67,6 +65,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     getAllMarketplaceLabelsAction()
     getAllMarketplacePublishersAction()
   }, [])
+
+  const [allAppsList, setAllAppsList] = React.useState([])
 
   React.useEffect(() => {
     /* Once 'marketplace -> allMarketplaceApps' info is made available to us, we process it
@@ -83,7 +83,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
               ? app.description
               : t('appMarketplace.noDescriptionAvailableText'),
           appID: app.id,
-          appLabel: 'Some label',
+          appLabels: app.labels,
           appLogo: app.logo,
           appName: app.name,
           appPublisher: app.organization.name,
@@ -252,7 +252,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
               ? filteredApp.description
               : t('appMarketplace.noDescriptionAvailableText'),
           appID: filteredApp.id,
-          appLabel: 'Some label',
+          appLabels: filteredApp.labels,
           appLogo: filteredApp.logo,
           appName: filteredApp.name,
           appPublisher: filteredApp.organization.name,

@@ -5,7 +5,7 @@ export type AppCatalogProps = {
 export type AppDetails = {
   appDescription: string
   appID: number
-  appLabel: string
+  appLabels: string[]
   appLogo: string
   appName: string
   appPublisher: string

@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import { useTranslation } from 'translations'
+
 import Link from 'components/Link'
 
 import { Avatar } from '@material-ui/core'
@@ -10,6 +12,8 @@ import { AppCatalogProps, AppDetails } from './types'
 
 const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
   const classes = useStyles()
+
+  const [t] = useTranslation()
 
   const generateAppCatalogEntry = (appDetails: AppDetails, index: number) => {
     const appSplitName = appDetails.appName.split(' ')
@@ -43,7 +47,19 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
             {appDetails.appDescription}
           </p>
 
-          <p className={classes.appCatalogEntryLabel}>{appDetails.appLabel}</p>
+          <div className={classes.appCatalogEntryLabelsContainer}>
+            {appDetails.appLabels.length ? (
+              appDetails.appLabels.map((appLabel) => {
+                return (
+                  <p className={classes.appCatalogEntryLabel}>{appLabel}</p>
+                )
+              })
+            ) : (
+              <p className={classes.appCatalogEntryLabel}>
+                {t('appMarketplace.noLabelsProvidedText')}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     )

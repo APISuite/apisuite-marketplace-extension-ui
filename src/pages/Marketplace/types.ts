@@ -45,14 +45,13 @@ export interface MarketplaceStore {
   retrievedAllMarketplacePublishers: boolean
 
   filteredMarketplaceApps: AppData[]
-
-  retrievedFilteredMarketplaceApps: boolean
 }
 
 export interface AppData {
   createdAt: string
   description: string
   id: number
+  labels: string[]
   logo: string
   name: string
   organization: {
