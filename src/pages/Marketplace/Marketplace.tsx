@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import { useTranslation as useCoreTranslation } from 'react-i18next'
 import { useTranslation } from 'translations'
 
 import AppCatalog from 'components/AppCatalog'
@@ -57,13 +56,12 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 }) => {
   const classes = useStyles()
 
-  const [tCore] = useCoreTranslation()
   const [t] = useTranslation()
 
   const [allAppsList, setAllAppsList] = React.useState([])
 
   React.useEffect(() => {
-    /* Triggers the retrieval and storage (under the 'marketplace' section of the app's Store)
+    /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
     of all information we presently have on public apps, and their respective labels & publishers. */
     getAllMarketplaceAppsAction()
     getAllMarketplaceLabelsAction()
@@ -97,9 +95,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     }
   }, [allMarketplaceApps])
 
-  // App filtering & sorting set-up
+  /* App filtering & sorting set-up */
 
-  // Search term filter
+  // 1 - Search term filter
 
   const [searchTerm, setSearchTerm] = React.useState('')
 
@@ -111,11 +109,14 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     setSearchTerm(newSearchTerm)
   }
 
-  // Label & publisher filters
+  // 2 - Label & publisher filters
+
+  const [filtersHaveChanged, setFiltersHaveChanged] = React.useState(false)
 
   const [labelFilters, setLabelFilters] = React.useState({})
   const [labelFilterElements, setLabelFilterElements] = React.useState([])
 
+  const [publisherNames, setPublisherNames] = React.useState([])
   const [publisherFilters, setPublisherFilters] = React.useState({})
   const [publisherFilterElements, setPublisherFilterElements] = React.useState(
     []
@@ -123,21 +124,23 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   const filterSelection = (labelOrPublisherString, filterType) => {
     if (filterType === 'labels') {
-      const newLabelFilters = labelFilters
+      const newLabelFilters = { ...labelFilters }
 
       newLabelFilters[labelOrPublisherString] = !newLabelFilters[
         labelOrPublisherString
       ]
 
       setLabelFilters(newLabelFilters)
+      setFiltersHaveChanged(true)
     } else {
-      const newPublisherFilters = publisherFilters
+      const newPublisherFilters = { ...publisherFilters }
 
       newPublisherFilters[labelOrPublisherString] = !newPublisherFilters[
         labelOrPublisherString
       ]
 
       setPublisherFilters(newPublisherFilters)
+      setFiltersHaveChanged(true)
     }
   }
 
@@ -148,6 +151,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       newLabelFilters[label] = false
     })
 
+    setLabelFilters(newLabelFilters)
+  }, [allMarketplaceLabels])
+
+  React.useEffect(() => {
     const newLabelFilterElements = allMarketplaceLabels.map((label, index) => {
       return (
         <FormControlLabel
@@ -169,51 +176,57 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       )
     })
 
-    setLabelFilters(newLabelFilters)
     setLabelFilterElements(newLabelFilterElements)
-  }, [allMarketplaceLabels])
+  }, [labelFilters])
 
   React.useEffect(() => {
-    const newPublisherFilters = {}
+    const newPublisherNames = []
 
-    const publisherNames = []
+    const newPublisherFilters = {}
 
     allMarketplacePublishers.map((publisher) => {
       const publisherName = publisher['name']
 
-      publisherNames.push(publisher['name'])
+      newPublisherNames.push(publisherName)
 
       newPublisherFilters[publisherName] = false
     })
 
+    setPublisherNames(newPublisherNames)
+    setPublisherFilters(newPublisherFilters)
+  }, [allMarketplacePublishers])
+
+  React.useEffect(() => {
     const newPublisherFilterElements = publisherNames.map(
-      (publisherName, index) => {
+      (publisher, index) => {
+        console.log('publisher', publisher)
+        console.log('publisherFilters[publisher]', publisherFilters[publisher])
+
         return (
           <FormControlLabel
             className={
-              publisherFilters[publisherName]
+              publisherFilters[publisher]
                 ? classes.selectedFilter
                 : classes.notSelectedFilter
             }
             control={
               <Checkbox
-                checked={publisherFilters[publisherName]}
-                name={publisherName}
-                onClick={() => filterSelection(publisherName, 'publishers')}
+                checked={publisherFilters[publisher]}
+                name={publisher}
+                onClick={() => filterSelection(publisher, 'publishers')}
               />
             }
             key={`publisherFilterElement${index}`}
-            label={publisherName}
+            label={publisher}
           />
         )
       }
     )
 
-    setPublisherFilters(newPublisherFilters)
     setPublisherFilterElements(newPublisherFilterElements)
-  }, [allMarketplacePublishers])
+  }, [publisherFilters])
 
-  // App sorting mode
+  // 3 - Sort mode
 
   const [sortMode, setSortMode] = React.useState('appName') // Either 'appName', 'publisherName', or 'lastUpdated'
 
@@ -223,7 +236,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     setSortMode(selectedSortMode)
   }
 
-  // App filtering & sorting process
+  /* App filtering & sorting process */
 
   const [filteredAppsList, setFilteredAppsList] = React.useState([])
 
@@ -265,8 +278,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       return
     }
 
-    const publisherFiltersForFilterAction = []
     const labelFiltersForFilterAction = []
+    const publisherFiltersForFilterAction = []
     const sortModeForFilterAction =
       sortMode === 'appName'
         ? 'app'
@@ -275,15 +288,15 @@ const Marketplace: React.FC<MarketplaceProps> = ({
         : 'updated'
     const orderModeForFilterAction = 'asc' // TODO: Eventually create something that allows us to set the order mode
 
-    allMarketplacePublishers.map((publisher) => {
-      if (publisherFilters[publisher.name]) {
-        publisherFiltersForFilterAction.push(publisher.id)
-      }
-    })
-
     allMarketplaceLabels.map((label) => {
       if (labelFilters[label]) {
         labelFiltersForFilterAction.push(label)
+      }
+    })
+
+    allMarketplacePublishers.map((publisher) => {
+      if (publisherFilters[publisher.name]) {
+        publisherFiltersForFilterAction.push(publisher.id)
       }
     })
 
@@ -297,7 +310,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   React.useEffect(() => {
     filterAndSortApps()
-  }, [labelFilters, publisherFilters, sortMode])
+
+    setFiltersHaveChanged(false)
+  }, [filtersHaveChanged, labelFilters, publisherFilters, sortMode])
 
   React.useEffect(() => {
     if (searchTerm.length === 0) {
@@ -319,8 +334,6 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   // Carousel of 'featured apps'
 
   const [currentSlide, setCurrentSlide] = React.useState(0)
-
-  console.log('publisherFilters', publisherFilters)
 
   return (
     <main>
@@ -344,9 +357,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
                   </InputAdornment>
                 ),
               }}
+              onChange={handleSearchTermChanges}
               placeholder={t('appMarketplace.searchForAppsTextField')}
               variant="outlined"
-              onChange={handleSearchTermChanges}
             />
           </div>
 
@@ -499,7 +512,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
             <>{t('appMarketplace.amountOfAppsTextPartTwo')}</>
           </p>
 
-          {retrievedAllMarketplaceApps ? (
+          {retrievedAllMarketplaceApps &&
+          retrievedAllMarketplaceLabels &&
+          retrievedAllMarketplacePublishers ? (
             filteredAppsList.length > 0 ? (
               <>
                 <div className={classes.appCatalogContainer}>
