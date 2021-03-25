@@ -6,7 +6,7 @@ export default makeStyles({
     border: '1px solid #BAC0C6',
     borderRadius: '4px',
     height: '175px',
-    padding: '20px',
+    padding: '20px 20px 0px 20px',
     width: '215px',
   },
 
@@ -56,8 +56,17 @@ export default makeStyles({
     color: '#14283C',
     fontSize: '12px',
     fontWeight: 300,
+    height: '27.5px',
+    marginRight: '7.5px',
     padding: '0px 7.5px',
     width: 'fit-content',
+  },
+
+  appCatalogEntryLabelsContainer: {
+    display: 'flex',
+    height: '40px',
+    overflowX: 'auto',
+    whiteSpace: 'nowrap',
   },
 
   appCatalogEntryLink: {

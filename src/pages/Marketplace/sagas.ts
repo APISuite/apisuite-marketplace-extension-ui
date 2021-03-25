@@ -32,6 +32,7 @@ export function* getAllMarketplaceAppsActionSaga() {
       createdAt: marketplaceApp.createdAt,
       description: marketplaceApp.description,
       id: marketplaceApp.id,
+      labels: marketplaceApp.labels,
       logo: marketplaceApp.logo,
       name: marketplaceApp.name,
       organization: {
@@ -172,6 +173,7 @@ export function* getFilteredMarketplaceAppsActionSaga(
       createdAt: marketplaceApp.createdAt,
       description: marketplaceApp.description,
       id: marketplaceApp.id,
+      labels: marketplaceApp.labels,
       logo: marketplaceApp.logo,
       name: marketplaceApp.name,
       organization: {

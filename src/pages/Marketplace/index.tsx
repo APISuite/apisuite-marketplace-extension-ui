@@ -23,9 +23,6 @@ export const mapStateToProps = ({ marketplace, settings }: any) => ({
   retrievedAllMarketplacePublishers:
     marketplace.retrievedAllMarketplacePublishers,
 
-  retrievedFilteredMarketplaceApps:
-    marketplace.retrievedFilteredMarketplaceApps,
-
   settings: settings,
 })
 

@@ -20,8 +20,6 @@ const initialState: MarketplaceStore = {
   retrievedAllMarketplaceApps: false,
   retrievedAllMarketplaceLabels: false,
   retrievedAllMarketplacePublishers: false,
-
-  retrievedFilteredMarketplaceApps: false,
 }
 
 /** Action types */
@@ -87,15 +85,12 @@ export default function reducer(
     }
 
     case GET_FILTERED_MARKETPLACE_APPS_ACTION: {
-      return update(state, {
-        retrievedFilteredMarketplaceApps: { $set: false },
-      })
+      return state
     }
 
     case GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS: {
       return update(state, {
         filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
-        retrievedFilteredMarketplaceApps: { $set: true },
       })
     }
 
