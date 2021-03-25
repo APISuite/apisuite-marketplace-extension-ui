@@ -98,5 +98,30 @@
       "deleteSuccess": "API deleted successfully",
       "deleteError": "Failed to delete API"
     }
+  },
+  "appMarketplace": {
+    "headerTitlePartOne": "Explore the",
+    "headerTitlePartTwo": "Marketplace",
+    "searchForAppsTextField": "Search for apps",
+    "sortByTitle": "Sort by:",
+    "sortModes": {
+      "appName": "Application name",
+      "publisherName": "Publisher name",
+      "lastUpdated": "Last updated"
+    },
+    "filterByTitle": "Filter by:",
+    "filterByModes": {
+      "labels": "Labels",
+      "noLabels": "No labels to filter with",
+      "publishers": "Publishers",
+      "noPublishers": "No publishers to filter with"
+    },
+    "amountOfAppsTextPartOne": "apps",
+    "amountOfAppsTextPartTwo": "available",
+    "noAppsToDisplayText": "No apps to display!",
+    "retrievingAppsToDisplayText": "Retrieving all apps, please hold...",
+    "noDescriptionAvailableText": "No description available",
+    "featuredAppsTitle": "Featured apps",
+    "featuredAppsSubtitle": "Ready to try? Subscribe to one of your featured apps to get started!"
   }
 }
