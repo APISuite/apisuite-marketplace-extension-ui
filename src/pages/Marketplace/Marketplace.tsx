@@ -198,23 +198,23 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   React.useEffect(() => {
     const newPublisherFilterElements = publisherNames.map(
-      (publisher, index) => {
+      (publisherName, index) => {
         return (
           <FormControlLabel
             className={
-              publisherFilters[publisher]
+              publisherFilters[publisherName]
                 ? classes.selectedFilter
                 : classes.notSelectedFilter
             }
             control={
               <Checkbox
-                checked={publisherFilters[publisher]}
-                name={publisher}
-                onClick={() => filterSelection(publisher, 'publishers')}
+                checked={publisherFilters[publisherName]}
+                name={publisherName}
+                onClick={() => filterSelection(publisherName, 'publishers')}
               />
             }
             key={`publisherFilterElement${index}`}
-            label={publisher}
+            label={publisherName}
           />
         )
       }
