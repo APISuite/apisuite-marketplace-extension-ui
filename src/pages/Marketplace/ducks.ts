@@ -1,7 +1,7 @@
 import update from 'immutability-helper'
 
 import {
-  AppData,
+  AppDetails,
   Filters,
   MarketplaceActions,
   MarketplacePublishers,
@@ -14,12 +14,36 @@ const initialState: MarketplaceStore = {
   allMarketplaceApps: [],
   allMarketplaceLabels: [],
   allMarketplacePublishers: [],
-
   filteredMarketplaceApps: [],
 
   retrievedAllMarketplaceApps: false,
   retrievedAllMarketplaceLabels: false,
   retrievedAllMarketplacePublishers: false,
+
+  selectedAppDetails: {
+    createdAt: '',
+    description: '',
+    id: 0,
+    labels: [],
+    logo: '',
+    name: '',
+    organization: {
+      id: '',
+      name: '',
+      privacyUrl: '',
+      supportUrl: '',
+      tosUrl: '',
+    },
+    orgId: 0,
+    privacyUrl: '',
+    shortDescription: '',
+    supportUrl: '',
+    tosUrl: '',
+    updatedAt: '',
+    websiteUrl: '',
+    youtubeUrl: '',
+  },
+  retrievedSelectedAppDetails: false,
 }
 
 /** Action types */
@@ -43,6 +67,10 @@ export const GET_FILTERED_MARKETPLACE_APPS_ACTION =
   'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION'
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS =
   'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS'
+
+export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
+export const GET_APP_DETAILS_ACTION_SUCCESS =
+  'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS'
 
 /** Reducer */
 
@@ -94,6 +122,19 @@ export default function reducer(
       })
     }
 
+    case GET_APP_DETAILS_ACTION: {
+      return update(state, {
+        retrievedSelectedAppDetails: { $set: false },
+      })
+    }
+
+    case GET_APP_DETAILS_ACTION_SUCCESS: {
+      return update(state, {
+        selectedAppDetails: { $set: action.appDetails },
+        retrievedSelectedAppDetails: { $set: true },
+      })
+    }
+
     default:
       return state
   }
@@ -106,7 +147,7 @@ export function getAllMarketplaceAppsAction() {
 }
 
 export function getAllMarketplaceAppsActionSuccess(
-  allMarketplaceApps: AppData[]
+  allMarketplaceApps: AppDetails[]
 ) {
   return { type: GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, allMarketplaceApps }
 }
@@ -145,10 +186,18 @@ export function getFilteredMarketplaceAppsAction(filters: Filters) {
 }
 
 export function getFilteredMarketplaceAppsActionSuccess(
-  filteredMarketplaceApps: AppData[]
+  filteredMarketplaceApps: AppDetails[]
 ) {
   return {
     type: GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,
     filteredMarketplaceApps,
   }
+}
+
+export function getAppDetailsAction(appID: string) {
+  return { type: GET_APP_DETAILS_ACTION, appID }
+}
+
+export function getAppDetailsActionSuccess(appDetails: AppDetails) {
+  return { type: GET_APP_DETAILS_ACTION_SUCCESS, appDetails }
 }

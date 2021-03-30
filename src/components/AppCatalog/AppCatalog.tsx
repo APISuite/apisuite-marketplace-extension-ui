@@ -49,9 +49,14 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
 
           <div className={classes.appCatalogEntryLabelsContainer}>
             {appDetails.appLabels.length ? (
-              appDetails.appLabels.map((appLabel) => {
+              appDetails.appLabels.map((appLabel, index) => {
                 return (
-                  <p className={classes.appCatalogEntryLabel}>{appLabel}</p>
+                  <p
+                    className={classes.appCatalogEntryLabel}
+                    key={`appLabel${index}`}
+                  >
+                    {appLabel}
+                  </p>
                 )
               })
             ) : (
@@ -70,7 +75,7 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
       <Link
         className={classes.appCatalogEntryLink}
         key={`linkToApp${index}`}
-        to="#"
+        to={`marketplace/app-details/${appDetails.appID}`}
       >
         {generateAppCatalogEntry(appDetails, index)}
       </Link>
