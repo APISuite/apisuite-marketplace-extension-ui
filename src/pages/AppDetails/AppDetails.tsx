@@ -44,6 +44,10 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     setAppNameInitials(appNameInitials)
   }, [selectedAppDetails])
 
+  const checkIfURLIsEmpty = (providedURL: string) => {
+    return providedURL === null || providedURL === ''
+  }
+
   // All images - as well as all thumbnails - must be of the same size
   const imagesArray = [
     {
@@ -59,8 +63,6 @@ const AppDetails: React.FC<AppDetailsProps> = ({
       thumbnail: 'https://picsum.photos/id/1019/250/150/',
     },
   ]
-
-  console.log()
 
   return (
     <main>
@@ -158,16 +160,11 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  (selectedAppDetails.privacyUrl === null ||
-                    selectedAppDetails.privacyUrl === '') &&
-                  (selectedAppDetails.supportUrl === null ||
-                    selectedAppDetails.supportUrl === '') &&
-                  (selectedAppDetails.tosUrl === null ||
-                    selectedAppDetails.tosUrl === '') &&
-                  (selectedAppDetails.websiteUrl === null ||
-                    selectedAppDetails.websiteUrl === '') &&
-                  (selectedAppDetails.youtubeUrl === null ||
-                    selectedAppDetails.youtubeUrl === '') && (
+                  checkIfURLIsEmpty(selectedAppDetails.privacyUrl) &&
+                  checkIfURLIsEmpty(selectedAppDetails.supportUrl) &&
+                  checkIfURLIsEmpty(selectedAppDetails.tosUrl) &&
+                  checkIfURLIsEmpty(selectedAppDetails.websiteUrl) &&
+                  checkIfURLIsEmpty(selectedAppDetails.youtubeUrl) && (
                     <p className={classes.subSectionText}>
                       {t('appMarketplace.appDetails.appLinks.noAppLinks')}
                     </p>
@@ -238,12 +235,13 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  (selectedAppDetails.organization.privacyUrl === null ||
-                    selectedAppDetails.organization.privacyUrl === '') &&
-                  (selectedAppDetails.organization.supportUrl === null ||
-                    selectedAppDetails.organization.supportUrl === '') &&
-                  (selectedAppDetails.organization.tosUrl === null ||
-                    selectedAppDetails.organization.tosUrl === '') && (
+                  checkIfURLIsEmpty(
+                    selectedAppDetails.organization.privacyUrl
+                  ) &&
+                  checkIfURLIsEmpty(
+                    selectedAppDetails.organization.supportUrl
+                  ) &&
+                  checkIfURLIsEmpty(selectedAppDetails.organization.tosUrl) && (
                     <p className={classes.subSectionText}>
                       {t(
                         'appMarketplace.appDetails.publisherLinks.noPublisherLinks'
