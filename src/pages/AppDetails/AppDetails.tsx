@@ -44,7 +44,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     setAppNameInitials(appNameInitials)
   }, [selectedAppDetails])
 
-  const checkIfURLIsEmpty = (providedURL: string) => {
+  const isURLEmpty = (providedURL: string) => {
     return providedURL === null || providedURL === ''
   }
 
@@ -95,8 +95,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                 </p>
 
                 {selectedAppDetails &&
-                  selectedAppDetails.websiteUrl !== null &&
-                  selectedAppDetails.websiteUrl !== '' && (
+                  !isURLEmpty(selectedAppDetails.websiteUrl) && (
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.websiteUrl}
@@ -107,22 +106,19 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                     </a>
                   )}
 
-                {selectedAppDetails &&
-                  selectedAppDetails.tosUrl !== null &&
-                  selectedAppDetails.tosUrl !== '' && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.tosUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t('appMarketplace.appDetails.appLinks.tosURL')}
-                    </a>
-                  )}
+                {selectedAppDetails && !isURLEmpty(selectedAppDetails.tosUrl) && (
+                  <a
+                    className={classes.providedLink}
+                    href={selectedAppDetails.tosUrl}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {t('appMarketplace.appDetails.appLinks.tosURL')}
+                  </a>
+                )}
 
                 {selectedAppDetails &&
-                  selectedAppDetails.privacyUrl !== null &&
-                  selectedAppDetails.privacyUrl !== '' && (
+                  !isURLEmpty(selectedAppDetails.privacyUrl) && (
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.privacyUrl}
@@ -134,8 +130,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  selectedAppDetails.youtubeUrl !== null &&
-                  selectedAppDetails.youtubeUrl !== '' && (
+                  !isURLEmpty(selectedAppDetails.youtubeUrl) && (
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.youtubeUrl}
@@ -147,8 +142,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  selectedAppDetails.supportUrl !== null &&
-                  selectedAppDetails.supportUrl !== '' && (
+                  !isURLEmpty(selectedAppDetails.supportUrl) && (
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.supportUrl}
@@ -160,11 +154,11 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  checkIfURLIsEmpty(selectedAppDetails.privacyUrl) &&
-                  checkIfURLIsEmpty(selectedAppDetails.supportUrl) &&
-                  checkIfURLIsEmpty(selectedAppDetails.tosUrl) &&
-                  checkIfURLIsEmpty(selectedAppDetails.websiteUrl) &&
-                  checkIfURLIsEmpty(selectedAppDetails.youtubeUrl) && (
+                  isURLEmpty(selectedAppDetails.privacyUrl) &&
+                  isURLEmpty(selectedAppDetails.supportUrl) &&
+                  isURLEmpty(selectedAppDetails.tosUrl) &&
+                  isURLEmpty(selectedAppDetails.websiteUrl) &&
+                  isURLEmpty(selectedAppDetails.youtubeUrl) && (
                     <p className={classes.subSectionText}>
                       {t('appMarketplace.appDetails.appLinks.noAppLinks')}
                     </p>
@@ -194,8 +188,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                 </p>
 
                 {selectedAppDetails &&
-                  selectedAppDetails.organization.tosUrl !== null &&
-                  selectedAppDetails.organization.tosUrl !== '' && (
+                  !isURLEmpty(selectedAppDetails.organization.tosUrl) && (
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.organization.tosUrl}
@@ -207,8 +200,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  selectedAppDetails.organization.privacyUrl !== null &&
-                  selectedAppDetails.organization.privacyUrl !== '' && (
+                  !isURLEmpty(selectedAppDetails.organization.privacyUrl) && (
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.organization.privacyUrl}
@@ -222,8 +214,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  selectedAppDetails.organization.supportUrl !== null &&
-                  selectedAppDetails.organization.supportUrl !== '' && (
+                  !isURLEmpty(selectedAppDetails.organization.supportUrl) && (
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.organization.supportUrl}
@@ -235,13 +226,9 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   )}
 
                 {selectedAppDetails &&
-                  checkIfURLIsEmpty(
-                    selectedAppDetails.organization.privacyUrl
-                  ) &&
-                  checkIfURLIsEmpty(
-                    selectedAppDetails.organization.supportUrl
-                  ) &&
-                  checkIfURLIsEmpty(selectedAppDetails.organization.tosUrl) && (
+                  isURLEmpty(selectedAppDetails.organization.privacyUrl) &&
+                  isURLEmpty(selectedAppDetails.organization.supportUrl) &&
+                  isURLEmpty(selectedAppDetails.organization.tosUrl) && (
                     <p className={classes.subSectionText}>
                       {t(
                         'appMarketplace.appDetails.publisherLinks.noPublisherLinks'
