@@ -7,6 +7,8 @@ import {
   GET_ALL_MARKETPLACE_LABELS_ACTION,
   GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS,
   GET_ALL_MARKETPLACE_PUBLISHERS_ACTION,
+  GET_APP_DETAILS_ACTION_SUCCESS,
+  GET_APP_DETAILS_ACTION,
   GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
 } from './ducks'
@@ -36,18 +38,20 @@ export interface Filters {
 }
 
 export interface MarketplaceStore {
-  allMarketplaceApps: AppData[]
+  allMarketplaceApps: AppDetails[]
   allMarketplaceLabels: string[]
   allMarketplacePublishers: MarketplacePublishers[]
+  filteredMarketplaceApps: AppDetails[]
 
   retrievedAllMarketplaceApps: boolean
   retrievedAllMarketplaceLabels: boolean
   retrievedAllMarketplacePublishers: boolean
 
-  filteredMarketplaceApps: AppData[]
+  selectedAppDetails: AppDetails
+  retrievedSelectedAppDetails: boolean
 }
 
-export interface AppData {
+export interface AppDetails {
   createdAt: string
   description: string
   id: number
@@ -100,11 +104,11 @@ export interface SettingsData {
 }
 
 export interface MarketplaceProps {
-  allMarketplaceApps: AppData[]
+  allMarketplaceApps: AppDetails[]
   allMarketplaceLabels: string[]
   allMarketplacePublishers: MarketplacePublishers[]
 
-  filteredMarketplaceApps: AppData[]
+  filteredMarketplaceApps: AppDetails[]
 
   getAllMarketplaceAppsAction: () => void
   getAllMarketplaceLabelsAction: () => void
@@ -124,7 +128,7 @@ export interface GetAllMarketplaceAppsAction extends Action {
 
 export interface GetAllMarketplaceAppsActionSuccess extends Action {
   type: typeof GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS
-  allMarketplaceApps: AppData[]
+  allMarketplaceApps: AppDetails[]
 }
 
 export interface GetAllMarketplaceLabelsAction extends Action {
@@ -152,7 +156,17 @@ export interface GetFilteredAppsMarketplaceAction extends Action {
 
 export interface GetFilteredAppsMarketplaceActionSuccess extends Action {
   type: typeof GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS
-  filteredMarketplaceApps: AppData[]
+  filteredMarketplaceApps: AppDetails[]
+}
+
+export interface GetAppDetailsAction extends Action {
+  type: typeof GET_APP_DETAILS_ACTION
+  appID: string
+}
+
+export interface GetAppDetailsActionSuccess extends Action {
+  type: typeof GET_APP_DETAILS_ACTION_SUCCESS
+  appDetails: AppDetails
 }
 
 export type MarketplaceActions =
@@ -164,3 +178,5 @@ export type MarketplaceActions =
   | GetAllMarketplacePublishersActionSuccess
   | GetFilteredAppsMarketplaceAction
   | GetFilteredAppsMarketplaceActionSuccess
+  | GetAppDetailsAction
+  | GetAppDetailsActionSuccess

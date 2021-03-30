@@ -1,19 +1,25 @@
+import request from 'util/request'
+
 import { call, put, takeLatest } from 'redux-saga/effects'
 
 import {
   GET_ALL_MARKETPLACE_APPS_ACTION,
   GET_ALL_MARKETPLACE_LABELS_ACTION,
   GET_ALL_MARKETPLACE_PUBLISHERS_ACTION,
+  GET_APP_DETAILS_ACTION,
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
   getAllMarketplaceAppsActionSuccess,
   getAllMarketplaceLabelsActionSuccess,
   getAllMarketplacePublishersActionSuccess,
+  getAppDetailsActionSuccess,
   getFilteredMarketplaceAppsActionSuccess,
 } from './ducks'
 
-import { AppData, GetFilteredAppsMarketplaceAction } from './types'
-
-import request from 'util/request'
+import {
+  AppDetails,
+  GetAppDetailsAction,
+  GetFilteredAppsMarketplaceAction,
+} from './types'
 
 export function* getAllMarketplaceAppsActionSaga() {
   try {
@@ -55,7 +61,7 @@ export function* getAllMarketplaceAppsActionSaga() {
     yield put(
       getAllMarketplaceAppsActionSuccess(
         allMarketplaceApps.sort(
-          (appA: AppData, appB: AppData) => appA.id - appB.id
+          (appA: AppDetails, appB: AppDetails) => appA.id - appB.id
         )
       )
     )
@@ -199,6 +205,24 @@ export function* getFilteredMarketplaceAppsActionSaga(
   }
 }
 
+export function* getAppDetailsActionSaga(action: GetAppDetailsAction) {
+  try {
+    const getAppDetailsActionUrl = `https://api.develop.apisuite.io/apps/public/${action.appID}`
+
+    const response = yield call(request, {
+      url: getAppDetailsActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(getAppDetailsActionSuccess(response))
+  } catch (error) {
+    console.log("Error fetching the selected app's details")
+  }
+}
+
 function* rootSaga() {
   yield takeLatest(
     GET_ALL_MARKETPLACE_APPS_ACTION,
@@ -216,6 +240,7 @@ function* rootSaga() {
     GET_FILTERED_MARKETPLACE_APPS_ACTION,
     getFilteredMarketplaceAppsActionSaga
   )
+  yield takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga)
 }
 
 export default rootSaga
