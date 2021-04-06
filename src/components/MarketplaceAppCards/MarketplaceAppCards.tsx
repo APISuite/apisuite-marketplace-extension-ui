@@ -20,12 +20,12 @@ const MarketplaceAppCards: React.FC = () => {
   const mockSubscribedMarketplaceApps = [
     {
       createdAt: '2021-02-24T08:38:36.088Z',
-      description: 'Awwwooooo!',
+      description: 'Diamonds, they are all one needs.',
       id: 1,
       labels: [],
       logo:
-        'https://upload.wikimedia.org/wikipedia/en/5/5f/Original_Doge_meme.jpg',
-      name: 'App To Rule Them All',
+        'https://upload.wikimedia.org/wikipedia/commons/3/36/Diamond.jpg',
+      name: 'Diamond App',
       organization: {
         id: '1',
         name: 'ACME',
@@ -35,7 +35,7 @@ const MarketplaceAppCards: React.FC = () => {
       },
       orgId: 1,
       privacyUrl: '',
-      shortDescription: 'Dis app not for hooman use! WOOF! *paws your face*',
+      shortDescription: 'Diamonds are forever, you see',
       supportUrl: '',
       tosUrl: '',
       updatedAt: '2021-03-30T16:52:29.283Z',

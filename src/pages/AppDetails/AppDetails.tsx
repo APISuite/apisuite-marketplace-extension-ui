@@ -254,7 +254,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
               <div className={classes.appLabelsContainer}>
                 {
                   // TODO: Go through each label string, and generate a beautiful label
-                  selectedAppDetails && selectedAppDetails.labels ? (
+                  selectedAppDetails && selectedAppDetails.labels.length ? (
                     selectedAppDetails.labels.map((label, index) => {
                       return (
                         <p
