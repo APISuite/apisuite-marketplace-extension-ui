@@ -99,7 +99,13 @@
       "deleteError": "Failed to delete API"
     }
   },
-  "appMarketplace": {
+  "appListing": {
+    "browseMarketplaceApps": "Browse the app marketplace",
+    "marketplaceAppsSectionTitle": "Marketplace applications",
+    "noAppDescriptionProvided": "No description provided",
+    "noMarketplaceAppSubscriptions": "You have not subscribed to any marketplace apps yet."
+  },
+    "appMarketplace": {
     "headerTitlePartOne": "Explore the",
     "headerTitlePartTwo": "Marketplace",
     "searchForAppsTextField": "Search for apps",
@@ -120,7 +126,7 @@
     "amountOfAppsTextPartTwo": "available",
     "noAppsToDisplayText": "No apps to display!",
     "retrievingAppsToDisplayText": "Retrieving all apps, please hold...",
-    "noDescriptionAvailableText": "No description available",
+    "noDescriptionAvailableText": "No description provided",
     "noLabelsProvidedText": "No labels provided",
     "featuredAppsTitle": "Featured apps",
     "featuredAppsSubtitle": "Ready to try? Subscribe to one of your featured apps to get started!",
@@ -136,18 +142,18 @@
         "privacyPolicyURL": "Privacy Policy URL",
         "youTubeURL": "YouTube URL",
         "supportURL": "Support URL",
-        "noAppLinks": "No application links available"
+        "noAppLinks": "No application links provided"
       },
       "publisherLinks": {
         "tosURL": "Terms of Service",
         "privacyPolicyURL": "Privacy Policy URL",
         "supportURL": "Support URL",
-        "noPublisherLinks": "No publisher links available"
+        "noPublisherLinks": "No publisher links provided"
       },
       "noShortDescription": "No short description provided",
       "noLabels": "No labels provided",
       "partOfAppOverviewTitle": "Overview",
-      "noAppOverview": "No application overview available"
+      "noAppOverview": "No application overview provided"
     }
   }
 }

@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import { useTranslation } from 'translations'
+
 import Link from 'components/Link'
 
 import Avatar from '@material-ui/core/Avatar'
@@ -16,6 +18,8 @@ import useStyles from './styles'
 const MarketplaceAppCards: React.FC = () => {
   const classes = useStyles()
 
+  const [t] = useTranslation()
+
   // TODO: Use this until it is possible to retrieve all subscribed marketplace apps from the BE
   const mockSubscribedMarketplaceApps = [
     {
@@ -23,8 +27,7 @@ const MarketplaceAppCards: React.FC = () => {
       description: 'Diamonds, they are all one needs.',
       id: 1,
       labels: [],
-      logo:
-        'https://upload.wikimedia.org/wikipedia/commons/3/36/Diamond.jpg',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Diamond.jpg',
       name: 'Diamond App',
       organization: {
         id: '1',
@@ -53,7 +56,7 @@ const MarketplaceAppCards: React.FC = () => {
     if (mockSubscribedMarketplaceApps.length === 0) {
       return (
         <p className={classes.loadingMarketplaceApplicationCards}>
-          You have not subscribed to any marketplace apps yet.
+          {t('appListing.noMarketplaceAppSubscriptions')}
         </p>
       )
     }
@@ -109,7 +112,7 @@ const MarketplaceAppCards: React.FC = () => {
                     ? marketplaceApp.shortDescription
                     : marketplaceApp.description
                     ? marketplaceApp.description
-                    : 'No description available'}
+                    : t('appListing.noAppDescriptionProvided')}
                 </p>
               </div>
             </div>
@@ -124,14 +127,14 @@ const MarketplaceAppCards: React.FC = () => {
   return (
     <div>
       <p className={classes.applicationsContainerTitle}>
-        Marketplace applications
+        {t('appListing.marketplaceAppsSectionTitle')}
       </p>
 
       <Button
         className={classes.browseMarketplaceAppsButton}
         href="/marketplace"
       >
-        Browse the app marketplace
+        {t('appListing.browseMarketplaceApps')}
       </Button>
 
       {marketplaceAppCardGenerator(mockSubscribedMarketplaceApps)}

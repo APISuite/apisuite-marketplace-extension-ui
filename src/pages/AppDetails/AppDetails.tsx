@@ -282,10 +282,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
               />
 
               <h1 className={classes.appOverviewTitle}>
-                {selectedAppDetails && selectedAppDetails.name
-                  ? selectedAppDetails && selectedAppDetails.name
-                  : '...'}
-                <> {t('appMarketplace.appDetails.partOfAppOverviewTitle')}</>
+                {t('appMarketplace.appDetails.partOfAppOverviewTitle')}
               </h1>
 
               <p className={classes.appOverviewDescription}>
