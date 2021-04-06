@@ -7,7 +7,6 @@ export declare const mapStateToProps: ({ marketplace, settings }: any) => {
     retrievedAllMarketplaceApps: any;
     retrievedAllMarketplaceLabels: any;
     retrievedAllMarketplacePublishers: any;
-    retrievedFilteredMarketplaceApps: any;
     settings: any;
 };
 export declare const mapDispatchToProps: (dispatch: Dispatch) => any;

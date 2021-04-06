@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION } from './ducks';
+import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_APP_DETAILS_ACTION_SUCCESS, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION } from './ducks';
 export declare const roleNameOptions: readonly ["", "admin", "developer", "organizationOwner"];
 export interface Response {
     isError: boolean;
@@ -16,19 +16,21 @@ export interface Filters {
     order: 'asc' | 'desc';
 }
 export interface MarketplaceStore {
-    allMarketplaceApps: AppData[];
+    allMarketplaceApps: AppDetails[];
     allMarketplaceLabels: string[];
     allMarketplacePublishers: MarketplacePublishers[];
+    filteredMarketplaceApps: AppDetails[];
     retrievedAllMarketplaceApps: boolean;
     retrievedAllMarketplaceLabels: boolean;
     retrievedAllMarketplacePublishers: boolean;
-    filteredMarketplaceApps: AppData[];
-    retrievedFilteredMarketplaceApps: boolean;
+    selectedAppDetails: AppDetails;
+    retrievedSelectedAppDetails: boolean;
 }
-export interface AppData {
+export interface AppDetails {
     createdAt: string;
     description: string;
     id: number;
+    labels: string[];
     logo: string;
     name: string;
     organization: {
@@ -71,10 +73,10 @@ export interface SettingsData {
     supportURL: string;
 }
 export interface MarketplaceProps {
-    allMarketplaceApps: AppData[];
+    allMarketplaceApps: AppDetails[];
     allMarketplaceLabels: string[];
     allMarketplacePublishers: MarketplacePublishers[];
-    filteredMarketplaceApps: AppData[];
+    filteredMarketplaceApps: AppDetails[];
     getAllMarketplaceAppsAction: () => void;
     getAllMarketplaceLabelsAction: () => void;
     getAllMarketplacePublishersAction: () => void;
@@ -89,7 +91,7 @@ export interface GetAllMarketplaceAppsAction extends Action {
 }
 export interface GetAllMarketplaceAppsActionSuccess extends Action {
     type: typeof GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS;
-    allMarketplaceApps: AppData[];
+    allMarketplaceApps: AppDetails[];
 }
 export interface GetAllMarketplaceLabelsAction extends Action {
     type: typeof GET_ALL_MARKETPLACE_LABELS_ACTION;
@@ -111,6 +113,14 @@ export interface GetFilteredAppsMarketplaceAction extends Action {
 }
 export interface GetFilteredAppsMarketplaceActionSuccess extends Action {
     type: typeof GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS;
-    filteredMarketplaceApps: AppData[];
+    filteredMarketplaceApps: AppDetails[];
 }
-export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess;
+export interface GetAppDetailsAction extends Action {
+    type: typeof GET_APP_DETAILS_ACTION;
+    appID: string;
+}
+export interface GetAppDetailsActionSuccess extends Action {
+    type: typeof GET_APP_DETAILS_ACTION_SUCCESS;
+    appDetails: AppDetails;
+}
+export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess | GetAppDetailsAction | GetAppDetailsActionSuccess;
