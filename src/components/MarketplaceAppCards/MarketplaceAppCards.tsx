@@ -47,6 +47,10 @@ const MarketplaceAppCards: React.FC = () => {
     },
   ]
 
+  const stringChecker = (providedString: string) => {
+    return providedString.length ? providedString : false
+  }
+
   let allMarketplaceAppNames: string[] = []
 
   /* Generates an 'app card' for every marketplace app a user has subscribed to. */
@@ -108,11 +112,9 @@ const MarketplaceAppCards: React.FC = () => {
                 </p>
 
                 <p className={classes.marketplaceAppCardDescription}>
-                  {marketplaceApp.shortDescription
-                    ? marketplaceApp.shortDescription
-                    : marketplaceApp.description
-                    ? marketplaceApp.description
-                    : t('appListing.noAppDescriptionProvided')}
+                  {stringChecker(marketplaceApp.shortDescription) ||
+                    stringChecker(marketplaceApp.description) ||
+                    t('appListing.noAppDescriptionProvided')}
                 </p>
               </div>
             </div>
