@@ -21,10 +21,11 @@ import {
   GetFilteredAppsMarketplaceAction,
 } from './types'
 
+import { API_URL } from 'constants/endpoints'
+
 export function* getAllMarketplaceAppsActionSaga() {
   try {
-    const getAllMarketplaceAppsActionUrl =
-      'https://api.develop.apisuite.io/apps/public'
+    const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public`
 
     const response = yield call(request, {
       url: getAllMarketplaceAppsActionUrl,
@@ -72,8 +73,7 @@ export function* getAllMarketplaceAppsActionSaga() {
 
 export function* getAllMarketplaceLabelsActionSaga() {
   try {
-    const getAllMarketplaceLabelsActionUrl =
-      'https://api.develop.apisuite.io/apps/public/labels'
+    const getAllMarketplaceLabelsActionUrl = `${API_URL}/apps/public/labels`
 
     const response = yield call(request, {
       url: getAllMarketplaceLabelsActionUrl,
@@ -91,8 +91,7 @@ export function* getAllMarketplaceLabelsActionSaga() {
 
 export function* getAllMarketplacePublishersActionSaga() {
   try {
-    const getAllMarketplacePublishersActionUrl =
-      'https://api.develop.apisuite.io/organizations/publishers'
+    const getAllMarketplacePublishersActionUrl = `${API_URL}/organizations/publishers`
 
     const response = yield call(request, {
       url: getAllMarketplacePublishersActionUrl,
@@ -112,8 +111,7 @@ export function* getFilteredMarketplaceAppsActionSaga(
   action: GetFilteredAppsMarketplaceAction
 ) {
   try {
-    let getFilteredMarketplaceAppsActionUrl =
-      'https://api.develop.apisuite.io/apps/public'
+    let getFilteredMarketplaceAppsActionUrl = `${API_URL}/apps/public`
 
     let orgIDParameters = ''
     let labelParameters = ''
@@ -207,7 +205,7 @@ export function* getFilteredMarketplaceAppsActionSaga(
 
 export function* getAppDetailsActionSaga(action: GetAppDetailsAction) {
   try {
-    const getAppDetailsActionUrl = `https://api.develop.apisuite.io/apps/public/${action.appID}`
+    const getAppDetailsActionUrl = `${API_URL}/apps/public/${action.appID}`
 
     const response = yield call(request, {
       url: getAppDetailsActionUrl,
