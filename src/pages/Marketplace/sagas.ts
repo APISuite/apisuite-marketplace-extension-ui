@@ -23,8 +23,6 @@ import {
 
 import { API_URL } from 'constants/endpoints'
 
-console.log('API_URL', API_URL)
-
 export function* getAllMarketplaceAppsActionSaga() {
   try {
     const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public`
