@@ -309,7 +309,7 @@ exports.Extension = Extension;
 });
 
 var name$1 = "@apisuite/apisuite-marketplace-extension-ui";
-var version$1 = "1.0.1";
+var version$1 = "1.0.2";
 
 var EXT_NAME = name$1;
 var BASE_URI = '/marketplace';
@@ -11623,7 +11623,7 @@ followRedirects.wrap = wrap_1;
 var _args = [
 	[
 		"axios@0.21.1",
-		"/Users/dnva/Documents/cloudoki/API_SUITE/apisuite-marketplace-extension-ui"
+		"/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/apisuite-marketplace-extension-ui"
 	]
 ];
 var _from = "axios@0.21.1";
@@ -11648,7 +11648,7 @@ var _requiredBy = [
 ];
 var _resolved = "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz";
 var _spec = "0.21.1";
-var _where = "/Users/dnva/Documents/cloudoki/API_SUITE/apisuite-marketplace-extension-ui";
+var _where = "/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/apisuite-marketplace-extension-ui";
 var author = {
 	name: "Matt Zabriskie"
 };
@@ -12573,7 +12573,7 @@ function getApiUrl() {
     }
     return process.env.API_URL || '';
 }
-getApiUrl();
+var API_URL = getApiUrl();
 process.env.INFORM_URL || '';
 
 /*
@@ -12648,7 +12648,7 @@ function getAllMarketplaceAppsActionSaga() {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                getAllMarketplaceAppsActionUrl = 'https://api.develop.apisuite.io/apps/public';
+                getAllMarketplaceAppsActionUrl = API_URL + "/apps/public";
                 return [4 /*yield*/, call(request, {
                         url: getAllMarketplaceAppsActionUrl,
                         method: 'GET',
@@ -12699,7 +12699,7 @@ function getAllMarketplaceLabelsActionSaga() {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                getAllMarketplaceLabelsActionUrl = 'https://api.develop.apisuite.io/apps/public/labels';
+                getAllMarketplaceLabelsActionUrl = API_URL + "/apps/public/labels";
                 return [4 /*yield*/, call(request, {
                         url: getAllMarketplaceLabelsActionUrl,
                         method: 'GET',
@@ -12727,7 +12727,7 @@ function getAllMarketplacePublishersActionSaga() {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                getAllMarketplacePublishersActionUrl = 'https://api.develop.apisuite.io/organizations/publishers';
+                getAllMarketplacePublishersActionUrl = API_URL + "/organizations/publishers";
                 return [4 /*yield*/, call(request, {
                         url: getAllMarketplacePublishersActionUrl,
                         method: 'GET',
@@ -12755,7 +12755,7 @@ function getFilteredMarketplaceAppsActionSaga(action) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                getFilteredMarketplaceAppsActionUrl = 'https://api.develop.apisuite.io/apps/public';
+                getFilteredMarketplaceAppsActionUrl = API_URL + "/apps/public";
                 orgIDParameters_1 = '';
                 labelParameters_1 = '';
                 sortModeParameters = '';
@@ -12854,7 +12854,7 @@ function getAppDetailsActionSaga(action) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                getAppDetailsActionUrl = "https://api.develop.apisuite.io/apps/public/" + action.appID;
+                getAppDetailsActionUrl = API_URL + "/apps/public/" + action.appID;
                 return [4 /*yield*/, call(request, {
                         url: getAppDetailsActionUrl,
                         method: 'GET',
