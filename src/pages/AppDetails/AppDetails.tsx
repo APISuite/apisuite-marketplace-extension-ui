@@ -4,9 +4,7 @@ import { useParams } from 'react-router'
 
 import ImageGallery from 'react-image-gallery'
 
-import { useTranslation } from 'translations'
-
-import { Avatar, Button } from '@material-ui/core'
+import { useTranslation, Avatar, Button } from '@apisuite/fe-base'
 
 import { AppDetailsProps } from './types'
 
@@ -21,7 +19,11 @@ const AppDetails: React.FC<AppDetailsProps> = ({
 }) => {
   const classes = useStyles()
 
-  const [t] = useTranslation()
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
 
   // Retrieves the app's ID from the browser window's URL
   const { appID } = useParams()

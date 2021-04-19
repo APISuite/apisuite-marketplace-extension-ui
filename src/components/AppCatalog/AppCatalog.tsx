@@ -1,19 +1,18 @@
-import * as React from 'react'
-
-import { useTranslation } from 'translations'
-
+import React from 'react'
+import { useTranslation, Avatar } from '@apisuite/fe-base'
 import Link from 'components/Link'
 
-import { Avatar } from '@material-ui/core'
-
 import useStyles from './styles'
-
 import { AppCatalogProps, AppDetails } from './types'
 
 const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
   const classes = useStyles()
 
-  const [t] = useTranslation()
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
 
   const generateAppCatalogEntry = (appDetails: AppDetails, index: number) => {
     const appSplitName = appDetails.appName.split(' ')
