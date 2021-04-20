@@ -1,13 +1,7 @@
-import * as React from 'react'
-
-import { useTranslation } from 'translations'
-
-import Link from 'components/Link'
-
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-
+import React from 'react'
+import { useTranslation, Avatar, Button } from '@apisuite/fe-base'
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded'
+import Link from 'components/Link'
 
 import { AppDetails } from 'pages/Marketplace/types'
 
@@ -18,7 +12,11 @@ import useStyles from './styles'
 const MarketplaceAppCards: React.FC = () => {
   const classes = useStyles()
 
-  const [t] = useTranslation()
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
 
   // TODO: Use this until it is possible to retrieve all subscribed marketplace apps from the BE
   const mockSubscribedMarketplaceApps = [

@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@apisuite/fe-base'
 
 import appCarouselBackground from 'assets/appCarouselBackground.svg'
 import spaceBackground from 'assets/space-background.svg'

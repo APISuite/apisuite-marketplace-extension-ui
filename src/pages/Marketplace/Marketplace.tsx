@@ -1,10 +1,6 @@
-import * as React from 'react'
-
-import { useTranslation } from 'translations'
-
-import AppCatalog from 'components/AppCatalog'
-
+import React from 'react'
 import {
+  useTranslation,
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -18,7 +14,9 @@ import {
   RadioGroup,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@apisuite/fe-base'
+
+import AppCatalog from 'components/AppCatalog'
 
 import { Pagination } from '@material-ui/lab'
 
@@ -56,7 +54,11 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 }) => {
   const classes = useStyles()
 
-  const [t] = useTranslation()
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
 
   React.useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
