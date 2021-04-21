@@ -1,13 +1,10 @@
 'use strict';
 
-var React = require('react');
-var i18next = require('i18next');
-var reactI18next = require('react-i18next');
+var feBase = require('@apisuite/fe-base');
 var redux = require('redux');
 var reactRedux = require('react-redux');
+var React = require('react');
 var reactRouter = require('react-router');
-var core$1 = require('@material-ui/core');
-var styles = require('@material-ui/styles');
 var reactRouterDom = require('react-router-dom');
 var lab = require('@material-ui/lab');
 var AmpStoriesRoundedIcon = require('@material-ui/icons/AmpStoriesRounded');
@@ -20,8 +17,6 @@ var SortRoundedIcon = require('@material-ui/icons/SortRounded');
 var appCarouselBackground = require('assets/appCarouselBackground.svg');
 var spaceBackground = require('assets/space-background.svg');
 var marketplace = require('assets/marketplace.svg');
-var Avatar = require('@material-ui/core/Avatar');
-var Button = require('@material-ui/core/Button');
 var HeightRoundedIcon = require('@material-ui/icons/HeightRounded');
 var http = require('http');
 var https = require('https');
@@ -37,7 +32,6 @@ var effects = require('redux-saga/effects');
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var i18next__default = /*#__PURE__*/_interopDefaultLegacy(i18next);
 var AmpStoriesRoundedIcon__default = /*#__PURE__*/_interopDefaultLegacy(AmpStoriesRoundedIcon);
 var ChevronLeftRoundedIcon__default = /*#__PURE__*/_interopDefaultLegacy(ChevronLeftRoundedIcon);
 var ChevronRightRoundedIcon__default = /*#__PURE__*/_interopDefaultLegacy(ChevronRightRoundedIcon);
@@ -48,8 +42,6 @@ var SortRoundedIcon__default = /*#__PURE__*/_interopDefaultLegacy(SortRoundedIco
 var appCarouselBackground__default = /*#__PURE__*/_interopDefaultLegacy(appCarouselBackground);
 var spaceBackground__default = /*#__PURE__*/_interopDefaultLegacy(spaceBackground);
 var marketplace__default = /*#__PURE__*/_interopDefaultLegacy(marketplace);
-var Avatar__default = /*#__PURE__*/_interopDefaultLegacy(Avatar);
-var Button__default = /*#__PURE__*/_interopDefaultLegacy(Button);
 var HeightRoundedIcon__default = /*#__PURE__*/_interopDefaultLegacy(HeightRoundedIcon);
 var http__default = /*#__PURE__*/_interopDefaultLegacy(http);
 var https__default = /*#__PURE__*/_interopDefaultLegacy(https);
@@ -337,208 +329,207 @@ exports.Extension = Extension;
 
 });
 
-var name$1 = "@apisuite/apisuite-marketplace-extension-ui";
-var version$1 = "1.0.2";
-
-var EXT_NAME = name$1;
-var BASE_URI = '/marketplace';
-
-var admin$1 = {
-	title: "Admin area",
-	tabGeneral: {
-		tabTitle: "General settings",
-		pageTitle: "General settings",
-		description: "Personalise the API Suite Cloud portal to your organisaion’s image.",
-		portalTitle: "Portal title",
-		ownerName: "Owner name"
-	},
-	tabNavigation: {
-		tabTitle: "Navigation",
-		pageTitle: "Social media accounts",
-		description: "Adjust the icon links in the footer of the portal.",
-		url: "URL",
-		types: {
-			other: "Other"
-		}
-	},
-	tabIntegrations: {
-		tabTitle: "Service integrations",
-		pageTitle: "Service integrations",
-		description: "Maximize the experience of your users by customizing the service integrations of your APISuite Portal Cloud account.",
-		gateway: {
-			title: "Gateway integration",
-			providers: {
-				kong: "Kong"
+var extensions$1 = {
+	Marketplace: {
+		admin: {
+			title: "Admin area",
+			tabGeneral: {
+				tabTitle: "General settings",
+				pageTitle: "General settings",
+				description: "Personalise the API Suite Cloud portal to your organisaion’s image.",
+				portalTitle: "Portal title",
+				ownerName: "Owner name"
 			},
-			url: "Gateway URL",
-			apiKey: "Gateway API Key",
-			submitCoreSubscriptions: "Sync Core Subscriptions",
-			docsText: "To successfully link your local gateway with this cloud portal, please read the <0>step-by-step documentation</0>."
-		},
-		idp: {
-			title: "Open Identity service",
-			providers: {
-				internal: "Internal Open Identity service",
-				keycloak: "Keycloak Identity service"
+			tabNavigation: {
+				tabTitle: "Navigation",
+				pageTitle: "Social media accounts",
+				description: "Adjust the icon links in the footer of the portal.",
+				url: "URL",
+				types: {
+					other: "Other"
+				}
 			},
-			clientRegistrationURL: "Client registration URL",
-			initialAccessToken: "Initial access token",
-			docsText: "To successfully link your Identity Provider with this cloud portal, please read the <0>step-by-step documentation</0>."
-		}
-	},
-	tabAPICatalog: {
-		tabTitle: "API Catalog",
-		pageTitle: "Cloud API Catalog",
-		description: "Manage the accessibility of your API Products.",
-		apiProductsTable: {
-			tableTitle: "API Products Catalog",
-			tableSubTitle: "No entries",
-			noProductsToShow: {
-				paragraphText: "No products yet",
-				linkText: "Learn how to work with API Products"
+			tabIntegrations: {
+				tabTitle: "Service integrations",
+				pageTitle: "Service integrations",
+				description: "Maximize the experience of your users by customizing the service integrations of your APISuite Portal Cloud account.",
+				gateway: {
+					title: "Gateway integration",
+					providers: {
+						kong: "Kong"
+					},
+					url: "Gateway URL",
+					apiKey: "Gateway API Key",
+					submitCoreSubscriptions: "Sync Core Subscriptions",
+					docsText: "To successfully link your local gateway with this cloud portal, please read the <0>step-by-step documentation</0>."
+				},
+				idp: {
+					title: "Open Identity service",
+					providers: {
+						internal: "Internal Open Identity service",
+						keycloak: "Keycloak Identity service"
+					},
+					clientRegistrationURL: "Client registration URL",
+					initialAccessToken: "Initial access token",
+					docsText: "To successfully link your Identity Provider with this cloud portal, please read the <0>step-by-step documentation</0>."
+				}
+			},
+			tabAPICatalog: {
+				tabTitle: "API Catalog",
+				pageTitle: "Cloud API Catalog",
+				description: "Manage the accessibility of your API Products.",
+				apiProductsTable: {
+					tableTitle: "API Products Catalog",
+					tableSubTitle: "No entries",
+					noProductsToShow: {
+						paragraphText: "No products yet",
+						linkText: "Learn how to work with API Products"
+					}
+				},
+				apiProductsAddButtonLabel: "Add API Product",
+				apiProductsSideNote: "API Products collected from your gateway are shown in the API Products catalog. You are able to augment the gateway products with \"additional\" information.",
+				noticeText: "You might want to refresh your page and browser's cache if you don't see the update appear."
+			},
+			tabOrganisations: {
+				tabTitle: "Organisations",
+				pageTitle: "Organisations",
+				description: "Multi-user accounts overview, referred to as \"Organisations\".",
+				organisationsTable: {
+					tableTitle: "Organisations",
+					tableSubTitle: "Applications",
+					noProductsToShow: {
+						paragraphText: "No products yet",
+						linkText: "Learn how to work with API Products"
+					}
+				},
+				notices: {
+					noticeOneText: "The APISuite Cloud's billing metrics are based on active organisations, regardless of how many individual users one Organisation holds.",
+					noticeTwoText: "You might want to refresh your page and browser's cache if you don't see the update appear."
+				}
+			},
+			tabSocial: {
+				tabTitle: "Social media accounts",
+				addTitle: "Add account..."
+			},
+			feedback: {
+				saveSuccess: "Settings saved",
+				saveError: "Could not save settings"
+			},
+			"delete": {
+				success: "The account was removed successfully.",
+				error: "Failed to delete account."
+			},
+			api: {
+				saveSuccess: "API saved",
+				saveError: "Could not save API",
+				getError: "Failed to get API",
+				addEntry: "Add Entry",
+				dragText: "Click or Drag 'n' drop file...",
+				updateSuccess: "API updated successfully",
+				updateError: "Failed to updated API",
+				deleteSuccess: "API deleted successfully",
+				deleteError: "Failed to delete API"
 			}
 		},
-		apiProductsAddButtonLabel: "Add API Product",
-		apiProductsSideNote: "API Products collected from your gateway are shown in the API Products catalog. You are able to augment the gateway products with \"additional\" information.",
-		noticeText: "You might want to refresh your page and browser's cache if you don't see the update appear."
-	},
-	tabOrganisations: {
-		tabTitle: "Organisations",
-		pageTitle: "Organisations",
-		description: "Multi-user accounts overview, referred to as \"Organisations\".",
-		organisationsTable: {
-			tableTitle: "Organisations",
-			tableSubTitle: "Applications",
-			noProductsToShow: {
-				paragraphText: "No products yet",
-				linkText: "Learn how to work with API Products"
+		appListing: {
+			browseMarketplaceApps: "Browse the app marketplace",
+			marketplaceAppsSectionTitle: "Marketplace applications",
+			noAppDescriptionProvided: "No description provided",
+			noMarketplaceAppSubscriptions: "You have not subscribed to any marketplace apps yet."
+		},
+		appMarketplace: {
+			headerTitlePartOne: "Explore the",
+			headerTitlePartTwo: "Marketplace",
+			searchForAppsTextField: "Search for apps",
+			sortByTitle: "Sort by:",
+			sortModes: {
+				appName: "Application name",
+				publisherName: "Publisher name",
+				lastUpdated: "Last updated"
+			},
+			filterByTitle: "Filter by:",
+			filterByModes: {
+				labels: "Labels",
+				noLabels: "No labels to filter with",
+				publishers: "Publishers",
+				noPublishers: "No publishers to filter with"
+			},
+			amountOfAppsTextPartOne: "apps",
+			amountOfAppsTextPartTwo: "available",
+			noAppsToDisplayText: "No apps to display!",
+			retrievingAppsToDisplayText: "Retrieving all apps, please hold...",
+			noDescriptionAvailableText: "No description provided",
+			noLabelsProvidedText: "No labels provided",
+			featuredAppsTitle: "Featured apps",
+			featuredAppsSubtitle: "Ready to try? Subscribe to one of your featured apps to get started!",
+			appDetails: {
+				loadingAppDetails: "Loading the selected app's details...",
+				appSubscribeButton: "Subscribe app",
+				subSectionTitleOne: "Application links:",
+				subSectionTitleTwo: "Published by:",
+				subSectionTitleThree: "Publisher links:",
+				appLinks: {
+					websiteURL: "Website URL",
+					tosURL: "Terms of Service",
+					privacyPolicyURL: "Privacy Policy URL",
+					youTubeURL: "YouTube URL",
+					supportURL: "Support URL",
+					noAppLinks: "No application links provided"
+				},
+				publisherLinks: {
+					tosURL: "Terms of Service",
+					privacyPolicyURL: "Privacy Policy URL",
+					supportURL: "Support URL",
+					noPublisherLinks: "No publisher links provided"
+				},
+				noShortDescription: "No short description provided",
+				noLabels: "No labels provided",
+				partOfAppOverviewTitle: "Overview",
+				noAppOverview: "No application overview provided"
 			}
-		},
-		notices: {
-			noticeOneText: "The APISuite Cloud's billing metrics are based on active organisations, regardless of how many individual users one Organisation holds.",
-			noticeTwoText: "You might want to refresh your page and browser's cache if you don't see the update appear."
 		}
-	},
-	tabSocial: {
-		tabTitle: "Social media accounts",
-		addTitle: "Add account..."
-	},
-	feedback: {
-		saveSuccess: "Settings saved",
-		saveError: "Could not save settings"
-	},
-	"delete": {
-		success: "The account was removed successfully.",
-		error: "Failed to delete account."
-	},
-	api: {
-		saveSuccess: "API saved",
-		saveError: "Could not save API",
-		getError: "Failed to get API",
-		addEntry: "Add Entry",
-		dragText: "Click or Drag 'n' drop file...",
-		updateSuccess: "API updated successfully",
-		updateError: "Failed to updated API",
-		deleteSuccess: "API deleted successfully",
-		deleteError: "Failed to delete API"
-	}
-};
-var appListing = {
-	browseMarketplaceApps: "Browse the app marketplace",
-	marketplaceAppsSectionTitle: "Marketplace applications",
-	noAppDescriptionProvided: "No description provided",
-	noMarketplaceAppSubscriptions: "You have not subscribed to any marketplace apps yet."
-};
-var appMarketplace = {
-	headerTitlePartOne: "Explore the",
-	headerTitlePartTwo: "Marketplace",
-	searchForAppsTextField: "Search for apps",
-	sortByTitle: "Sort by:",
-	sortModes: {
-		appName: "Application name",
-		publisherName: "Publisher name",
-		lastUpdated: "Last updated"
-	},
-	filterByTitle: "Filter by:",
-	filterByModes: {
-		labels: "Labels",
-		noLabels: "No labels to filter with",
-		publishers: "Publishers",
-		noPublishers: "No publishers to filter with"
-	},
-	amountOfAppsTextPartOne: "apps",
-	amountOfAppsTextPartTwo: "available",
-	noAppsToDisplayText: "No apps to display!",
-	retrievingAppsToDisplayText: "Retrieving all apps, please hold...",
-	noDescriptionAvailableText: "No description provided",
-	noLabelsProvidedText: "No labels provided",
-	featuredAppsTitle: "Featured apps",
-	featuredAppsSubtitle: "Ready to try? Subscribe to one of your featured apps to get started!",
-	appDetails: {
-		loadingAppDetails: "Loading the selected app's details...",
-		appSubscribeButton: "Subscribe app",
-		subSectionTitleOne: "Application links:",
-		subSectionTitleTwo: "Published by:",
-		subSectionTitleThree: "Publisher links:",
-		appLinks: {
-			websiteURL: "Website URL",
-			tosURL: "Terms of Service",
-			privacyPolicyURL: "Privacy Policy URL",
-			youTubeURL: "YouTube URL",
-			supportURL: "Support URL",
-			noAppLinks: "No application links provided"
-		},
-		publisherLinks: {
-			tosURL: "Terms of Service",
-			privacyPolicyURL: "Privacy Policy URL",
-			supportURL: "Support URL",
-			noPublisherLinks: "No publisher links provided"
-		},
-		noShortDescription: "No short description provided",
-		noLabels: "No labels provided",
-		partOfAppOverviewTitle: "Overview",
-		noAppOverview: "No application overview provided"
 	}
 };
 var enUS = {
-	admin: admin$1,
-	appListing: appListing,
-	appMarketplace: appMarketplace
+	extensions: extensions$1
 };
 
-var admin = {
-	title: "Área de administração",
-	tabGeneral: {
-		tabTitle: "Definições gerais",
-		portalTitle: "Título do portal",
-		ownerName: "Nome do proprietário"
-	},
-	tabGateway: {
-		tabTitle: "Set up da gateway",
-		url: "URL da gateway",
-		apiKey: "API Key da gateway",
-		submitCoreSubscriptions: "Submeter as subscrições do core"
-	},
-	tabSocial: {
-		tabTitle: "Contas de redes sociais",
-		addTitle: "Adicionar conta...",
-		types: {
-			other: "Outro"
+var extensions = {
+	Marketplace: {
+		admin: {
+			title: "Área de administração",
+			tabGeneral: {
+				tabTitle: "Definições gerais",
+				portalTitle: "Título do portal",
+				ownerName: "Nome do proprietário"
+			},
+			tabGateway: {
+				tabTitle: "Set up da gateway",
+				url: "URL da gateway",
+				apiKey: "API Key da gateway",
+				submitCoreSubscriptions: "Submeter as subscrições do core"
+			},
+			tabSocial: {
+				tabTitle: "Contas de redes sociais",
+				addTitle: "Adicionar conta...",
+				types: {
+					other: "Outro"
+				}
+			}
 		}
 	}
 };
 var ptPT = {
-	admin: admin
+	extensions: extensions
 };
 
-i18next__default['default'].addResourceBundle('en', EXT_NAME, enUS);
-i18next__default['default'].addResourceBundle('pt', EXT_NAME, ptPT);
-i18next__default['default'].getFixedT(null, EXT_NAME);
-i18next__default['default'].t;
-var useTranslation = function (ns, options) {
-    var namespaces = Array.isArray(ns) ? ns : [ns].filter(Boolean);
-    return reactI18next.useTranslation(__spreadArray([EXT_NAME], namespaces), options);
-};
+feBase.registerTranslations('en-US', enUS);
+feBase.registerTranslations('pt-PT', ptPT);
+
+var name$1 = "@apisuite/apisuite-marketplace-extension-ui";
+var version$1 = "1.0.2";
+
+var BASE_URI = '/marketplace';
 
 var _a$1;
 var menuConfig = (_a$1 = {},
@@ -7831,7 +7822,7 @@ exports.default = ImageGallery;
 
 var ImageGallery = /*@__PURE__*/getDefaultExportFromCjs(imageGallery);
 
-var useStyles$3 = styles.makeStyles({
+var useStyles$3 = feBase.makeStyles({
     appAvatar: {
         background: '#C8DC8C linear-gradient(270deg, rgba(200, 220, 140, 1) 0%, rgba(25, 165, 140, 1) 100%)',
         fontSize: '55px',
@@ -7996,7 +7987,10 @@ styleInject(css_248z);
 var AppDetails$1 = function (_a) {
     var getAppDetailsAction = _a.getAppDetailsAction, retrievedSelectedAppDetails = _a.retrievedSelectedAppDetails, selectedAppDetails = _a.selectedAppDetails;
     var classes = useStyles$3();
-    var t = useTranslation()[0];
+    var trans = feBase.useTranslation();
+    function t(str) {
+        return trans.t("extensions.Marketplace." + str);
+    }
     // Retrieves the app's ID from the browser window's URL
     var appID = reactRouter.useParams().appID;
     React.useEffect(function () {
@@ -8035,8 +8029,8 @@ var AppDetails$1 = function (_a) {
         React.createElement("section", { className: classes.appDetailsContainer }, retrievedSelectedAppDetails ? (React.createElement(React.Fragment, null,
             React.createElement("section", { className: classes.leftAppDetailsContainer },
                 React.createElement("div", { className: classes.topMostSubSection },
-                    selectedAppDetails && selectedAppDetails.logo !== '' ? (React.createElement("img", { className: classes.appImage, src: selectedAppDetails.logo })) : (React.createElement(core$1.Avatar, { className: classes.appAvatar }, appNameInitials ? appNameInitials : '...')),
-                    React.createElement(core$1.Button, { className: classes.appSubscribeButton }, t('appMarketplace.appDetails.appSubscribeButton'))),
+                    selectedAppDetails && selectedAppDetails.logo !== '' ? (React.createElement("img", { className: classes.appImage, src: selectedAppDetails.logo })) : (React.createElement(feBase.Avatar, { className: classes.appAvatar }, appNameInitials ? appNameInitials : '...')),
+                    React.createElement(feBase.Button, { className: classes.appSubscribeButton }, t('appMarketplace.appDetails.appSubscribeButton'))),
                 React.createElement("hr", { className: classes.subSectionSeparator }),
                 React.createElement("div", null,
                     React.createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleOne')),
@@ -8119,7 +8113,7 @@ var Link = React.forwardRef(function (_a, ref) {
 });
 Link.displayName = 'Link';
 
-var useStyles$2 = styles.makeStyles({
+var useStyles$2 = feBase.makeStyles({
     appCatalogEntry: {
         backgroundColor: '#FFFFFF',
         border: '1px solid #BAC0C6',
@@ -8235,29 +8229,32 @@ var useStyles$2 = styles.makeStyles({
 var AppCatalog = function (_a) {
     var appsToDisplay = _a.appsToDisplay;
     var classes = useStyles$2();
-    var t = useTranslation()[0];
+    var trans = feBase.useTranslation();
+    function t(str) {
+        return trans.t("extensions.Marketplace." + str);
+    }
     var generateAppCatalogEntry = function (appDetails, index) {
         var appSplitName = appDetails.appName.split(' ');
         var appInitials = appSplitName[0].slice(0, 2);
-        return (React.createElement("div", { className: classes.appCatalogEntry, key: "appCatalogEntry" + index },
-            React.createElement("div", { className: classes.appCatalogEntryTopDetails },
-                appDetails.appLogo !== '' ? (React.createElement("img", { className: classes.appCatalogEntryImage, src: appDetails.appLogo })) : (React.createElement(core$1.Avatar, { className: classes.appCatalogEntryAvatar }, appInitials)),
-                React.createElement("div", { className: classes.appCatalogEntryNameAndOwnerContainer },
-                    React.createElement("p", { className: classes.appCatalogEntryName }, appDetails.appName),
-                    React.createElement("p", { className: classes.appCatalogEntryOwner }, appDetails.appPublisher))),
-            React.createElement("div", { className: classes.appCatalogEntryBottomDetails },
-                React.createElement("p", { className: classes.appCatalogEntryDescription }, appDetails.appDescription),
-                React.createElement("div", { className: classes.appCatalogEntryLabelsContainer }, appDetails.appLabels.length ? (appDetails.appLabels.map(function (appLabel, index) {
-                    return (React.createElement("p", { className: classes.appCatalogEntryLabel, key: "appLabel" + index }, appLabel));
-                })) : (React.createElement("p", { className: classes.appCatalogEntryLabel }, t('appMarketplace.noLabelsProvidedText')))))));
+        return (React__default['default'].createElement("div", { className: classes.appCatalogEntry, key: "appCatalogEntry" + index },
+            React__default['default'].createElement("div", { className: classes.appCatalogEntryTopDetails },
+                appDetails.appLogo !== '' ? (React__default['default'].createElement("img", { className: classes.appCatalogEntryImage, src: appDetails.appLogo })) : (React__default['default'].createElement(feBase.Avatar, { className: classes.appCatalogEntryAvatar }, appInitials)),
+                React__default['default'].createElement("div", { className: classes.appCatalogEntryNameAndOwnerContainer },
+                    React__default['default'].createElement("p", { className: classes.appCatalogEntryName }, appDetails.appName),
+                    React__default['default'].createElement("p", { className: classes.appCatalogEntryOwner }, appDetails.appPublisher))),
+            React__default['default'].createElement("div", { className: classes.appCatalogEntryBottomDetails },
+                React__default['default'].createElement("p", { className: classes.appCatalogEntryDescription }, appDetails.appDescription),
+                React__default['default'].createElement("div", { className: classes.appCatalogEntryLabelsContainer }, appDetails.appLabels.length ? (appDetails.appLabels.map(function (appLabel, index) {
+                    return (React__default['default'].createElement("p", { className: classes.appCatalogEntryLabel, key: "appLabel" + index }, appLabel));
+                })) : (React__default['default'].createElement("p", { className: classes.appCatalogEntryLabel }, t('appMarketplace.noLabelsProvidedText')))))));
     };
     var appCatalogEntries = appsToDisplay.map(function (appDetails, index) {
-        return (React.createElement(Link, { className: classes.appCatalogEntryLink, key: "linkToApp" + index, to: "marketplace/app-details/" + appDetails.appID }, generateAppCatalogEntry(appDetails, index)));
+        return (React__default['default'].createElement(Link, { className: classes.appCatalogEntryLink, key: "linkToApp" + index, to: "marketplace/app-details/" + appDetails.appID }, generateAppCatalogEntry(appDetails, index)));
     });
-    return React.createElement(React.Fragment, null, appCatalogEntries);
+    return React__default['default'].createElement(React__default['default'].Fragment, null, appCatalogEntries);
 };
 
-var useStyles$1 = styles.makeStyles({
+var useStyles$1 = feBase.makeStyles({
     amountOfAppMarketAppsText: {
         color: '#4E616F',
         fontSize: '16px',
@@ -8498,16 +8495,19 @@ var useStyles$1 = styles.makeStyles({
 var Marketplace$1 = function (_a) {
     var allMarketplaceApps = _a.allMarketplaceApps, allMarketplaceLabels = _a.allMarketplaceLabels, allMarketplacePublishers = _a.allMarketplacePublishers, filteredMarketplaceApps = _a.filteredMarketplaceApps, getAllMarketplaceAppsAction = _a.getAllMarketplaceAppsAction, getAllMarketplaceLabelsAction = _a.getAllMarketplaceLabelsAction, getAllMarketplacePublishersAction = _a.getAllMarketplacePublishersAction, getFilteredMarketplaceAppsAction = _a.getFilteredMarketplaceAppsAction, retrievedAllMarketplaceApps = _a.retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels = _a.retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers = _a.retrievedAllMarketplacePublishers, settings = _a.settings;
     var classes = useStyles$1();
-    var t = useTranslation()[0];
-    React.useEffect(function () {
+    var trans = feBase.useTranslation();
+    function t(str) {
+        return trans.t("extensions.Marketplace." + str);
+    }
+    React__default['default'].useEffect(function () {
         /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
         of all information we presently have on public apps, and their respective labels & publishers. */
         getAllMarketplaceAppsAction();
         getAllMarketplaceLabelsAction();
         getAllMarketplacePublishersAction();
     }, []);
-    var _b = React.useState([]), allAppsList = _b[0], setAllAppsList = _b[1];
-    React.useEffect(function () {
+    var _b = React__default['default'].useState([]), allAppsList = _b[0], setAllAppsList = _b[1];
+    React__default['default'].useEffect(function () {
         /* Once 'marketplace -> allMarketplaceApps' info is made available to us, we process it
         so as to later display it on our 'Apps catalog' section. */
         var allAvailableAppsArray = allMarketplaceApps;
@@ -8532,18 +8532,18 @@ var Marketplace$1 = function (_a) {
     }, [allMarketplaceApps]);
     /* App filtering & sorting set-up */
     // 1 - Search term filter
-    var _c = React.useState(''), searchTerm = _c[0], setSearchTerm = _c[1];
+    var _c = React__default['default'].useState(''), searchTerm = _c[0], setSearchTerm = _c[1];
     var handleSearchTermChanges = function (changeEvent) {
         var newSearchTerm = changeEvent === null || changeEvent === void 0 ? void 0 : changeEvent.target.value.toLowerCase();
         setSearchTerm(newSearchTerm);
     };
     // 2 - Label & publisher filters
-    var _d = React.useState(false), filtersHaveChanged = _d[0], setFiltersHaveChanged = _d[1];
-    var _e = React.useState({}), labelFilters = _e[0], setLabelFilters = _e[1];
-    var _f = React.useState([]), labelFilterElements = _f[0], setLabelFilterElements = _f[1];
-    var _g = React.useState([]), publisherNames = _g[0], setPublisherNames = _g[1];
-    var _h = React.useState({}), publisherFilters = _h[0], setPublisherFilters = _h[1];
-    var _j = React.useState([]), publisherFilterElements = _j[0], setPublisherFilterElements = _j[1];
+    var _d = React__default['default'].useState(false), filtersHaveChanged = _d[0], setFiltersHaveChanged = _d[1];
+    var _e = React__default['default'].useState({}), labelFilters = _e[0], setLabelFilters = _e[1];
+    var _f = React__default['default'].useState([]), labelFilterElements = _f[0], setLabelFilterElements = _f[1];
+    var _g = React__default['default'].useState([]), publisherNames = _g[0], setPublisherNames = _g[1];
+    var _h = React__default['default'].useState({}), publisherFilters = _h[0], setPublisherFilters = _h[1];
+    var _j = React__default['default'].useState([]), publisherFilterElements = _j[0], setPublisherFilterElements = _j[1];
     var filterSelection = function (labelOrPublisherString, filterType) {
         if (filterType === 'labels') {
             var newLabelFilters = __assign({}, labelFilters);
@@ -8558,22 +8558,22 @@ var Marketplace$1 = function (_a) {
             setFiltersHaveChanged(true);
         }
     };
-    React.useEffect(function () {
+    React__default['default'].useEffect(function () {
         var newLabelFilters = {};
         allMarketplaceLabels.map(function (label) {
             newLabelFilters[label] = false;
         });
         setLabelFilters(newLabelFilters);
     }, [allMarketplaceLabels]);
-    React.useEffect(function () {
+    React__default['default'].useEffect(function () {
         var newLabelFilterElements = allMarketplaceLabels.map(function (label, index) {
-            return (React.createElement(core$1.FormControlLabel, { className: labelFilters[label]
+            return (React__default['default'].createElement(feBase.FormControlLabel, { className: labelFilters[label]
                     ? classes.selectedFilter
-                    : classes.notSelectedFilter, control: React.createElement(core$1.Checkbox, { checked: labelFilters[label], name: label, onClick: function () { return filterSelection(label, 'labels'); } }), key: "labelFilterElement" + index, label: label }));
+                    : classes.notSelectedFilter, control: React__default['default'].createElement(feBase.Checkbox, { checked: labelFilters[label], name: label, onClick: function () { return filterSelection(label, 'labels'); } }), key: "labelFilterElement" + index, label: label }));
         });
         setLabelFilterElements(newLabelFilterElements);
     }, [labelFilters]);
-    React.useEffect(function () {
+    React__default['default'].useEffect(function () {
         var newPublisherNames = [];
         var newPublisherFilters = {};
         allMarketplacePublishers.map(function (publisher) {
@@ -8584,23 +8584,23 @@ var Marketplace$1 = function (_a) {
         setPublisherNames(newPublisherNames);
         setPublisherFilters(newPublisherFilters);
     }, [allMarketplacePublishers]);
-    React.useEffect(function () {
+    React__default['default'].useEffect(function () {
         var newPublisherFilterElements = publisherNames.map(function (publisherName, index) {
-            return (React.createElement(core$1.FormControlLabel, { className: publisherFilters[publisherName]
+            return (React__default['default'].createElement(feBase.FormControlLabel, { className: publisherFilters[publisherName]
                     ? classes.selectedFilter
-                    : classes.notSelectedFilter, control: React.createElement(core$1.Checkbox, { checked: publisherFilters[publisherName], name: publisherName, onClick: function () { return filterSelection(publisherName, 'publishers'); } }), key: "publisherFilterElement" + index, label: publisherName }));
+                    : classes.notSelectedFilter, control: React__default['default'].createElement(feBase.Checkbox, { checked: publisherFilters[publisherName], name: publisherName, onClick: function () { return filterSelection(publisherName, 'publishers'); } }), key: "publisherFilterElement" + index, label: publisherName }));
         });
         setPublisherFilterElements(newPublisherFilterElements);
     }, [publisherFilters]);
     // 3 - Sort mode
-    var _k = React.useState('appName'), sortMode = _k[0], setSortMode = _k[1]; // Either 'appName', 'publisherName', or 'lastUpdated'
+    var _k = React__default['default'].useState('appName'), sortMode = _k[0], setSortMode = _k[1]; // Either 'appName', 'publisherName', or 'lastUpdated'
     var sortModeSelection = function (clickEvent) {
         var selectedSortMode = clickEvent.target.value;
         setSortMode(selectedSortMode);
     };
     /* App filtering & sorting process */
-    var _l = React.useState([]), filteredAppsList = _l[0], setFilteredAppsList = _l[1];
-    React.useEffect(function () {
+    var _l = React__default['default'].useState([]), filteredAppsList = _l[0], setFilteredAppsList = _l[1];
+    React__default['default'].useEffect(function () {
         /* Once 'marketplace -> filteredMarketplaceApps' info is made available to us, we process it
         so as to later display it on our 'Apps catalog' section. */
         var filteredAppsArray = filteredMarketplaceApps;
@@ -8654,11 +8654,11 @@ var Marketplace$1 = function (_a) {
             order: orderModeForFilterAction,
         });
     };
-    React.useEffect(function () {
+    React__default['default'].useEffect(function () {
         filterAndSortApps();
         setFiltersHaveChanged(false);
     }, [filtersHaveChanged, labelFilters, publisherFilters, sortMode]);
-    React.useEffect(function () {
+    React__default['default'].useEffect(function () {
         if (searchTerm.length === 0) {
             filterAndSortApps();
         }
@@ -8672,61 +8672,61 @@ var Marketplace$1 = function (_a) {
         }
     }, [searchTerm]);
     // Carousel of 'featured apps'
-    var _m = React.useState(0), currentSlide = _m[0]; _m[1];
-    return (React.createElement("main", null,
-        React.createElement("header", { className: classes.appMarketHeader },
-            React.createElement("div", { className: classes.appMarketHeaderContentsContainer },
-                React.createElement("div", { className: classes.appMarketHeaderTitleAndSearchField },
-                    React.createElement("h1", { className: classes.appMarketHeaderTitle },
-                        React.createElement(React.Fragment, null,
+    var _m = React__default['default'].useState(0), currentSlide = _m[0]; _m[1];
+    return (React__default['default'].createElement("main", null,
+        React__default['default'].createElement("header", { className: classes.appMarketHeader },
+            React__default['default'].createElement("div", { className: classes.appMarketHeaderContentsContainer },
+                React__default['default'].createElement("div", { className: classes.appMarketHeaderTitleAndSearchField },
+                    React__default['default'].createElement("h1", { className: classes.appMarketHeaderTitle },
+                        React__default['default'].createElement(React__default['default'].Fragment, null,
                             t('appMarketplace.headerTitlePartOne'),
                             " "),
-                        React.createElement(React.Fragment, null,
+                        React__default['default'].createElement(React__default['default'].Fragment, null,
                             settings.portalName,
                             " "),
-                        React.createElement(React.Fragment, null, t('appMarketplace.headerTitlePartTwo'))),
-                    React.createElement(core$1.TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
-                            endAdornment: (React.createElement(core$1.InputAdornment, { position: "end" },
-                                React.createElement(SearchRoundedIcon__default['default'], null))),
+                        React__default['default'].createElement(React__default['default'].Fragment, null, t('appMarketplace.headerTitlePartTwo'))),
+                    React__default['default'].createElement(feBase.TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
+                            endAdornment: (React__default['default'].createElement(feBase.InputAdornment, { position: "end" },
+                                React__default['default'].createElement(SearchRoundedIcon__default['default'], null))),
                         }, onChange: handleSearchTermChanges, placeholder: t('appMarketplace.searchForAppsTextField'), variant: "outlined" })),
-                React.createElement("div", null,
-                    React.createElement("img", { className: classes.appMarketHeaderImage, src: marketplace__default['default'] })))),
-        React.createElement("section", { className: classes.appMarketFiltersAndAppsSection },
-            React.createElement("div", { className: classes.appMarketFilters },
-                React.createElement(core$1.FormControl, null,
-                    React.createElement(core$1.FormLabel, null,
-                        React.createElement("div", { className: classes.filterTitleContainer },
-                            React.createElement(SortRoundedIcon__default['default'], { className: classes.filterTitleIcon }),
-                            React.createElement("p", { className: classes.filterTitleText }, t('appMarketplace.sortByTitle')))),
-                    React.createElement(core$1.RadioGroup, { name: "sortMode", onChange: sortModeSelection, value: sortMode },
-                        React.createElement(core$1.FormControlLabel, { className: sortMode === 'appName'
+                React__default['default'].createElement("div", null,
+                    React__default['default'].createElement("img", { className: classes.appMarketHeaderImage, src: marketplace__default['default'] })))),
+        React__default['default'].createElement("section", { className: classes.appMarketFiltersAndAppsSection },
+            React__default['default'].createElement("div", { className: classes.appMarketFilters },
+                React__default['default'].createElement(feBase.FormControl, null,
+                    React__default['default'].createElement(feBase.FormLabel, null,
+                        React__default['default'].createElement("div", { className: classes.filterTitleContainer },
+                            React__default['default'].createElement(SortRoundedIcon__default['default'], { className: classes.filterTitleIcon }),
+                            React__default['default'].createElement("p", { className: classes.filterTitleText }, t('appMarketplace.sortByTitle')))),
+                    React__default['default'].createElement(feBase.RadioGroup, { name: "sortMode", onChange: sortModeSelection, value: sortMode },
+                        React__default['default'].createElement(feBase.FormControlLabel, { className: sortMode === 'appName'
                                 ? classes.selectedFilter
-                                : classes.notSelectedFilter, control: React.createElement(core$1.Radio, null), label: t('appMarketplace.sortModes.appName'), value: "appName" }),
-                        React.createElement(core$1.FormControlLabel, { className: sortMode === 'publisherName'
+                                : classes.notSelectedFilter, control: React__default['default'].createElement(feBase.Radio, null), label: t('appMarketplace.sortModes.appName'), value: "appName" }),
+                        React__default['default'].createElement(feBase.FormControlLabel, { className: sortMode === 'publisherName'
                                 ? classes.selectedFilter
-                                : classes.notSelectedFilter, control: React.createElement(core$1.Radio, null), label: t('appMarketplace.sortModes.publisherName'), value: "publisherName" }),
-                        React.createElement(core$1.FormControlLabel, { className: sortMode === 'lastUpdated'
+                                : classes.notSelectedFilter, control: React__default['default'].createElement(feBase.Radio, null), label: t('appMarketplace.sortModes.publisherName'), value: "publisherName" }),
+                        React__default['default'].createElement(feBase.FormControlLabel, { className: sortMode === 'lastUpdated'
                                 ? classes.selectedFilter
-                                : classes.notSelectedFilter, control: React.createElement(core$1.Radio, null), label: t('appMarketplace.sortModes.lastUpdated'), value: "lastUpdated" }))),
-                React.createElement("hr", { className: classes.filterSeparator }),
-                React.createElement(core$1.FormControl, null,
-                    React.createElement(core$1.FormLabel, null,
-                        React.createElement("div", { className: classes.filterTitleContainer },
-                            React.createElement(FilterListRoundedIcon__default['default'], { className: classes.filterTitleIcon }),
-                            React.createElement("p", { className: classes.filterTitleText }, t('appMarketplace.filterByTitle')))),
-                    React.createElement(core$1.Accordion, { className: classes.filterAccordionContainer },
-                        React.createElement(core$1.AccordionSummary, { expandIcon: React.createElement(ExpandMoreRoundedIcon__default['default'], { className: classes.filterAccordionIcon }) },
-                            React.createElement(core$1.Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.labels'))),
-                        React.createElement(core$1.AccordionDetails, null,
-                            React.createElement(core$1.FormGroup, null, labelFilterElements.length !== 0 ? (labelFilterElements) : (React.createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noLabels')))))),
-                    React.createElement(core$1.Accordion, { className: classes.filterAccordionContainer },
-                        React.createElement(core$1.AccordionSummary, { expandIcon: React.createElement(ExpandMoreRoundedIcon__default['default'], { className: classes.filterAccordionIcon }) },
-                            React.createElement(core$1.Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.publishers'))),
-                        React.createElement(core$1.AccordionDetails, null,
-                            React.createElement(core$1.FormGroup, null, publisherFilterElements.length !== 0 ? (publisherFilterElements) : (React.createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noPublishers')))))))),
-            React.createElement("div", { className: classes.appMarketApps },
-                React.createElement("p", { className: classes.amountOfAppMarketAppsText },
-                    React.createElement("span", null,
+                                : classes.notSelectedFilter, control: React__default['default'].createElement(feBase.Radio, null), label: t('appMarketplace.sortModes.lastUpdated'), value: "lastUpdated" }))),
+                React__default['default'].createElement("hr", { className: classes.filterSeparator }),
+                React__default['default'].createElement(feBase.FormControl, null,
+                    React__default['default'].createElement(feBase.FormLabel, null,
+                        React__default['default'].createElement("div", { className: classes.filterTitleContainer },
+                            React__default['default'].createElement(FilterListRoundedIcon__default['default'], { className: classes.filterTitleIcon }),
+                            React__default['default'].createElement("p", { className: classes.filterTitleText }, t('appMarketplace.filterByTitle')))),
+                    React__default['default'].createElement(feBase.Accordion, { className: classes.filterAccordionContainer },
+                        React__default['default'].createElement(feBase.AccordionSummary, { expandIcon: React__default['default'].createElement(ExpandMoreRoundedIcon__default['default'], { className: classes.filterAccordionIcon }) },
+                            React__default['default'].createElement(feBase.Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.labels'))),
+                        React__default['default'].createElement(feBase.AccordionDetails, null,
+                            React__default['default'].createElement(feBase.FormGroup, null, labelFilterElements.length !== 0 ? (labelFilterElements) : (React__default['default'].createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noLabels')))))),
+                    React__default['default'].createElement(feBase.Accordion, { className: classes.filterAccordionContainer },
+                        React__default['default'].createElement(feBase.AccordionSummary, { expandIcon: React__default['default'].createElement(ExpandMoreRoundedIcon__default['default'], { className: classes.filterAccordionIcon }) },
+                            React__default['default'].createElement(feBase.Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.publishers'))),
+                        React__default['default'].createElement(feBase.AccordionDetails, null,
+                            React__default['default'].createElement(feBase.FormGroup, null, publisherFilterElements.length !== 0 ? (publisherFilterElements) : (React__default['default'].createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noPublishers')))))))),
+            React__default['default'].createElement("div", { className: classes.appMarketApps },
+                React__default['default'].createElement("p", { className: classes.amountOfAppMarketAppsText },
+                    React__default['default'].createElement("span", null,
                         filteredAppsList.length > 0
                             ? filteredAppsList.length
                             : searchTerm.length === 0 &&
@@ -8734,50 +8734,50 @@ var Marketplace$1 = function (_a) {
                                 Object.values(publisherFilters).includes(false)
                                 ? allAppsList.length
                                 : '0',
-                        React.createElement(React.Fragment, null,
+                        React__default['default'].createElement(React__default['default'].Fragment, null,
                             " ",
                             t('appMarketplace.amountOfAppsTextPartOne'),
                             " ")),
-                    React.createElement(React.Fragment, null, t('appMarketplace.amountOfAppsTextPartTwo'))),
+                    React__default['default'].createElement(React__default['default'].Fragment, null, t('appMarketplace.amountOfAppsTextPartTwo'))),
                 retrievedAllMarketplaceApps &&
                     retrievedAllMarketplaceLabels &&
-                    retrievedAllMarketplacePublishers ? (filteredAppsList.length > 0 ? (React.createElement(React.Fragment, null,
-                    React.createElement("div", { className: classes.appCatalogContainer },
-                        React.createElement(AppCatalog, { appsToDisplay: filteredAppsList })),
-                    React.createElement(lab.Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : Object.values(labelFilters).includes(false) &&
+                    retrievedAllMarketplacePublishers ? (filteredAppsList.length > 0 ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                    React__default['default'].createElement("div", { className: classes.appCatalogContainer },
+                        React__default['default'].createElement(AppCatalog, { appsToDisplay: filteredAppsList })),
+                    React__default['default'].createElement(lab.Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : Object.values(labelFilters).includes(false) &&
                     Object.values(publisherFilters).includes(false) &&
-                    searchTerm.length === 0 ? (React.createElement(React.Fragment, null,
-                    React.createElement("div", { className: classes.appCatalogContainer },
-                        React.createElement(AppCatalog, { appsToDisplay: allAppsList })),
-                    React.createElement(lab.Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText'))),
-                allMarketplaceApps && (React.createElement("div", { className: classes.featuredAppsOuterContainer },
-                    React.createElement("div", { className: classes.featuredAppsInnerContainer },
-                        React.createElement("p", { className: classes.featuredAppsTitle }, t('appMarketplace.featuredAppsTitle')),
-                        React.createElement("p", { className: classes.featuredAppsSubtitle }, t('appMarketplace.featuredAppsSubtitle')),
-                        React.createElement("div", { className: classes.featuredAppCardsSlider },
-                            React.createElement("div", { className: currentSlide === 1 || currentSlide === 2
+                    searchTerm.length === 0 ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                    React__default['default'].createElement("div", { className: classes.appCatalogContainer },
+                        React__default['default'].createElement(AppCatalog, { appsToDisplay: allAppsList })),
+                    React__default['default'].createElement(lab.Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : (React__default['default'].createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React__default['default'].createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText'))),
+                allMarketplaceApps && (React__default['default'].createElement("div", { className: classes.featuredAppsOuterContainer },
+                    React__default['default'].createElement("div", { className: classes.featuredAppsInnerContainer },
+                        React__default['default'].createElement("p", { className: classes.featuredAppsTitle }, t('appMarketplace.featuredAppsTitle')),
+                        React__default['default'].createElement("p", { className: classes.featuredAppsSubtitle }, t('appMarketplace.featuredAppsSubtitle')),
+                        React__default['default'].createElement("div", { className: classes.featuredAppCardsSlider },
+                            React__default['default'].createElement("div", { className: currentSlide === 1 || currentSlide === 2
                                     ? classes.visibleFeaturedAppCardsSliderButton
                                     : classes.invisibleFeaturedAppCardsSliderButton },
-                                React.createElement(ChevronLeftRoundedIcon__default['default'], null)),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon__default['default'], { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 1"),
-                                    React.createElement("p", null, "Publisher A"))),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon__default['default'], { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 2"),
-                                    React.createElement("p", null, "Publisher B"))),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon__default['default'], { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 3"),
-                                    React.createElement("p", null, "Publisher C"))),
-                            React.createElement("div", { className: currentSlide === 0 || currentSlide === 1
+                                React__default['default'].createElement(ChevronLeftRoundedIcon__default['default'], null)),
+                            React__default['default'].createElement("div", { className: classes.featuredAppCard },
+                                React__default['default'].createElement(AmpStoriesRoundedIcon__default['default'], { className: classes.featuredAppCardLogo }),
+                                React__default['default'].createElement("div", { className: classes.featuredAppCardInfo },
+                                    React__default['default'].createElement("p", null, "Featured app 1"),
+                                    React__default['default'].createElement("p", null, "Publisher A"))),
+                            React__default['default'].createElement("div", { className: classes.featuredAppCard },
+                                React__default['default'].createElement(AmpStoriesRoundedIcon__default['default'], { className: classes.featuredAppCardLogo }),
+                                React__default['default'].createElement("div", { className: classes.featuredAppCardInfo },
+                                    React__default['default'].createElement("p", null, "Featured app 2"),
+                                    React__default['default'].createElement("p", null, "Publisher B"))),
+                            React__default['default'].createElement("div", { className: classes.featuredAppCard },
+                                React__default['default'].createElement(AmpStoriesRoundedIcon__default['default'], { className: classes.featuredAppCardLogo }),
+                                React__default['default'].createElement("div", { className: classes.featuredAppCardInfo },
+                                    React__default['default'].createElement("p", null, "Featured app 3"),
+                                    React__default['default'].createElement("p", null, "Publisher C"))),
+                            React__default['default'].createElement("div", { className: currentSlide === 0 || currentSlide === 1
                                     ? classes.visibleFeaturedAppCardsSliderButton
                                     : classes.invisibleFeaturedAppCardsSliderButton },
-                                React.createElement(ChevronRightRoundedIcon__default['default'], null))))))))));
+                                React__default['default'].createElement(ChevronRightRoundedIcon__default['default'], null))))))))));
 };
 
 var mapStateToProps = function (_a) {
@@ -8821,7 +8821,7 @@ var hookPages = function () {
     return pagesConfig;
 };
 
-var useStyles = styles.makeStyles({
+var useStyles = feBase.makeStyles({
     applicationsContainerTitle: {
         color: '#14283C',
         fontSize: '24px',
@@ -8940,7 +8940,10 @@ var useStyles = styles.makeStyles({
 
 var MarketplaceAppCards$1 = function () {
     var classes = useStyles();
-    var t = useTranslation()[0];
+    var trans = feBase.useTranslation();
+    function t(str) {
+        return trans.t("extensions.Marketplace." + str);
+    }
     // TODO: Use this until it is possible to retrieve all subscribed marketplace apps from the BE
     var mockSubscribedMarketplaceApps = [
         {
@@ -8974,7 +8977,7 @@ var MarketplaceAppCards$1 = function () {
     /* Generates an 'app card' for every marketplace app a user has subscribed to. */
     var marketplaceAppCardGenerator = function (mockSubscribedMarketplaceApps) {
         if (mockSubscribedMarketplaceApps.length === 0) {
-            return (React.createElement("p", { className: classes.loadingMarketplaceApplicationCards }, t('appListing.noMarketplaceAppSubscriptions')));
+            return (React__default['default'].createElement("p", { className: classes.loadingMarketplaceApplicationCards }, t('appListing.noMarketplaceAppSubscriptions')));
         }
         var allMarketplaceAppCardsArray = mockSubscribedMarketplaceApps.map(function (marketplaceApp, index) {
             var appNameInitialsArray = marketplaceApp.name.split(' ');
@@ -8984,24 +8987,24 @@ var MarketplaceAppCards$1 = function () {
             allMarketplaceAppNames = __spreadArray(__spreadArray([], allMarketplaceAppNames), [
                 marketplaceApp.name,
             ]);
-            return (React.createElement(Link, { className: classes.marketplaceAppCardLink, key: "marketplaceAppCardLink" + index, to: "/marketplace/app-details/" + marketplaceApp.id },
-                React.createElement("div", { className: classes.marketplaceAppCard },
-                    React.createElement("div", { className: classes.marketplaceAppCardTopSection },
-                        React.createElement(HeightRoundedIcon__default['default'], { className: marketplaceApp.logo !== ''
+            return (React__default['default'].createElement(Link, { className: classes.marketplaceAppCardLink, key: "marketplaceAppCardLink" + index, to: "/marketplace/app-details/" + marketplaceApp.id },
+                React__default['default'].createElement("div", { className: classes.marketplaceAppCard },
+                    React__default['default'].createElement("div", { className: classes.marketplaceAppCardTopSection },
+                        React__default['default'].createElement(HeightRoundedIcon__default['default'], { className: marketplaceApp.logo !== ''
                                 ? classes.marketplaceAppCardWithImageIcon
                                 : classes.marketplaceAppCardWithAvatarIcon }),
-                        marketplaceApp.logo !== '' ? (React.createElement("img", { className: classes.marketplaceAppCardImage, src: marketplaceApp.logo })) : (React.createElement(Avatar__default['default'], { className: classes.marketplaceAppCardAvatar }, appNameInitials))),
-                    React.createElement("div", { className: classes.marketplaceAppCardBottomSection },
-                        React.createElement("p", { className: classes.marketplaceAppCardTitle }, marketplaceApp.name),
-                        React.createElement("p", { className: classes.marketplaceAppCardDescription }, stringChecker(marketplaceApp.shortDescription) ||
+                        marketplaceApp.logo !== '' ? (React__default['default'].createElement("img", { className: classes.marketplaceAppCardImage, src: marketplaceApp.logo })) : (React__default['default'].createElement(feBase.Avatar, { className: classes.marketplaceAppCardAvatar }, appNameInitials))),
+                    React__default['default'].createElement("div", { className: classes.marketplaceAppCardBottomSection },
+                        React__default['default'].createElement("p", { className: classes.marketplaceAppCardTitle }, marketplaceApp.name),
+                        React__default['default'].createElement("p", { className: classes.marketplaceAppCardDescription }, stringChecker(marketplaceApp.shortDescription) ||
                             stringChecker(marketplaceApp.description) ||
                             t('appListing.noAppDescriptionProvided'))))));
         });
         return allMarketplaceAppCardsArray;
     };
-    return (React.createElement("div", null,
-        React.createElement("p", { className: classes.applicationsContainerTitle }, t('appListing.marketplaceAppsSectionTitle')),
-        React.createElement(Button__default['default'], { className: classes.browseMarketplaceAppsButton, href: "/marketplace" }, t('appListing.browseMarketplaceApps')),
+    return (React__default['default'].createElement("div", null,
+        React__default['default'].createElement("p", { className: classes.applicationsContainerTitle }, t('appListing.marketplaceAppsSectionTitle')),
+        React__default['default'].createElement(feBase.Button, { className: classes.browseMarketplaceAppsButton, href: "/marketplace" }, t('appListing.browseMarketplaceApps')),
         marketplaceAppCardGenerator(mockSubscribedMarketplaceApps)));
 };
 
@@ -11652,7 +11655,7 @@ followRedirects.wrap = wrap_1;
 var _args = [
 	[
 		"axios@0.21.1",
-		"/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/apisuite-marketplace-extension-ui"
+		"/Users/dnva/Documents/cloudoki/API_SUITE/apisuite-marketplace-extension-ui"
 	]
 ];
 var _from = "axios@0.21.1";
@@ -11677,7 +11680,7 @@ var _requiredBy = [
 ];
 var _resolved = "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz";
 var _spec = "0.21.1";
-var _where = "/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/apisuite-marketplace-extension-ui";
+var _where = "/Users/dnva/Documents/cloudoki/API_SUITE/apisuite-marketplace-extension-ui";
 var author = {
 	name: "Matt Zabriskie"
 };
