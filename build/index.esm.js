@@ -501,7 +501,7 @@ registerTranslations('en-US', enUS);
 registerTranslations('pt-PT', ptPT);
 
 var name$1 = "@apisuite/apisuite-marketplace-extension-ui";
-var version$1 = "1.0.2";
+var version$1 = "1.0.3";
 
 var BASE_URI = '/marketplace';
 
