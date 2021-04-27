@@ -1,5 +1,4 @@
 import { bindActionCreators, Dispatch } from 'redux'
-
 import { connect } from 'react-redux'
 
 import {
@@ -8,10 +7,9 @@ import {
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
 } from './ducks'
-
 import Marketplace from './Marketplace'
 
-export const mapStateToProps = ({ marketplace, settings }: any) => ({
+export const mapStateToProps = ({ marketplace }: any) => ({
   allMarketplaceApps: marketplace.allMarketplaceApps,
   allMarketplaceLabels: marketplace.allMarketplaceLabels,
   allMarketplacePublishers: marketplace.allMarketplacePublishers,
@@ -22,8 +20,6 @@ export const mapStateToProps = ({ marketplace, settings }: any) => ({
   retrievedAllMarketplaceLabels: marketplace.retrievedAllMarketplaceLabels,
   retrievedAllMarketplacePublishers:
     marketplace.retrievedAllMarketplacePublishers,
-
-  settings: settings,
 })
 
 export const mapDispatchToProps = (dispatch: Dispatch): any =>

@@ -21,6 +21,7 @@ export default makeStyles({
 
   appDetailsContainer: {
     display: 'flex',
+    flexDirection: 'row',
     margin: 'auto',
     maxWidth: '900px',
     padding: '40px 0px 60px 0px',
@@ -103,6 +104,24 @@ export default makeStyles({
     fontSize: '42px',
     fontWeight: 700,
     marginBottom: '20px',
+  },
+
+  appUnsubscribeButton: {
+    backgroundColor: '#F78E27',
+    borderColor: '#F78E27',
+    borderRadius: '4px',
+    color: '#FFFFFF',
+    fontSize: '16px',
+    fontWeight: 500,
+    textTransform: 'inherit',
+    width: '100%',
+
+    '&:active, &:hover, &:link, &:visited': {
+      backgroundColor: '#F78E27',
+      borderColor: '#F78E27',
+      borderRadius: '4px',
+      color: '#FFFFFF',
+    },
   },
 
   leftAppDetailsContainer: {

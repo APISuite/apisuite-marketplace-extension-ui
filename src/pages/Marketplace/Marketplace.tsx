@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  useTranslation,
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -14,12 +13,10 @@ import {
   RadioGroup,
   TextField,
   Typography,
+  useConfig,
+  useTranslation,
 } from '@apisuite/fe-base'
-
-import AppCatalog from 'components/AppCatalog'
-
 import { Pagination } from '@material-ui/lab'
-
 import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
 import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
 import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
@@ -29,10 +26,9 @@ import SearchRoundedIcon from '@material-ui/icons/SearchRounded'
 import SortRoundedIcon from '@material-ui/icons/SortRounded'
 
 import { MarketplaceProps } from './types'
-
-import useStyles from './styles'
-
+import AppCatalog from 'components/AppCatalog'
 import marketplace from 'assets/marketplace.svg'
+import useStyles from './styles'
 
 const Marketplace: React.FC<MarketplaceProps> = ({
   allMarketplaceApps,
@@ -49,10 +45,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   retrievedAllMarketplaceApps,
   retrievedAllMarketplaceLabels,
   retrievedAllMarketplacePublishers,
-
-  settings,
 }) => {
   const classes = useStyles()
+
+  const portalSettings = useConfig()
 
   const trans = useTranslation()
 
@@ -60,7 +56,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     return trans.t(`extensions.Marketplace.${str}`)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
     of all information we presently have on public apps, and their respective labels & publishers. */
     getAllMarketplaceAppsAction()
@@ -68,9 +64,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     getAllMarketplacePublishersAction()
   }, [])
 
-  const [allAppsList, setAllAppsList] = React.useState([])
+  const [allAppsList, setAllAppsList] = useState([])
 
-  React.useEffect(() => {
+  useEffect(() => {
     /* Once 'marketplace -> allMarketplaceApps' info is made available to us, we process it
     so as to later display it on our 'Apps catalog' section. */
     const allAvailableAppsArray = allMarketplaceApps
@@ -101,7 +97,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   // 1 - Search term filter
 
-  const [searchTerm, setSearchTerm] = React.useState('')
+  const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearchTermChanges = (
     changeEvent?: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -113,16 +109,14 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   // 2 - Label & publisher filters
 
-  const [filtersHaveChanged, setFiltersHaveChanged] = React.useState(false)
+  const [filtersHaveChanged, setFiltersHaveChanged] = useState(false)
 
-  const [labelFilters, setLabelFilters] = React.useState({})
-  const [labelFilterElements, setLabelFilterElements] = React.useState([])
+  const [labelFilters, setLabelFilters] = useState({})
+  const [labelFilterElements, setLabelFilterElements] = useState([])
 
-  const [publisherNames, setPublisherNames] = React.useState([])
-  const [publisherFilters, setPublisherFilters] = React.useState({})
-  const [publisherFilterElements, setPublisherFilterElements] = React.useState(
-    []
-  )
+  const [publisherNames, setPublisherNames] = useState([])
+  const [publisherFilters, setPublisherFilters] = useState({})
+  const [publisherFilterElements, setPublisherFilterElements] = useState([])
 
   const filterSelection = (labelOrPublisherString, filterType) => {
     if (filterType === 'labels') {
@@ -146,7 +140,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newLabelFilters = {}
 
     allMarketplaceLabels.map((label) => {
@@ -156,7 +150,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     setLabelFilters(newLabelFilters)
   }, [allMarketplaceLabels])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newLabelFilterElements = allMarketplaceLabels.map((label, index) => {
       return (
         <FormControlLabel
@@ -181,7 +175,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     setLabelFilterElements(newLabelFilterElements)
   }, [labelFilters])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newPublisherNames = []
 
     const newPublisherFilters = {}
@@ -198,7 +192,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     setPublisherFilters(newPublisherFilters)
   }, [allMarketplacePublishers])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newPublisherFilterElements = publisherNames.map(
       (publisherName, index) => {
         return (
@@ -227,7 +221,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   // 3 - Sort mode
 
-  const [sortMode, setSortMode] = React.useState('appName') // Either 'appName', 'publisherName', or 'lastUpdated'
+  const [sortMode, setSortMode] = useState('appName') // Either 'appName', 'publisherName', or 'lastUpdated'
 
   const sortModeSelection = (clickEvent) => {
     const selectedSortMode = clickEvent.target.value
@@ -237,9 +231,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   /* App filtering & sorting process */
 
-  const [filteredAppsList, setFilteredAppsList] = React.useState([])
+  const [filteredAppsList, setFilteredAppsList] = useState([])
 
-  React.useEffect(() => {
+  useEffect(() => {
     /* Once 'marketplace -> filteredMarketplaceApps' info is made available to us, we process it
     so as to later display it on our 'Apps catalog' section. */
     const filteredAppsArray = filteredMarketplaceApps
@@ -307,13 +301,13 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     filterAndSortApps()
 
     setFiltersHaveChanged(false)
   }, [filtersHaveChanged, labelFilters, publisherFilters, sortMode])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (searchTerm.length === 0) {
       filterAndSortApps()
     } else {
@@ -332,7 +326,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   // Carousel of 'featured apps'
 
-  const [currentSlide, setCurrentSlide] = React.useState(0)
+  const [currentSlide, setCurrentSlide] = useState(0)
 
   return (
     <main>
@@ -343,7 +337,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
           <div className={classes.appMarketHeaderTitleAndSearchField}>
             <h1 className={classes.appMarketHeaderTitle}>
               <>{t('appMarketplace.headerTitlePartOne')} </>
-              <>{settings.portalName} </>
+              <>{portalSettings.portalName} </>
               <>{t('appMarketplace.headerTitlePartTwo')}</>
             </h1>
 

@@ -1,6 +1,10 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles({
+  allSubbedMarketplaceAppsContainer: {
+    display: 'flex',
+  },
+
   applicationsContainerTitle: {
     color: '#14283C',
     fontSize: '24px',
@@ -30,6 +34,7 @@ export default makeStyles({
     color: '#85909A',
     fontSize: '16px',
     fontWeight: 200,
+    marginBottom: '25px',
   },
 
   marketplaceAppCard: {

@@ -4,8 +4,9 @@ import {
   AppDetails,
   Filters,
   MarketplaceActions,
-  MarketplacePublishers,
+  MarketplacePublisher,
   MarketplaceStore,
+  SubbedMarketplaceApp,
 } from './types'
 
 /** Initial state */
@@ -14,11 +15,14 @@ const initialState: MarketplaceStore = {
   allMarketplaceApps: [],
   allMarketplaceLabels: [],
   allMarketplacePublishers: [],
+  allSubbedMarketplaceApps: [],
+
   filteredMarketplaceApps: [],
 
   retrievedAllMarketplaceApps: false,
   retrievedAllMarketplaceLabels: false,
   retrievedAllMarketplacePublishers: false,
+  retrievedAllSubbedMarketplaceApps: false,
 
   selectedAppDetails: {
     createdAt: '',
@@ -63,14 +67,29 @@ export const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION =
 export const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS =
   'Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS'
 
+export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION =
+  'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION'
+export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS =
+  'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS'
+
+export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
+export const GET_APP_DETAILS_ACTION_SUCCESS =
+  'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS'
+
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION =
   'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION'
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS =
   'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS'
 
-export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
-export const GET_APP_DETAILS_ACTION_SUCCESS =
-  'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS'
+export const SUBSCRIBE_TO_MARKETPLACE_APP_ACTION =
+  'Marketplace/SUBSCRIBE_TO_MARKETPLACE_APP_ACTION'
+export const SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS =
+  'Marketplace/SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS'
+
+export const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION =
+  'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION'
+export const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS =
+  'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS'
 
 /** Reducer */
 
@@ -110,6 +129,27 @@ export default function reducer(
         allMarketplacePublishers: { $set: action.allMarketplacePublishers },
         retrievedAllMarketplacePublishers: { $set: true },
       })
+    }
+
+    case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION: {
+      return state
+    }
+
+    case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS: {
+      return update(state, {
+        allSubbedMarketplaceApps: { $set: action.allSubbedMarketplaceApps },
+        retrievedAllSubbedMarketplaceApps: { $set: true },
+      })
+    }
+
+    case SUBSCRIBE_TO_MARKETPLACE_APP_ACTION:
+    case SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS: {
+      return state
+    }
+
+    case UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION:
+    case UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS: {
+      return state
     }
 
     case GET_FILTERED_MARKETPLACE_APPS_ACTION: {
@@ -170,11 +210,58 @@ export function getAllMarketplacePublishersAction() {
 }
 
 export function getAllMarketplacePublishersActionSuccess(
-  allMarketplacePublishers: MarketplacePublishers[]
+  allMarketplacePublishers: MarketplacePublisher[]
 ) {
   return {
     type: GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS,
     allMarketplacePublishers,
+  }
+}
+
+export function getAllSubbedMarketplaceAppsAction(userID: number) {
+  return {
+    type: GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION,
+    userID,
+  }
+}
+
+export function getAllSubbedMarketplaceAppsActionSuccess(
+  allSubbedMarketplaceApps: SubbedMarketplaceApp[]
+) {
+  return {
+    type: GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS,
+    allSubbedMarketplaceApps,
+  }
+}
+
+export function subscribeToMarketplaceAppAction(userID: number, appID: number) {
+  return {
+    type: SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+    userID,
+    appID,
+  }
+}
+
+export function subscribeToMarketplaceAppActionSuccess() {
+  return {
+    type: SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
+  }
+}
+
+export function unsubscribeToMarketplaceAppAction(
+  userID: number,
+  appID: number
+) {
+  return {
+    type: UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+    userID,
+    appID,
+  }
+}
+
+export function unsubscribeToMarketplaceAppActionSuccess() {
+  return {
+    type: UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
   }
 }
 

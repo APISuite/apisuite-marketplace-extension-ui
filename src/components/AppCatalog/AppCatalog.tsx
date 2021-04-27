@@ -1,9 +1,9 @@
 import React from 'react'
-import { useTranslation, Avatar } from '@apisuite/fe-base'
-import Link from 'components/Link'
+import { Avatar, useTranslation } from '@apisuite/fe-base'
 
-import useStyles from './styles'
 import { AppCatalogProps, AppDetails } from './types'
+import Link from 'components/Link'
+import useStyles from './styles'
 
 const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
   const classes = useStyles()

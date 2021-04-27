@@ -1,15 +1,18 @@
-import React from 'react'
-import { useTranslation, Avatar, Button } from '@apisuite/fe-base'
+import React, { useEffect } from 'react'
+import { Avatar, Button, useTranslation } from '@apisuite/fe-base'
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded'
+
+import { SubbedMarketplaceApp } from 'pages/Marketplace/types'
+import { SubbedMarketplaceAppCardsProps } from './types'
 import Link from 'components/Link'
-
-import { AppDetails } from 'pages/Marketplace/types'
-
-// import { MarketplaceAppCardsProps } from './types'
-
 import useStyles from './styles'
 
-const MarketplaceAppCards: React.FC = () => {
+const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
+  allSubbedMarketplaceApps,
+  getAllSubbedMarketplaceAppsAction,
+  retrievedAllSubbedMarketplaceApps,
+  userProfile,
+}) => {
   const classes = useStyles()
 
   const trans = useTranslation()
@@ -18,32 +21,15 @@ const MarketplaceAppCards: React.FC = () => {
     return trans.t(`extensions.Marketplace.${str}`)
   }
 
-  // TODO: Use this until it is possible to retrieve all subscribed marketplace apps from the BE
-  const mockSubscribedMarketplaceApps = [
-    {
-      createdAt: '2021-02-24T08:38:36.088Z',
-      description: 'Diamonds, they are all one needs.',
-      id: 1,
-      labels: [],
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Diamond.jpg',
-      name: 'Diamond App',
-      organization: {
-        id: '1',
-        name: 'ACME',
-        privacyUrl: null,
-        supportUrl: null,
-        tosUrl: null,
-      },
-      orgId: 1,
-      privacyUrl: '',
-      shortDescription: 'Diamonds are forever, you see',
-      supportUrl: '',
-      tosUrl: '',
-      updatedAt: '2021-03-30T16:52:29.283Z',
-      websiteUrl: '',
-      youtubeUrl: '',
-    },
-  ]
+  useEffect(() => {
+    /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
+    of all information we presently have on some user's marketplace app subscriptions. */
+    if (userProfile) {
+      const userID = parseInt(userProfile.id)
+
+      getAllSubbedMarketplaceAppsAction(userID)
+    }
+  }, [userProfile])
 
   const stringChecker = (providedString: string) => {
     return providedString.length ? providedString : false
@@ -52,10 +38,18 @@ const MarketplaceAppCards: React.FC = () => {
   let allMarketplaceAppNames: string[] = []
 
   /* Generates an 'app card' for every marketplace app a user has subscribed to. */
-  const marketplaceAppCardGenerator = (
-    mockSubscribedMarketplaceApps: AppDetails[]
+  const subbedMarketplaceAppCardGenerator = (
+    subbedMarketplaceApps: SubbedMarketplaceApp[]
   ) => {
-    if (mockSubscribedMarketplaceApps.length === 0) {
+    if (!retrievedAllSubbedMarketplaceApps) {
+      return (
+        <p className={classes.loadingMarketplaceApplicationCards}>
+          Retrieving all subscribed Marketplace apps...
+        </p>
+      )
+    }
+
+    if (subbedMarketplaceApps.length === 0) {
       return (
         <p className={classes.loadingMarketplaceApplicationCards}>
           {t('appListing.noMarketplaceAppSubscriptions')}
@@ -63,9 +57,9 @@ const MarketplaceAppCards: React.FC = () => {
       )
     }
 
-    const allMarketplaceAppCardsArray = mockSubscribedMarketplaceApps.map(
-      (marketplaceApp, index) => {
-        const appNameInitialsArray = marketplaceApp.name.split(' ')
+    const allSubbedMarketplaceAppCardsArray = subbedMarketplaceApps.map(
+      (subbedMarketplaceApp, index) => {
+        const appNameInitialsArray = subbedMarketplaceApp.name.split(' ')
         const appNameInitials =
           appNameInitialsArray.length >= 2
             ? `${appNameInitialsArray[0][0]}${appNameInitialsArray[1][0]}`
@@ -73,29 +67,29 @@ const MarketplaceAppCards: React.FC = () => {
 
         allMarketplaceAppNames = [
           ...allMarketplaceAppNames,
-          marketplaceApp.name,
+          subbedMarketplaceApp.name,
         ]
 
         return (
           <Link
             className={classes.marketplaceAppCardLink}
             key={`marketplaceAppCardLink${index}`}
-            to={`/marketplace/app-details/${marketplaceApp.id}`}
+            to={`/marketplace/app-details/${subbedMarketplaceApp.id}`}
           >
             <div className={classes.marketplaceAppCard}>
               <div className={classes.marketplaceAppCardTopSection}>
                 <HeightRoundedIcon
                   className={
-                    marketplaceApp.logo !== ''
+                    subbedMarketplaceApp.logo !== ''
                       ? classes.marketplaceAppCardWithImageIcon
                       : classes.marketplaceAppCardWithAvatarIcon
                   }
                 />
 
-                {marketplaceApp.logo !== '' ? (
+                {subbedMarketplaceApp.logo !== '' ? (
                   <img
                     className={classes.marketplaceAppCardImage}
-                    src={marketplaceApp.logo}
+                    src={subbedMarketplaceApp.logo}
                   />
                 ) : (
                   <Avatar className={classes.marketplaceAppCardAvatar}>
@@ -106,13 +100,15 @@ const MarketplaceAppCards: React.FC = () => {
 
               <div className={classes.marketplaceAppCardBottomSection}>
                 <p className={classes.marketplaceAppCardTitle}>
-                  {marketplaceApp.name}
+                  {subbedMarketplaceApp.name}
                 </p>
 
                 <p className={classes.marketplaceAppCardDescription}>
-                  {stringChecker(marketplaceApp.shortDescription) ||
-                    stringChecker(marketplaceApp.description) ||
-                    t('appListing.noAppDescriptionProvided')}
+                  {
+                    //stringChecker(subbedMarketplaceApp.shortDescription) ||
+                    stringChecker(subbedMarketplaceApp.description) ||
+                      t('appListing.noAppDescriptionProvided')
+                  }
                 </p>
               </div>
             </div>
@@ -121,7 +117,7 @@ const MarketplaceAppCards: React.FC = () => {
       }
     )
 
-    return allMarketplaceAppCardsArray
+    return allSubbedMarketplaceAppCardsArray
   }
 
   return (
@@ -137,9 +133,11 @@ const MarketplaceAppCards: React.FC = () => {
         {t('appListing.browseMarketplaceApps')}
       </Button>
 
-      {marketplaceAppCardGenerator(mockSubscribedMarketplaceApps)}
+      <div className={classes.allSubbedMarketplaceAppsContainer}>
+        {subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps)}
+      </div>
     </div>
   )
 }
 
-export default MarketplaceAppCards
+export default SubbedMarketplaceAppCards

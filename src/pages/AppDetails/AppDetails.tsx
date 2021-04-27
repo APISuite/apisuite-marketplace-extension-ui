@@ -1,21 +1,21 @@
-import * as React from 'react'
-
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-
 import ImageGallery from 'react-image-gallery'
-
-import { useTranslation, Avatar, Button } from '@apisuite/fe-base'
-
-import { AppDetailsProps } from './types'
-
-import useStyles from './styles'
-
 import 'react-image-gallery/styles/scss/image-gallery.scss'
 
+import { AppDetailsProps } from './types'
+import { Avatar, Button, useTranslation } from '@apisuite/fe-base'
+import useStyles from './styles'
+
 const AppDetails: React.FC<AppDetailsProps> = ({
+  allSubbedMarketplaceApps,
+  getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
   retrievedSelectedAppDetails,
   selectedAppDetails,
+  subscribeToMarketplaceAppAction,
+  unsubscribeToMarketplaceAppAction,
+  userProfile,
 }) => {
   const classes = useStyles()
 
@@ -25,18 +25,64 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     return trans.t(`extensions.Marketplace.${str}`)
   }
 
+  // 1. All subbed Marketplace app's retrieval
+
+  /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > allSubbedMarketplaceApps')
+  of all information we presently have on a user's marketplace app subscriptions. This will come in handy when
+  we want to check if the currently selected app is one that the user's already subscribed to. */
+  useEffect(() => {
+    if (userProfile && userProfile.id) {
+      const userID = parseInt(userProfile.id)
+
+      getAllSubbedMarketplaceAppsAction(userID)
+    }
+  }, [userProfile])
+
+  // 2. Subscription logic for the currently selected Marketplace app
+
   // Retrieves the app's ID from the browser window's URL
   const { appID } = useParams()
 
-  React.useEffect(() => {
-    /* Triggers the retrieval and storage (under the 'marketplace -> selectedAppDetails'
-    section of the app's Store) of all information we have on a particular public app. */
+  /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > selectedAppDetails')
+  of all information we presently have on the currently selected marketplace app. */
+  useEffect(() => {
     if (appID !== '') getAppDetailsAction(appID)
   }, [appID])
 
-  const [appNameInitials, setAppNameInitials] = React.useState('...')
+  const [isUserSubbedToApp, setIsUserSubbedToApp] = useState(false)
 
-  React.useEffect(() => {
+  /* The following effect code will check if the currently selected app is one that
+  the user's already subscribed to. */
+  useEffect(() => {
+    const currentAppIsInSubs = allSubbedMarketplaceApps.find(
+      (marketplaceApp) => {
+        return marketplaceApp.id.toString() === appID
+      }
+    )
+
+    if (currentAppIsInSubs) {
+      setIsUserSubbedToApp(true)
+    }
+  }, [allSubbedMarketplaceApps])
+
+  const handleMarketplaceAppSubscription = () => {
+    const userID = parseInt(userProfile.id)
+    const selectedAppID = selectedAppDetails.id
+
+    if (isUserSubbedToApp) {
+      unsubscribeToMarketplaceAppAction(userID, selectedAppID)
+      setIsUserSubbedToApp(false)
+    } else {
+      subscribeToMarketplaceAppAction(userID, selectedAppID)
+      setIsUserSubbedToApp(true)
+    }
+  }
+
+  // 3. Currently selected Marketplace app's details logic
+
+  const [appNameInitials, setAppNameInitials] = useState('...')
+
+  useEffect(() => {
     const appNameInitialsArray = selectedAppDetails.name.split(' ')
     const appNameInitials =
       appNameInitialsArray.length >= 2
@@ -84,8 +130,17 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   </Avatar>
                 )}
 
-                <Button className={classes.appSubscribeButton}>
-                  {t('appMarketplace.appDetails.appSubscribeButton')}
+                <Button
+                  className={
+                    isUserSubbedToApp
+                      ? classes.appUnsubscribeButton
+                      : classes.appSubscribeButton
+                  }
+                  onClick={handleMarketplaceAppSubscription}
+                >
+                  {isUserSubbedToApp
+                    ? t('appMarketplace.appDetails.appUnsubscribeButton')
+                    : t('appMarketplace.appDetails.appSubscribeButton')}
                 </Button>
               </div>
 
@@ -174,7 +229,6 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   {t('appMarketplace.appDetails.subSectionTitleTwo')}
                 </p>
 
-                {/* Change this once there's an org to show */}
                 <p className={classes.subSectionText}>
                   {selectedAppDetails && selectedAppDetails.organization.name
                     ? selectedAppDetails.organization.name
@@ -206,8 +260,8 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.organization.privacyUrl}
-                      target="_blank"
                       rel="noopener noreferrer"
+                      target="_blank"
                     >
                       {t(
                         'appMarketplace.appDetails.publisherLinks.privacyPolicyURL'
@@ -220,8 +274,8 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                     <a
                       className={classes.providedLink}
                       href={selectedAppDetails.organization.supportUrl}
-                      target="_blank"
                       rel="noopener noreferrer"
+                      target="_blank"
                     >
                       {t('appMarketplace.appDetails.publisherLinks.supportURL')}
                     </a>
@@ -254,28 +308,21 @@ const AppDetails: React.FC<AppDetailsProps> = ({
               </p>
 
               <div className={classes.appLabelsContainer}>
-                {
-                  // TODO: Go through each label string, and generate a beautiful label
-                  selectedAppDetails && selectedAppDetails.labels.length ? (
-                    selectedAppDetails.labels.map((label, index) => {
-                      return (
-                        <p
-                          className={classes.appLabel}
-                          key={`appLabel${index}`}
-                        >
-                          {label}
-                        </p>
-                      )
-                    })
-                  ) : (
-                    <p className={classes.appLabel}>
-                      {t('appMarketplace.appDetails.noLabels')}
-                    </p>
-                  )
-                }
+                {selectedAppDetails && selectedAppDetails.labels.length ? (
+                  selectedAppDetails.labels.map((label, index) => {
+                    return (
+                      <p className={classes.appLabel} key={`appLabel${index}`}>
+                        {label}
+                      </p>
+                    )
+                  })
+                ) : (
+                  <p className={classes.appLabel}>
+                    {t('appMarketplace.appDetails.noLabels')}
+                  </p>
+                )}
               </div>
 
-              {/* TODO: Add something that loads this AFTER all details are in */}
               <ImageGallery
                 additionalClass={classes.appImageGallery}
                 items={imagesArray}
@@ -296,7 +343,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
           </>
         ) : (
           <p className={classes.loadingAppDetails}>
-            {t('appMarketplace.appDetails.loadingAppDetails')}
+            {t('appMarketplace.appDetails.loadingAp◊pDetails')}
           </p>
         )}
       </section>
