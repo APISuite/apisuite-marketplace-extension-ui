@@ -1,18 +1,17 @@
 import { makeStyles } from '@apisuite/fe-base'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   appCatalogEntry: {
-    backgroundColor: '#FFFFFF',
-    border: '1px solid #BAC0C6',
-    borderRadius: '4px',
+    backgroundColor: theme.palette.common.white,
+    border: `1px solid ${theme.palette.grey['300']}`,
+    borderRadius: theme.palette.dimensions.borderRadius,
     height: '175px',
     padding: '20px 20px 0px 20px',
     width: '215px',
   },
 
   appCatalogEntryAvatar: {
-    background:
-      '#C8DC8C linear-gradient(270deg, rgba(200, 220, 140, 1) 0%, rgba(25, 165, 140, 1) 100%)',
+    background: theme.palette.gradient.main,
     fontSize: '15px',
     fontWeight: 300,
     height: '45px',
@@ -28,7 +27,7 @@ export default makeStyles({
   },
 
   appCatalogEntryDescription: {
-    color: '#85909A',
+    color: theme.palette.text.secondary,
     display: '-webkit-box',
     fontSize: '14px',
     fontWeight: 300,
@@ -51,9 +50,9 @@ export default makeStyles({
   },
 
   appCatalogEntryLabel: {
-    backgroundColor: '#EEEEEE',
-    borderRadius: '4px',
-    color: '#14283C',
+    backgroundColor: theme.palette.grey['100'],
+    borderRadius: theme.palette.dimensions.borderRadius,
+    color: theme.palette.text.primary,
     fontSize: '12px',
     fontWeight: 300,
     height: '27.5px',
@@ -81,7 +80,7 @@ export default makeStyles({
   },
 
   appCatalogEntryName: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '16px',
     fontWeight: 700,
     marginBottom: '-10px',
@@ -96,7 +95,7 @@ export default makeStyles({
   },
 
   appCatalogEntryOwner: {
-    color: '#51606E',
+    color: theme.palette.text.hint,
     fontSize: '14px',
     fontWeight: 400,
     overflow: 'hidden',
@@ -117,14 +116,14 @@ export default makeStyles({
   },
 
   appCatalogEntryVersion: {
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     marginRight: '8px',
     padding: '5px 10px',
   },
 
   appCatalogEntryVersionAndAccess: {
-    color: '#51606E',
+    color: theme.palette.text.hint,
     fontSize: '14px',
     fontWeight: 300,
   },
-})
+}))

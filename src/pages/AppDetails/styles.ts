@@ -1,9 +1,8 @@
 import { makeStyles } from '@apisuite/fe-base'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   appAvatar: {
-    background:
-      '#C8DC8C linear-gradient(270deg, rgba(200, 220, 140, 1) 0%, rgba(25, 165, 140, 1) 100%)',
+    background: theme.palette.gradient.main,
     fontSize: '55px',
     fontWeight: 300,
     height: '150px',
@@ -13,10 +12,10 @@ export default makeStyles({
   },
 
   appAlreadySubscribedButton: {
-    backgroundColor: '#14283C',
-    borderColor: '#14283C',
-    borderRadius: '4px',
-    color: '#FFFFFF',
+    backgroundColor: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+    borderRadius: theme.palette.dimensions.borderRadius,
+    color: theme.palette.primary.contrastText,
     fontSize: '16px',
     fontWeight: 500,
     opacity: 0.5,
@@ -26,15 +25,15 @@ export default makeStyles({
     width: '100%',
 
     '&:active, &:hover, &:link, &:visited': {
-      backgroundColor: '#14283C',
-      borderColor: '#14283C',
-      borderRadius: '4px',
-      color: '#FFFFFF',
+      backgroundColor: theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
+      borderRadius: theme.palette.dimensions.borderRadius,
+      color: theme.palette.primary.contrastText,
     },
   },
 
   appDescription: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '20px',
     fontWeight: 200,
     marginBottom: '15px',
@@ -62,14 +61,14 @@ export default makeStyles({
     },
 
     '& .active': {
-      border: '4px solid #19B3EE',
+      border: `4px solid theme.palette.action.focus`,
     },
   },
 
   appLabel: {
-    backgroundColor: '#EEEEEE',
-    borderRadius: '4px',
-    color: '#14283C',
+    backgroundColor: theme.palette.grey['100'],
+    borderRadius: theme.palette.dimensions.borderRadius,
+    color: theme.palette.text.primary,
     fontSize: '12px',
     fontWeight: 300,
     marginBottom: '7.5px',
@@ -90,38 +89,38 @@ export default makeStyles({
   },
 
   appOverviewDescription: {
-    color: '#85909A',
+    color: theme.palette.text.secondary,
     fontSize: '16px',
     fontWeight: 300,
   },
 
   appOverviewTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '24px',
     fontWeight: 500,
     margin: '40px 0px 25px 0px',
   },
 
   appSubscribeButton: {
-    backgroundColor: '#32C896',
-    borderColor: '#32C896',
-    borderRadius: '4px',
-    color: '#FFFFFF',
+    backgroundColor: theme.palette.secondary.main,
+    borderColor: theme.palette.secondary.main,
+    borderRadius: theme.palette.dimensions.borderRadius,
+    color: theme.palette.common.white,
     fontSize: '16px',
     fontWeight: 500,
     textTransform: 'inherit',
     width: '100%',
 
     '&:active, &:hover, &:link, &:visited': {
-      backgroundColor: '#32C896',
-      borderColor: '#32C896',
-      borderRadius: '4px',
-      color: '#FFFFFF',
+      backgroundColor: theme.palette.secondary.main,
+      borderColor: theme.palette.secondary.main,
+      borderRadius: theme.palette.dimensions.borderRadius,
+      color: theme.palette.common.white,
     },
   },
 
   appTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '42px',
     fontWeight: 700,
     marginBottom: '20px',
@@ -133,13 +132,13 @@ export default makeStyles({
   },
 
   loadingAppDetails: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '20px',
     fontWeight: 200,
   },
 
   providedLink: {
-    color: '#19B3EE !important',
+    color: `${theme.palette.info.main} !important`,
     display: 'block',
     fontSize: '14px',
     fontWeight: 300,
@@ -153,19 +152,19 @@ export default makeStyles({
 
   subSectionSeparator: {
     border: '1px solid #E3E3E3',
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     margin: '15px 0px 15px 0px',
     width: '100%',
   },
 
   subSectionText: {
-    color: '#85909A',
+    color: theme.palette.text.secondary,
     fontSize: '14px',
     fontWeight: 300,
   },
 
   subSectionTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '16px',
     fontWeight: 500,
   },
@@ -174,4 +173,4 @@ export default makeStyles({
     height: '250px',
     width: '100%',
   },
-})
+}))
