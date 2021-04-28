@@ -343,7 +343,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
           </>
         ) : (
           <p className={classes.loadingAppDetails}>
-            {t('appMarketplace.appDetails.loadingAp◊pDetails')}
+            {t('appMarketplace.appDetails.loadingAppDetails')}
           </p>
         )}
       </section>
