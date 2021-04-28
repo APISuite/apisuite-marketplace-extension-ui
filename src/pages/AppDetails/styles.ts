@@ -12,10 +12,10 @@ export default makeStyles((theme) => ({
   },
 
   appAlreadySubscribedButton: {
-    backgroundColor: theme.palette.primary.main,
-    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
+    borderColor: theme.palette.secondary.main,
     borderRadius: theme.palette.dimensions.borderRadius,
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.secondary.contrastText,
     fontSize: '16px',
     fontWeight: 500,
     opacity: 0.5,
@@ -25,10 +25,10 @@ export default makeStyles((theme) => ({
     width: '100%',
 
     '&:active, &:hover, &:link, &:visited': {
-      backgroundColor: theme.palette.primary.main,
-      borderColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.secondary.main,
+      borderColor: theme.palette.secondary.main,
       borderRadius: theme.palette.dimensions.borderRadius,
-      color: theme.palette.primary.contrastText,
+      color: theme.palette.secondary.contrastText,
     },
   },
 
@@ -102,8 +102,8 @@ export default makeStyles((theme) => ({
   },
 
   appSubscribeButton: {
-    backgroundColor: theme.palette.secondary.main,
-    borderColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
     borderRadius: theme.palette.dimensions.borderRadius,
     color: theme.palette.common.white,
     fontSize: '16px',
@@ -112,8 +112,8 @@ export default makeStyles((theme) => ({
     width: '100%',
 
     '&:active, &:hover, &:link, &:visited': {
-      backgroundColor: theme.palette.secondary.main,
-      borderColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
       borderRadius: theme.palette.dimensions.borderRadius,
       color: theme.palette.common.white,
     },
