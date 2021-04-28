@@ -135,7 +135,7 @@
         "appDetails": {
           "loadingAppDetails": "Loading the selected app's details...",
           "appSubscribeButton": "Subscribe app",
-          "appUnsubscribeButton": "Unsubscribe app",
+          "appAlreadySubscribedButton": "Subscribed to app",
           "subSectionTitleOne": "Application links:",
           "subSectionTitleTwo": "Published by:",
           "subSectionTitleThree": "Publisher links:",

@@ -133,13 +133,13 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                 <Button
                   className={
                     isUserSubbedToApp
-                      ? classes.appUnsubscribeButton
+                      ? classes.appAlreadySubscribedButton
                       : classes.appSubscribeButton
                   }
                   onClick={handleMarketplaceAppSubscription}
                 >
                   {isUserSubbedToApp
-                    ? t('appMarketplace.appDetails.appUnsubscribeButton')
+                    ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
                     : t('appMarketplace.appDetails.appSubscribeButton')}
                 </Button>
               </div>

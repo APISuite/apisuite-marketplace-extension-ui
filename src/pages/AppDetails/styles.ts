@@ -12,6 +12,27 @@ export default makeStyles({
     width: '150px',
   },
 
+  appAlreadySubscribedButton: {
+    backgroundColor: '#14283C',
+    borderColor: '#14283C',
+    borderRadius: '4px',
+    color: '#FFFFFF',
+    fontSize: '16px',
+    fontWeight: 500,
+    opacity: 0.5,
+    // Keep this commented for demo purposes - we want to be able to sub and unsub Marketplace apps
+    // pointerEvents: 'none',
+    textTransform: 'inherit',
+    width: '100%',
+
+    '&:active, &:hover, &:link, &:visited': {
+      backgroundColor: '#14283C',
+      borderColor: '#14283C',
+      borderRadius: '4px',
+      color: '#FFFFFF',
+    },
+  },
+
   appDescription: {
     color: '#14283C',
     fontSize: '20px',
@@ -104,24 +125,6 @@ export default makeStyles({
     fontSize: '42px',
     fontWeight: 700,
     marginBottom: '20px',
-  },
-
-  appUnsubscribeButton: {
-    backgroundColor: '#F78E27',
-    borderColor: '#F78E27',
-    borderRadius: '4px',
-    color: '#FFFFFF',
-    fontSize: '16px',
-    fontWeight: 500,
-    textTransform: 'inherit',
-    width: '100%',
-
-    '&:active, &:hover, &:link, &:visited': {
-      backgroundColor: '#F78E27',
-      borderColor: '#F78E27',
-      borderRadius: '4px',
-      color: '#FFFFFF',
-    },
   },
 
   leftAppDetailsContainer: {
