@@ -1,31 +1,51 @@
 import { Action } from 'redux';
-import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_APP_DETAILS_ACTION_SUCCESS, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION } from './ducks';
+import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION_SUCCESS, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION } from './ducks';
 export declare const roleNameOptions: readonly ["", "admin", "developer", "organizationOwner"];
 export interface Response {
     isError: boolean;
     isRequesting: boolean;
 }
-export interface MarketplacePublishers {
+export interface MarketplacePublisher {
     id: number;
     name: string;
 }
+export interface SubbedMarketplaceApp {
+    description: string;
+    id: number;
+    logo: string;
+    name: string;
+    publisherId: number;
+    publisherName: string;
+}
 export interface Filters {
-    org_id: string[];
     label: string[];
-    sort_by: 'app' | 'org' | 'updated';
     order: 'asc' | 'desc';
+    org_id: string[];
+    sort_by: 'app' | 'org' | 'updated';
 }
 export interface MarketplaceStore {
     allMarketplaceApps: AppDetails[];
     allMarketplaceLabels: string[];
-    allMarketplacePublishers: MarketplacePublishers[];
+    allMarketplacePublishers: MarketplacePublisher[];
+    allSubbedMarketplaceApps: SubbedMarketplaceApp[];
     filteredMarketplaceApps: AppDetails[];
     retrievedAllMarketplaceApps: boolean;
     retrievedAllMarketplaceLabels: boolean;
     retrievedAllMarketplacePublishers: boolean;
+    retrievedAllSubbedMarketplaceApps: boolean;
     selectedAppDetails: AppDetails;
     retrievedSelectedAppDetails: boolean;
 }
+export declare type UserProfile = {
+    avatar?: string;
+    bio?: string;
+    email: string;
+    id: string;
+    last_login: string;
+    mobile?: string;
+    name: string;
+    oidcProvider: string | null;
+};
 export interface AppDetails {
     createdAt: string;
     description: string;
@@ -75,7 +95,7 @@ export interface SettingsData {
 export interface MarketplaceProps {
     allMarketplaceApps: AppDetails[];
     allMarketplaceLabels: string[];
-    allMarketplacePublishers: MarketplacePublishers[];
+    allMarketplacePublishers: MarketplacePublisher[];
     filteredMarketplaceApps: AppDetails[];
     getAllMarketplaceAppsAction: () => void;
     getAllMarketplaceLabelsAction: () => void;
@@ -84,7 +104,6 @@ export interface MarketplaceProps {
     retrievedAllMarketplaceApps: boolean;
     retrievedAllMarketplaceLabels: boolean;
     retrievedAllMarketplacePublishers: boolean;
-    settings: SettingsStore;
 }
 export interface GetAllMarketplaceAppsAction extends Action {
     type: typeof GET_ALL_MARKETPLACE_APPS_ACTION;
@@ -105,7 +124,31 @@ export interface GetAllMarketplacePublishersAction extends Action {
 }
 export interface GetAllMarketplacePublishersActionSuccess extends Action {
     type: typeof GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS;
-    allMarketplacePublishers: MarketplacePublishers[];
+    allMarketplacePublishers: MarketplacePublisher[];
+}
+export interface GetAllSubbedMarketplaceAppsAction extends Action {
+    type: typeof GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION;
+    userID: number;
+}
+export interface GetAllSubbedMarketplaceAppsActionSuccess extends Action {
+    type: typeof GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS;
+    allSubbedMarketplaceApps: SubbedMarketplaceApp[];
+}
+export interface SubscribeToMarketplaceAppAction extends Action {
+    type: typeof SUBSCRIBE_TO_MARKETPLACE_APP_ACTION;
+    userID: number;
+    appID: number;
+}
+export interface SubscribeToMarketplaceAppActionSuccess extends Action {
+    type: typeof SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS;
+}
+export interface UnsubscribeToMarketplaceAppAction extends Action {
+    type: typeof UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION;
+    userID: number;
+    appID: number;
+}
+export interface UnsubscribeToMarketplaceAppActionSuccess extends Action {
+    type: typeof UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS;
 }
 export interface GetFilteredAppsMarketplaceAction extends Action {
     type: typeof GET_FILTERED_MARKETPLACE_APPS_ACTION;
@@ -123,4 +166,4 @@ export interface GetAppDetailsActionSuccess extends Action {
     type: typeof GET_APP_DETAILS_ACTION_SUCCESS;
     appDetails: AppDetails;
 }
-export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess | GetAppDetailsAction | GetAppDetailsActionSuccess;
+export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetAllSubbedMarketplaceAppsAction | GetAllSubbedMarketplaceAppsActionSuccess | GetAppDetailsAction | GetAppDetailsActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess | SubscribeToMarketplaceAppAction | SubscribeToMarketplaceAppActionSuccess | UnsubscribeToMarketplaceAppAction | UnsubscribeToMarketplaceAppActionSuccess;

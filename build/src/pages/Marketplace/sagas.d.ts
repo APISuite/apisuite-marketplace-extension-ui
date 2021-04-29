@@ -1,4 +1,4 @@
-import { AppDetails, GetAppDetailsAction, GetFilteredAppsMarketplaceAction } from './types';
+import { AppDetails, GetAllSubbedMarketplaceAppsAction, GetAppDetailsAction, GetFilteredAppsMarketplaceAction, SubscribeToMarketplaceAppAction, UnsubscribeToMarketplaceAppAction } from './types';
 export declare function getAllMarketplaceAppsActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allMarketplaceApps: AppDetails[];
@@ -9,7 +9,17 @@ export declare function getAllMarketplaceLabelsActionSaga(): Generator<import("r
 }>, void, unknown>;
 export declare function getAllMarketplacePublishersActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
-    allMarketplacePublishers: import("./types").MarketplacePublishers[];
+    allMarketplacePublishers: import("./types").MarketplacePublisher[];
+}>, void, unknown>;
+export declare function getAllSubbedMarketplaceAppsActionSaga(action: GetAllSubbedMarketplaceAppsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+    allSubbedMarketplaceApps: import("./types").SubbedMarketplaceApp[];
+}>, void, unknown>;
+export declare function subscribeToMarketplaceAppActionSaga(action: SubscribeToMarketplaceAppAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+}>, void, unknown>;
+export declare function unsubscribeToMarketplaceAppActionSaga(action: UnsubscribeToMarketplaceAppAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
 }>, void, unknown>;
 export declare function getFilteredMarketplaceAppsActionSaga(action: GetFilteredAppsMarketplaceAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;

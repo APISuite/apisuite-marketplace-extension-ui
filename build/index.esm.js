@@ -1,9 +1,9 @@
-import { registerTranslations, makeStyles, useTranslation, Avatar, Button, FormControlLabel, Checkbox, TextField, InputAdornment, FormControl, FormLabel, RadioGroup, Radio, Accordion, AccordionSummary, Typography, AccordionDetails, FormGroup } from '@apisuite/fe-base';
+import { registerTranslations, makeStyles, useTranslation, Avatar, Button, useConfig, FormControlLabel, Checkbox, TextField, InputAdornment, FormControl, FormLabel, RadioGroup, Radio, Accordion, AccordionSummary, Typography, AccordionDetails, FormGroup } from '@apisuite/fe-base';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import React, { useEffect, useState, createElement, Fragment as Fragment$1, forwardRef } from 'react';
+import * as React from 'react';
+import React__default, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Link as Link$1 } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded';
 import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
@@ -12,10 +12,12 @@ import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import SortRoundedIcon from '@material-ui/icons/SortRounded';
+import { Link as Link$1 } from 'react-router-dom';
+import marketplace from 'assets/marketplace.svg';
 import appCarouselBackground from 'assets/appCarouselBackground.svg';
 import spaceBackground from 'assets/space-background.svg';
-import marketplace from 'assets/marketplace.svg';
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded';
+import { takeLatest, put, call } from 'redux-saga/effects';
 import http from 'http';
 import https from 'https';
 import url from 'url';
@@ -25,7 +27,6 @@ import tty from 'tty';
 import util from 'util';
 import os from 'os';
 import zlib from 'zlib';
-import { takeLatest, put, call } from 'redux-saga/effects';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -300,7 +301,7 @@ var Extension = /** @class */ (function () {
     return Extension;
 }());
 exports.Extension = Extension;
-
+//# sourceMappingURL=index.js.map
 });
 
 var extensions$1 = {
@@ -439,6 +440,7 @@ var extensions$1 = {
 			appDetails: {
 				loadingAppDetails: "Loading the selected app's details...",
 				appSubscribeButton: "Subscribe app",
+				appAlreadySubscribedButton: "Subscribed to app",
 				subSectionTitleOne: "Application links:",
 				subSectionTitleTwo: "Published by:",
 				subSectionTitleThree: "Publisher links:",
@@ -501,7 +503,7 @@ registerTranslations('en-US', enUS);
 registerTranslations('pt-PT', ptPT);
 
 var name$1 = "@apisuite/apisuite-marketplace-extension-ui";
-var version$1 = "1.0.3";
+var version$1 = "1.0.4";
 
 var BASE_URI = '/marketplace';
 
@@ -785,10 +787,12 @@ var initialState$1 = {
     allMarketplaceApps: [],
     allMarketplaceLabels: [],
     allMarketplacePublishers: [],
+    allSubbedMarketplaceApps: [],
     filteredMarketplaceApps: [],
     retrievedAllMarketplaceApps: false,
     retrievedAllMarketplaceLabels: false,
     retrievedAllMarketplacePublishers: false,
+    retrievedAllSubbedMarketplaceApps: false,
     selectedAppDetails: {
         createdAt: '',
         description: '',
@@ -821,10 +825,16 @@ var GET_ALL_MARKETPLACE_LABELS_ACTION = 'Marketplace/GET_ALL_MARKETPLACE_LABELS_
 var GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS = 'Marketplace/GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS';
 var GET_ALL_MARKETPLACE_PUBLISHERS_ACTION = 'Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION';
 var GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS = 'Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS';
-var GET_FILTERED_MARKETPLACE_APPS_ACTION = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION';
-var GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS';
+var GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION = 'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION';
+var GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS = 'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS';
 var GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION';
 var GET_APP_DETAILS_ACTION_SUCCESS = 'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS';
+var GET_FILTERED_MARKETPLACE_APPS_ACTION = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION';
+var GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS';
+var SUBSCRIBE_TO_MARKETPLACE_APP_ACTION = 'Marketplace/SUBSCRIBE_TO_MARKETPLACE_APP_ACTION';
+var SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS = 'Marketplace/SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS';
+var UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION = 'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION';
+var UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS = 'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS';
 /** Reducer */
 function reducer(state, action) {
     if (state === void 0) { state = initialState$1; }
@@ -855,6 +865,23 @@ function reducer(state, action) {
                 allMarketplacePublishers: { $set: action.allMarketplacePublishers },
                 retrievedAllMarketplacePublishers: { $set: true },
             });
+        }
+        case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION: {
+            return state;
+        }
+        case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS: {
+            return update(state, {
+                allSubbedMarketplaceApps: { $set: action.allSubbedMarketplaceApps },
+                retrievedAllSubbedMarketplaceApps: { $set: true },
+            });
+        }
+        case SUBSCRIBE_TO_MARKETPLACE_APP_ACTION:
+        case SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS: {
+            return state;
+        }
+        case UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION:
+        case UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS: {
+            return state;
         }
         case GET_FILTERED_MARKETPLACE_APPS_ACTION: {
             return state;
@@ -902,6 +929,42 @@ function getAllMarketplacePublishersActionSuccess(allMarketplacePublishers) {
     return {
         type: GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS,
         allMarketplacePublishers: allMarketplacePublishers,
+    };
+}
+function getAllSubbedMarketplaceAppsAction(userID) {
+    return {
+        type: GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION,
+        userID: userID,
+    };
+}
+function getAllSubbedMarketplaceAppsActionSuccess(allSubbedMarketplaceApps) {
+    return {
+        type: GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS,
+        allSubbedMarketplaceApps: allSubbedMarketplaceApps,
+    };
+}
+function subscribeToMarketplaceAppAction(userID, appID) {
+    return {
+        type: SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+        userID: userID,
+        appID: appID,
+    };
+}
+function subscribeToMarketplaceAppActionSuccess() {
+    return {
+        type: SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
+    };
+}
+function unsubscribeToMarketplaceAppAction(userID, appID) {
+    return {
+        type: UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+        userID: userID,
+        appID: appID,
+    };
+}
+function unsubscribeToMarketplaceAppActionSuccess() {
+    return {
+        type: UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
     };
 }
 function getFilteredMarketplaceAppsAction(filters) {
@@ -2298,13 +2361,13 @@ function updateTransientState(state, props, attachTouch) {
 
 function useSwipeable(props) {
   var trackMouse = props.trackMouse;
-  var transientState = React.useRef(_extends({}, initialState, {
+  var transientState = React__default.useRef(_extends({}, initialState, {
     type: 'hook'
   }));
-  var transientProps = React.useRef();
+  var transientProps = React__default.useRef();
   transientProps.current = _extends({}, defaultProps, props);
 
-  var _React$useMemo = React.useMemo(function () {
+  var _React$useMemo = React__default.useMemo(function () {
     return getHandlers(function (cb) {
       return transientState.current = cb(transientState.current, transientProps.current);
     }, {
@@ -2359,7 +2422,7 @@ function (_React$PureComponent) {
     var ref = innerRef ? function (el) {
       return innerRef(el), handlers.ref(el);
     } : handlers.ref;
-    return React.createElement(nodeName, _extends({}, handlers, {
+    return React__default.createElement(nodeName, _extends({}, handlers, {
       className: className,
       style: style,
       ref: ref
@@ -2367,7 +2430,7 @@ function (_React$PureComponent) {
   };
 
   return Swipeable;
-}(React.PureComponent);
+}(React__default.PureComponent);
 Swipeable.propTypes = {
   onSwiped: propTypes.func,
   onSwiping: propTypes.func,
@@ -6004,7 +6067,7 @@ Object.defineProperty(exports, "__esModule", {
 
 
 
-var _react2 = _interopRequireDefault(React);
+var _react2 = _interopRequireDefault(React__default);
 
 
 
@@ -6088,7 +6151,7 @@ var _clsx2 = _interopRequireDefault(_clsx);
 
 
 
-var _react2 = _interopRequireDefault(React);
+var _react2 = _interopRequireDefault(React__default);
 
 
 
@@ -7796,138 +7859,6 @@ exports.default = ImageGallery;
 
 var ImageGallery = /*@__PURE__*/getDefaultExportFromCjs(imageGallery);
 
-var useStyles$3 = makeStyles({
-    appAvatar: {
-        background: '#C8DC8C linear-gradient(270deg, rgba(200, 220, 140, 1) 0%, rgba(25, 165, 140, 1) 100%)',
-        fontSize: '55px',
-        fontWeight: 300,
-        height: '150px',
-        margin: '0px auto 50px auto',
-        textTransform: 'uppercase',
-        width: '150px',
-    },
-    appDescription: {
-        color: '#14283C',
-        fontSize: '20px',
-        fontWeight: 200,
-        marginBottom: '15px',
-    },
-    appDetailsContainer: {
-        display: 'flex',
-        margin: 'auto',
-        maxWidth: '900px',
-        padding: '40px 0px 60px 0px',
-        width: '100%',
-    },
-    appImage: {
-        borderRadius: '50%',
-        height: '150px',
-        margin: '0px 25px 42.5px 25px',
-        width: '150px',
-    },
-    appImageGallery: {
-        '& .image-gallery-slides': {
-            borderRadius: '10px',
-        },
-        '& .active': {
-            border: '4px solid #19B3EE',
-        },
-    },
-    appLabel: {
-        backgroundColor: '#EEEEEE',
-        borderRadius: '4px',
-        color: '#14283C',
-        fontSize: '12px',
-        fontWeight: 300,
-        marginBottom: '7.5px',
-        marginRight: '7.5px',
-        padding: '0px 7.5px',
-        width: 'fit-content',
-    },
-    appLabelsContainer: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        marginBottom: '40px',
-    },
-    appLinksSubSection: {
-        height: '120px',
-        width: '100%',
-    },
-    appOverviewDescription: {
-        color: '#85909A',
-        fontSize: '16px',
-        fontWeight: 300,
-    },
-    appOverviewTitle: {
-        color: '#14283C',
-        fontSize: '24px',
-        fontWeight: 500,
-        margin: '40px 0px 25px 0px',
-    },
-    appSubscribeButton: {
-        backgroundColor: '#32C896',
-        borderColor: '#32C896',
-        borderRadius: '4px',
-        color: '#FFFFFF',
-        fontSize: '16px',
-        fontWeight: 500,
-        textTransform: 'inherit',
-        width: '100%',
-        '&:active, &:hover, &:link, &:visited': {
-            backgroundColor: '#32C896',
-            borderColor: '#32C896',
-            borderRadius: '4px',
-            color: '#FFFFFF',
-        },
-    },
-    appTitle: {
-        color: '#14283C',
-        fontSize: '42px',
-        fontWeight: 700,
-        marginBottom: '20px',
-    },
-    leftAppDetailsContainer: {
-        maxWidth: '200px',
-        width: '100%',
-    },
-    loadingAppDetails: {
-        color: '#14283C',
-        fontSize: '20px',
-        fontWeight: 200,
-    },
-    providedLink: {
-        color: '#19B3EE !important',
-        display: 'block',
-        fontSize: '14px',
-        fontWeight: 300,
-    },
-    rightAppDetailsContainer: {
-        maxWidth: '700px',
-        paddingLeft: '40px',
-        width: '100%',
-    },
-    subSectionSeparator: {
-        border: '1px solid #E3E3E3',
-        borderRadius: '4px',
-        margin: '15px 0px 15px 0px',
-        width: '100%',
-    },
-    subSectionText: {
-        color: '#85909A',
-        fontSize: '14px',
-        fontWeight: 300,
-    },
-    subSectionTitle: {
-        color: '#14283C',
-        fontSize: '16px',
-        fontWeight: 500,
-    },
-    topMostSubSection: {
-        height: '250px',
-        width: '100%',
-    },
-});
-
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -7958,22 +7889,209 @@ function styleInject(css, ref) {
 var css_248z = ".image-gallery-icon {\n  color: #fff;\n  transition: all .2s ease-out;\n  appearance: none;\n  background-color: transparent;\n  border: 0;\n  cursor: pointer;\n  outline: none;\n  position: absolute;\n  z-index: 4;\n  filter: drop-shadow(0 2px 2px #1a1a1a); }\n  @media (min-width: 768px) {\n    .image-gallery-icon:hover {\n      color: #337ab7; }\n      .image-gallery-icon:hover .image-gallery-svg {\n        transform: scale(1.1); } }\n  .image-gallery-icon:focus {\n    outline: 2px solid #337ab7; }\n\n.image-gallery-using-mouse .image-gallery-icon:focus {\n  outline: none; }\n\n.image-gallery-fullscreen-button,\n.image-gallery-play-button {\n  bottom: 0;\n  padding: 20px; }\n  .image-gallery-fullscreen-button .image-gallery-svg,\n  .image-gallery-play-button .image-gallery-svg {\n    height: 36px;\n    width: 36px; }\n  @media (max-width: 768px) {\n    .image-gallery-fullscreen-button,\n    .image-gallery-play-button {\n      padding: 15px; }\n      .image-gallery-fullscreen-button .image-gallery-svg,\n      .image-gallery-play-button .image-gallery-svg {\n        height: 24px;\n        width: 24px; } }\n  @media (max-width: 480px) {\n    .image-gallery-fullscreen-button,\n    .image-gallery-play-button {\n      padding: 10px; }\n      .image-gallery-fullscreen-button .image-gallery-svg,\n      .image-gallery-play-button .image-gallery-svg {\n        height: 16px;\n        width: 16px; } }\n\n.image-gallery-fullscreen-button {\n  right: 0; }\n\n.image-gallery-play-button {\n  left: 0; }\n\n.image-gallery-left-nav,\n.image-gallery-right-nav {\n  padding: 50px 10px;\n  top: 50%;\n  transform: translateY(-50%); }\n  .image-gallery-left-nav .image-gallery-svg,\n  .image-gallery-right-nav .image-gallery-svg {\n    height: 120px;\n    width: 60px; }\n  @media (max-width: 768px) {\n    .image-gallery-left-nav .image-gallery-svg,\n    .image-gallery-right-nav .image-gallery-svg {\n      height: 72px;\n      width: 36px; } }\n  @media (max-width: 480px) {\n    .image-gallery-left-nav .image-gallery-svg,\n    .image-gallery-right-nav .image-gallery-svg {\n      height: 48px;\n      width: 24px; } }\n  .image-gallery-left-nav[disabled],\n  .image-gallery-right-nav[disabled] {\n    cursor: disabled;\n    opacity: .6;\n    pointer-events: none; }\n\n.image-gallery-left-nav {\n  left: 0; }\n\n.image-gallery-right-nav {\n  right: 0; }\n\n.image-gallery {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  -o-user-select: none;\n  user-select: none;\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n  position: relative; }\n  .image-gallery.fullscreen-modal {\n    background: #000;\n    bottom: 0;\n    height: 100%;\n    left: 0;\n    position: fixed;\n    right: 0;\n    top: 0;\n    width: 100%;\n    z-index: 5; }\n    .image-gallery.fullscreen-modal .image-gallery-content {\n      top: 50%;\n      transform: translateY(-50%); }\n\n.image-gallery-content {\n  position: relative;\n  line-height: 0;\n  top: 0; }\n  .image-gallery-content.fullscreen {\n    background: #000; }\n  .image-gallery-content .image-gallery-slide .image-gallery-image {\n    max-height: calc(100vh - 80px); }\n  .image-gallery-content.left .image-gallery-slide .image-gallery-image, .image-gallery-content.right .image-gallery-slide .image-gallery-image {\n    max-height: 100vh; }\n\n.image-gallery-slide-wrapper {\n  position: relative; }\n  .image-gallery-slide-wrapper.left, .image-gallery-slide-wrapper.right {\n    display: inline-block;\n    width: calc(100% - 110px); }\n    @media (max-width: 768px) {\n      .image-gallery-slide-wrapper.left, .image-gallery-slide-wrapper.right {\n        width: calc(100% - 87px); } }\n  .image-gallery-slide-wrapper.image-gallery-rtl {\n    direction: rtl; }\n\n.image-gallery-slides {\n  line-height: 0;\n  overflow: hidden;\n  position: relative;\n  white-space: nowrap;\n  text-align: center; }\n\n.image-gallery-slide {\n  left: 0;\n  position: absolute;\n  top: 0;\n  width: 100%; }\n  .image-gallery-slide.center {\n    position: relative; }\n  .image-gallery-slide .image-gallery-image {\n    width: 100%;\n    object-fit: contain; }\n  .image-gallery-slide .image-gallery-description {\n    background: rgba(0, 0, 0, 0.4);\n    bottom: 70px;\n    color: #fff;\n    left: 0;\n    line-height: 1;\n    padding: 10px 20px;\n    position: absolute;\n    white-space: normal; }\n    @media (max-width: 768px) {\n      .image-gallery-slide .image-gallery-description {\n        bottom: 45px;\n        font-size: .8em;\n        padding: 8px 15px; } }\n\n.image-gallery-bullets {\n  bottom: 20px;\n  left: 0;\n  margin: 0 auto;\n  position: absolute;\n  right: 0;\n  width: 80%;\n  z-index: 4; }\n  .image-gallery-bullets .image-gallery-bullets-container {\n    margin: 0;\n    padding: 0;\n    text-align: center; }\n  .image-gallery-bullets .image-gallery-bullet {\n    appearance: none;\n    background-color: transparent;\n    border: 1px solid #fff;\n    border-radius: 50%;\n    box-shadow: 0 1px 0 #1a1a1a;\n    cursor: pointer;\n    display: inline-block;\n    margin: 0 5px;\n    outline: none;\n    padding: 5px;\n    transition: background .2s ease-out; }\n    @media (max-width: 768px) {\n      .image-gallery-bullets .image-gallery-bullet {\n        margin: 0 3px;\n        padding: 3px; } }\n    @media (max-width: 480px) {\n      .image-gallery-bullets .image-gallery-bullet {\n        padding: 2.7px; } }\n    .image-gallery-bullets .image-gallery-bullet:focus, .image-gallery-bullets .image-gallery-bullet:hover {\n      background: #337ab7;\n      transform: scale(1.1); }\n    .image-gallery-bullets .image-gallery-bullet.active {\n      background: #fff; }\n\n.image-gallery-thumbnails-wrapper {\n  position: relative; }\n  .image-gallery-thumbnails-wrapper.thumbnails-wrapper-rtl {\n    direction: rtl; }\n  .image-gallery-thumbnails-wrapper.left, .image-gallery-thumbnails-wrapper.right {\n    display: inline-block;\n    vertical-align: top;\n    width: 100px; }\n    @media (max-width: 768px) {\n      .image-gallery-thumbnails-wrapper.left, .image-gallery-thumbnails-wrapper.right {\n        width: 81px; } }\n    .image-gallery-thumbnails-wrapper.left .image-gallery-thumbnails, .image-gallery-thumbnails-wrapper.right .image-gallery-thumbnails {\n      height: 100%;\n      width: 100%;\n      left: 0;\n      padding: 0;\n      position: absolute;\n      top: 0; }\n      .image-gallery-thumbnails-wrapper.left .image-gallery-thumbnails .image-gallery-thumbnail, .image-gallery-thumbnails-wrapper.right .image-gallery-thumbnails .image-gallery-thumbnail {\n        display: block;\n        margin-right: 0;\n        padding: 0; }\n        .image-gallery-thumbnails-wrapper.left .image-gallery-thumbnails .image-gallery-thumbnail + .image-gallery-thumbnail, .image-gallery-thumbnails-wrapper.right .image-gallery-thumbnails .image-gallery-thumbnail + .image-gallery-thumbnail {\n          margin-left: 0;\n          margin-top: 2px; }\n  .image-gallery-thumbnails-wrapper.left, .image-gallery-thumbnails-wrapper.right {\n    margin: 0 5px; }\n    @media (max-width: 768px) {\n      .image-gallery-thumbnails-wrapper.left, .image-gallery-thumbnails-wrapper.right {\n        margin: 0 3px; } }\n\n.image-gallery-thumbnails {\n  overflow: hidden;\n  padding: 5px 0; }\n  @media (max-width: 768px) {\n    .image-gallery-thumbnails {\n      padding: 3px 0; } }\n  .image-gallery-thumbnails .image-gallery-thumbnails-container {\n    cursor: pointer;\n    text-align: center;\n    transition: transform .45s ease-out;\n    white-space: nowrap; }\n\n.image-gallery-thumbnail {\n  display: inline-block;\n  border: 4px solid transparent;\n  transition: border .3s ease-out;\n  width: 100px;\n  background: transparent;\n  padding: 0; }\n  @media (max-width: 768px) {\n    .image-gallery-thumbnail {\n      border: 3px solid transparent;\n      width: 81px; } }\n  .image-gallery-thumbnail + .image-gallery-thumbnail {\n    margin-left: 2px; }\n  .image-gallery-thumbnail .image-gallery-thumbnail-inner {\n    position: relative; }\n  .image-gallery-thumbnail .image-gallery-thumbnail-image {\n    vertical-align: middle;\n    width: 100%;\n    line-height: 0; }\n  .image-gallery-thumbnail.active, .image-gallery-thumbnail:hover, .image-gallery-thumbnail:focus {\n    outline: none;\n    border: 4px solid #337ab7; }\n    @media (max-width: 768px) {\n      .image-gallery-thumbnail.active, .image-gallery-thumbnail:hover, .image-gallery-thumbnail:focus {\n        border: 3px solid #337ab7; } }\n\n.image-gallery-thumbnail-label {\n  box-sizing: border-box;\n  color: white;\n  font-size: 1em;\n  left: 0;\n  line-height: 1em;\n  padding: 5%;\n  position: absolute;\n  top: 50%;\n  text-shadow: 1px 1px 0 black;\n  transform: translateY(-50%);\n  white-space: normal;\n  width: 100%; }\n  @media (max-width: 768px) {\n    .image-gallery-thumbnail-label {\n      font-size: .8em;\n      line-height: .8em; } }\n\n.image-gallery-index {\n  background: rgba(0, 0, 0, 0.4);\n  color: #fff;\n  line-height: 1;\n  padding: 10px 20px;\n  position: absolute;\n  right: 0;\n  top: 0;\n  z-index: 4; }\n  @media (max-width: 768px) {\n    .image-gallery-index {\n      font-size: .8em;\n      padding: 5px 10px; } }\n";
 styleInject(css_248z);
 
+var useStyles$3 = makeStyles(function (theme) { return ({
+    appAvatar: {
+        background: theme.palette.gradient.light,
+        fontSize: '55px',
+        fontWeight: 300,
+        height: '150px',
+        margin: '0px auto 50px auto',
+        textTransform: 'uppercase',
+        width: '150px',
+    },
+    appAlreadySubscribedButton: {
+        backgroundColor: theme.palette.secondary.main,
+        borderColor: theme.palette.secondary.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.secondary.contrastText,
+        fontSize: '16px',
+        fontWeight: 500,
+        opacity: 0.5,
+        // Keep this commented for demo purposes - we want to be able to sub and unsub Marketplace apps
+        // pointerEvents: 'none',
+        textTransform: 'inherit',
+        width: '100%',
+        '&:active, &:hover, &:link, &:visited': {
+            backgroundColor: theme.palette.secondary.main,
+            borderColor: theme.palette.secondary.main,
+            borderRadius: theme.palette.dimensions.borderRadius,
+            color: theme.palette.secondary.contrastText,
+        },
+    },
+    appDescription: {
+        color: theme.palette.text.primary,
+        fontSize: '20px',
+        fontWeight: 200,
+        marginBottom: '15px',
+    },
+    appDetailsContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        margin: '110px auto 0px auto',
+        maxWidth: '900px',
+        padding: '40px 0px 60px 0px',
+        width: '100%',
+    },
+    appImage: {
+        borderRadius: '50%',
+        height: '150px',
+        margin: '0px 25px 42.5px 25px',
+        width: '150px',
+    },
+    appImageGallery: {
+        '& .image-gallery-slides': {
+            borderRadius: '10px',
+        },
+        '& .active': {
+            border: "4px solid theme.palette.action.focus",
+        },
+    },
+    appLabel: {
+        backgroundColor: theme.palette.grey['100'],
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.text.primary,
+        fontSize: '12px',
+        fontWeight: 300,
+        marginBottom: '7.5px',
+        marginRight: '7.5px',
+        padding: '0px 7.5px',
+        width: 'fit-content',
+    },
+    appLabelsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginBottom: '40px',
+    },
+    appLinksSubSection: {
+        height: '120px',
+        width: '100%',
+    },
+    appOverviewDescription: {
+        color: theme.palette.text.secondary,
+        fontSize: '16px',
+        fontWeight: 300,
+    },
+    appOverviewTitle: {
+        color: theme.palette.text.primary,
+        fontSize: '24px',
+        fontWeight: 500,
+        margin: '40px 0px 25px 0px',
+    },
+    appSubscribeButton: {
+        backgroundColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.common.white,
+        fontSize: '16px',
+        fontWeight: 500,
+        textTransform: 'inherit',
+        width: '100%',
+        '&:active, &:hover, &:link, &:visited': {
+            backgroundColor: theme.palette.primary.main,
+            borderColor: theme.palette.primary.main,
+            borderRadius: theme.palette.dimensions.borderRadius,
+            color: theme.palette.common.white,
+        },
+    },
+    appTitle: {
+        color: theme.palette.text.primary,
+        fontSize: '42px',
+        fontWeight: 700,
+        marginBottom: '20px',
+    },
+    leftAppDetailsContainer: {
+        maxWidth: '200px',
+        width: '100%',
+    },
+    loadingAppDetails: {
+        color: theme.palette.text.primary,
+        fontSize: '20px',
+        fontWeight: 200,
+    },
+    providedLink: {
+        color: theme.palette.info.main + " !important",
+        display: 'block',
+        fontSize: '14px',
+        fontWeight: 300,
+    },
+    rightAppDetailsContainer: {
+        maxWidth: '700px',
+        paddingLeft: '40px',
+        width: '100%',
+    },
+    subSectionSeparator: {
+        border: '1px solid #E3E3E3',
+        borderRadius: theme.palette.dimensions.borderRadius,
+        margin: '15px 0px 15px 0px',
+        width: '100%',
+    },
+    subSectionText: {
+        color: theme.palette.text.secondary,
+        fontSize: '14px',
+        fontWeight: 300,
+    },
+    subSectionTitle: {
+        color: theme.palette.text.primary,
+        fontSize: '16px',
+        fontWeight: 500,
+    },
+    topMostSubSection: {
+        height: '250px',
+        width: '100%',
+    },
+}); });
+
 var AppDetails$1 = function (_a) {
-    var getAppDetailsAction = _a.getAppDetailsAction, retrievedSelectedAppDetails = _a.retrievedSelectedAppDetails, selectedAppDetails = _a.selectedAppDetails;
+    var allSubbedMarketplaceApps = _a.allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction = _a.getAllSubbedMarketplaceAppsAction, getAppDetailsAction = _a.getAppDetailsAction, retrievedSelectedAppDetails = _a.retrievedSelectedAppDetails, selectedAppDetails = _a.selectedAppDetails, subscribeToMarketplaceAppAction = _a.subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction = _a.unsubscribeToMarketplaceAppAction, userProfile = _a.userProfile;
     var classes = useStyles$3();
     var trans = useTranslation();
     function t(str) {
         return trans.t("extensions.Marketplace." + str);
     }
+    // 1. All subbed Marketplace app's retrieval
+    /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > allSubbedMarketplaceApps')
+    of all information we presently have on a user's marketplace app subscriptions. This will come in handy when
+    we want to check if the currently selected app is one that the user's already subscribed to. */
+    useEffect(function () {
+        if (userProfile && userProfile.id) {
+            var userID = parseInt(userProfile.id);
+            getAllSubbedMarketplaceAppsAction(userID);
+        }
+    }, [userProfile]);
+    // 2. Subscription logic for the currently selected Marketplace app
     // Retrieves the app's ID from the browser window's URL
     var appID = useParams().appID;
+    /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > selectedAppDetails')
+    of all information we presently have on the currently selected marketplace app. */
     useEffect(function () {
-        /* Triggers the retrieval and storage (under the 'marketplace -> selectedAppDetails'
-        section of the app's Store) of all information we have on a particular public app. */
         if (appID !== '')
             getAppDetailsAction(appID);
     }, [appID]);
-    var _b = useState('...'), appNameInitials = _b[0], setAppNameInitials = _b[1];
+    var _b = useState(false), isUserSubbedToApp = _b[0], setIsUserSubbedToApp = _b[1];
+    /* The following effect code will check if the currently selected app is one that
+    the user's already subscribed to. */
+    useEffect(function () {
+        var currentAppIsInSubs = allSubbedMarketplaceApps.find(function (marketplaceApp) {
+            return marketplaceApp.id.toString() === appID;
+        });
+        if (currentAppIsInSubs) {
+            setIsUserSubbedToApp(true);
+        }
+    }, [allSubbedMarketplaceApps]);
+    var handleMarketplaceAppSubscription = function () {
+        var userID = parseInt(userProfile.id);
+        var selectedAppID = selectedAppDetails.id;
+        if (isUserSubbedToApp) {
+            unsubscribeToMarketplaceAppAction(userID, selectedAppID);
+            setIsUserSubbedToApp(false);
+        }
+        else {
+            subscribeToMarketplaceAppAction(userID, selectedAppID);
+            setIsUserSubbedToApp(true);
+        }
+    };
+    // 3. Currently selected Marketplace app's details logic
+    var _c = useState('...'), appNameInitials = _c[0], setAppNameInitials = _c[1];
     useEffect(function () {
         var appNameInitialsArray = selectedAppDetails.name.split(' ');
         var appNameInitials = appNameInitialsArray.length >= 2
@@ -7999,105 +8117,112 @@ var AppDetails$1 = function (_a) {
             thumbnail: 'https://picsum.photos/id/1019/250/150/',
         },
     ];
-    return (createElement("main", null,
-        createElement("section", { className: classes.appDetailsContainer }, retrievedSelectedAppDetails ? (createElement(Fragment$1, null,
-            createElement("section", { className: classes.leftAppDetailsContainer },
-                createElement("div", { className: classes.topMostSubSection },
-                    selectedAppDetails && selectedAppDetails.logo !== '' ? (createElement("img", { className: classes.appImage, src: selectedAppDetails.logo })) : (createElement(Avatar, { className: classes.appAvatar }, appNameInitials ? appNameInitials : '...')),
-                    createElement(Button, { className: classes.appSubscribeButton }, t('appMarketplace.appDetails.appSubscribeButton'))),
-                createElement("hr", { className: classes.subSectionSeparator }),
-                createElement("div", null,
-                    createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleOne')),
+    return (React__default.createElement("main", null,
+        React__default.createElement("section", { className: classes.appDetailsContainer }, retrievedSelectedAppDetails ? (React__default.createElement(React__default.Fragment, null,
+            React__default.createElement("section", { className: classes.leftAppDetailsContainer },
+                React__default.createElement("div", { className: classes.topMostSubSection },
+                    selectedAppDetails && selectedAppDetails.logo !== '' ? (React__default.createElement("img", { className: classes.appImage, src: selectedAppDetails.logo })) : (React__default.createElement(Avatar, { className: classes.appAvatar }, appNameInitials ? appNameInitials : '...')),
+                    React__default.createElement(Button, { className: isUserSubbedToApp
+                            ? classes.appAlreadySubscribedButton
+                            : classes.appSubscribeButton, onClick: handleMarketplaceAppSubscription }, isUserSubbedToApp
+                        ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
+                        : t('appMarketplace.appDetails.appSubscribeButton'))),
+                React__default.createElement("hr", { className: classes.subSectionSeparator }),
+                React__default.createElement("div", null,
+                    React__default.createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleOne')),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.websiteUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.websiteUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.websiteURL'))),
-                    selectedAppDetails && !isURLEmpty(selectedAppDetails.tosUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.tosURL'))),
+                        !isURLEmpty(selectedAppDetails.websiteUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.websiteUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.websiteURL'))),
+                    selectedAppDetails && !isURLEmpty(selectedAppDetails.tosUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.tosURL'))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.privacyUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.privacyUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.privacyPolicyURL'))),
+                        !isURLEmpty(selectedAppDetails.privacyUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.privacyUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.privacyPolicyURL'))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.youtubeUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.youtubeUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.youTubeURL'))),
+                        !isURLEmpty(selectedAppDetails.youtubeUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.youtubeUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.youTubeURL'))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.supportUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.supportUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.supportURL'))),
+                        !isURLEmpty(selectedAppDetails.supportUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.supportUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.supportURL'))),
                     selectedAppDetails &&
                         isURLEmpty(selectedAppDetails.privacyUrl) &&
                         isURLEmpty(selectedAppDetails.supportUrl) &&
                         isURLEmpty(selectedAppDetails.tosUrl) &&
                         isURLEmpty(selectedAppDetails.websiteUrl) &&
-                        isURLEmpty(selectedAppDetails.youtubeUrl) && (createElement("p", { className: classes.subSectionText }, t('appMarketplace.appDetails.appLinks.noAppLinks')))),
-                createElement("hr", { className: classes.subSectionSeparator }),
-                createElement("div", null,
-                    createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleTwo')),
-                    createElement("p", { className: classes.subSectionText }, selectedAppDetails && selectedAppDetails.organization.name
+                        isURLEmpty(selectedAppDetails.youtubeUrl) && (React__default.createElement("p", { className: classes.subSectionText }, t('appMarketplace.appDetails.appLinks.noAppLinks')))),
+                React__default.createElement("hr", { className: classes.subSectionSeparator }),
+                React__default.createElement("div", null,
+                    React__default.createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleTwo')),
+                    React__default.createElement("p", { className: classes.subSectionText }, selectedAppDetails && selectedAppDetails.organization.name
                         ? selectedAppDetails.organization.name
                         : '...')),
-                createElement("hr", { className: classes.subSectionSeparator }),
-                createElement("div", null,
-                    createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleThree')),
+                React__default.createElement("hr", { className: classes.subSectionSeparator }),
+                React__default.createElement("div", null,
+                    React__default.createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleThree')),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.organization.tosUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.tosURL'))),
+                        !isURLEmpty(selectedAppDetails.organization.tosUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.tosURL'))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.organization.privacyUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.privacyUrl, target: "_blank", rel: "noopener noreferrer" }, t('appMarketplace.appDetails.publisherLinks.privacyPolicyURL'))),
+                        !isURLEmpty(selectedAppDetails.organization.privacyUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.privacyUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.privacyPolicyURL'))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.organization.supportUrl) && (createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.supportUrl, target: "_blank", rel: "noopener noreferrer" }, t('appMarketplace.appDetails.publisherLinks.supportURL'))),
+                        !isURLEmpty(selectedAppDetails.organization.supportUrl) && (React__default.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.supportUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.supportURL'))),
                     selectedAppDetails &&
                         isURLEmpty(selectedAppDetails.organization.privacyUrl) &&
                         isURLEmpty(selectedAppDetails.organization.supportUrl) &&
-                        isURLEmpty(selectedAppDetails.organization.tosUrl) && (createElement("p", { className: classes.subSectionText }, t('appMarketplace.appDetails.publisherLinks.noPublisherLinks'))))),
-            createElement("section", { className: classes.rightAppDetailsContainer },
-                createElement("h1", { className: classes.appTitle }, selectedAppDetails && selectedAppDetails.name
+                        isURLEmpty(selectedAppDetails.organization.tosUrl) && (React__default.createElement("p", { className: classes.subSectionText }, t('appMarketplace.appDetails.publisherLinks.noPublisherLinks'))))),
+            React__default.createElement("section", { className: classes.rightAppDetailsContainer },
+                React__default.createElement("h1", { className: classes.appTitle }, selectedAppDetails && selectedAppDetails.name
                     ? selectedAppDetails.name
                     : '...'),
-                createElement("p", { className: classes.appDescription }, selectedAppDetails && selectedAppDetails.shortDescription
+                React__default.createElement("p", { className: classes.appDescription }, selectedAppDetails && selectedAppDetails.shortDescription
                     ? selectedAppDetails.shortDescription
                     : t('appMarketplace.appDetails.noShortDescription')),
-                createElement("div", { className: classes.appLabelsContainer }, 
-                // TODO: Go through each label string, and generate a beautiful label
-                selectedAppDetails && selectedAppDetails.labels.length ? (selectedAppDetails.labels.map(function (label, index) {
-                    return (createElement("p", { className: classes.appLabel, key: "appLabel" + index }, label));
-                })) : (createElement("p", { className: classes.appLabel }, t('appMarketplace.appDetails.noLabels')))),
-                createElement(ImageGallery, { additionalClass: classes.appImageGallery, items: imagesArray, showNav: false, showPlayButton: false }),
-                createElement("h1", { className: classes.appOverviewTitle }, t('appMarketplace.appDetails.partOfAppOverviewTitle')),
-                createElement("p", { className: classes.appOverviewDescription }, selectedAppDetails && selectedAppDetails.description
+                React__default.createElement("div", { className: classes.appLabelsContainer }, selectedAppDetails && selectedAppDetails.labels.length ? (selectedAppDetails.labels.map(function (label, index) {
+                    return (React__default.createElement("p", { className: classes.appLabel, key: "appLabel" + index }, label));
+                })) : (React__default.createElement("p", { className: classes.appLabel }, t('appMarketplace.appDetails.noLabels')))),
+                React__default.createElement(ImageGallery, { additionalClass: classes.appImageGallery, items: imagesArray, showNav: false, showPlayButton: false }),
+                React__default.createElement("h1", { className: classes.appOverviewTitle }, t('appMarketplace.appDetails.partOfAppOverviewTitle')),
+                React__default.createElement("p", { className: classes.appOverviewDescription }, selectedAppDetails && selectedAppDetails.description
                     ? selectedAppDetails.description
-                    : t('appMarketplace.appDetails.noAppOverview'))))) : (createElement("p", { className: classes.loadingAppDetails }, t('appMarketplace.appDetails.loadingAppDetails'))))));
+                    : t('appMarketplace.appDetails.noAppOverview'))))) : (React__default.createElement("p", { className: classes.loadingAppDetails }, t('appMarketplace.appDetails.loadingAppDetails'))))));
 };
 
-var mapStateToProps$1 = function (_a) {
-    var marketplace = _a.marketplace;
+var mapStateToProps$2 = function (_a) {
+    var marketplace = _a.marketplace, profile = _a.profile;
     return ({
+        allSubbedMarketplaceApps: marketplace.allSubbedMarketplaceApps,
         retrievedSelectedAppDetails: marketplace.retrievedSelectedAppDetails,
         selectedAppDetails: marketplace.selectedAppDetails,
+        userProfile: profile.profile.user,
     });
 };
-var mapDispatchToProps$1 = function (dispatch) {
+var mapDispatchToProps$2 = function (dispatch) {
     return bindActionCreators({
+        getAllSubbedMarketplaceAppsAction: getAllSubbedMarketplaceAppsAction,
         getAppDetailsAction: getAppDetailsAction,
+        subscribeToMarketplaceAppAction: subscribeToMarketplaceAppAction,
+        unsubscribeToMarketplaceAppAction: unsubscribeToMarketplaceAppAction,
     }, dispatch);
 };
-var AppDetails = connect(mapStateToProps$1, mapDispatchToProps$1)(AppDetails$1);
+var AppDetails = connect(mapStateToProps$2, mapDispatchToProps$2)(AppDetails$1);
 
-var Link = forwardRef(function (_a, ref) {
+var Link = React.forwardRef(function (_a, ref) {
     var _b = _a.externalTarget, externalTarget = _b === void 0 ? '_blank' : _b, href = _a.href, to = _a.to, props = __rest(_a, ["externalTarget", "href", "to"]);
     var destination = href || to;
     if (typeof destination === 'string' && /^https?:\/\//.test(destination)) {
-        return (createElement("a", __assign({ href: destination, target: externalTarget }, props), props.children));
+        return (React.createElement("a", __assign({ href: destination, target: externalTarget }, props), props.children));
     }
     else {
-        return createElement(Link$1, __assign({ ref: ref, to: destination }, props));
+        return React.createElement(Link$1, __assign({ ref: ref, to: destination }, props));
     }
 });
 Link.displayName = 'Link';
 
-var useStyles$2 = makeStyles({
+var useStyles$2 = makeStyles(function (theme) { return ({
     appCatalogEntry: {
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.common.white,
+        border: "1px solid " + theme.palette.grey['300'],
+        borderRadius: theme.palette.dimensions.borderRadius,
         height: '175px',
         padding: '20px 20px 0px 20px',
         width: '215px',
     },
     appCatalogEntryAvatar: {
-        background: '#C8DC8C linear-gradient(270deg, rgba(200, 220, 140, 1) 0%, rgba(25, 165, 140, 1) 100%)',
+        background: theme.palette.gradient.light,
         fontSize: '15px',
         fontWeight: 300,
         height: '45px',
@@ -8111,7 +8236,7 @@ var useStyles$2 = makeStyles({
         width: '100%',
     },
     appCatalogEntryDescription: {
-        color: '#85909A',
+        color: theme.palette.text.secondary,
         display: '-webkit-box',
         fontSize: '14px',
         fontWeight: 300,
@@ -8132,9 +8257,9 @@ var useStyles$2 = makeStyles({
         width: '45px',
     },
     appCatalogEntryLabel: {
-        backgroundColor: '#EEEEEE',
-        borderRadius: '4px',
-        color: '#14283C',
+        backgroundColor: theme.palette.grey['100'],
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.text.primary,
         fontSize: '12px',
         fontWeight: 300,
         height: '27.5px',
@@ -8158,7 +8283,7 @@ var useStyles$2 = makeStyles({
         },
     },
     appCatalogEntryName: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '16px',
         fontWeight: 700,
         marginBottom: '-10px',
@@ -8171,7 +8296,7 @@ var useStyles$2 = makeStyles({
         width: '110px',
     },
     appCatalogEntryOwner: {
-        color: '#51606E',
+        color: theme.palette.text.hint,
         fontSize: '14px',
         fontWeight: 400,
         overflow: 'hidden',
@@ -8189,16 +8314,16 @@ var useStyles$2 = makeStyles({
         width: '100%',
     },
     appCatalogEntryVersion: {
-        borderRadius: '4px',
+        borderRadius: theme.palette.dimensions.borderRadius,
         marginRight: '8px',
         padding: '5px 10px',
     },
     appCatalogEntryVersionAndAccess: {
-        color: '#51606E',
+        color: theme.palette.text.hint,
         fontSize: '14px',
         fontWeight: 300,
     },
-});
+}); });
 
 var AppCatalog = function (_a) {
     var appsToDisplay = _a.appsToDisplay;
@@ -8210,32 +8335,32 @@ var AppCatalog = function (_a) {
     var generateAppCatalogEntry = function (appDetails, index) {
         var appSplitName = appDetails.appName.split(' ');
         var appInitials = appSplitName[0].slice(0, 2);
-        return (React.createElement("div", { className: classes.appCatalogEntry, key: "appCatalogEntry" + index },
-            React.createElement("div", { className: classes.appCatalogEntryTopDetails },
-                appDetails.appLogo !== '' ? (React.createElement("img", { className: classes.appCatalogEntryImage, src: appDetails.appLogo })) : (React.createElement(Avatar, { className: classes.appCatalogEntryAvatar }, appInitials)),
-                React.createElement("div", { className: classes.appCatalogEntryNameAndOwnerContainer },
-                    React.createElement("p", { className: classes.appCatalogEntryName }, appDetails.appName),
-                    React.createElement("p", { className: classes.appCatalogEntryOwner }, appDetails.appPublisher))),
-            React.createElement("div", { className: classes.appCatalogEntryBottomDetails },
-                React.createElement("p", { className: classes.appCatalogEntryDescription }, appDetails.appDescription),
-                React.createElement("div", { className: classes.appCatalogEntryLabelsContainer }, appDetails.appLabels.length ? (appDetails.appLabels.map(function (appLabel, index) {
-                    return (React.createElement("p", { className: classes.appCatalogEntryLabel, key: "appLabel" + index }, appLabel));
-                })) : (React.createElement("p", { className: classes.appCatalogEntryLabel }, t('appMarketplace.noLabelsProvidedText')))))));
+        return (React__default.createElement("div", { className: classes.appCatalogEntry, key: "appCatalogEntry" + index },
+            React__default.createElement("div", { className: classes.appCatalogEntryTopDetails },
+                appDetails.appLogo !== '' ? (React__default.createElement("img", { className: classes.appCatalogEntryImage, src: appDetails.appLogo })) : (React__default.createElement(Avatar, { className: classes.appCatalogEntryAvatar }, appInitials)),
+                React__default.createElement("div", { className: classes.appCatalogEntryNameAndOwnerContainer },
+                    React__default.createElement("p", { className: classes.appCatalogEntryName }, appDetails.appName),
+                    React__default.createElement("p", { className: classes.appCatalogEntryOwner }, appDetails.appPublisher))),
+            React__default.createElement("div", { className: classes.appCatalogEntryBottomDetails },
+                React__default.createElement("p", { className: classes.appCatalogEntryDescription }, appDetails.appDescription),
+                React__default.createElement("div", { className: classes.appCatalogEntryLabelsContainer }, appDetails.appLabels.length ? (appDetails.appLabels.map(function (appLabel, index) {
+                    return (React__default.createElement("p", { className: classes.appCatalogEntryLabel, key: "appLabel" + index }, appLabel));
+                })) : (React__default.createElement("p", { className: classes.appCatalogEntryLabel }, t('appMarketplace.noLabelsProvidedText')))))));
     };
     var appCatalogEntries = appsToDisplay.map(function (appDetails, index) {
-        return (React.createElement(Link, { className: classes.appCatalogEntryLink, key: "linkToApp" + index, to: "marketplace/app-details/" + appDetails.appID }, generateAppCatalogEntry(appDetails, index)));
+        return (React__default.createElement(Link, { className: classes.appCatalogEntryLink, key: "linkToApp" + index, to: "marketplace/app-details/" + appDetails.appID }, generateAppCatalogEntry(appDetails, index)));
     });
-    return React.createElement(React.Fragment, null, appCatalogEntries);
+    return React__default.createElement(React__default.Fragment, null, appCatalogEntries);
 };
 
-var useStyles$1 = makeStyles({
+var useStyles$1 = makeStyles(function (theme) { return ({
     amountOfAppMarketAppsText: {
         color: '#4E616F',
         fontSize: '16px',
         fontWeight: 400,
         marginBottom: '25px',
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontWeight: 700,
         },
     },
@@ -8266,12 +8391,13 @@ var useStyles$1 = makeStyles({
     },
     appMarketHeader: {
         // First color is a fallback one - do not remove!
-        background: '#7DD291 linear-gradient(270deg, rgba(125, 210, 145, 1) 0%, rgba(0, 125, 125, 1) 100%)',
+        background: theme.palette.primary.main,
         backgroundImage: 'url(' + spaceBackground + ')',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         borderBottom: '4px solid rgba(20, 40, 60, 0.1)',
         height: '335px',
+        marginTop: '110px',
         width: '100%',
     },
     appMarketHeaderContentsContainer: {
@@ -8292,18 +8418,18 @@ var useStyles$1 = makeStyles({
         width: '100%',
         // The input field itself
         '& input': {
-            color: '#BAC0C6',
+            color: theme.palette.grey['300'],
             fontSize: '16px',
             fontWeight: 400,
             height: '10px',
         },
         // The input field's SVG icon
         '& svg': {
-            color: '#BAC0C6',
+            color: theme.palette.grey['300'],
         },
     },
     appMarketHeaderTitle: {
-        color: '#FFFFFF',
+        color: theme.palette.common.white,
         fontSize: '42px',
         fontWeight: 700,
         marginBottom: '25px',
@@ -8313,8 +8439,8 @@ var useStyles$1 = makeStyles({
         width: '100%',
     },
     featuredAppCard: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.common.white,
+        borderRadius: theme.palette.dimensions.borderRadius,
         boxShadow: '1px 5px 5px 0px rgba(0, 0, 0, 0.15)',
         cursor: 'pointer',
         display: 'flex',
@@ -8327,13 +8453,13 @@ var useStyles$1 = makeStyles({
         textAlign: 'left',
         margin: 'auto 7.5px',
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '14px',
             fontWeight: 700,
             marginBottom: '-10px',
         },
         '& > :last-child': {
-            color: '#51606E',
+            color: theme.palette.text.hint,
             fontSize: '12px',
             fontWeight: 400,
         },
@@ -8341,7 +8467,7 @@ var useStyles$1 = makeStyles({
     featuredAppCardLogo: {
         margin: 'auto 0px',
         fontSize: '35px',
-        color: '#14283C',
+        color: theme.palette.text.primary,
     },
     featuredAppCardsSlider: {
         display: 'flex',
@@ -8354,10 +8480,10 @@ var useStyles$1 = makeStyles({
         width: '100%',
     },
     featuredAppsOuterContainer: {
-        background: 'rgba(0, 125, 125, 1)',
+        background: '#007D7D',
         backgroundImage: 'url(' + appCarouselBackground + ')',
         backgroundSize: 'cover',
-        borderRadius: '4px',
+        borderRadius: theme.palette.dimensions.borderRadius,
         display: 'flex',
         height: '230px',
         justifyContent: 'space-between',
@@ -8366,13 +8492,13 @@ var useStyles$1 = makeStyles({
         width: '100%',
     },
     featuredAppsSubtitle: {
-        color: '#FFFFFF',
+        color: theme.palette.common.white,
         fontSize: '16px',
         fontWeight: 300,
         marginBottom: '25px',
     },
     featuredAppsTitle: {
-        color: '#FFFFFF',
+        color: theme.palette.common.white,
         fontSize: '22px',
         fontWeight: 500,
         marginBottom: '10px',
@@ -8385,16 +8511,16 @@ var useStyles$1 = makeStyles({
         },
     },
     filterAccordionIcon: {
-        color: '#51606E',
+        color: theme.palette.text.hint,
     },
     filterAccordionTitle: {
-        color: '#51606E',
+        color: theme.palette.text.hint,
         fontSize: '16px',
         fontWeight: 400,
     },
     filterSeparator: {
         border: '1px solid #E3E3E3',
-        borderRadius: '4px',
+        borderRadius: theme.palette.dimensions.borderRadius,
         margin: '25px 0px',
         maxWidth: '175px',
         width: '100%',
@@ -8405,11 +8531,11 @@ var useStyles$1 = makeStyles({
         marginBottom: '10px',
     },
     filterTitleIcon: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         marginRight: '7.5px',
     },
     filterTitleText: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '18px',
         fontWeight: 500,
     },
@@ -8428,7 +8554,7 @@ var useStyles$1 = makeStyles({
         fontWeight: 200,
     },
     noFiltersAvailable: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '12px',
         fontWeight: 400,
     },
@@ -8437,10 +8563,10 @@ var useStyles$1 = makeStyles({
         fontWeight: 400,
         marginBottom: '-5px',
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
         },
         '& > :last-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
         },
     },
     selectedFilter: {
@@ -8448,10 +8574,10 @@ var useStyles$1 = makeStyles({
         fontWeight: 400,
         marginBottom: '-5px',
         '& > :first-child': {
-            color: '#19B3EE',
+            color: theme.palette.action.focus,
         },
         '& > :last-child': {
-            color: '#19B3EE',
+            color: theme.palette.action.focus,
             fontWeight: 500,
         },
     },
@@ -8459,29 +8585,30 @@ var useStyles$1 = makeStyles({
         cursor: 'pointer',
         margin: 'auto 0px',
         '& > svg': {
-            color: '#FFFFFF',
+            color: theme.palette.common.white,
             fontSize: '35px',
             verticalAlign: 'middle',
         },
     },
-});
+}); });
 
 var Marketplace$1 = function (_a) {
-    var allMarketplaceApps = _a.allMarketplaceApps, allMarketplaceLabels = _a.allMarketplaceLabels, allMarketplacePublishers = _a.allMarketplacePublishers, filteredMarketplaceApps = _a.filteredMarketplaceApps, getAllMarketplaceAppsAction = _a.getAllMarketplaceAppsAction, getAllMarketplaceLabelsAction = _a.getAllMarketplaceLabelsAction, getAllMarketplacePublishersAction = _a.getAllMarketplacePublishersAction, getFilteredMarketplaceAppsAction = _a.getFilteredMarketplaceAppsAction, retrievedAllMarketplaceApps = _a.retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels = _a.retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers = _a.retrievedAllMarketplacePublishers, settings = _a.settings;
+    var allMarketplaceApps = _a.allMarketplaceApps, allMarketplaceLabels = _a.allMarketplaceLabels, allMarketplacePublishers = _a.allMarketplacePublishers, filteredMarketplaceApps = _a.filteredMarketplaceApps, getAllMarketplaceAppsAction = _a.getAllMarketplaceAppsAction, getAllMarketplaceLabelsAction = _a.getAllMarketplaceLabelsAction, getAllMarketplacePublishersAction = _a.getAllMarketplacePublishersAction, getFilteredMarketplaceAppsAction = _a.getFilteredMarketplaceAppsAction, retrievedAllMarketplaceApps = _a.retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels = _a.retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers = _a.retrievedAllMarketplacePublishers;
     var classes = useStyles$1();
+    var portalSettings = useConfig();
     var trans = useTranslation();
     function t(str) {
         return trans.t("extensions.Marketplace." + str);
     }
-    React.useEffect(function () {
+    useEffect(function () {
         /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
         of all information we presently have on public apps, and their respective labels & publishers. */
         getAllMarketplaceAppsAction();
         getAllMarketplaceLabelsAction();
         getAllMarketplacePublishersAction();
     }, []);
-    var _b = React.useState([]), allAppsList = _b[0], setAllAppsList = _b[1];
-    React.useEffect(function () {
+    var _b = useState([]), allAppsList = _b[0], setAllAppsList = _b[1];
+    useEffect(function () {
         /* Once 'marketplace -> allMarketplaceApps' info is made available to us, we process it
         so as to later display it on our 'Apps catalog' section. */
         var allAvailableAppsArray = allMarketplaceApps;
@@ -8506,18 +8633,18 @@ var Marketplace$1 = function (_a) {
     }, [allMarketplaceApps]);
     /* App filtering & sorting set-up */
     // 1 - Search term filter
-    var _c = React.useState(''), searchTerm = _c[0], setSearchTerm = _c[1];
+    var _c = useState(''), searchTerm = _c[0], setSearchTerm = _c[1];
     var handleSearchTermChanges = function (changeEvent) {
         var newSearchTerm = changeEvent === null || changeEvent === void 0 ? void 0 : changeEvent.target.value.toLowerCase();
         setSearchTerm(newSearchTerm);
     };
     // 2 - Label & publisher filters
-    var _d = React.useState(false), filtersHaveChanged = _d[0], setFiltersHaveChanged = _d[1];
-    var _e = React.useState({}), labelFilters = _e[0], setLabelFilters = _e[1];
-    var _f = React.useState([]), labelFilterElements = _f[0], setLabelFilterElements = _f[1];
-    var _g = React.useState([]), publisherNames = _g[0], setPublisherNames = _g[1];
-    var _h = React.useState({}), publisherFilters = _h[0], setPublisherFilters = _h[1];
-    var _j = React.useState([]), publisherFilterElements = _j[0], setPublisherFilterElements = _j[1];
+    var _d = useState(false), filtersHaveChanged = _d[0], setFiltersHaveChanged = _d[1];
+    var _e = useState({}), labelFilters = _e[0], setLabelFilters = _e[1];
+    var _f = useState([]), labelFilterElements = _f[0], setLabelFilterElements = _f[1];
+    var _g = useState([]), publisherNames = _g[0], setPublisherNames = _g[1];
+    var _h = useState({}), publisherFilters = _h[0], setPublisherFilters = _h[1];
+    var _j = useState([]), publisherFilterElements = _j[0], setPublisherFilterElements = _j[1];
     var filterSelection = function (labelOrPublisherString, filterType) {
         if (filterType === 'labels') {
             var newLabelFilters = __assign({}, labelFilters);
@@ -8532,22 +8659,22 @@ var Marketplace$1 = function (_a) {
             setFiltersHaveChanged(true);
         }
     };
-    React.useEffect(function () {
+    useEffect(function () {
         var newLabelFilters = {};
         allMarketplaceLabels.map(function (label) {
             newLabelFilters[label] = false;
         });
         setLabelFilters(newLabelFilters);
     }, [allMarketplaceLabels]);
-    React.useEffect(function () {
+    useEffect(function () {
         var newLabelFilterElements = allMarketplaceLabels.map(function (label, index) {
-            return (React.createElement(FormControlLabel, { className: labelFilters[label]
+            return (React__default.createElement(FormControlLabel, { className: labelFilters[label]
                     ? classes.selectedFilter
-                    : classes.notSelectedFilter, control: React.createElement(Checkbox, { checked: labelFilters[label], name: label, onClick: function () { return filterSelection(label, 'labels'); } }), key: "labelFilterElement" + index, label: label }));
+                    : classes.notSelectedFilter, control: React__default.createElement(Checkbox, { checked: labelFilters[label], name: label, onClick: function () { return filterSelection(label, 'labels'); } }), key: "labelFilterElement" + index, label: label }));
         });
         setLabelFilterElements(newLabelFilterElements);
     }, [labelFilters]);
-    React.useEffect(function () {
+    useEffect(function () {
         var newPublisherNames = [];
         var newPublisherFilters = {};
         allMarketplacePublishers.map(function (publisher) {
@@ -8558,23 +8685,23 @@ var Marketplace$1 = function (_a) {
         setPublisherNames(newPublisherNames);
         setPublisherFilters(newPublisherFilters);
     }, [allMarketplacePublishers]);
-    React.useEffect(function () {
+    useEffect(function () {
         var newPublisherFilterElements = publisherNames.map(function (publisherName, index) {
-            return (React.createElement(FormControlLabel, { className: publisherFilters[publisherName]
+            return (React__default.createElement(FormControlLabel, { className: publisherFilters[publisherName]
                     ? classes.selectedFilter
-                    : classes.notSelectedFilter, control: React.createElement(Checkbox, { checked: publisherFilters[publisherName], name: publisherName, onClick: function () { return filterSelection(publisherName, 'publishers'); } }), key: "publisherFilterElement" + index, label: publisherName }));
+                    : classes.notSelectedFilter, control: React__default.createElement(Checkbox, { checked: publisherFilters[publisherName], name: publisherName, onClick: function () { return filterSelection(publisherName, 'publishers'); } }), key: "publisherFilterElement" + index, label: publisherName }));
         });
         setPublisherFilterElements(newPublisherFilterElements);
     }, [publisherFilters]);
     // 3 - Sort mode
-    var _k = React.useState('appName'), sortMode = _k[0], setSortMode = _k[1]; // Either 'appName', 'publisherName', or 'lastUpdated'
+    var _k = useState('appName'), sortMode = _k[0], setSortMode = _k[1]; // Either 'appName', 'publisherName', or 'lastUpdated'
     var sortModeSelection = function (clickEvent) {
         var selectedSortMode = clickEvent.target.value;
         setSortMode(selectedSortMode);
     };
     /* App filtering & sorting process */
-    var _l = React.useState([]), filteredAppsList = _l[0], setFilteredAppsList = _l[1];
-    React.useEffect(function () {
+    var _l = useState([]), filteredAppsList = _l[0], setFilteredAppsList = _l[1];
+    useEffect(function () {
         /* Once 'marketplace -> filteredMarketplaceApps' info is made available to us, we process it
         so as to later display it on our 'Apps catalog' section. */
         var filteredAppsArray = filteredMarketplaceApps;
@@ -8628,11 +8755,11 @@ var Marketplace$1 = function (_a) {
             order: orderModeForFilterAction,
         });
     };
-    React.useEffect(function () {
+    useEffect(function () {
         filterAndSortApps();
         setFiltersHaveChanged(false);
     }, [filtersHaveChanged, labelFilters, publisherFilters, sortMode]);
-    React.useEffect(function () {
+    useEffect(function () {
         if (searchTerm.length === 0) {
             filterAndSortApps();
         }
@@ -8646,61 +8773,61 @@ var Marketplace$1 = function (_a) {
         }
     }, [searchTerm]);
     // Carousel of 'featured apps'
-    var _m = React.useState(0), currentSlide = _m[0]; _m[1];
-    return (React.createElement("main", null,
-        React.createElement("header", { className: classes.appMarketHeader },
-            React.createElement("div", { className: classes.appMarketHeaderContentsContainer },
-                React.createElement("div", { className: classes.appMarketHeaderTitleAndSearchField },
-                    React.createElement("h1", { className: classes.appMarketHeaderTitle },
-                        React.createElement(React.Fragment, null,
+    var _m = useState(0), currentSlide = _m[0]; _m[1];
+    return (React__default.createElement("main", null,
+        React__default.createElement("header", { className: classes.appMarketHeader },
+            React__default.createElement("div", { className: classes.appMarketHeaderContentsContainer },
+                React__default.createElement("div", { className: classes.appMarketHeaderTitleAndSearchField },
+                    React__default.createElement("h1", { className: classes.appMarketHeaderTitle },
+                        React__default.createElement(React__default.Fragment, null,
                             t('appMarketplace.headerTitlePartOne'),
                             " "),
-                        React.createElement(React.Fragment, null,
-                            settings.portalName,
+                        React__default.createElement(React__default.Fragment, null,
+                            portalSettings.portalName,
                             " "),
-                        React.createElement(React.Fragment, null, t('appMarketplace.headerTitlePartTwo'))),
-                    React.createElement(TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
-                            endAdornment: (React.createElement(InputAdornment, { position: "end" },
-                                React.createElement(SearchRoundedIcon, null))),
+                        React__default.createElement(React__default.Fragment, null, t('appMarketplace.headerTitlePartTwo'))),
+                    React__default.createElement(TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
+                            endAdornment: (React__default.createElement(InputAdornment, { position: "end" },
+                                React__default.createElement(SearchRoundedIcon, null))),
                         }, onChange: handleSearchTermChanges, placeholder: t('appMarketplace.searchForAppsTextField'), variant: "outlined" })),
-                React.createElement("div", null,
-                    React.createElement("img", { className: classes.appMarketHeaderImage, src: marketplace })))),
-        React.createElement("section", { className: classes.appMarketFiltersAndAppsSection },
-            React.createElement("div", { className: classes.appMarketFilters },
-                React.createElement(FormControl, null,
-                    React.createElement(FormLabel, null,
-                        React.createElement("div", { className: classes.filterTitleContainer },
-                            React.createElement(SortRoundedIcon, { className: classes.filterTitleIcon }),
-                            React.createElement("p", { className: classes.filterTitleText }, t('appMarketplace.sortByTitle')))),
-                    React.createElement(RadioGroup, { name: "sortMode", onChange: sortModeSelection, value: sortMode },
-                        React.createElement(FormControlLabel, { className: sortMode === 'appName'
+                React__default.createElement("div", null,
+                    React__default.createElement("img", { className: classes.appMarketHeaderImage, src: marketplace })))),
+        React__default.createElement("section", { className: classes.appMarketFiltersAndAppsSection },
+            React__default.createElement("div", { className: classes.appMarketFilters },
+                React__default.createElement(FormControl, null,
+                    React__default.createElement(FormLabel, null,
+                        React__default.createElement("div", { className: classes.filterTitleContainer },
+                            React__default.createElement(SortRoundedIcon, { className: classes.filterTitleIcon }),
+                            React__default.createElement("p", { className: classes.filterTitleText }, t('appMarketplace.sortByTitle')))),
+                    React__default.createElement(RadioGroup, { name: "sortMode", onChange: sortModeSelection, value: sortMode },
+                        React__default.createElement(FormControlLabel, { className: sortMode === 'appName'
                                 ? classes.selectedFilter
-                                : classes.notSelectedFilter, control: React.createElement(Radio, null), label: t('appMarketplace.sortModes.appName'), value: "appName" }),
-                        React.createElement(FormControlLabel, { className: sortMode === 'publisherName'
+                                : classes.notSelectedFilter, control: React__default.createElement(Radio, null), label: t('appMarketplace.sortModes.appName'), value: "appName" }),
+                        React__default.createElement(FormControlLabel, { className: sortMode === 'publisherName'
                                 ? classes.selectedFilter
-                                : classes.notSelectedFilter, control: React.createElement(Radio, null), label: t('appMarketplace.sortModes.publisherName'), value: "publisherName" }),
-                        React.createElement(FormControlLabel, { className: sortMode === 'lastUpdated'
+                                : classes.notSelectedFilter, control: React__default.createElement(Radio, null), label: t('appMarketplace.sortModes.publisherName'), value: "publisherName" }),
+                        React__default.createElement(FormControlLabel, { className: sortMode === 'lastUpdated'
                                 ? classes.selectedFilter
-                                : classes.notSelectedFilter, control: React.createElement(Radio, null), label: t('appMarketplace.sortModes.lastUpdated'), value: "lastUpdated" }))),
-                React.createElement("hr", { className: classes.filterSeparator }),
-                React.createElement(FormControl, null,
-                    React.createElement(FormLabel, null,
-                        React.createElement("div", { className: classes.filterTitleContainer },
-                            React.createElement(FilterListRoundedIcon, { className: classes.filterTitleIcon }),
-                            React.createElement("p", { className: classes.filterTitleText }, t('appMarketplace.filterByTitle')))),
-                    React.createElement(Accordion, { className: classes.filterAccordionContainer },
-                        React.createElement(AccordionSummary, { expandIcon: React.createElement(ExpandMoreRoundedIcon, { className: classes.filterAccordionIcon }) },
-                            React.createElement(Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.labels'))),
-                        React.createElement(AccordionDetails, null,
-                            React.createElement(FormGroup, null, labelFilterElements.length !== 0 ? (labelFilterElements) : (React.createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noLabels')))))),
-                    React.createElement(Accordion, { className: classes.filterAccordionContainer },
-                        React.createElement(AccordionSummary, { expandIcon: React.createElement(ExpandMoreRoundedIcon, { className: classes.filterAccordionIcon }) },
-                            React.createElement(Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.publishers'))),
-                        React.createElement(AccordionDetails, null,
-                            React.createElement(FormGroup, null, publisherFilterElements.length !== 0 ? (publisherFilterElements) : (React.createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noPublishers')))))))),
-            React.createElement("div", { className: classes.appMarketApps },
-                React.createElement("p", { className: classes.amountOfAppMarketAppsText },
-                    React.createElement("span", null,
+                                : classes.notSelectedFilter, control: React__default.createElement(Radio, null), label: t('appMarketplace.sortModes.lastUpdated'), value: "lastUpdated" }))),
+                React__default.createElement("hr", { className: classes.filterSeparator }),
+                React__default.createElement(FormControl, null,
+                    React__default.createElement(FormLabel, null,
+                        React__default.createElement("div", { className: classes.filterTitleContainer },
+                            React__default.createElement(FilterListRoundedIcon, { className: classes.filterTitleIcon }),
+                            React__default.createElement("p", { className: classes.filterTitleText }, t('appMarketplace.filterByTitle')))),
+                    React__default.createElement(Accordion, { className: classes.filterAccordionContainer },
+                        React__default.createElement(AccordionSummary, { expandIcon: React__default.createElement(ExpandMoreRoundedIcon, { className: classes.filterAccordionIcon }) },
+                            React__default.createElement(Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.labels'))),
+                        React__default.createElement(AccordionDetails, null,
+                            React__default.createElement(FormGroup, null, labelFilterElements.length !== 0 ? (labelFilterElements) : (React__default.createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noLabels')))))),
+                    React__default.createElement(Accordion, { className: classes.filterAccordionContainer },
+                        React__default.createElement(AccordionSummary, { expandIcon: React__default.createElement(ExpandMoreRoundedIcon, { className: classes.filterAccordionIcon }) },
+                            React__default.createElement(Typography, { className: classes.filterAccordionTitle }, t('appMarketplace.filterByModes.publishers'))),
+                        React__default.createElement(AccordionDetails, null,
+                            React__default.createElement(FormGroup, null, publisherFilterElements.length !== 0 ? (publisherFilterElements) : (React__default.createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noPublishers')))))))),
+            React__default.createElement("div", { className: classes.appMarketApps },
+                React__default.createElement("p", { className: classes.amountOfAppMarketAppsText },
+                    React__default.createElement("span", null,
                         filteredAppsList.length > 0
                             ? filteredAppsList.length
                             : searchTerm.length === 0 &&
@@ -8708,54 +8835,54 @@ var Marketplace$1 = function (_a) {
                                 Object.values(publisherFilters).includes(false)
                                 ? allAppsList.length
                                 : '0',
-                        React.createElement(React.Fragment, null,
+                        React__default.createElement(React__default.Fragment, null,
                             " ",
                             t('appMarketplace.amountOfAppsTextPartOne'),
                             " ")),
-                    React.createElement(React.Fragment, null, t('appMarketplace.amountOfAppsTextPartTwo'))),
+                    React__default.createElement(React__default.Fragment, null, t('appMarketplace.amountOfAppsTextPartTwo'))),
                 retrievedAllMarketplaceApps &&
                     retrievedAllMarketplaceLabels &&
-                    retrievedAllMarketplacePublishers ? (filteredAppsList.length > 0 ? (React.createElement(React.Fragment, null,
-                    React.createElement("div", { className: classes.appCatalogContainer },
-                        React.createElement(AppCatalog, { appsToDisplay: filteredAppsList })),
-                    React.createElement(Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : Object.values(labelFilters).includes(false) &&
+                    retrievedAllMarketplacePublishers ? (filteredAppsList.length > 0 ? (React__default.createElement(React__default.Fragment, null,
+                    React__default.createElement("div", { className: classes.appCatalogContainer },
+                        React__default.createElement(AppCatalog, { appsToDisplay: filteredAppsList })),
+                    React__default.createElement(Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : Object.values(labelFilters).includes(false) &&
                     Object.values(publisherFilters).includes(false) &&
-                    searchTerm.length === 0 ? (React.createElement(React.Fragment, null,
-                    React.createElement("div", { className: classes.appCatalogContainer },
-                        React.createElement(AppCatalog, { appsToDisplay: allAppsList })),
-                    React.createElement(Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText'))),
-                allMarketplaceApps && (React.createElement("div", { className: classes.featuredAppsOuterContainer },
-                    React.createElement("div", { className: classes.featuredAppsInnerContainer },
-                        React.createElement("p", { className: classes.featuredAppsTitle }, t('appMarketplace.featuredAppsTitle')),
-                        React.createElement("p", { className: classes.featuredAppsSubtitle }, t('appMarketplace.featuredAppsSubtitle')),
-                        React.createElement("div", { className: classes.featuredAppCardsSlider },
-                            React.createElement("div", { className: currentSlide === 1 || currentSlide === 2
+                    searchTerm.length === 0 ? (React__default.createElement(React__default.Fragment, null,
+                    React__default.createElement("div", { className: classes.appCatalogContainer },
+                        React__default.createElement(AppCatalog, { appsToDisplay: allAppsList })),
+                    React__default.createElement(Pagination, { count: 5, disabled: true, shape: "rounded", variant: "outlined" }))) : (React__default.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React__default.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText'))),
+                allMarketplaceApps && (React__default.createElement("div", { className: classes.featuredAppsOuterContainer },
+                    React__default.createElement("div", { className: classes.featuredAppsInnerContainer },
+                        React__default.createElement("p", { className: classes.featuredAppsTitle }, t('appMarketplace.featuredAppsTitle')),
+                        React__default.createElement("p", { className: classes.featuredAppsSubtitle }, t('appMarketplace.featuredAppsSubtitle')),
+                        React__default.createElement("div", { className: classes.featuredAppCardsSlider },
+                            React__default.createElement("div", { className: currentSlide === 1 || currentSlide === 2
                                     ? classes.visibleFeaturedAppCardsSliderButton
                                     : classes.invisibleFeaturedAppCardsSliderButton },
-                                React.createElement(ChevronLeftRoundedIcon, null)),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 1"),
-                                    React.createElement("p", null, "Publisher A"))),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 2"),
-                                    React.createElement("p", null, "Publisher B"))),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 3"),
-                                    React.createElement("p", null, "Publisher C"))),
-                            React.createElement("div", { className: currentSlide === 0 || currentSlide === 1
+                                React__default.createElement(ChevronLeftRoundedIcon, null)),
+                            React__default.createElement("div", { className: classes.featuredAppCard },
+                                React__default.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
+                                React__default.createElement("div", { className: classes.featuredAppCardInfo },
+                                    React__default.createElement("p", null, "Featured app 1"),
+                                    React__default.createElement("p", null, "Publisher A"))),
+                            React__default.createElement("div", { className: classes.featuredAppCard },
+                                React__default.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
+                                React__default.createElement("div", { className: classes.featuredAppCardInfo },
+                                    React__default.createElement("p", null, "Featured app 2"),
+                                    React__default.createElement("p", null, "Publisher B"))),
+                            React__default.createElement("div", { className: classes.featuredAppCard },
+                                React__default.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
+                                React__default.createElement("div", { className: classes.featuredAppCardInfo },
+                                    React__default.createElement("p", null, "Featured app 3"),
+                                    React__default.createElement("p", null, "Publisher C"))),
+                            React__default.createElement("div", { className: currentSlide === 0 || currentSlide === 1
                                     ? classes.visibleFeaturedAppCardsSliderButton
                                     : classes.invisibleFeaturedAppCardsSliderButton },
-                                React.createElement(ChevronRightRoundedIcon, null))))))))));
+                                React__default.createElement(ChevronRightRoundedIcon, null))))))))));
 };
 
-var mapStateToProps = function (_a) {
-    var marketplace = _a.marketplace, settings = _a.settings;
+var mapStateToProps$1 = function (_a) {
+    var marketplace = _a.marketplace;
     return ({
         allMarketplaceApps: marketplace.allMarketplaceApps,
         allMarketplaceLabels: marketplace.allMarketplaceLabels,
@@ -8764,10 +8891,9 @@ var mapStateToProps = function (_a) {
         retrievedAllMarketplaceApps: marketplace.retrievedAllMarketplaceApps,
         retrievedAllMarketplaceLabels: marketplace.retrievedAllMarketplaceLabels,
         retrievedAllMarketplacePublishers: marketplace.retrievedAllMarketplacePublishers,
-        settings: settings,
     });
 };
-var mapDispatchToProps = function (dispatch) {
+var mapDispatchToProps$1 = function (dispatch) {
     return bindActionCreators({
         getAllMarketplaceAppsAction: getAllMarketplaceAppsAction,
         getAllMarketplaceLabelsAction: getAllMarketplaceLabelsAction,
@@ -8775,7 +8901,7 @@ var mapDispatchToProps = function (dispatch) {
         getFilteredMarketplaceAppsAction: getFilteredMarketplaceAppsAction,
     }, dispatch);
 };
-var Marketplace = connect(mapStateToProps, mapDispatchToProps)(Marketplace$1);
+var Marketplace = connect(mapStateToProps$1, mapDispatchToProps$1)(Marketplace$1);
 
 var pagesConfig = [
     {
@@ -8795,19 +8921,22 @@ var hookPages = function () {
     return pagesConfig;
 };
 
-var useStyles = makeStyles({
+var useStyles = makeStyles(function (theme) { return ({
+    allSubbedMarketplaceAppsContainer: {
+        display: 'flex',
+    },
     applicationsContainerTitle: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '24px',
         fontWeight: 400,
         marginBottom: '24px',
         marginTop: '24px',
     },
     browseMarketplaceAppsButton: {
-        backgroundColor: '#FFFFFF',
-        border: "1px solid #BAC0C6",
+        backgroundColor: theme.palette.common.white,
+        border: "1px solid " + theme.palette.grey['300'],
         borderRadius: "4px",
-        color: "#51606E !important",
+        color: theme.palette.text.hint + " !important",
         fontSize: '16px',
         fontWeight: 400,
         marginBottom: '40px',
@@ -8815,13 +8944,14 @@ var useStyles = makeStyles({
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: theme.palette.common.white,
         },
     },
     loadingMarketplaceApplicationCards: {
-        color: '#85909A',
+        color: theme.palette.text.secondary,
         fontSize: '16px',
         fontWeight: 200,
+        marginBottom: '25px',
     },
     marketplaceAppCard: {
         height: '331.5px',
@@ -8840,7 +8970,7 @@ var useStyles = makeStyles({
         },
     },
     marketplaceAppCardAvatar: {
-        background: '#C8DC8C linear-gradient(270deg, rgba(200, 220, 140, 1) 0%, rgba(25, 165, 140, 1) 100%)',
+        background: theme.palette.gradient.light,
         fontSize: '20px',
         fontWeight: 300,
         height: '120px',
@@ -8850,15 +8980,15 @@ var useStyles = makeStyles({
     },
     marketplaceAppCardBottomSection: {
         backgroundColor: '#F5F5F5',
-        border: "1px solid #BAC0C6",
-        borderRadius: '4px',
+        border: "1px solid " + theme.palette.grey['300'],
+        borderRadius: theme.palette.dimensions.borderRadius,
         borderTop: 'none',
         borderTopLeftRadius: '0px',
         borderTopRightRadius: '0px',
         padding: '12px 24px 24px 24px',
     },
     marketplaceAppCardDescription: {
-        color: '#85909A',
+        color: theme.palette.text.secondary,
         display: '-webkit-box',
         fontSize: '16px',
         fontWeight: 300,
@@ -8882,7 +9012,7 @@ var useStyles = makeStyles({
         textDecoration: 'none',
     },
     marketplaceAppCardTitle: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '22px',
         fontWeight: 400,
         marginBottom: '12px',
@@ -8891,107 +9021,109 @@ var useStyles = makeStyles({
         whiteSpace: 'nowrap',
     },
     marketplaceAppCardTopSection: {
-        backgroundColor: '#F7F8F9',
-        border: "1px solid #BAC0C6",
+        backgroundColor: theme.palette.background.default,
+        border: "1px solid " + theme.palette.grey['300'],
         borderBottomLeftRadius: '0px',
         borderBottomRightRadius: '0px',
-        borderRadius: '4px',
+        borderRadius: theme.palette.dimensions.borderRadius,
         textAlign: 'center',
     },
     marketplaceAppCardWithAvatarIcon: {
-        color: '#BAC0C6',
+        color: theme.palette.grey['300'],
         fontSize: '30px',
         position: 'absolute',
         transform: 'translate(105px, 10px) rotate(45deg)',
     },
     marketplaceAppCardWithImageIcon: {
-        color: '#BAC0C6',
+        color: theme.palette.grey['300'],
         fontSize: '30px',
         position: 'absolute',
         transform: 'translate(165px, 10px) rotate(45deg)',
     },
-});
+}); });
 
-var MarketplaceAppCards$1 = function () {
+var SubbedMarketplaceAppCards$1 = function (_a) {
+    var allSubbedMarketplaceApps = _a.allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction = _a.getAllSubbedMarketplaceAppsAction, retrievedAllSubbedMarketplaceApps = _a.retrievedAllSubbedMarketplaceApps, userProfile = _a.userProfile;
     var classes = useStyles();
     var trans = useTranslation();
     function t(str) {
         return trans.t("extensions.Marketplace." + str);
     }
-    // TODO: Use this until it is possible to retrieve all subscribed marketplace apps from the BE
-    var mockSubscribedMarketplaceApps = [
-        {
-            createdAt: '2021-02-24T08:38:36.088Z',
-            description: 'Diamonds, they are all one needs.',
-            id: 1,
-            labels: [],
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Diamond.jpg',
-            name: 'Diamond App',
-            organization: {
-                id: '1',
-                name: 'ACME',
-                privacyUrl: null,
-                supportUrl: null,
-                tosUrl: null,
-            },
-            orgId: 1,
-            privacyUrl: '',
-            shortDescription: 'Diamonds are forever, you see',
-            supportUrl: '',
-            tosUrl: '',
-            updatedAt: '2021-03-30T16:52:29.283Z',
-            websiteUrl: '',
-            youtubeUrl: '',
-        },
-    ];
+    useEffect(function () {
+        /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
+        of all information we presently have on some user's marketplace app subscriptions. */
+        if (userProfile) {
+            var userID = parseInt(userProfile.id);
+            getAllSubbedMarketplaceAppsAction(userID);
+        }
+    }, [userProfile]);
     var stringChecker = function (providedString) {
         return providedString.length ? providedString : false;
     };
     var allMarketplaceAppNames = [];
     /* Generates an 'app card' for every marketplace app a user has subscribed to. */
-    var marketplaceAppCardGenerator = function (mockSubscribedMarketplaceApps) {
-        if (mockSubscribedMarketplaceApps.length === 0) {
-            return (React.createElement("p", { className: classes.loadingMarketplaceApplicationCards }, t('appListing.noMarketplaceAppSubscriptions')));
+    var subbedMarketplaceAppCardGenerator = function (subbedMarketplaceApps) {
+        if (!retrievedAllSubbedMarketplaceApps) {
+            return (React__default.createElement("p", { className: classes.loadingMarketplaceApplicationCards }, "Retrieving all subscribed Marketplace apps..."));
         }
-        var allMarketplaceAppCardsArray = mockSubscribedMarketplaceApps.map(function (marketplaceApp, index) {
-            var appNameInitialsArray = marketplaceApp.name.split(' ');
+        if (subbedMarketplaceApps.length === 0) {
+            return (React__default.createElement("p", { className: classes.loadingMarketplaceApplicationCards }, t('appListing.noMarketplaceAppSubscriptions')));
+        }
+        var allSubbedMarketplaceAppCardsArray = subbedMarketplaceApps.map(function (subbedMarketplaceApp, index) {
+            var appNameInitialsArray = subbedMarketplaceApp.name.split(' ');
             var appNameInitials = appNameInitialsArray.length >= 2
                 ? "" + appNameInitialsArray[0][0] + appNameInitialsArray[1][0]
                 : "" + appNameInitialsArray[0][0] + appNameInitialsArray[0][1];
             allMarketplaceAppNames = __spreadArray(__spreadArray([], allMarketplaceAppNames), [
-                marketplaceApp.name,
+                subbedMarketplaceApp.name,
             ]);
-            return (React.createElement(Link, { className: classes.marketplaceAppCardLink, key: "marketplaceAppCardLink" + index, to: "/marketplace/app-details/" + marketplaceApp.id },
-                React.createElement("div", { className: classes.marketplaceAppCard },
-                    React.createElement("div", { className: classes.marketplaceAppCardTopSection },
-                        React.createElement(HeightRoundedIcon, { className: marketplaceApp.logo !== ''
+            return (React__default.createElement(Link, { className: classes.marketplaceAppCardLink, key: "marketplaceAppCardLink" + index, to: "/marketplace/app-details/" + subbedMarketplaceApp.id },
+                React__default.createElement("div", { className: classes.marketplaceAppCard },
+                    React__default.createElement("div", { className: classes.marketplaceAppCardTopSection },
+                        React__default.createElement(HeightRoundedIcon, { className: subbedMarketplaceApp.logo !== ''
                                 ? classes.marketplaceAppCardWithImageIcon
                                 : classes.marketplaceAppCardWithAvatarIcon }),
-                        marketplaceApp.logo !== '' ? (React.createElement("img", { className: classes.marketplaceAppCardImage, src: marketplaceApp.logo })) : (React.createElement(Avatar, { className: classes.marketplaceAppCardAvatar }, appNameInitials))),
-                    React.createElement("div", { className: classes.marketplaceAppCardBottomSection },
-                        React.createElement("p", { className: classes.marketplaceAppCardTitle }, marketplaceApp.name),
-                        React.createElement("p", { className: classes.marketplaceAppCardDescription }, stringChecker(marketplaceApp.shortDescription) ||
-                            stringChecker(marketplaceApp.description) ||
+                        subbedMarketplaceApp.logo !== '' ? (React__default.createElement("img", { className: classes.marketplaceAppCardImage, src: subbedMarketplaceApp.logo })) : (React__default.createElement(Avatar, { className: classes.marketplaceAppCardAvatar }, appNameInitials))),
+                    React__default.createElement("div", { className: classes.marketplaceAppCardBottomSection },
+                        React__default.createElement("p", { className: classes.marketplaceAppCardTitle }, subbedMarketplaceApp.name),
+                        React__default.createElement("p", { className: classes.marketplaceAppCardDescription }, 
+                        //stringChecker(subbedMarketplaceApp.shortDescription) ||
+                        stringChecker(subbedMarketplaceApp.description) ||
                             t('appListing.noAppDescriptionProvided'))))));
         });
-        return allMarketplaceAppCardsArray;
+        return allSubbedMarketplaceAppCardsArray;
     };
-    return (React.createElement("div", null,
-        React.createElement("p", { className: classes.applicationsContainerTitle }, t('appListing.marketplaceAppsSectionTitle')),
-        React.createElement(Button, { className: classes.browseMarketplaceAppsButton, href: "/marketplace" }, t('appListing.browseMarketplaceApps')),
-        marketplaceAppCardGenerator(mockSubscribedMarketplaceApps)));
+    return (React__default.createElement("div", null,
+        React__default.createElement("p", { className: classes.applicationsContainerTitle }, t('appListing.marketplaceAppsSectionTitle')),
+        React__default.createElement(Button, { className: classes.browseMarketplaceAppsButton, href: "/marketplace" }, t('appListing.browseMarketplaceApps')),
+        React__default.createElement("div", { className: classes.allSubbedMarketplaceAppsContainer }, subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps))));
 };
 
-var MarketplaceAppCards = connect(null, null)(MarketplaceAppCards$1);
+var mapStateToProps = function (_a) {
+    var marketplace = _a.marketplace, profile = _a.profile;
+    return ({
+        allSubbedMarketplaceApps: marketplace.allSubbedMarketplaceApps,
+        retrievedAllSubbedMarketplaceApps: marketplace.retrievedAllSubbedMarketplaceApps,
+        userProfile: profile.profile.user,
+    });
+};
+var mapDispatchToProps = function (dispatch) {
+    return bindActionCreators({
+        getAllSubbedMarketplaceAppsAction: getAllSubbedMarketplaceAppsAction,
+    }, dispatch);
+};
+var SubbedMarketplaceAppCards = connect(mapStateToProps, mapDispatchToProps)(SubbedMarketplaceAppCards$1);
 
 var _a;
 var sections = (_a = {},
-    _a['MARKETPLACE_APPLICATIONS'] = MarketplaceAppCards,
+    // TODO: Fix the error ignored by the following ts-ignore
+    // @ts-ignore
+    _a['SUBBED_MARKETPLACE_APPS'] = SubbedMarketplaceAppCards,
     _a);
 var hookSections = function (section, props) {
     var Component = sections[section];
     if (Component) {
-        return React.createElement(Component, __assign({}, props));
+        return React__default.createElement(Component, __assign({}, props));
     }
     return null;
 };
@@ -11629,7 +11761,7 @@ followRedirects.wrap = wrap_1;
 var _args = [
 	[
 		"axios@0.21.1",
-		"/Users/dnva/Documents/cloudoki/API_SUITE/apisuite-marketplace-extension-ui"
+		"/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/Marketplace/apisuite-marketplace-extension-ui"
 	]
 ];
 var _from = "axios@0.21.1";
@@ -11654,7 +11786,7 @@ var _requiredBy = [
 ];
 var _resolved = "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz";
 var _spec = "0.21.1";
-var _where = "/Users/dnva/Documents/cloudoki/API_SUITE/apisuite-marketplace-extension-ui";
+var _where = "/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/Marketplace/apisuite-marketplace-extension-ui";
 var author = {
 	name: "Matt Zabriskie"
 };
@@ -12755,6 +12887,93 @@ function getAllMarketplacePublishersActionSaga() {
         }
     });
 }
+function getAllSubbedMarketplaceAppsActionSaga(action) {
+    var getAllSubbedMarketplaceAppsActionUrl, response;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                getAllSubbedMarketplaceAppsActionUrl = "https://marketplace.develop.apisuite.io/users/" + action.userID + "/subscriptions";
+                return [4 /*yield*/, call(request, {
+                        url: getAllSubbedMarketplaceAppsActionUrl,
+                        method: 'GET',
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded',
+                        },
+                    })];
+            case 1:
+                response = _a.sent();
+                console.log('getAllSubbedMarketplaceAppsActionSaga response', response);
+                return [4 /*yield*/, put(getAllSubbedMarketplaceAppsActionSuccess(response.data))];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                _a.sent();
+                console.log('Error fetching all subscribed marketplace apps');
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}
+function subscribeToMarketplaceAppActionSaga(action) {
+    var subscribeToMarketplaceAppActionUrl, response;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                subscribeToMarketplaceAppActionUrl = "https://marketplace.develop.apisuite.io/users/" + action.userID + "/subscriptions/" + action.appID;
+                return [4 /*yield*/, call(request, {
+                        url: subscribeToMarketplaceAppActionUrl,
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded',
+                        },
+                    })];
+            case 1:
+                response = _a.sent();
+                console.log('subscribeToMarketplaceAppActionSaga response', response);
+                return [4 /*yield*/, put(subscribeToMarketplaceAppActionSuccess())];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                _a.sent();
+                console.log('Error subscribing');
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}
+function unsubscribeToMarketplaceAppActionSaga(action) {
+    var unsubscribeToMarketplaceAppActionUrl, response;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                unsubscribeToMarketplaceAppActionUrl = "https://marketplace.develop.apisuite.io/users/" + action.userID + "/subscriptions/" + action.appID;
+                return [4 /*yield*/, call(request, {
+                        url: unsubscribeToMarketplaceAppActionUrl,
+                        method: 'DELETE',
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded',
+                        },
+                    })];
+            case 1:
+                response = _a.sent();
+                console.log('unsubscribeToMarketplaceAppActionSaga response', response);
+                return [4 /*yield*/, put(unsubscribeToMarketplaceAppActionSuccess())];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                _a.sent();
+                console.log('Error unsubscribing');
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}
 function getFilteredMarketplaceAppsActionSaga(action) {
     var getFilteredMarketplaceAppsActionUrl, orgIDParameters_1, labelParameters_1, sortModeParameters, orderModeParameters, response, filteredMarketplaceApps;
     return __generator(this, function (_a) {
@@ -12894,11 +13113,20 @@ function rootSaga() {
                 return [4 /*yield*/, takeLatest(GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, getAllMarketplacePublishersActionSaga)];
             case 3:
                 _a.sent();
-                return [4 /*yield*/, takeLatest(GET_FILTERED_MARKETPLACE_APPS_ACTION, getFilteredMarketplaceAppsActionSaga)];
+                return [4 /*yield*/, takeLatest(GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, getAllSubbedMarketplaceAppsActionSaga)];
             case 4:
                 _a.sent();
-                return [4 /*yield*/, takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga)];
+                return [4 /*yield*/, takeLatest(SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSaga)];
             case 5:
+                _a.sent();
+                return [4 /*yield*/, takeLatest(UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSaga)];
+            case 6:
+                _a.sent();
+                return [4 /*yield*/, takeLatest(GET_FILTERED_MARKETPLACE_APPS_ACTION, getFilteredMarketplaceAppsActionSaga)];
+            case 7:
+                _a.sent();
+                return [4 /*yield*/, takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga)];
+            case 8:
                 _a.sent();
                 return [2 /*return*/];
         }
@@ -12908,7 +13136,6 @@ function rootSaga() {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 var injectStuffIntoStore = function (coreStoreProps) {
     coreStoreProps.injectReducer('marketplace', reducer);
-    coreStoreProps.injectReducer('settings', reducer);
     coreStoreProps.injectSaga('marketplace', rootSaga);
 };
 
