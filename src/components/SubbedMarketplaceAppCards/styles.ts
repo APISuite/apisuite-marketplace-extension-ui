@@ -57,7 +57,7 @@ export default makeStyles((theme) => ({
   },
 
   marketplaceAppCardAvatar: {
-    background: theme.palette.gradient.main,
+    background: theme.palette.gradient.light,
     fontSize: '20px',
     fontWeight: 300,
     height: '120px',

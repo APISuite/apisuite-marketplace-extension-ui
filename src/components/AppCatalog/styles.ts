@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
   },
 
   appCatalogEntryAvatar: {
-    background: theme.palette.gradient.main,
+    background: theme.palette.gradient.light,
     fontSize: '15px',
     fontWeight: 300,
     height: '45px',

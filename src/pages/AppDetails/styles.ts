@@ -2,7 +2,7 @@ import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
   appAvatar: {
-    background: theme.palette.gradient.main,
+    background: theme.palette.gradient.light,
     fontSize: '55px',
     fontWeight: 300,
     height: '150px',
