@@ -53,6 +53,7 @@ export default makeStyles((theme) => ({
     backgroundSize: 'cover',
     borderBottom: '4px solid rgba(20, 40, 60, 0.1)',
     height: '335px',
+    marginTop: '110px',
     width: '100%',
   },
 

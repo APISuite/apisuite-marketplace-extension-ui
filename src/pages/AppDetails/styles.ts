@@ -42,7 +42,7 @@ export default makeStyles((theme) => ({
   appDetailsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    margin: 'auto',
+    margin: '110px auto 0px auto',
     maxWidth: '900px',
     padding: '40px 0px 60px 0px',
     width: '100%',
