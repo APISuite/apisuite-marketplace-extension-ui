@@ -107,7 +107,7 @@
         "noAppDescriptionProvided": "No description provided",
         "noMarketplaceAppSubscriptions": "You have not subscribed to any marketplace apps yet."
       },
-        "appMarketplace": {
+      "appMarketplace": {
         "headerTitlePartOne": "Explore the",
         "headerTitlePartTwo": "Marketplace",
         "searchForAppsTextField": "Search for apps",
@@ -135,6 +135,7 @@
         "appDetails": {
           "loadingAppDetails": "Loading the selected app's details...",
           "appSubscribeButton": "Subscribe app",
+          "appAlreadySubscribedButton": "Subscribed to app",
           "subSectionTitleOne": "Application links:",
           "subSectionTitleTwo": "Published by:",
           "subSectionTitleThree": "Publisher links:",

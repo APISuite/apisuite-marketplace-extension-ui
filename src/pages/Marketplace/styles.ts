@@ -3,7 +3,7 @@ import { makeStyles } from '@apisuite/fe-base'
 import appCarouselBackground from 'assets/appCarouselBackground.svg'
 import spaceBackground from 'assets/space-background.svg'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   amountOfAppMarketAppsText: {
     color: '#4E616F',
     fontSize: '16px',
@@ -11,7 +11,7 @@ export default makeStyles({
     marginBottom: '25px',
 
     '& > :first-child': {
-      color: '#14283C',
+      color: theme.palette.text.primary,
       fontWeight: 700,
     },
   },
@@ -47,13 +47,13 @@ export default makeStyles({
 
   appMarketHeader: {
     // First color is a fallback one - do not remove!
-    background:
-      '#7DD291 linear-gradient(270deg, rgba(125, 210, 145, 1) 0%, rgba(0, 125, 125, 1) 100%)',
+    background: theme.palette.primary.main,
     backgroundImage: 'url(' + spaceBackground + ')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     borderBottom: '4px solid rgba(20, 40, 60, 0.1)',
     height: '335px',
+    marginTop: '110px',
     width: '100%',
   },
 
@@ -78,7 +78,7 @@ export default makeStyles({
 
     // The input field itself
     '& input': {
-      color: '#BAC0C6',
+      color: theme.palette.grey['300'],
       fontSize: '16px',
       fontWeight: 400,
       height: '10px',
@@ -86,12 +86,12 @@ export default makeStyles({
 
     // The input field's SVG icon
     '& svg': {
-      color: '#BAC0C6',
+      color: theme.palette.grey['300'],
     },
   },
 
   appMarketHeaderTitle: {
-    color: '#FFFFFF',
+    color: theme.palette.common.white,
     fontSize: '42px',
     fontWeight: 700,
     marginBottom: '25px',
@@ -103,8 +103,8 @@ export default makeStyles({
   },
 
   featuredAppCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '4px',
+    backgroundColor: theme.palette.common.white,
+    borderRadius: theme.palette.dimensions.borderRadius,
     boxShadow: '1px 5px 5px 0px rgba(0, 0, 0, 0.15)',
     cursor: 'pointer',
     display: 'flex',
@@ -119,14 +119,14 @@ export default makeStyles({
     margin: 'auto 7.5px',
 
     '& > :first-child': {
-      color: '#14283C',
+      color: theme.palette.text.primary,
       fontSize: '14px',
       fontWeight: 700,
       marginBottom: '-10px',
     },
 
     '& > :last-child': {
-      color: '#51606E',
+      color: theme.palette.text.hint,
       fontSize: '12px',
       fontWeight: 400,
     },
@@ -135,7 +135,7 @@ export default makeStyles({
   featuredAppCardLogo: {
     margin: 'auto 0px',
     fontSize: '35px',
-    color: '#14283C',
+    color: theme.palette.text.primary,
   },
 
   featuredAppCardsSlider: {
@@ -151,10 +151,10 @@ export default makeStyles({
   },
 
   featuredAppsOuterContainer: {
-    background: 'rgba(0, 125, 125, 1)',
+    background: '#007D7D',
     backgroundImage: 'url(' + appCarouselBackground + ')',
     backgroundSize: 'cover',
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     display: 'flex',
     height: '230px',
     justifyContent: 'space-between',
@@ -164,14 +164,14 @@ export default makeStyles({
   },
 
   featuredAppsSubtitle: {
-    color: '#FFFFFF',
+    color: theme.palette.common.white,
     fontSize: '16px',
     fontWeight: 300,
     marginBottom: '25px',
   },
 
   featuredAppsTitle: {
-    color: '#FFFFFF',
+    color: theme.palette.common.white,
     fontSize: '22px',
     fontWeight: 500,
     marginBottom: '10px',
@@ -187,18 +187,18 @@ export default makeStyles({
   },
 
   filterAccordionIcon: {
-    color: '#51606E',
+    color: theme.palette.text.hint,
   },
 
   filterAccordionTitle: {
-    color: '#51606E',
+    color: theme.palette.text.hint,
     fontSize: '16px',
     fontWeight: 400,
   },
 
   filterSeparator: {
     border: '1px solid #E3E3E3',
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     margin: '25px 0px',
     maxWidth: '175px',
     width: '100%',
@@ -211,12 +211,12 @@ export default makeStyles({
   },
 
   filterTitleIcon: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     marginRight: '7.5px',
   },
 
   filterTitleText: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '18px',
     fontWeight: 500,
   },
@@ -239,7 +239,7 @@ export default makeStyles({
   },
 
   noFiltersAvailable: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '12px',
     fontWeight: 400,
   },
@@ -250,11 +250,11 @@ export default makeStyles({
     marginBottom: '-5px',
 
     '& > :first-child': {
-      color: '#14283C',
+      color: theme.palette.text.primary,
     },
 
     '& > :last-child': {
-      color: '#14283C',
+      color: theme.palette.text.primary,
     },
   },
 
@@ -264,11 +264,11 @@ export default makeStyles({
     marginBottom: '-5px',
 
     '& > :first-child': {
-      color: '#19B3EE',
+      color: theme.palette.action.focus,
     },
 
     '& > :last-child': {
-      color: '#19B3EE',
+      color: theme.palette.action.focus,
       fontWeight: 500,
     },
   },
@@ -278,9 +278,9 @@ export default makeStyles({
     margin: 'auto 0px',
 
     '& > svg': {
-      color: '#FFFFFF',
+      color: theme.palette.common.white,
       fontSize: '35px',
       verticalAlign: 'middle',
     },
   },
-})
+}))

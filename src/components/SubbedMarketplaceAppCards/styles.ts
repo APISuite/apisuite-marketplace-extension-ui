@@ -1,8 +1,12 @@
 import { makeStyles } from '@apisuite/fe-base'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
+  allSubbedMarketplaceAppsContainer: {
+    display: 'flex',
+  },
+
   applicationsContainerTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '24px',
     fontWeight: 400,
     marginBottom: '24px',
@@ -10,10 +14,10 @@ export default makeStyles({
   },
 
   browseMarketplaceAppsButton: {
-    backgroundColor: '#FFFFFF',
-    border: `1px solid #BAC0C6`,
+    backgroundColor: theme.palette.common.white,
+    border: `1px solid ${theme.palette.grey['300']}`,
     borderRadius: `4px`,
-    color: `#51606E !important`,
+    color: `${theme.palette.text.hint} !important`,
     fontSize: '16px',
     fontWeight: 400,
     marginBottom: '40px',
@@ -22,14 +26,15 @@ export default makeStyles({
     textTransform: 'none',
 
     '&:hover': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: theme.palette.common.white,
     },
   },
 
   loadingMarketplaceApplicationCards: {
-    color: '#85909A',
+    color: theme.palette.text.secondary,
     fontSize: '16px',
     fontWeight: 200,
+    marginBottom: '25px',
   },
 
   marketplaceAppCard: {
@@ -52,8 +57,7 @@ export default makeStyles({
   },
 
   marketplaceAppCardAvatar: {
-    background:
-      '#C8DC8C linear-gradient(270deg, rgba(200, 220, 140, 1) 0%, rgba(25, 165, 140, 1) 100%)',
+    background: theme.palette.gradient.light,
     fontSize: '20px',
     fontWeight: 300,
     height: '120px',
@@ -64,8 +68,8 @@ export default makeStyles({
 
   marketplaceAppCardBottomSection: {
     backgroundColor: '#F5F5F5',
-    border: `1px solid #BAC0C6`,
-    borderRadius: '4px',
+    border: `1px solid ${theme.palette.grey['300']}`,
+    borderRadius: theme.palette.dimensions.borderRadius,
     borderTop: 'none',
     borderTopLeftRadius: '0px',
     borderTopRightRadius: '0px',
@@ -73,7 +77,7 @@ export default makeStyles({
   },
 
   marketplaceAppCardDescription: {
-    color: '#85909A',
+    color: theme.palette.text.secondary,
     display: '-webkit-box',
     fontSize: '16px',
     fontWeight: 300,
@@ -100,7 +104,7 @@ export default makeStyles({
   },
 
   marketplaceAppCardTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '22px',
     fontWeight: 400,
     marginBottom: '12px',
@@ -110,25 +114,25 @@ export default makeStyles({
   },
 
   marketplaceAppCardTopSection: {
-    backgroundColor: '#F7F8F9',
-    border: `1px solid #BAC0C6`,
+    backgroundColor: theme.palette.background.default,
+    border: `1px solid ${theme.palette.grey['300']}`,
     borderBottomLeftRadius: '0px',
     borderBottomRightRadius: '0px',
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     textAlign: 'center',
   },
 
   marketplaceAppCardWithAvatarIcon: {
-    color: '#BAC0C6',
+    color: theme.palette.grey['300'],
     fontSize: '30px',
     position: 'absolute',
     transform: 'translate(105px, 10px) rotate(45deg)',
   },
 
   marketplaceAppCardWithImageIcon: {
-    color: '#BAC0C6',
+    color: theme.palette.grey['300'],
     fontSize: '30px',
     position: 'absolute',
     transform: 'translate(165px, 10px) rotate(45deg)',
   },
-})
+}))

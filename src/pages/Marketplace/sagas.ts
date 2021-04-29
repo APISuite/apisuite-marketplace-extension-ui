@@ -1,24 +1,32 @@
-import request from 'util/request'
-
 import { call, put, takeLatest } from 'redux-saga/effects'
+import request from 'util/request'
 
 import {
   GET_ALL_MARKETPLACE_APPS_ACTION,
   GET_ALL_MARKETPLACE_LABELS_ACTION,
   GET_ALL_MARKETPLACE_PUBLISHERS_ACTION,
+  GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION,
   GET_APP_DETAILS_ACTION,
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
   getAllMarketplaceAppsActionSuccess,
   getAllMarketplaceLabelsActionSuccess,
   getAllMarketplacePublishersActionSuccess,
+  getAllSubbedMarketplaceAppsActionSuccess,
   getAppDetailsActionSuccess,
   getFilteredMarketplaceAppsActionSuccess,
+  SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+  subscribeToMarketplaceAppActionSuccess,
+  UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+  unsubscribeToMarketplaceAppActionSuccess,
 } from './ducks'
 
 import {
   AppDetails,
+  GetAllSubbedMarketplaceAppsAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
+  SubscribeToMarketplaceAppAction,
+  UnsubscribeToMarketplaceAppAction,
 } from './types'
 
 import { API_URL } from 'constants/endpoints'
@@ -104,6 +112,72 @@ export function* getAllMarketplacePublishersActionSaga() {
     yield put(getAllMarketplacePublishersActionSuccess(response))
   } catch (error) {
     console.log("Error fetching all marketplace apps' publishers")
+  }
+}
+
+export function* getAllSubbedMarketplaceAppsActionSaga(
+  action: GetAllSubbedMarketplaceAppsAction
+) {
+  try {
+    const getAllSubbedMarketplaceAppsActionUrl = `https://marketplace.develop.apisuite.io/users/${action.userID}/subscriptions`
+
+    const response = yield call(request, {
+      url: getAllSubbedMarketplaceAppsActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    console.log('getAllSubbedMarketplaceAppsActionSaga response', response)
+
+    yield put(getAllSubbedMarketplaceAppsActionSuccess(response.data))
+  } catch (error) {
+    console.log('Error fetching all subscribed marketplace apps')
+  }
+}
+
+export function* subscribeToMarketplaceAppActionSaga(
+  action: SubscribeToMarketplaceAppAction
+) {
+  try {
+    const subscribeToMarketplaceAppActionUrl = `https://marketplace.develop.apisuite.io/users/${action.userID}/subscriptions/${action.appID}`
+
+    const response = yield call(request, {
+      url: subscribeToMarketplaceAppActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    console.log('subscribeToMarketplaceAppActionSaga response', response)
+
+    yield put(subscribeToMarketplaceAppActionSuccess())
+  } catch (error) {
+    console.log('Error subscribing')
+  }
+}
+
+export function* unsubscribeToMarketplaceAppActionSaga(
+  action: UnsubscribeToMarketplaceAppAction
+) {
+  try {
+    const unsubscribeToMarketplaceAppActionUrl = `https://marketplace.develop.apisuite.io/users/${action.userID}/subscriptions/${action.appID}`
+
+    const response = yield call(request, {
+      url: unsubscribeToMarketplaceAppActionUrl,
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    console.log('unsubscribeToMarketplaceAppActionSaga response', response)
+
+    yield put(unsubscribeToMarketplaceAppActionSuccess())
+  } catch (error) {
+    console.log('Error unsubscribing')
   }
 }
 
@@ -233,6 +307,18 @@ function* rootSaga() {
   yield takeLatest(
     GET_ALL_MARKETPLACE_PUBLISHERS_ACTION,
     getAllMarketplacePublishersActionSaga
+  )
+  yield takeLatest(
+    GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION,
+    getAllSubbedMarketplaceAppsActionSaga
+  )
+  yield takeLatest(
+    SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+    subscribeToMarketplaceAppActionSaga
+  )
+  yield takeLatest(
+    UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+    unsubscribeToMarketplaceAppActionSaga
   )
   yield takeLatest(
     GET_FILTERED_MARKETPLACE_APPS_ACTION,
