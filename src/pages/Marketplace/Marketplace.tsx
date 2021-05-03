@@ -52,8 +52,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   const trans = useTranslation()
 
-  function t(str: string) {
-    return trans.t(`extensions.Marketplace.${str}`)
+  const t = (string: string) => {
+    return trans.t(`extensions.marketplace.${string}`)
   }
 
   useEffect(() => {

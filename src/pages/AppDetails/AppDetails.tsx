@@ -21,8 +21,8 @@ const AppDetails: React.FC<AppDetailsProps> = ({
 
   const trans = useTranslation()
 
-  function t(str: string) {
-    return trans.t(`extensions.Marketplace.${str}`)
+  const t = (string: string) => {
+    return trans.t(`extensions.marketplace.${string}`)
   }
 
   // 1. All subbed Marketplace app's retrieval

@@ -1,5 +1,4 @@
-import * as React from 'react'
-
+import React from 'react'
 import { Link as RouterLink, LinkProps } from 'react-router-dom'
 
 type LinkBehaviourProps = {

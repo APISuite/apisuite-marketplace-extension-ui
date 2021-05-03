@@ -1,111 +1,12 @@
 {
   "extensions": {
-    "Marketplace": {
-      "admin": {
-        "title": "Admin area",
-        "tabGeneral": {
-          "tabTitle": "General settings",
-          "pageTitle": "General settings",
-          "description": "Personalise the API Suite Cloud portal to your organisaion’s image.",
-          "portalTitle": "Portal title",
-          "ownerName": "Owner name"
-        },
-        "tabNavigation": {
-          "tabTitle": "Navigation",
-          "pageTitle": "Social media accounts",
-          "description": "Adjust the icon links in the footer of the portal.",
-          "url": "URL",
-          "types": {
-            "other": "Other"
-          }
-        },
-        "tabIntegrations": {
-          "tabTitle": "Service integrations",
-          "pageTitle": "Service integrations",
-          "description": "Maximize the experience of your users by customizing the service integrations of your APISuite Portal Cloud account.",
-          "gateway": {
-            "title": "Gateway integration",
-            "providers": {
-              "kong": "Kong"
-            },
-            "url": "Gateway URL",
-            "apiKey": "Gateway API Key",
-            "submitCoreSubscriptions": "Sync Core Subscriptions",
-            "docsText": "To successfully link your local gateway with this cloud portal, please read the <0>step-by-step documentation</0>."
-          },
-          "idp": {
-            "title": "Open Identity service",
-            "providers": {
-              "internal": "Internal Open Identity service",
-              "keycloak": "Keycloak Identity service"
-            },
-            "clientRegistrationURL": "Client registration URL",
-            "initialAccessToken": "Initial access token",
-            "docsText": "To successfully link your Identity Provider with this cloud portal, please read the <0>step-by-step documentation</0>."
-          }
-        },
-        "tabAPICatalog": {
-          "tabTitle": "API Catalog",
-          "pageTitle": "Cloud API Catalog",
-          "description": "Manage the accessibility of your API Products.",
-          "apiProductsTable": {
-            "tableTitle": "API Products Catalog",
-            "tableSubTitle": "No entries",
-            "noProductsToShow": {
-              "paragraphText": "No products yet",
-              "linkText": "Learn how to work with API Products"
-            }
-          },
-          "apiProductsAddButtonLabel": "Add API Product",
-          "apiProductsSideNote": "API Products collected from your gateway are shown in the API Products catalog. You are able to augment the gateway products with \"additional\" information.",
-          "noticeText": "You might want to refresh your page and browser's cache if you don't see the update appear."
-        },
-        "tabOrganisations": {
-          "tabTitle": "Organisations",
-          "pageTitle": "Organisations",
-          "description": "Multi-user accounts overview, referred to as \"Organisations\".",
-          "organisationsTable": {
-            "tableTitle": "Organisations",
-            "tableSubTitle": "Applications",
-            "noProductsToShow": {
-              "paragraphText": "No products yet",
-              "linkText": "Learn how to work with API Products"
-            }
-          },
-          "notices": {
-            "noticeOneText": "The APISuite Cloud's billing metrics are based on active organisations, regardless of how many individual users one Organisation holds.",
-            "noticeTwoText": "You might want to refresh your page and browser's cache if you don't see the update appear."
-          }
-        },
-        "tabSocial": {
-          "tabTitle": "Social media accounts",
-          "addTitle": "Add account..."
-        },
-        "feedback": {
-          "saveSuccess": "Settings saved",
-          "saveError": "Could not save settings"
-        },
-        "delete": {
-          "success": "The account was removed successfully.",
-          "error": "Failed to delete account."
-        },
-        "api": {
-          "saveSuccess": "API saved",
-          "saveError": "Could not save API",
-          "getError": "Failed to get API",
-          "addEntry": "Add Entry",
-          "dragText": "Click or Drag 'n' drop file...",
-          "updateSuccess": "API updated successfully",
-          "updateError": "Failed to updated API",
-          "deleteSuccess": "API deleted successfully",
-          "deleteError": "Failed to delete API"
-        }
-      },
+    "marketplace": {
       "appListing": {
         "browseMarketplaceApps": "Browse the app marketplace",
         "marketplaceAppsSectionTitle": "Marketplace applications",
         "noAppDescriptionProvided": "No description provided",
-        "noMarketplaceAppSubscriptions": "You have not subscribed to any marketplace apps yet."
+        "noMarketplaceAppSubscriptions": "You have not subscribed to any marketplace apps yet.",
+        "retrievingMarketplaceAppSubscriptions": "Retrieving all subscribed Marketplace apps..."
       },
       "appMarketplace": {
         "headerTitlePartOne": "Explore the",
