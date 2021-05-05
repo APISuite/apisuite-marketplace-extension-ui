@@ -14,6 +14,7 @@ module.exports = {
     browser: true,
     es6: true,
     jest: true,
+    node: true,
   },
   globals: {
     Atomics: 'readonly',
@@ -26,7 +27,6 @@ module.exports = {
     },
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: './tsconfig.json',
   },
   settings: {
     react: {
@@ -38,5 +38,7 @@ module.exports = {
     'react/prop-types': 'off',
     'linebreak-style': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
   },
 }

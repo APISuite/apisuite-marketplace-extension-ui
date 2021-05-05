@@ -34,7 +34,7 @@ npm run test
 npm run build
 ```
 
-or, to watch the projecto for changes and rebuilding it:
+or, to watch the project for changes and rebuilding it:
 
 ```
 npm run build:watch
