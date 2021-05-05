@@ -19,7 +19,7 @@
     "lint": "tsc --noEmit && eslint \"lib/{,**/}*.ts{,x}\"",
     "build": "node ./scripts/write-info && rimraf ./build && tsc",
     "build:watch": "npm-watch",
-    "version": "npm run build && git add -A build",
+    "version": "npm run build && git add -A build lib/constants/info.ts",
     "postversion": "git push && git push --tags",
     "test": "jest",
     "test:watch": "jest --watch",
