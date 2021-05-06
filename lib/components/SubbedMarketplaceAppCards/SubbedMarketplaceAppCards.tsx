@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Avatar, Button, useTranslation } from '@apisuite/fe-base'
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded'
 
+import { BASE_URI } from '../../helpers/constants'
 import { SubbedMarketplaceApp } from '../../pages/Marketplace/types'
 import { SubbedMarketplaceAppCardsProps } from './types'
 import Link from '../Link'
@@ -74,7 +75,7 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
           <Link
             className={classes.marketplaceAppCardLink}
             key={`marketplaceAppCardLink${index}`}
-            to={`/marketplace/app-details/${subbedMarketplaceApp.id}`}
+            to={`${BASE_URI}/app-details/${subbedMarketplaceApp.id}`}
           >
             <div className={classes.marketplaceAppCard}>
               <div className={classes.marketplaceAppCardTopSection}>
@@ -126,10 +127,7 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
         {t('appListing.marketplaceAppsSectionTitle')}
       </p>
 
-      <Button
-        className={classes.browseMarketplaceAppsButton}
-        href="/marketplace"
-      >
+      <Button className={classes.browseMarketplaceAppsButton} href={BASE_URI}>
         {t('appListing.browseMarketplaceApps')}
       </Button>
 
