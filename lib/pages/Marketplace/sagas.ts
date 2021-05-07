@@ -43,7 +43,7 @@ export function* getAllMarketplaceAppsActionSaga() {
       },
     })
 
-    const allMarketplaceApps = response.map((marketplaceApp: any) => ({
+    const allMarketplaceApps = response.rows.map((marketplaceApp: any) => ({
       createdAt: marketplaceApp.createdAt,
       description: marketplaceApp.description,
       id: marketplaceApp.id,
@@ -75,7 +75,7 @@ export function* getAllMarketplaceAppsActionSaga() {
       )
     )
   } catch (error) {
-    console.log('Error fetching all marketplace apps')
+    console.log('Error fetching all marketplace apps', error)
   }
 }
 
@@ -247,33 +247,35 @@ export function* getFilteredMarketplaceAppsActionSaga(
       },
     })
 
-    const filteredMarketplaceApps = response.map((marketplaceApp: any) => ({
-      createdAt: marketplaceApp.createdAt,
-      description: marketplaceApp.description,
-      id: marketplaceApp.id,
-      labels: marketplaceApp.labels,
-      logo: marketplaceApp.logo,
-      name: marketplaceApp.name,
-      organization: {
-        id: marketplaceApp.organization.id,
-        name: marketplaceApp.organization.name,
-        privacyUrl: marketplaceApp.organization.privacyUrl,
-        supportUrl: marketplaceApp.organization.supportUrl,
-        tosUrl: marketplaceApp.organization.tosUrl,
-      },
-      orgId: marketplaceApp.orgId,
-      privacyUrl: marketplaceApp.privacyUrl,
-      shortDescription: marketplaceApp.shortDescription,
-      supportUrl: marketplaceApp.supportUrl,
-      tosUrl: marketplaceApp.tosUrl,
-      updatedAt: marketplaceApp.updatedAt,
-      websiteUrl: marketplaceApp.websiteUrl,
-      youtubeUrl: marketplaceApp.youtubeUrl,
-    }))
+    const filteredMarketplaceApps = response.rows.map(
+      (marketplaceApp: any) => ({
+        createdAt: marketplaceApp.createdAt,
+        description: marketplaceApp.description,
+        id: marketplaceApp.id,
+        labels: marketplaceApp.labels,
+        logo: marketplaceApp.logo,
+        name: marketplaceApp.name,
+        organization: {
+          id: marketplaceApp.organization.id,
+          name: marketplaceApp.organization.name,
+          privacyUrl: marketplaceApp.organization.privacyUrl,
+          supportUrl: marketplaceApp.organization.supportUrl,
+          tosUrl: marketplaceApp.organization.tosUrl,
+        },
+        orgId: marketplaceApp.orgId,
+        privacyUrl: marketplaceApp.privacyUrl,
+        shortDescription: marketplaceApp.shortDescription,
+        supportUrl: marketplaceApp.supportUrl,
+        tosUrl: marketplaceApp.tosUrl,
+        updatedAt: marketplaceApp.updatedAt,
+        websiteUrl: marketplaceApp.websiteUrl,
+        youtubeUrl: marketplaceApp.youtubeUrl,
+      })
+    )
 
     yield put(getFilteredMarketplaceAppsActionSuccess(filteredMarketplaceApps))
   } catch (error) {
-    console.log('Error fetching all marketplace apps')
+    console.log('Error fetching all marketplace apps', error)
   }
 }
 
