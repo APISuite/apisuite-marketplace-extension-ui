@@ -2,9 +2,9 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import request from '../../util/request';
 import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, } from './ducks';
 import { API_URL } from '../../constants/endpoints';
-export function* getAllMarketplaceAppsActionSaga() {
+export function* getAllMarketplaceAppsActionSaga(action) {
     try {
-        const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public`;
+        const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`;
         const response = yield call(request, {
             url: getAllMarketplaceAppsActionUrl,
             method: 'GET',
@@ -12,33 +12,11 @@ export function* getAllMarketplaceAppsActionSaga() {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        const allMarketplaceApps = response.map((marketplaceApp) => ({
-            createdAt: marketplaceApp.createdAt,
-            description: marketplaceApp.description,
-            id: marketplaceApp.id,
-            labels: marketplaceApp.labels,
-            logo: marketplaceApp.logo,
-            name: marketplaceApp.name,
-            organization: {
-                id: marketplaceApp.organization.id,
-                name: marketplaceApp.organization.name,
-                privacyUrl: marketplaceApp.organization.privacyUrl,
-                supportUrl: marketplaceApp.organization.supportUrl,
-                tosUrl: marketplaceApp.organization.tosUrl,
-            },
-            orgId: marketplaceApp.orgId,
-            privacyUrl: marketplaceApp.privacyUrl,
-            shortDescription: marketplaceApp.shortDescription,
-            supportUrl: marketplaceApp.supportUrl,
-            tosUrl: marketplaceApp.tosUrl,
-            updatedAt: marketplaceApp.updatedAt,
-            websiteUrl: marketplaceApp.websiteUrl,
-            youtubeUrl: marketplaceApp.youtubeUrl,
-        }));
-        yield put(getAllMarketplaceAppsActionSuccess(allMarketplaceApps.sort((appA, appB) => appA.id - appB.id)));
+        const allMarketplaceApps = response.rows;
+        yield put(getAllMarketplaceAppsActionSuccess(allMarketplaceApps));
     }
     catch (error) {
-        console.log('Error fetching all marketplace apps');
+        console.log('Error fetching all marketplace apps', error);
     }
 }
 export function* getAllMarketplaceLabelsActionSaga() {
@@ -169,12 +147,19 @@ export function* getFilteredMarketplaceAppsActionSaga(action) {
             orderModeParameters =
                 orderModeParameters + `&order=${action.filters.order}`;
         }
+        const prefix = orgIDParameters.length === 0 &&
+            labelParameters.length === 0 &&
+            sortModeParameters.length === 0
+            ? '?'
+            : '&';
+        const pagination = `${prefix}page=${action.filters.page}&pageSize=${action.filters.pageSize}`;
         getFilteredMarketplaceAppsActionUrl =
             getFilteredMarketplaceAppsActionUrl +
                 orgIDParameters +
                 labelParameters +
                 sortModeParameters +
-                orderModeParameters;
+                orderModeParameters +
+                pagination;
         const response = yield call(request, {
             url: getFilteredMarketplaceAppsActionUrl,
             method: 'GET',
@@ -182,33 +167,14 @@ export function* getFilteredMarketplaceAppsActionSaga(action) {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        const filteredMarketplaceApps = response.map((marketplaceApp) => ({
-            createdAt: marketplaceApp.createdAt,
-            description: marketplaceApp.description,
-            id: marketplaceApp.id,
-            labels: marketplaceApp.labels,
-            logo: marketplaceApp.logo,
-            name: marketplaceApp.name,
-            organization: {
-                id: marketplaceApp.organization.id,
-                name: marketplaceApp.organization.name,
-                privacyUrl: marketplaceApp.organization.privacyUrl,
-                supportUrl: marketplaceApp.organization.supportUrl,
-                tosUrl: marketplaceApp.organization.tosUrl,
-            },
-            orgId: marketplaceApp.orgId,
-            privacyUrl: marketplaceApp.privacyUrl,
-            shortDescription: marketplaceApp.shortDescription,
-            supportUrl: marketplaceApp.supportUrl,
-            tosUrl: marketplaceApp.tosUrl,
-            updatedAt: marketplaceApp.updatedAt,
-            websiteUrl: marketplaceApp.websiteUrl,
-            youtubeUrl: marketplaceApp.youtubeUrl,
+        const filteredMarketplaceApps = response.rows;
+        yield put(getFilteredMarketplaceAppsActionSuccess({
+            filteredMarketplaceApps,
+            pagination: response.pagination,
         }));
-        yield put(getFilteredMarketplaceAppsActionSuccess(filteredMarketplaceApps));
     }
     catch (error) {
-        console.log('Error fetching all marketplace apps');
+        console.log('Error fetching all marketplace apps', error);
     }
 }
 export function* getAppDetailsActionSaga(action) {

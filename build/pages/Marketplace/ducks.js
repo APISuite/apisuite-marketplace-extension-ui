@@ -34,6 +34,12 @@ const initialState = {
         youtubeUrl: '',
     },
     retrievedSelectedAppDetails: false,
+    pagination: {
+        page: 1,
+        pageCount: 0,
+        pageSize: 1,
+        rowCount: 0,
+    },
 };
 /** Action types */
 export const GET_ALL_MARKETPLACE_APPS_ACTION = 'Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION';
@@ -105,6 +111,7 @@ export default function reducer(state = initialState, action) {
         case GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS: {
             return update(state, {
                 filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
+                pagination: { $set: action.pagination },
             });
         }
         case GET_APP_DETAILS_ACTION: {
@@ -123,8 +130,8 @@ export default function reducer(state = initialState, action) {
     }
 }
 /** Action builders */
-export function getAllMarketplaceAppsAction() {
-    return { type: GET_ALL_MARKETPLACE_APPS_ACTION };
+export function getAllMarketplaceAppsAction(pagination) {
+    return { type: GET_ALL_MARKETPLACE_APPS_ACTION, pagination };
 }
 export function getAllMarketplaceAppsActionSuccess(allMarketplaceApps) {
     return { type: GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, allMarketplaceApps };
@@ -189,10 +196,10 @@ export function getFilteredMarketplaceAppsAction(filters) {
         filters,
     };
 }
-export function getFilteredMarketplaceAppsActionSuccess(filteredMarketplaceApps) {
+export function getFilteredMarketplaceAppsActionSuccess(payload) {
     return {
         type: GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,
-        filteredMarketplaceApps,
+        ...payload,
     };
 }
 export function getAppDetailsAction(appID) {

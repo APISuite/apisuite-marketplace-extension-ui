@@ -22,6 +22,7 @@ import {
 
 import {
   AppDetails,
+  GetAllMarketplaceAppsAction,
   GetAllSubbedMarketplaceAppsAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
@@ -31,9 +32,11 @@ import {
 
 import { API_URL } from '../../constants/endpoints'
 
-export function* getAllMarketplaceAppsActionSaga() {
+export function* getAllMarketplaceAppsActionSaga(
+  action: GetAllMarketplaceAppsAction
+) {
   try {
-    const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public`
+    const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`
 
     const response = yield call(request, {
       url: getAllMarketplaceAppsActionUrl,
@@ -43,37 +46,9 @@ export function* getAllMarketplaceAppsActionSaga() {
       },
     })
 
-    const allMarketplaceApps = response.rows.map((marketplaceApp: any) => ({
-      createdAt: marketplaceApp.createdAt,
-      description: marketplaceApp.description,
-      id: marketplaceApp.id,
-      labels: marketplaceApp.labels,
-      logo: marketplaceApp.logo,
-      name: marketplaceApp.name,
-      organization: {
-        id: marketplaceApp.organization.id,
-        name: marketplaceApp.organization.name,
-        privacyUrl: marketplaceApp.organization.privacyUrl,
-        supportUrl: marketplaceApp.organization.supportUrl,
-        tosUrl: marketplaceApp.organization.tosUrl,
-      },
-      orgId: marketplaceApp.orgId,
-      privacyUrl: marketplaceApp.privacyUrl,
-      shortDescription: marketplaceApp.shortDescription,
-      supportUrl: marketplaceApp.supportUrl,
-      tosUrl: marketplaceApp.tosUrl,
-      updatedAt: marketplaceApp.updatedAt,
-      websiteUrl: marketplaceApp.websiteUrl,
-      youtubeUrl: marketplaceApp.youtubeUrl,
-    }))
+    const allMarketplaceApps = response.rows
 
-    yield put(
-      getAllMarketplaceAppsActionSuccess(
-        allMarketplaceApps.sort(
-          (appA: AppDetails, appB: AppDetails) => appA.id - appB.id
-        )
-      )
-    )
+    yield put(getAllMarketplaceAppsActionSuccess(allMarketplaceApps))
   } catch (error) {
     console.log('Error fetching all marketplace apps', error)
   }
@@ -232,12 +207,21 @@ export function* getFilteredMarketplaceAppsActionSaga(
         orderModeParameters + `&order=${action.filters.order}`
     }
 
+    const prefix =
+      orgIDParameters.length === 0 &&
+      labelParameters.length === 0 &&
+      sortModeParameters.length === 0
+        ? '?'
+        : '&'
+    const pagination = `${prefix}page=${action.filters.page}&pageSize=${action.filters.pageSize}`
+
     getFilteredMarketplaceAppsActionUrl =
       getFilteredMarketplaceAppsActionUrl +
       orgIDParameters +
       labelParameters +
       sortModeParameters +
-      orderModeParameters
+      orderModeParameters +
+      pagination
 
     const response = yield call(request, {
       url: getFilteredMarketplaceAppsActionUrl,
@@ -247,33 +231,14 @@ export function* getFilteredMarketplaceAppsActionSaga(
       },
     })
 
-    const filteredMarketplaceApps = response.rows.map(
-      (marketplaceApp: any) => ({
-        createdAt: marketplaceApp.createdAt,
-        description: marketplaceApp.description,
-        id: marketplaceApp.id,
-        labels: marketplaceApp.labels,
-        logo: marketplaceApp.logo,
-        name: marketplaceApp.name,
-        organization: {
-          id: marketplaceApp.organization.id,
-          name: marketplaceApp.organization.name,
-          privacyUrl: marketplaceApp.organization.privacyUrl,
-          supportUrl: marketplaceApp.organization.supportUrl,
-          tosUrl: marketplaceApp.organization.tosUrl,
-        },
-        orgId: marketplaceApp.orgId,
-        privacyUrl: marketplaceApp.privacyUrl,
-        shortDescription: marketplaceApp.shortDescription,
-        supportUrl: marketplaceApp.supportUrl,
-        tosUrl: marketplaceApp.tosUrl,
-        updatedAt: marketplaceApp.updatedAt,
-        websiteUrl: marketplaceApp.websiteUrl,
-        youtubeUrl: marketplaceApp.youtubeUrl,
+    const filteredMarketplaceApps = response.rows
+
+    yield put(
+      getFilteredMarketplaceAppsActionSuccess({
+        filteredMarketplaceApps,
+        pagination: response.pagination,
       })
     )
-
-    yield put(getFilteredMarketplaceAppsActionSuccess(filteredMarketplaceApps))
   } catch (error) {
     console.log('Error fetching all marketplace apps', error)
   }

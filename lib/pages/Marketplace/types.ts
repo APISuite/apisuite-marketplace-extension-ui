@@ -50,8 +50,16 @@ export interface Filters {
   order: 'asc' | 'desc'
   org_id: string[]
   sort_by: 'app' | 'org' | 'updated'
+  page: number
+  pageSize: number
 }
 
+export interface Pagination {
+  page: number
+  pageCount: number
+  pageSize: number
+  rowCount: number
+}
 export interface MarketplaceStore {
   allMarketplaceApps: AppDetails[]
   allMarketplaceLabels: string[]
@@ -67,6 +75,8 @@ export interface MarketplaceStore {
 
   selectedAppDetails: AppDetails
   retrievedSelectedAppDetails: boolean
+
+  pagination: Pagination
 }
 
 export type UserProfile = {
@@ -139,7 +149,10 @@ export interface MarketplaceProps {
 
   filteredMarketplaceApps: AppDetails[]
 
-  getAllMarketplaceAppsAction: () => void
+  getAllMarketplaceAppsAction: (pagination: {
+    page: number
+    pageSize: number
+  }) => void
   getAllMarketplaceLabelsAction: () => void
   getAllMarketplacePublishersAction: () => void
   getFilteredMarketplaceAppsAction: (filters: Filters) => void
@@ -147,10 +160,13 @@ export interface MarketplaceProps {
   retrievedAllMarketplaceApps: boolean
   retrievedAllMarketplaceLabels: boolean
   retrievedAllMarketplacePublishers: boolean
+
+  pagination: Pagination
 }
 
 export interface GetAllMarketplaceAppsAction extends Action {
   type: typeof GET_ALL_MARKETPLACE_APPS_ACTION
+  pagination: { page: number; pageSize: number }
 }
 
 export interface GetAllMarketplaceAppsActionSuccess extends Action {
@@ -214,6 +230,7 @@ export interface GetFilteredAppsMarketplaceAction extends Action {
 export interface GetFilteredAppsMarketplaceActionSuccess extends Action {
   type: typeof GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS
   filteredMarketplaceApps: AppDetails[]
+  pagination: Pagination
 }
 
 export interface GetAppDetailsAction extends Action {

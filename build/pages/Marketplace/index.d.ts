@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Dispatch } from 'redux';
 export declare const mapStateToProps: ({ marketplace }: any) => {
     allMarketplaceApps: any;
@@ -8,7 +7,8 @@ export declare const mapStateToProps: ({ marketplace }: any) => {
     retrievedAllMarketplaceApps: any;
     retrievedAllMarketplaceLabels: any;
     retrievedAllMarketplacePublishers: any;
+    pagination: any;
 };
 export declare const mapDispatchToProps: (dispatch: Dispatch) => any;
-declare const _default: import("react-redux").ConnectedComponent<import("react").FC<import("./types").MarketplaceProps>, Pick<import("./types").MarketplaceProps, "allMarketplaceApps" | "allMarketplaceLabels" | "allMarketplacePublishers" | "filteredMarketplaceApps" | "retrievedAllMarketplaceApps" | "retrievedAllMarketplaceLabels" | "retrievedAllMarketplacePublishers" | "getAllMarketplaceAppsAction" | "getAllMarketplaceLabelsAction" | "getAllMarketplacePublishersAction" | "getFilteredMarketplaceAppsAction">>;
+declare const _default: any;
 export default _default;

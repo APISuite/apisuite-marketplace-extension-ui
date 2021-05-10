@@ -7,6 +7,7 @@ import {
   MarketplacePublisher,
   MarketplaceStore,
   SubbedMarketplaceApp,
+  Pagination,
 } from './types'
 
 /** Initial state */
@@ -48,6 +49,12 @@ const initialState: MarketplaceStore = {
     youtubeUrl: '',
   },
   retrievedSelectedAppDetails: false,
+  pagination: {
+    page: 1,
+    pageCount: 0,
+    pageSize: 1,
+    rowCount: 0,
+  },
 }
 
 /** Action types */
@@ -159,6 +166,7 @@ export default function reducer(
     case GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS: {
       return update(state, {
         filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
+        pagination: { $set: action.pagination },
       })
     }
 
@@ -182,8 +190,11 @@ export default function reducer(
 
 /** Action builders */
 
-export function getAllMarketplaceAppsAction() {
-  return { type: GET_ALL_MARKETPLACE_APPS_ACTION }
+export function getAllMarketplaceAppsAction(pagination: {
+  page: number
+  pageSize: number
+}) {
+  return { type: GET_ALL_MARKETPLACE_APPS_ACTION, pagination }
 }
 
 export function getAllMarketplaceAppsActionSuccess(
@@ -272,12 +283,13 @@ export function getFilteredMarketplaceAppsAction(filters: Filters) {
   }
 }
 
-export function getFilteredMarketplaceAppsActionSuccess(
+export function getFilteredMarketplaceAppsActionSuccess(payload: {
   filteredMarketplaceApps: AppDetails[]
-) {
+  pagination: Pagination
+}) {
   return {
     type: GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,
-    filteredMarketplaceApps,
+    ...payload,
   }
 }
 
