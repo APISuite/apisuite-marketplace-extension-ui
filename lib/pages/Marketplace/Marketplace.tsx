@@ -35,18 +35,14 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   allMarketplaceApps,
   allMarketplaceLabels,
   allMarketplacePublishers,
-
   filteredMarketplaceApps,
-
   getAllMarketplaceAppsAction,
   getAllMarketplaceLabelsAction,
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
-
   retrievedAllMarketplaceApps,
   retrievedAllMarketplaceLabels,
   retrievedAllMarketplacePublishers,
-
   pagination,
 }) => {
   const classes = useStyles()
