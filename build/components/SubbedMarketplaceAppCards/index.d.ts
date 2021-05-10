@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Dispatch } from 'redux';
 import { getAllSubbedMarketplaceAppsAction } from '../../pages/Marketplace/ducks';
 export declare const mapStateToProps: ({ marketplace, profile }: {
@@ -12,5 +11,5 @@ export declare const mapStateToProps: ({ marketplace, profile }: {
 export declare const mapDispatchToProps: (dispatch: Dispatch) => {
     getAllSubbedMarketplaceAppsAction: typeof getAllSubbedMarketplaceAppsAction;
 };
-declare const _default: import("react-redux").ConnectedComponent<import("react").FC<import("./types").SubbedMarketplaceAppCardsProps>, Pick<import("./types").SubbedMarketplaceAppCardsProps, never>>;
+declare const _default: any;
 export default _default;

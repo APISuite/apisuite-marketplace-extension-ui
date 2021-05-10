@@ -22,6 +22,14 @@ export interface Filters {
     order: 'asc' | 'desc';
     org_id: string[];
     sort_by: 'app' | 'org' | 'updated';
+    page: number;
+    pageSize: number;
+}
+export interface Pagination {
+    page: number;
+    pageCount: number;
+    pageSize: number;
+    rowCount: number;
 }
 export interface MarketplaceStore {
     allMarketplaceApps: AppDetails[];
@@ -35,6 +43,7 @@ export interface MarketplaceStore {
     retrievedAllSubbedMarketplaceApps: boolean;
     selectedAppDetails: AppDetails;
     retrievedSelectedAppDetails: boolean;
+    pagination: Pagination;
 }
 export declare type UserProfile = {
     avatar?: string;
@@ -97,16 +106,24 @@ export interface MarketplaceProps {
     allMarketplaceLabels: string[];
     allMarketplacePublishers: MarketplacePublisher[];
     filteredMarketplaceApps: AppDetails[];
-    getAllMarketplaceAppsAction: () => void;
+    getAllMarketplaceAppsAction: (pagination: {
+        page: number;
+        pageSize: number;
+    }) => void;
     getAllMarketplaceLabelsAction: () => void;
     getAllMarketplacePublishersAction: () => void;
     getFilteredMarketplaceAppsAction: (filters: Filters) => void;
     retrievedAllMarketplaceApps: boolean;
     retrievedAllMarketplaceLabels: boolean;
     retrievedAllMarketplacePublishers: boolean;
+    pagination: Pagination;
 }
 export interface GetAllMarketplaceAppsAction extends Action {
     type: typeof GET_ALL_MARKETPLACE_APPS_ACTION;
+    pagination: {
+        page: number;
+        pageSize: number;
+    };
 }
 export interface GetAllMarketplaceAppsActionSuccess extends Action {
     type: typeof GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS;
@@ -157,6 +174,7 @@ export interface GetFilteredAppsMarketplaceAction extends Action {
 export interface GetFilteredAppsMarketplaceActionSuccess extends Action {
     type: typeof GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS;
     filteredMarketplaceApps: AppDetails[];
+    pagination: Pagination;
 }
 export interface GetAppDetailsAction extends Action {
     type: typeof GET_APP_DETAILS_ACTION;

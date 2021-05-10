@@ -29,26 +29,25 @@ import { MarketplaceProps } from './types'
 import AppCatalog from '../../components/AppCatalog'
 import marketplace from 'assets/marketplace.svg'
 import useStyles from './styles'
+import { APPS_PER_PAGE } from '../../constants/globals'
 
 const Marketplace: React.FC<MarketplaceProps> = ({
   allMarketplaceApps,
   allMarketplaceLabels,
   allMarketplacePublishers,
-
   filteredMarketplaceApps,
-
   getAllMarketplaceAppsAction,
   getAllMarketplaceLabelsAction,
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
-
   retrievedAllMarketplaceApps,
   retrievedAllMarketplaceLabels,
   retrievedAllMarketplacePublishers,
+  pagination,
 }) => {
   const classes = useStyles()
 
-  const portalSettings = useConfig()
+  const { portalName } = useConfig()
 
   const trans = useTranslation()
 
@@ -59,7 +58,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
     of all information we presently have on public apps, and their respective labels & publishers. */
-    getAllMarketplaceAppsAction()
+    getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE })
     getAllMarketplaceLabelsAction()
     getAllMarketplacePublishersAction()
   }, [])
@@ -260,7 +259,13 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     }
   }, [filteredMarketplaceApps])
 
-  const filterAndSortApps = () => {
+  const filterAndSortApps = ({
+    page = 1,
+    pageSize = APPS_PER_PAGE,
+  }: {
+    page: number
+    pageSize: number
+  }) => {
     if (
       !(
         retrievedAllMarketplaceApps &&
@@ -298,18 +303,20 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       label: labelFiltersForFilterAction,
       sort_by: sortModeForFilterAction,
       order: orderModeForFilterAction,
+      page,
+      pageSize,
     })
   }
 
   useEffect(() => {
-    filterAndSortApps()
+    filterAndSortApps({ page, pageSize: APPS_PER_PAGE })
 
     setFiltersHaveChanged(false)
   }, [filtersHaveChanged, labelFilters, publisherFilters, sortMode])
 
   useEffect(() => {
     if (searchTerm.length === 0) {
-      filterAndSortApps()
+      filterAndSortApps({ page, pageSize: APPS_PER_PAGE })
     } else {
       const appsToFilter =
         filteredAppsList.length !== 0 ? [...filteredAppsList] : [...allAppsList]
@@ -328,6 +335,28 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   const [currentSlide, setCurrentSlide] = useState(0)
 
+  const [page, setPage] = useState(1)
+  const handleChange = (event, value) => {
+    setPage(value)
+    filterAndSortApps({
+      page: value,
+      pageSize: APPS_PER_PAGE,
+    })
+  }
+
+  const setPagination = () => {
+    const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE)
+    return (
+      <Pagination
+        count={pageCount}
+        page={page}
+        onChange={handleChange}
+        shape="rounded"
+        variant="outlined"
+      />
+    )
+  }
+
   return (
     <main>
       {/* 1 - App Marketplace header */}
@@ -337,7 +366,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
           <div className={classes.appMarketHeaderTitleAndSearchField}>
             <h1 className={classes.appMarketHeaderTitle}>
               <>{t('appMarketplace.headerTitlePartOne')} </>
-              <>{portalSettings.portalName} </>
+              <>{portalName} </>
               <>{t('appMarketplace.headerTitlePartTwo')}</>
             </h1>
 
@@ -514,12 +543,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
                   <AppCatalog appsToDisplay={filteredAppsList} />
                 </div>
 
-                <Pagination
-                  count={5}
-                  disabled
-                  shape="rounded"
-                  variant="outlined"
-                />
+                {setPagination()}
               </>
             ) : Object.values(labelFilters).includes(false) &&
               Object.values(publisherFilters).includes(false) &&
@@ -529,12 +553,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
                   <AppCatalog appsToDisplay={allAppsList} />
                 </div>
 
-                <Pagination
-                  count={5}
-                  disabled
-                  shape="rounded"
-                  variant="outlined"
-                />
+                {setPagination()}
               </>
             ) : (
               <p className={classes.noAppsToDisplay}>

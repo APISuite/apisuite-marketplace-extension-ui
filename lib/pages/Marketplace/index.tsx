@@ -20,6 +20,7 @@ export const mapStateToProps = ({ marketplace }: any) => ({
   retrievedAllMarketplaceLabels: marketplace.retrievedAllMarketplaceLabels,
   retrievedAllMarketplacePublishers:
     marketplace.retrievedAllMarketplacePublishers,
+  pagination: marketplace.pagination,
 })
 
 export const mapDispatchToProps = (dispatch: Dispatch): any =>

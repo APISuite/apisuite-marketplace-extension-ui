@@ -1,4 +1,4 @@
-import { AppDetails, Filters, MarketplaceActions, MarketplacePublisher, MarketplaceStore, SubbedMarketplaceApp } from './types';
+import { AppDetails, Filters, MarketplaceActions, MarketplacePublisher, MarketplaceStore, SubbedMarketplaceApp, Pagination } from './types';
 /** Action types */
 export declare const GET_ALL_MARKETPLACE_APPS_ACTION = "Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION";
 export declare const GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS = "Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS";
@@ -19,8 +19,15 @@ export declare const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS = "Marketplac
 /** Reducer */
 export default function reducer(state: MarketplaceStore, action: MarketplaceActions): MarketplaceStore;
 /** Action builders */
-export declare function getAllMarketplaceAppsAction(): {
+export declare function getAllMarketplaceAppsAction(pagination: {
+    page: number;
+    pageSize: number;
+}): {
     type: string;
+    pagination: {
+        page: number;
+        pageSize: number;
+    };
 };
 export declare function getAllMarketplaceAppsActionSuccess(allMarketplaceApps: AppDetails[]): {
     type: string;
@@ -68,9 +75,13 @@ export declare function getFilteredMarketplaceAppsAction(filters: Filters): {
     type: string;
     filters: Filters;
 };
-export declare function getFilteredMarketplaceAppsActionSuccess(filteredMarketplaceApps: AppDetails[]): {
-    type: string;
+export declare function getFilteredMarketplaceAppsActionSuccess(payload: {
     filteredMarketplaceApps: AppDetails[];
+    pagination: Pagination;
+}): {
+    filteredMarketplaceApps: AppDetails[];
+    pagination: Pagination;
+    type: string;
 };
 export declare function getAppDetailsAction(appID: string): {
     type: string;

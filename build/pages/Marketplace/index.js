@@ -10,6 +10,7 @@ export const mapStateToProps = ({ marketplace }) => ({
     retrievedAllMarketplaceApps: marketplace.retrievedAllMarketplaceApps,
     retrievedAllMarketplaceLabels: marketplace.retrievedAllMarketplaceLabels,
     retrievedAllMarketplacePublishers: marketplace.retrievedAllMarketplacePublishers,
+    pagination: marketplace.pagination,
 });
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
     getAllMarketplaceAppsAction: getAllMarketplaceAppsAction,
