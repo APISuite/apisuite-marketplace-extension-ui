@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Avatar, Button, useTranslation } from '@apisuite/fe-base';
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded';
+import { BASE_URI } from '../../helpers/constants';
 import Link from '../Link';
 import useStyles from './styles';
 const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction, retrievedAllSubbedMarketplaceApps, userProfile, }) => {
@@ -38,7 +39,7 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
                 ...allMarketplaceAppNames,
                 subbedMarketplaceApp.name,
             ];
-            return (React.createElement(Link, { className: classes.marketplaceAppCardLink, key: `marketplaceAppCardLink${index}`, to: `/marketplace/app-details/${subbedMarketplaceApp.id}` },
+            return (React.createElement(Link, { className: classes.marketplaceAppCardLink, key: `marketplaceAppCardLink${index}`, to: `${BASE_URI}/app-details/${subbedMarketplaceApp.id}` },
                 React.createElement("div", { className: classes.marketplaceAppCard },
                     React.createElement("div", { className: classes.marketplaceAppCardTopSection },
                         React.createElement(HeightRoundedIcon, { className: subbedMarketplaceApp.logo !== ''
@@ -56,7 +57,7 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
     };
     return (React.createElement("div", null,
         React.createElement("p", { className: classes.applicationsContainerTitle }, t('appListing.marketplaceAppsSectionTitle')),
-        React.createElement(Button, { className: classes.browseMarketplaceAppsButton, href: "/marketplace" }, t('appListing.browseMarketplaceApps')),
+        React.createElement(Button, { className: classes.browseMarketplaceAppsButton, href: BASE_URI }, t('appListing.browseMarketplaceApps')),
         React.createElement("div", { className: classes.allSubbedMarketplaceAppsContainer }, subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps))));
 };
 export default SubbedMarketplaceAppCards;

@@ -10,4 +10,5 @@ export declare const IS_CLOUD: boolean;
  */
 export declare function getCloudUrlForSubdomainSuffix(subdomainSuffix: string): string;
 export declare const API_URL: string;
+export declare const MARKETPLACE_API_URL: string;
 export declare const INFORM_URL: string;

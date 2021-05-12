@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import request from '../../util/request';
 import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, } from './ducks';
-import { API_URL } from '../../constants/endpoints';
+import { API_URL, MARKETPLACE_API_URL } from '../../constants/endpoints';
 export function* getAllMarketplaceAppsActionSaga(action) {
     try {
         const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`;
@@ -53,7 +53,7 @@ export function* getAllMarketplacePublishersActionSaga() {
 }
 export function* getAllSubbedMarketplaceAppsActionSaga(action) {
     try {
-        const getAllSubbedMarketplaceAppsActionUrl = `https://marketplace.develop.apisuite.io/users/${action.userID}/subscriptions`;
+        const getAllSubbedMarketplaceAppsActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions`;
         const response = yield call(request, {
             url: getAllSubbedMarketplaceAppsActionUrl,
             method: 'GET',
@@ -70,7 +70,7 @@ export function* getAllSubbedMarketplaceAppsActionSaga(action) {
 }
 export function* subscribeToMarketplaceAppActionSaga(action) {
     try {
-        const subscribeToMarketplaceAppActionUrl = `https://marketplace.develop.apisuite.io/users/${action.userID}/subscriptions/${action.appID}`;
+        const subscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`;
         const response = yield call(request, {
             url: subscribeToMarketplaceAppActionUrl,
             method: 'POST',
@@ -87,7 +87,7 @@ export function* subscribeToMarketplaceAppActionSaga(action) {
 }
 export function* unsubscribeToMarketplaceAppActionSaga(action) {
     try {
-        const unsubscribeToMarketplaceAppActionUrl = `https://marketplace.develop.apisuite.io/users/${action.userID}/subscriptions/${action.appID}`;
+        const unsubscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`;
         const response = yield call(request, {
             url: unsubscribeToMarketplaceAppActionUrl,
             method: 'DELETE',

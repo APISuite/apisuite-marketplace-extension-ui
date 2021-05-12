@@ -17,13 +17,26 @@ export function getCloudUrlForSubdomainSuffix(subdomainSuffix) {
     return null;
 }
 function getApiUrl() {
+    /* If we happen to be on a CLOUD environment, we point to its corresponding API by converting the portal's CLOUD
+    hostname into the one for our core's CLOUD API. We achieve this by replacing the first dot in our portal's
+    hostname with '-apisuite-api.', which essentially turns `${client}.cloud.apisuite.io` into
+    `${client}-apisuite-api.cloud.apisuite.io`.
+    
+    If we happen to be on a non - CLOUD environment, we use that environment's (e.g., Development,
+    Staging, or Production) variable for the core's API. */
     if (IS_CLOUD) {
-        // Transform the Portal's hostname into the API's hostname
-        // Ex: ${client}.cloud.apisuite.io -> ${client}-apisuite-api.cloud.apisuite.io
         const apiHostname = hostname.replace('.', '-apisuite-api.');
         return `https://${apiHostname}`;
     }
     return process.env.API_URL || '';
 }
+function getMarketplaceApiUrl() {
+    if (IS_CLOUD) {
+        const apiHostname = hostname.replace('.', '-marketplace-api.');
+        return `https://${apiHostname}`;
+    }
+    return process.env.MARKETPLACE_API_URL || '';
+}
 export const API_URL = getApiUrl();
+export const MARKETPLACE_API_URL = getMarketplaceApiUrl();
 export const INFORM_URL = process.env.INFORM_URL || '';
