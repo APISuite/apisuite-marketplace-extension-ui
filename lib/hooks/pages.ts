@@ -1,5 +1,6 @@
 import { HookPages, PageEntry } from '@apisuite/extension-ui-types'
 
+import { BASE_URI } from '../helpers/constants'
 import AppDetails from '../pages/AppDetails'
 import Marketplace from '../pages/Marketplace'
 
@@ -8,13 +9,13 @@ const pagesConfig: PageEntry[] = [
     auth: false,
     component: Marketplace,
     exact: true,
-    path: '/marketplace',
+    path: BASE_URI,
   },
   {
     auth: false,
     component: AppDetails,
     exact: true,
-    path: '/marketplace/app-details/:appID',
+    path: `${BASE_URI}/app-details/:appID`,
   },
 ]
 

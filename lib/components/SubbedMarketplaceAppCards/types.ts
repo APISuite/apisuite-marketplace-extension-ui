@@ -5,8 +5,7 @@ import {
 
 export interface SubbedMarketplaceAppCardsProps {
   allSubbedMarketplaceApps: SubbedMarketplaceApp[]
+  getAllSubbedMarketplaceAppsAction: (userID: number) => void
   retrievedAllSubbedMarketplaceApps: boolean
   userProfile: UserProfile
-
-  getAllSubbedMarketplaceAppsAction: (userID: number) => void
 }
