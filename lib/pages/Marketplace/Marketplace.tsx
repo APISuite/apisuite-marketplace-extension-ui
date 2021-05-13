@@ -362,10 +362,6 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     })
   }
 
-  console.log('labelFilters', labelFilters)
-  console.log('publisherFilters', publisherFilters)
-  console.log('searchTerm', searchTerm)
-
   return (
     <main>
       {/* 1 - App Marketplace header */}
