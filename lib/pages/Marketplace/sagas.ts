@@ -21,7 +21,6 @@ import {
 } from './ducks'
 
 import {
-  AppDetails,
   GetAllMarketplaceAppsAction,
   GetAllSubbedMarketplaceAppsAction,
   GetAppDetailsAction,

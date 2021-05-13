@@ -256,6 +256,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       })
 
       setFilteredAppsList(newFilteredAppsArray)
+    } else {
+      setFilteredAppsList([])
     }
   }, [filteredMarketplaceApps])
 
@@ -331,6 +333,22 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     }
   }, [searchTerm])
 
+  // App pagination
+
+  const setPagination = () => {
+    const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE)
+
+    return (
+      <Pagination
+        count={pageCount}
+        onChange={handleChange}
+        page={page}
+        shape="rounded"
+        variant="outlined"
+      />
+    )
+  }
+
   // Carousel of 'featured apps'
 
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -342,19 +360,6 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       page: value,
       pageSize: APPS_PER_PAGE,
     })
-  }
-
-  const setPagination = () => {
-    const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE)
-    return (
-      <Pagination
-        count={pageCount}
-        page={page}
-        onChange={handleChange}
-        shape="rounded"
-        variant="outlined"
-      />
-    )
   }
 
   return (
@@ -525,8 +530,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({
               {filteredAppsList.length > 0
                 ? filteredAppsList.length
                 : searchTerm.length === 0 &&
-                  Object.values(labelFilters).includes(false) &&
-                  Object.values(publisherFilters).includes(false)
+                  !Object.values(labelFilters).includes(true) &&
+                  !Object.values(publisherFilters).includes(true)
                 ? allAppsList.length
                 : '0'}
               <> {t('appMarketplace.amountOfAppsTextPartOne')} </>
@@ -545,9 +550,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
                 {setPagination()}
               </>
-            ) : Object.values(labelFilters).includes(false) &&
-              Object.values(publisherFilters).includes(false) &&
-              searchTerm.length === 0 ? (
+            ) : searchTerm.length === 0 &&
+              !Object.values(labelFilters).includes(true) &&
+              !Object.values(publisherFilters).includes(true) ? (
               <>
                 <div className={classes.appCatalogContainer}>
                   <AppCatalog appsToDisplay={allAppsList} />
