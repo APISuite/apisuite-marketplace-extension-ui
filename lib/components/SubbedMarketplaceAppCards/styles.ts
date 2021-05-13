@@ -61,7 +61,7 @@ export default makeStyles((theme) => ({
   marketplaceAppCardBottomSection: {
     backgroundColor: '#F5F5F5',
     border: `1px solid ${theme.palette.grey['300']}`,
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     borderTop: 'none',
     borderTopLeftRadius: '0px',
     borderTopRightRadius: '0px',
@@ -110,7 +110,7 @@ export default makeStyles((theme) => ({
     border: `1px solid ${theme.palette.grey['300']}`,
     borderBottomLeftRadius: '0px',
     borderBottomRightRadius: '0px',
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     textAlign: 'center',
   },
 

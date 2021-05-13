@@ -64,13 +64,13 @@
     "redux-saga": ">=1.1.3",
     "formik": ">=2.2.0",
     "yup": ">=0.29.3",
-    "@apisuite/fe-base": "1.0.0-next.4",
+    "@apisuite/fe-base": "1.0.0-next.5",
     "@material-ui/icons": ">=4.5.1",
     "@material-ui/lab": ">=4.0.0-alpha.56"
   },
   "devDependencies": {
     "@apisuite/extension-ui-types": "1.0.5",
-    "@apisuite/fe-base": "1.0.0-next.4",
+    "@apisuite/fe-base": "1.0.0-next.5",
     "@babel/core": "7.11.4",
     "@material-ui/icons": "4.5.1",
     "@material-ui/lab": "4.0.0-alpha.56",

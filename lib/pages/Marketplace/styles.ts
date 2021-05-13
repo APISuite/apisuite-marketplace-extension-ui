@@ -104,7 +104,7 @@ export default makeStyles((theme) => ({
 
   featuredAppCard: {
     backgroundColor: theme.palette.common.white,
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     boxShadow: '1px 5px 5px 0px rgba(0, 0, 0, 0.15)',
     cursor: 'pointer',
     display: 'flex',
@@ -154,7 +154,7 @@ export default makeStyles((theme) => ({
     background: '#007D7D',
     backgroundImage: 'url(' + appCarouselBackground + ')',
     backgroundSize: 'cover',
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     display: 'flex',
     height: '230px',
     justifyContent: 'space-between',
@@ -198,7 +198,7 @@ export default makeStyles((theme) => ({
 
   filterSeparator: {
     border: '1px solid #E3E3E3',
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     margin: '25px 0px',
     maxWidth: '175px',
     width: '100%',
