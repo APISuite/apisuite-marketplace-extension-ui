@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   appCatalogEntry: {
     backgroundColor: theme.palette.common.white,
     border: `1px solid ${theme.palette.grey['300']}`,
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     height: '175px',
     padding: '20px 20px 0px 20px',
     width: '215px',
@@ -51,7 +51,7 @@ export default makeStyles((theme) => ({
 
   appCatalogEntryLabel: {
     backgroundColor: theme.palette.grey['100'],
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     color: theme.palette.text.primary,
     fontSize: '12px',
     fontWeight: 300,
@@ -116,7 +116,7 @@ export default makeStyles((theme) => ({
   },
 
   appCatalogEntryVersion: {
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     marginRight: '8px',
     padding: '5px 10px',
   },

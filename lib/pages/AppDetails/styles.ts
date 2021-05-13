@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   appAlreadySubscribedButton: {
     backgroundColor: theme.palette.secondary.main,
     borderColor: theme.palette.secondary.main,
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     color: theme.palette.secondary.contrastText,
     fontSize: '16px',
     fontWeight: 500,
@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
     '&:active, &:hover, &:link, &:visited': {
       backgroundColor: theme.palette.secondary.main,
       borderColor: theme.palette.secondary.main,
-      borderRadius: theme.palette.dimensions.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       color: theme.palette.secondary.contrastText,
     },
   },
@@ -65,7 +65,7 @@ export default makeStyles((theme) => ({
 
   appLabel: {
     backgroundColor: theme.palette.grey['100'],
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     color: theme.palette.text.primary,
     fontSize: '12px',
     fontWeight: 300,
@@ -102,7 +102,7 @@ export default makeStyles((theme) => ({
   appSubscribeButton: {
     backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     color: theme.palette.common.white,
     fontSize: '16px',
     fontWeight: 500,
@@ -112,7 +112,7 @@ export default makeStyles((theme) => ({
     '&:active, &:hover, &:link, &:visited': {
       backgroundColor: theme.palette.primary.main,
       borderColor: theme.palette.primary.main,
-      borderRadius: theme.palette.dimensions.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       color: theme.palette.common.white,
     },
   },
@@ -150,7 +150,7 @@ export default makeStyles((theme) => ({
 
   subSectionSeparator: {
     border: '1px solid #E3E3E3',
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     margin: '15px 0px 15px 0px',
     width: '100%',
   },
