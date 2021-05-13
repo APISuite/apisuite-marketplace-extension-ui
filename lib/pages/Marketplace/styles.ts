@@ -250,11 +250,11 @@ export default makeStyles((theme) => ({
     marginBottom: '-5px',
 
     '& > :first-child': {
-      color: theme.palette.text.primary,
+      color: theme.palette.text.secondary,
     },
 
     '& > :last-child': {
-      color: theme.palette.text.primary,
+      color: theme.palette.text.secondary,
     },
   },
 

@@ -1,16 +1,6 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
-  appAvatar: {
-    background: theme.palette.gradient.light,
-    fontSize: '55px',
-    fontWeight: 300,
-    height: '150px',
-    margin: '0px auto 50px auto',
-    textTransform: 'uppercase',
-    width: '150px',
-  },
-
   appAlreadySubscribedButton: {
     backgroundColor: theme.palette.secondary.main,
     borderColor: theme.palette.secondary.main,
@@ -19,8 +9,6 @@ export default makeStyles((theme) => ({
     fontSize: '16px',
     fontWeight: 500,
     opacity: 0.5,
-    // Keep this commented for demo purposes - we want to be able to sub and unsub Marketplace apps
-    // pointerEvents: 'none',
     textTransform: 'inherit',
     width: '100%',
 
@@ -30,6 +18,16 @@ export default makeStyles((theme) => ({
       borderRadius: theme.palette.dimensions.borderRadius,
       color: theme.palette.secondary.contrastText,
     },
+  },
+
+  appAvatar: {
+    background: theme.palette.gradient.light,
+    fontSize: '55px',
+    fontWeight: 300,
+    height: '150px',
+    margin: '0px auto 50px auto',
+    textTransform: 'uppercase',
+    width: '150px',
   },
 
   appDescription: {

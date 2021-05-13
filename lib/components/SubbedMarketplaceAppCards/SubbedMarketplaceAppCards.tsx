@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Avatar, Button, useTranslation } from '@apisuite/fe-base'
+import { Avatar, useTranslation } from '@apisuite/fe-base'
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded'
 
 import { BASE_URI } from '../../helpers/constants'
@@ -18,8 +18,8 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
 
   const trans = useTranslation()
 
-  function t(str: string) {
-    return trans.t(`extensions.Marketplace.${str}`)
+  const t = (string: string) => {
+    return trans.t(`extensions.marketplace.${string}`)
   }
 
   useEffect(() => {
@@ -44,15 +44,15 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
   ) => {
     if (!retrievedAllSubbedMarketplaceApps) {
       return (
-        <p className={classes.loadingMarketplaceApplicationCards}>
-          Retrieving all subscribed Marketplace apps...
+        <p className={classes.retrievingMarketplaceAppCards}>
+          {t('appListing.retrievingMarketplaceAppSubscriptions')}
         </p>
       )
     }
 
     if (subbedMarketplaceApps.length === 0) {
       return (
-        <p className={classes.loadingMarketplaceApplicationCards}>
+        <p className={classes.loadingMarketplaceAppCards}>
           {t('appListing.noMarketplaceAppSubscriptions')}
         </p>
       )
@@ -105,11 +105,9 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
                 </p>
 
                 <p className={classes.marketplaceAppCardDescription}>
-                  {
-                    //stringChecker(subbedMarketplaceApp.shortDescription) ||
+                  {stringChecker(subbedMarketplaceApp.shortDescription) ||
                     stringChecker(subbedMarketplaceApp.description) ||
-                      t('appListing.noAppDescriptionProvided')
-                  }
+                    t('appListing.noAppDescriptionProvided')}
                 </p>
               </div>
             </div>
@@ -123,13 +121,13 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
 
   return (
     <div>
-      <p className={classes.applicationsContainerTitle}>
+      <p className={classes.marketplaceAppsContainerTitle}>
         {t('appListing.marketplaceAppsSectionTitle')}
       </p>
 
-      <Button className={classes.browseMarketplaceAppsButton} href={BASE_URI}>
+      <Link className={classes.browseMarketplaceAppsButton} to={BASE_URI}>
         {t('appListing.browseMarketplaceApps')}
-      </Button>
+      </Link>
 
       <div className={classes.allSubbedMarketplaceAppsContainer}>
         {subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps)}

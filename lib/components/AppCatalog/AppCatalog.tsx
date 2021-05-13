@@ -10,8 +10,8 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
 
   const trans = useTranslation()
 
-  function t(str: string) {
-    return trans.t(`extensions.Marketplace.${str}`)
+  const t = (string: string) => {
+    return trans.t(`extensions.marketplace.${string}`)
   }
 
   const generateAppCatalogEntry = (appDetails: AppDetails, index: number) => {
