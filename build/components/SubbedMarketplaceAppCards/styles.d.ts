@@ -1,0 +1,2 @@
+declare const _default: (props?: any) => Record<"allSubbedMarketplaceAppsContainer" | "applicationsContainerTitle" | "browseMarketplaceAppsButton" | "loadingMarketplaceApplicationCards" | "marketplaceAppCard" | "marketplaceAppCardAvatar" | "marketplaceAppCardBottomSection" | "marketplaceAppCardDescription" | "marketplaceAppCardImage" | "marketplaceAppCardLink" | "marketplaceAppCardTitle" | "marketplaceAppCardTopSection" | "marketplaceAppCardWithAvatarIcon" | "marketplaceAppCardWithImageIcon", string>;
+export default _default;
