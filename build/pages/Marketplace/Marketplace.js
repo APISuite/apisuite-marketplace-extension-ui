@@ -142,6 +142,9 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
             });
             setFilteredAppsList(newFilteredAppsArray);
         }
+        else {
+            setFilteredAppsList([]);
+        }
     }, [filteredMarketplaceApps]);
     const filterAndSortApps = ({ page = 1, pageSize = APPS_PER_PAGE, }) => {
         if (!(retrievedAllMarketplaceApps &&
@@ -193,6 +196,11 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
             setFilteredAppsList(newFilteredApps);
         }
     }, [searchTerm]);
+    // App pagination
+    const setPagination = () => {
+        const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE);
+        return (React.createElement(Pagination, { count: pageCount, onChange: handleChange, page: page, shape: "rounded", variant: "outlined" }));
+    };
     // Carousel of 'featured apps'
     const [currentSlide, setCurrentSlide] = useState(0);
     const [page, setPage] = useState(1);
@@ -202,10 +210,6 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
             page: value,
             pageSize: APPS_PER_PAGE,
         });
-    };
-    const setPagination = () => {
-        const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE);
-        return (React.createElement(Pagination, { count: pageCount, page: page, onChange: handleChange, shape: "rounded", variant: "outlined" }));
     };
     return (React.createElement("main", null,
         React.createElement("header", { className: classes.appMarketHeader },
@@ -264,8 +268,8 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                         filteredAppsList.length > 0
                             ? filteredAppsList.length
                             : searchTerm.length === 0 &&
-                                Object.values(labelFilters).includes(false) &&
-                                Object.values(publisherFilters).includes(false)
+                                !Object.values(labelFilters).includes(true) &&
+                                !Object.values(publisherFilters).includes(true)
                                 ? allAppsList.length
                                 : '0',
                         React.createElement(React.Fragment, null,
@@ -278,9 +282,9 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                     retrievedAllMarketplacePublishers ? (filteredAppsList.length > 0 ? (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: classes.appCatalogContainer },
                         React.createElement(AppCatalog, { appsToDisplay: filteredAppsList })),
-                    setPagination())) : Object.values(labelFilters).includes(false) &&
-                    Object.values(publisherFilters).includes(false) &&
-                    searchTerm.length === 0 ? (React.createElement(React.Fragment, null,
+                    setPagination())) : searchTerm.length === 0 &&
+                    !Object.values(labelFilters).includes(true) &&
+                    !Object.values(publisherFilters).includes(true) ? (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: classes.appCatalogContainer },
                         React.createElement(AppCatalog, { appsToDisplay: allAppsList })),
                     setPagination())) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText'))),
