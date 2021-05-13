@@ -7,9 +7,9 @@ import useStyles from './styles';
 const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction, getAppDetailsAction, retrievedSelectedAppDetails, selectedAppDetails, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, userProfile, }) => {
     const classes = useStyles();
     const trans = useTranslation();
-    function t(str) {
-        return trans.t(`extensions.Marketplace.${str}`);
-    }
+    const t = (string) => {
+        return trans.t(`extensions.marketplace.${string}`);
+    };
     // 1. All subbed Marketplace app's retrieval
     /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > allSubbedMarketplaceApps')
     of all information we presently have on a user's marketplace app subscriptions. This will come in handy when

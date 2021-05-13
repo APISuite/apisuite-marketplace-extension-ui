@@ -16,9 +16,9 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
     const classes = useStyles();
     const { portalName } = useConfig();
     const trans = useTranslation();
-    function t(str) {
-        return trans.t(`extensions.Marketplace.${str}`);
-    }
+    const t = (string) => {
+        return trans.t(`extensions.marketplace.${string}`);
+    };
     useEffect(() => {
         /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
         of all information we presently have on public apps, and their respective labels & publishers. */

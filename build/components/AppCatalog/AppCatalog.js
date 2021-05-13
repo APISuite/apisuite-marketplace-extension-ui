@@ -5,9 +5,9 @@ import useStyles from './styles';
 const AppCatalog = ({ appsToDisplay }) => {
     const classes = useStyles();
     const trans = useTranslation();
-    function t(str) {
-        return trans.t(`extensions.Marketplace.${str}`);
-    }
+    const t = (string) => {
+        return trans.t(`extensions.marketplace.${string}`);
+    };
     const generateAppCatalogEntry = (appDetails, index) => {
         const appSplitName = appDetails.appName.split(' ');
         const appInitials = appSplitName[0].slice(0, 2);

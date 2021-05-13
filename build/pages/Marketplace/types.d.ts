@@ -16,6 +16,7 @@ export interface SubbedMarketplaceApp {
     name: string;
     publisherId: number;
     publisherName: string;
+    shortDescription: string;
 }
 export interface Filters {
     label: string[];

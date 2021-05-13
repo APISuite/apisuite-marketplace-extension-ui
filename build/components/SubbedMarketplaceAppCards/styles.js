@@ -3,13 +3,6 @@ export default makeStyles((theme) => ({
     allSubbedMarketplaceAppsContainer: {
         display: 'flex',
     },
-    applicationsContainerTitle: {
-        color: theme.palette.text.primary,
-        fontSize: '24px',
-        fontWeight: 400,
-        marginBottom: '24px',
-        marginTop: '24px',
-    },
     browseMarketplaceAppsButton: {
         backgroundColor: theme.palette.common.white,
         border: `1px solid ${theme.palette.grey['300']}`,
@@ -17,19 +10,19 @@ export default makeStyles((theme) => ({
         color: `${theme.palette.text.hint} !important`,
         fontSize: '16px',
         fontWeight: 400,
-        marginBottom: '40px',
-        padding: '6px 21px',
+        padding: '12px 21px',
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': {
             backgroundColor: theme.palette.common.white,
         },
     },
-    loadingMarketplaceApplicationCards: {
+    loadingMarketplaceAppCards: {
         color: theme.palette.text.secondary,
         fontSize: '16px',
         fontWeight: 200,
-        marginBottom: '25px',
+        marginBottom: '40px',
+        marginTop: '40px',
     },
     marketplaceAppCard: {
         height: '331.5px',
@@ -117,5 +110,19 @@ export default makeStyles((theme) => ({
         fontSize: '30px',
         position: 'absolute',
         transform: 'translate(165px, 10px) rotate(45deg)',
+    },
+    marketplaceAppsContainerTitle: {
+        color: theme.palette.text.primary,
+        fontSize: '24px',
+        fontWeight: 400,
+        marginBottom: '40px',
+        marginTop: '24px',
+    },
+    retrievingMarketplaceAppCards: {
+        color: theme.palette.text.secondary,
+        fontSize: '16px',
+        fontWeight: 200,
+        marginBottom: '40px',
+        marginTop: '40px',
     },
 }));

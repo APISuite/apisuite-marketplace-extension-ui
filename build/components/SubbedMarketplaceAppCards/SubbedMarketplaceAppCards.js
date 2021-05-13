@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Avatar, Button, useTranslation } from '@apisuite/fe-base';
+import { Avatar, useTranslation } from '@apisuite/fe-base';
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded';
 import { BASE_URI } from '../../helpers/constants';
 import Link from '../Link';
@@ -7,9 +7,9 @@ import useStyles from './styles';
 const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction, retrievedAllSubbedMarketplaceApps, userProfile, }) => {
     const classes = useStyles();
     const trans = useTranslation();
-    function t(str) {
-        return trans.t(`extensions.Marketplace.${str}`);
-    }
+    const t = (string) => {
+        return trans.t(`extensions.marketplace.${string}`);
+    };
     useEffect(() => {
         /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
         of all information we presently have on some user's marketplace app subscriptions. */
@@ -25,10 +25,10 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
     /* Generates an 'app card' for every marketplace app a user has subscribed to. */
     const subbedMarketplaceAppCardGenerator = (subbedMarketplaceApps) => {
         if (!retrievedAllSubbedMarketplaceApps) {
-            return (React.createElement("p", { className: classes.loadingMarketplaceApplicationCards }, "Retrieving all subscribed Marketplace apps..."));
+            return (React.createElement("p", { className: classes.retrievingMarketplaceAppCards }, t('appListing.retrievingMarketplaceAppSubscriptions')));
         }
         if (subbedMarketplaceApps.length === 0) {
-            return (React.createElement("p", { className: classes.loadingMarketplaceApplicationCards }, t('appListing.noMarketplaceAppSubscriptions')));
+            return (React.createElement("p", { className: classes.loadingMarketplaceAppCards }, t('appListing.noMarketplaceAppSubscriptions')));
         }
         const allSubbedMarketplaceAppCardsArray = subbedMarketplaceApps.map((subbedMarketplaceApp, index) => {
             const appNameInitialsArray = subbedMarketplaceApp.name.split(' ');
@@ -48,16 +48,15 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
                         subbedMarketplaceApp.logo !== '' ? (React.createElement("img", { className: classes.marketplaceAppCardImage, src: subbedMarketplaceApp.logo })) : (React.createElement(Avatar, { className: classes.marketplaceAppCardAvatar }, appNameInitials))),
                     React.createElement("div", { className: classes.marketplaceAppCardBottomSection },
                         React.createElement("p", { className: classes.marketplaceAppCardTitle }, subbedMarketplaceApp.name),
-                        React.createElement("p", { className: classes.marketplaceAppCardDescription }, 
-                        //stringChecker(subbedMarketplaceApp.shortDescription) ||
-                        stringChecker(subbedMarketplaceApp.description) ||
+                        React.createElement("p", { className: classes.marketplaceAppCardDescription }, stringChecker(subbedMarketplaceApp.shortDescription) ||
+                            stringChecker(subbedMarketplaceApp.description) ||
                             t('appListing.noAppDescriptionProvided'))))));
         });
         return allSubbedMarketplaceAppCardsArray;
     };
     return (React.createElement("div", null,
-        React.createElement("p", { className: classes.applicationsContainerTitle }, t('appListing.marketplaceAppsSectionTitle')),
-        React.createElement(Button, { className: classes.browseMarketplaceAppsButton, href: BASE_URI }, t('appListing.browseMarketplaceApps')),
+        React.createElement("p", { className: classes.marketplaceAppsContainerTitle }, t('appListing.marketplaceAppsSectionTitle')),
+        React.createElement(Link, { className: classes.browseMarketplaceAppsButton, to: BASE_URI }, t('appListing.browseMarketplaceApps')),
         React.createElement("div", { className: classes.allSubbedMarketplaceAppsContainer }, subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps))));
 };
 export default SubbedMarketplaceAppCards;
