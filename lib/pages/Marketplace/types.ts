@@ -13,6 +13,8 @@ import {
   GET_APP_DETAILS_ACTION,
   GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
+  SET_MARKETPLACE_APP_VISIBILITY_ACTION,
+  SET_MARKETPLACE_APP_LABELS_ACTION,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
@@ -78,6 +80,9 @@ export interface MarketplaceStore {
   retrievedSelectedAppDetails: boolean
 
   pagination: Pagination
+
+  marketplaceAppVisibility: 'private' | 'public'
+  marketplaceAppLabels: string[]
 }
 
 export type UserProfile = {
@@ -244,6 +249,16 @@ export interface GetAppDetailsActionSuccess extends Action {
   appDetails: AppDetails
 }
 
+export interface SetMarketplaceAppVisibilityAction extends Action {
+  type: typeof SET_MARKETPLACE_APP_VISIBILITY_ACTION
+  marketplaceAppVisibility: 'private' | 'public'
+}
+
+export interface SetMarketplaceAppLabelsAction extends Action {
+  type: typeof SET_MARKETPLACE_APP_LABELS_ACTION
+  marketplaceAppLabels: string[]
+}
+
 export type MarketplaceActions =
   | GetAllMarketplaceAppsAction
   | GetAllMarketplaceAppsActionSuccess
@@ -257,6 +272,8 @@ export type MarketplaceActions =
   | GetAppDetailsActionSuccess
   | GetFilteredAppsMarketplaceAction
   | GetFilteredAppsMarketplaceActionSuccess
+  | SetMarketplaceAppVisibilityAction
+  | SetMarketplaceAppLabelsAction
   | SubscribeToMarketplaceAppAction
   | SubscribeToMarketplaceAppActionSuccess
   | UnsubscribeToMarketplaceAppAction

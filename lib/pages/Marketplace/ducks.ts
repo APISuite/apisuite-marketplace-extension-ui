@@ -49,12 +49,16 @@ const initialState: MarketplaceStore = {
     youtubeUrl: '',
   },
   retrievedSelectedAppDetails: false,
+
   pagination: {
     page: 1,
     pageCount: 0,
     pageSize: 1,
     rowCount: 0,
   },
+
+  marketplaceAppVisibility: 'private',
+  marketplaceAppLabels: [],
 }
 
 /** Action types */
@@ -97,6 +101,12 @@ export const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION =
   'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION'
 export const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS =
   'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS'
+
+export const SET_MARKETPLACE_APP_VISIBILITY_ACTION =
+  'Marketplace/SET_MARKETPLACE_APP_VISIBILITY_ACTION'
+
+export const SET_MARKETPLACE_APP_LABELS_ACTION =
+  'Marketplace/SET_MARKETPLACE_APP_LABELS_ACTION'
 
 /** Reducer */
 
@@ -180,6 +190,18 @@ export default function reducer(
       return update(state, {
         selectedAppDetails: { $set: action.appDetails },
         retrievedSelectedAppDetails: { $set: true },
+      })
+    }
+
+    case SET_MARKETPLACE_APP_VISIBILITY_ACTION: {
+      return update(state, {
+        marketplaceAppVisibility: { $set: action.marketplaceAppVisibility },
+      })
+    }
+
+    case SET_MARKETPLACE_APP_LABELS_ACTION: {
+      return update(state, {
+        marketplaceAppLabels: { $set: action.marketplaceAppLabels },
       })
     }
 
@@ -299,4 +321,20 @@ export function getAppDetailsAction(appID: string) {
 
 export function getAppDetailsActionSuccess(appDetails: AppDetails) {
   return { type: GET_APP_DETAILS_ACTION_SUCCESS, appDetails }
+}
+
+export function setMarketplaceAppVisibilityAction(
+  marketplaceAppVisibility: string
+) {
+  return {
+    type: SET_MARKETPLACE_APP_VISIBILITY_ACTION,
+    marketplaceAppVisibility,
+  }
+}
+
+export function setMarketplaceAppLabelsAction(marketplaceAppLabels: string[]) {
+  return {
+    type: SET_MARKETPLACE_APP_LABELS_ACTION,
+    marketplaceAppLabels,
+  }
 }
