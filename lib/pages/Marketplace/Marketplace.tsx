@@ -527,13 +527,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
         <div className={classes.appMarketApps}>
           <p className={classes.amountOfAppMarketAppsText}>
             <span>
-              {filteredAppsList.length > 0
-                ? filteredAppsList.length
-                : searchTerm.length === 0 &&
-                  !Object.values(labelFilters).includes(true) &&
-                  !Object.values(publisherFilters).includes(true)
-                ? allAppsList.length
-                : '0'}
+              {pagination.rowCount || '0'}
               <> {t('appMarketplace.amountOfAppsTextPartOne')} </>
             </span>
             <>{t('appMarketplace.amountOfAppsTextPartTwo')}</>
