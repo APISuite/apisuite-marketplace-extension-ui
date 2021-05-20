@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextField, useTranslation } from '@apisuite/fe-base'
 import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonCheckedRounded'
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
@@ -7,8 +7,9 @@ import { MarketplaceAppVisibilityProps } from './types'
 import useStyles from './styles'
 
 const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
-  setMarketplaceAppVisibilityAction,
-  setMarketplaceAppLabelsAction,
+  formState,
+  handleAppVisibility,
+  handleChange,
 }) => {
   const classes = useStyles()
 
@@ -18,40 +19,13 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
     return trans.t(`extensions.marketplace.${string}`, ...args)
   }
 
-  /* App's visibility logic */
-
-  const [appVisibility, setAppVisibility] = useState('private')
-
-  const handleAppVisibility = (appVisibility: string) => {
-    setAppVisibility(appVisibility)
-
-    setMarketplaceAppVisibilityAction(appVisibility)
-  }
-
-  /* App's labels logic */
-
+  const [appVisibility, setAppVisibility] = useState('')
   const [appLabels, setAppLabels] = useState('')
 
-  const handleAppLabelsChange = (
-    changeEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    changeEvent.preventDefault()
-
-    const newAppLabels = changeEvent.target.value
-
-    setAppLabels(newAppLabels)
-
-    const arrayOfAppLabels = newAppLabels.length
-      ? newAppLabels
-          .replace(/\s*,\s*/g, ',')
-          .split(',')
-          .filter((label) => {
-            return label.length > 0
-          })
-      : []
-
-    setMarketplaceAppLabelsAction(arrayOfAppLabels)
-  }
+  useEffect(() => {
+    setAppVisibility(formState.values.appVisibility)
+    setAppLabels(formState.values.appLabels)
+  }, [appLabels, appVisibility, formState])
 
   return (
     <>
@@ -65,7 +39,10 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
 
           <div
             className={classes.appVisibilityContainer}
-            onClick={() => handleAppVisibility('private')}
+            onClick={() => {
+              handleAppVisibility('private')
+              setAppVisibility('private')
+            }}
           >
             {appVisibility === 'private' ? (
               <RadioButtonCheckedRoundedIcon
@@ -86,7 +63,10 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
 
           <div
             className={classes.appVisibilityContainer}
-            onClick={() => handleAppVisibility('public')}
+            onClick={() => {
+              handleAppVisibility('public')
+              setAppVisibility('public')
+            }}
           >
             {appVisibility === 'public' ? (
               <RadioButtonCheckedRoundedIcon
@@ -119,7 +99,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
             label={t('appSettings.labelsFieldLabel')}
             margin="dense"
             name="appLabels"
-            onChange={handleAppLabelsChange}
+            onChange={handleChange}
             type="text"
             value={appLabels}
             variant="outlined"
@@ -127,7 +107,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
         </div>
       </div>
 
-      <hr className={classes.regularSectionSeparator} />
+      <hr className={classes.sectionSeparator} />
     </>
   )
 }
