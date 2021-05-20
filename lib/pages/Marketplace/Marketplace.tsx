@@ -30,6 +30,7 @@ import AppCatalog from '../../components/AppCatalog'
 import marketplace from 'assets/marketplace.svg'
 import useStyles from './styles'
 import { APPS_PER_PAGE } from '../../constants/globals'
+import { debounce } from '../../util/debounce'
 
 const Marketplace: React.FC<MarketplaceProps> = ({
   allMarketplaceApps,
@@ -307,6 +308,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       order: orderModeForFilterAction,
       page,
       pageSize,
+      search: searchTerm.toLowerCase(),
     })
   }
 
@@ -320,16 +322,11 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     if (searchTerm.length === 0) {
       filterAndSortApps({ page, pageSize: APPS_PER_PAGE })
     } else {
-      const appsToFilter =
-        filteredAppsList.length !== 0 ? [...filteredAppsList] : [...allAppsList]
-
-      let newFilteredApps = []
-
-      newFilteredApps = appsToFilter.filter((app) => {
-        return app.appName.toLowerCase().includes(searchTerm.toLowerCase())
-      })
-
-      setFilteredAppsList(newFilteredApps)
+      debounce(
+        'MARKETPLACE_FILTER_BY_SEARCH',
+        () => filterAndSortApps({ page, pageSize: APPS_PER_PAGE }),
+        1000
+      )
     }
   }, [searchTerm])
 
@@ -340,7 +337,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
     return (
       <Pagination
-        count={pageCount}
+        count={pageCount || 1}
         onChange={handleChange}
         page={page}
         shape="rounded"

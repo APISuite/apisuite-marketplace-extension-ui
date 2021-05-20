@@ -53,6 +53,7 @@ export interface Filters {
   sort_by: 'app' | 'org' | 'updated'
   page: number
   pageSize: number
+  search: string
 }
 
 export interface Pagination {
