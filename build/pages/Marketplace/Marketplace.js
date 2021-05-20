@@ -265,13 +265,7 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
             React.createElement("div", { className: classes.appMarketApps },
                 React.createElement("p", { className: classes.amountOfAppMarketAppsText },
                     React.createElement("span", null,
-                        filteredAppsList.length > 0
-                            ? filteredAppsList.length
-                            : searchTerm.length === 0 &&
-                                !Object.values(labelFilters).includes(true) &&
-                                !Object.values(publisherFilters).includes(true)
-                                ? allAppsList.length
-                                : '0',
+                        pagination.rowCount || '0',
                         React.createElement(React.Fragment, null,
                             " ",
                             t('appMarketplace.amountOfAppsTextPartOne'),
