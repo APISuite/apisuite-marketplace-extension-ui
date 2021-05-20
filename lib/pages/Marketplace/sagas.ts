@@ -206,7 +206,7 @@ export function* getFilteredMarketplaceAppsActionSaga(
         orderModeParameters + `&order=${action.filters.order}`
     }
 
-    const prefix =
+    let prefix =
       orgIDParameters.length === 0 &&
       labelParameters.length === 0 &&
       sortModeParameters.length === 0
@@ -214,13 +214,25 @@ export function* getFilteredMarketplaceAppsActionSaga(
         : '&'
     const pagination = `${prefix}page=${action.filters.page}&pageSize=${action.filters.pageSize}`
 
+    prefix =
+      orgIDParameters.length === 0 &&
+      labelParameters.length === 0 &&
+      sortModeParameters.length === 0 &&
+      pagination.length === 0
+        ? '?'
+        : '&'
+    const search = action.filters.search.length
+      ? `${prefix}search=${action.filters.search}`
+      : ''
+
     getFilteredMarketplaceAppsActionUrl =
       getFilteredMarketplaceAppsActionUrl +
       orgIDParameters +
       labelParameters +
       sortModeParameters +
       orderModeParameters +
-      pagination
+      pagination +
+      search
 
     const response = yield call(request, {
       url: getFilteredMarketplaceAppsActionUrl,
