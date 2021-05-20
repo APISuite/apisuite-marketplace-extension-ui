@@ -323,7 +323,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       filterAndSortApps({ page, pageSize: APPS_PER_PAGE })
     } else {
       debounce(
-        '',
+        'MARKETPLACE_FILTER_BY_SEARCH',
         () => filterAndSortApps({ page, pageSize: APPS_PER_PAGE }),
         1000
       )
