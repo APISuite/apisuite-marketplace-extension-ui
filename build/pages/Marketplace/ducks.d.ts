@@ -16,6 +16,8 @@ export declare const SUBSCRIBE_TO_MARKETPLACE_APP_ACTION = "Marketplace/SUBSCRIB
 export declare const SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS = "Marketplace/SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS";
 export declare const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION = "Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION";
 export declare const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS = "Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS";
+export declare const SET_MARKETPLACE_APP_VISIBILITY_ACTION = "Marketplace/SET_MARKETPLACE_APP_VISIBILITY_ACTION";
+export declare const SET_MARKETPLACE_APP_LABELS_ACTION = "Marketplace/SET_MARKETPLACE_APP_LABELS_ACTION";
 /** Reducer */
 export default function reducer(state: MarketplaceStore, action: MarketplaceActions): MarketplaceStore;
 /** Action builders */
@@ -90,4 +92,12 @@ export declare function getAppDetailsAction(appID: string): {
 export declare function getAppDetailsActionSuccess(appDetails: AppDetails): {
     type: string;
     appDetails: AppDetails;
+};
+export declare function setMarketplaceAppVisibilityAction(marketplaceAppVisibility: string): {
+    type: string;
+    marketplaceAppVisibility: string;
+};
+export declare function setMarketplaceAppLabelsAction(marketplaceAppLabels: string[]): {
+    type: string;
+    marketplaceAppLabels: string[];
 };

@@ -61,7 +61,6 @@ export function* getAllSubbedMarketplaceAppsActionSaga(action) {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        console.log('getAllSubbedMarketplaceAppsActionSaga response', response);
         yield put(getAllSubbedMarketplaceAppsActionSuccess(response.data));
     }
     catch (error) {
@@ -71,14 +70,13 @@ export function* getAllSubbedMarketplaceAppsActionSaga(action) {
 export function* subscribeToMarketplaceAppActionSaga(action) {
     try {
         const subscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`;
-        const response = yield call(request, {
+        yield call(request, {
             url: subscribeToMarketplaceAppActionUrl,
             method: 'POST',
             headers: {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        console.log('subscribeToMarketplaceAppActionSaga response', response);
         yield put(subscribeToMarketplaceAppActionSuccess());
     }
     catch (error) {
@@ -88,14 +86,13 @@ export function* subscribeToMarketplaceAppActionSaga(action) {
 export function* unsubscribeToMarketplaceAppActionSaga(action) {
     try {
         const unsubscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`;
-        const response = yield call(request, {
+        yield call(request, {
             url: unsubscribeToMarketplaceAppActionUrl,
             method: 'DELETE',
             headers: {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        console.log('unsubscribeToMarketplaceAppActionSaga response', response);
         yield put(unsubscribeToMarketplaceAppActionSuccess());
     }
     catch (error) {
@@ -147,19 +144,30 @@ export function* getFilteredMarketplaceAppsActionSaga(action) {
             orderModeParameters =
                 orderModeParameters + `&order=${action.filters.order}`;
         }
-        const prefix = orgIDParameters.length === 0 &&
+        let prefix = orgIDParameters.length === 0 &&
             labelParameters.length === 0 &&
             sortModeParameters.length === 0
             ? '?'
             : '&';
         const pagination = `${prefix}page=${action.filters.page}&pageSize=${action.filters.pageSize}`;
+        prefix =
+            orgIDParameters.length === 0 &&
+                labelParameters.length === 0 &&
+                sortModeParameters.length === 0 &&
+                pagination.length === 0
+                ? '?'
+                : '&';
+        const search = action.filters.search.length
+            ? `${prefix}search=${action.filters.search}`
+            : '';
         getFilteredMarketplaceAppsActionUrl =
             getFilteredMarketplaceAppsActionUrl +
                 orgIDParameters +
                 labelParameters +
                 sortModeParameters +
                 orderModeParameters +
-                pagination;
+                pagination +
+                search;
         const response = yield call(request, {
             url: getFilteredMarketplaceAppsActionUrl,
             method: 'GET',

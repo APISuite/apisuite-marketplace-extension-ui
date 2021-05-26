@@ -47,11 +47,21 @@ export default makeStyles((theme) => ({
         width: '150px',
     },
     appImageGallery: {
-        '& .image-gallery-slides': {
-            borderRadius: '10px',
+        // Images
+        '& .image-gallery-content .image-gallery-slide .image-gallery-image': {
+            borderRadius: 10,
+            height: 435,
         },
+        // Thumbnails
+        '& .image-gallery-thumbnail .image-gallery-thumbnail-image': {
+            height: 75,
+            lineHeight: 0,
+            verticalAlign: 'middle',
+            width: 'auto',
+        },
+        // Selected thumbnail
         '& .active': {
-            border: `4px solid theme.palette.action.focus`,
+            border: `4px solid ${theme.palette.action.focus}`,
         },
     },
     appLabel: {

@@ -14,6 +14,7 @@ const initialState = {
         createdAt: '',
         description: '',
         id: 0,
+        images: [],
         labels: [],
         logo: '',
         name: '',
@@ -40,6 +41,8 @@ const initialState = {
         pageSize: 1,
         rowCount: 0,
     },
+    marketplaceAppVisibility: 'private',
+    marketplaceAppLabels: [],
 };
 /** Action types */
 export const GET_ALL_MARKETPLACE_APPS_ACTION = 'Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION';
@@ -58,6 +61,8 @@ export const SUBSCRIBE_TO_MARKETPLACE_APP_ACTION = 'Marketplace/SUBSCRIBE_TO_MAR
 export const SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS = 'Marketplace/SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS';
 export const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION = 'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION';
 export const UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS = 'Marketplace/UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS';
+export const SET_MARKETPLACE_APP_VISIBILITY_ACTION = 'Marketplace/SET_MARKETPLACE_APP_VISIBILITY_ACTION';
+export const SET_MARKETPLACE_APP_LABELS_ACTION = 'Marketplace/SET_MARKETPLACE_APP_LABELS_ACTION';
 /** Reducer */
 export default function reducer(state = initialState, action) {
     switch (action.type) {
@@ -123,6 +128,16 @@ export default function reducer(state = initialState, action) {
             return update(state, {
                 selectedAppDetails: { $set: action.appDetails },
                 retrievedSelectedAppDetails: { $set: true },
+            });
+        }
+        case SET_MARKETPLACE_APP_VISIBILITY_ACTION: {
+            return update(state, {
+                marketplaceAppVisibility: { $set: action.marketplaceAppVisibility },
+            });
+        }
+        case SET_MARKETPLACE_APP_LABELS_ACTION: {
+            return update(state, {
+                marketplaceAppLabels: { $set: action.marketplaceAppLabels },
             });
         }
         default:
@@ -207,4 +222,16 @@ export function getAppDetailsAction(appID) {
 }
 export function getAppDetailsActionSuccess(appDetails) {
     return { type: GET_APP_DETAILS_ACTION_SUCCESS, appDetails };
+}
+export function setMarketplaceAppVisibilityAction(marketplaceAppVisibility) {
+    return {
+        type: SET_MARKETPLACE_APP_VISIBILITY_ACTION,
+        marketplaceAppVisibility,
+    };
+}
+export function setMarketplaceAppLabelsAction(marketplaceAppLabels) {
+    return {
+        type: SET_MARKETPLACE_APP_LABELS_ACTION,
+        marketplaceAppLabels,
+    };
 }

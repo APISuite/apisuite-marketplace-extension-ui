@@ -10,7 +10,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
     const t = (string) => {
         return trans.t(`extensions.marketplace.${string}`);
     };
-    // 1. All subbed Marketplace app's retrieval
+    // 1. All subbed Marketplace apps' retrieval
     /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > allSubbedMarketplaceApps')
     of all information we presently have on a user's marketplace app subscriptions. This will come in handy when
     we want to check if the currently selected app is one that the user's already subscribed to. */
@@ -65,20 +65,14 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
         return providedURL === null || providedURL === '';
     };
     // All images - as well as all thumbnails - must be of the same size
-    const imagesArray = [
-        {
-            original: 'https://picsum.photos/id/1018/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1018/250/150/',
-        },
-        {
-            original: 'https://picsum.photos/id/1015/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1015/250/150/',
-        },
-        {
-            original: 'https://picsum.photos/id/1019/1000/600/',
-            thumbnail: 'https://picsum.photos/id/1019/250/150/',
-        },
-    ];
+    const imagesArray = selectedAppDetails
+        ? selectedAppDetails?.images?.map((image) => {
+            return {
+                original: image,
+                thumbnail: image,
+            };
+        })
+        : [];
     return (React.createElement("main", null,
         React.createElement("section", { className: classes.appDetailsContainer }, retrievedSelectedAppDetails ? (React.createElement(React.Fragment, null,
             React.createElement("section", { className: classes.leftAppDetailsContainer },
@@ -136,7 +130,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
                 React.createElement("div", { className: classes.appLabelsContainer }, selectedAppDetails && selectedAppDetails.labels.length ? (selectedAppDetails.labels.map((label, index) => {
                     return (React.createElement("p", { className: classes.appLabel, key: `appLabel${index}` }, label));
                 })) : (React.createElement("p", { className: classes.appLabel }, t('appMarketplace.appDetails.noLabels')))),
-                React.createElement(ImageGallery, { additionalClass: classes.appImageGallery, items: imagesArray, showNav: false, showPlayButton: false }),
+                imagesArray.length !== 0 && (React.createElement(ImageGallery, { additionalClass: classes.appImageGallery, items: imagesArray, showNav: false, showPlayButton: false })),
                 React.createElement("h1", { className: classes.appOverviewTitle }, t('appMarketplace.appDetails.partOfAppOverviewTitle')),
                 React.createElement("p", { className: classes.appOverviewDescription }, selectedAppDetails && selectedAppDetails.description
                     ? selectedAppDetails.description

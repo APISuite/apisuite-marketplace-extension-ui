@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION_SUCCESS, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION } from './ducks';
+import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION_SUCCESS, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION, SET_MARKETPLACE_APP_VISIBILITY_ACTION, SET_MARKETPLACE_APP_LABELS_ACTION, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION } from './ducks';
 export declare const roleNameOptions: readonly ["", "admin", "developer", "organizationOwner"];
 export interface Response {
     isError: boolean;
@@ -25,6 +25,7 @@ export interface Filters {
     sort_by: 'app' | 'org' | 'updated';
     page: number;
     pageSize: number;
+    search: string;
 }
 export interface Pagination {
     page: number;
@@ -45,6 +46,8 @@ export interface MarketplaceStore {
     selectedAppDetails: AppDetails;
     retrievedSelectedAppDetails: boolean;
     pagination: Pagination;
+    marketplaceAppVisibility: 'private' | 'public';
+    marketplaceAppLabels: string[];
 }
 export declare type UserProfile = {
     avatar?: string;
@@ -60,6 +63,7 @@ export interface AppDetails {
     createdAt: string;
     description: string;
     id: number;
+    images: string[];
     labels: string[];
     logo: string;
     name: string;
@@ -185,4 +189,12 @@ export interface GetAppDetailsActionSuccess extends Action {
     type: typeof GET_APP_DETAILS_ACTION_SUCCESS;
     appDetails: AppDetails;
 }
-export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetAllSubbedMarketplaceAppsAction | GetAllSubbedMarketplaceAppsActionSuccess | GetAppDetailsAction | GetAppDetailsActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess | SubscribeToMarketplaceAppAction | SubscribeToMarketplaceAppActionSuccess | UnsubscribeToMarketplaceAppAction | UnsubscribeToMarketplaceAppActionSuccess;
+export interface SetMarketplaceAppVisibilityAction extends Action {
+    type: typeof SET_MARKETPLACE_APP_VISIBILITY_ACTION;
+    marketplaceAppVisibility: 'private' | 'public';
+}
+export interface SetMarketplaceAppLabelsAction extends Action {
+    type: typeof SET_MARKETPLACE_APP_LABELS_ACTION;
+    marketplaceAppLabels: string[];
+}
+export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetAllSubbedMarketplaceAppsAction | GetAllSubbedMarketplaceAppsActionSuccess | GetAppDetailsAction | GetAppDetailsActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess | SetMarketplaceAppVisibilityAction | SetMarketplaceAppLabelsAction | SubscribeToMarketplaceAppAction | SubscribeToMarketplaceAppActionSuccess | UnsubscribeToMarketplaceAppAction | UnsubscribeToMarketplaceAppActionSuccess;
