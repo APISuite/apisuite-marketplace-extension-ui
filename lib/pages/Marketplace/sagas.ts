@@ -103,8 +103,6 @@ export function* getAllSubbedMarketplaceAppsActionSaga(
       },
     })
 
-    console.log('getAllSubbedMarketplaceAppsActionSaga response', response)
-
     yield put(getAllSubbedMarketplaceAppsActionSuccess(response.data))
   } catch (error) {
     console.log('Error fetching all subscribed marketplace apps')
@@ -117,15 +115,13 @@ export function* subscribeToMarketplaceAppActionSaga(
   try {
     const subscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`
 
-    const response = yield call(request, {
+    yield call(request, {
       url: subscribeToMarketplaceAppActionUrl,
       method: 'POST',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
-
-    console.log('subscribeToMarketplaceAppActionSaga response', response)
 
     yield put(subscribeToMarketplaceAppActionSuccess())
   } catch (error) {
@@ -139,15 +135,13 @@ export function* unsubscribeToMarketplaceAppActionSaga(
   try {
     const unsubscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`
 
-    const response = yield call(request, {
+    yield call(request, {
       url: unsubscribeToMarketplaceAppActionUrl,
       method: 'DELETE',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
-
-    console.log('unsubscribeToMarketplaceAppActionSaga response', response)
 
     yield put(unsubscribeToMarketplaceAppActionSuccess())
   } catch (error) {
