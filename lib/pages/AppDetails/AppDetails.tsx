@@ -25,7 +25,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     return trans.t(`extensions.marketplace.${string}`)
   }
 
-  // 1. All subbed Marketplace app's retrieval
+  // 1. All subbed Marketplace apps' retrieval
 
   /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > allSubbedMarketplaceApps')
   of all information we presently have on a user's marketplace app subscriptions. This will come in handy when
@@ -97,20 +97,14 @@ const AppDetails: React.FC<AppDetailsProps> = ({
   }
 
   // All images - as well as all thumbnails - must be of the same size
-  const imagesArray = [
-    {
-      original: 'https://picsum.photos/id/1018/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1015/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1015/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1019/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1019/250/150/',
-    },
-  ]
+  const imagesArray = selectedAppDetails
+    ? selectedAppDetails?.images?.map((image) => {
+        return {
+          original: image,
+          thumbnail: image,
+        }
+      })
+    : []
 
   return (
     <main>
@@ -323,12 +317,17 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                 )}
               </div>
 
-              <ImageGallery
-                additionalClass={classes.appImageGallery}
-                items={imagesArray}
-                showNav={false}
-                showPlayButton={false}
-              />
+              {/* The following condition is to be taken as explicit - meaning, we need to
+              explicitly check if the length of 'imagesArray' is, indeed, anything other
+              than zero. Not doing so will result in unwanted consequences. */}
+              {imagesArray.length !== 0 && (
+                <ImageGallery
+                  additionalClass={classes.appImageGallery}
+                  items={imagesArray}
+                  showNav={false}
+                  showPlayButton={false}
+                />
+              )}
 
               <h1 className={classes.appOverviewTitle}>
                 {t('appMarketplace.appDetails.partOfAppOverviewTitle')}

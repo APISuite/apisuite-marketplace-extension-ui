@@ -101,6 +101,7 @@ export interface AppDetails {
   createdAt: string
   description: string
   id: number
+  images: string[]
   labels: string[]
   logo: string
   name: string

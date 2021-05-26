@@ -6,7 +6,8 @@ import SubbedMarketplaceAppCards from './SubbedMarketplaceAppCards'
 
 export const mapStateToProps = ({ marketplace, profile }) => ({
   allSubbedMarketplaceApps: marketplace.allSubbedMarketplaceApps,
-  retrievedAllSubbedMarketplaceApps: marketplace.retrievedAllSubbedMarketplaceApps,
+  retrievedAllSubbedMarketplaceApps:
+    marketplace.retrievedAllSubbedMarketplaceApps,
   userProfile: profile.profile.user,
 })
 

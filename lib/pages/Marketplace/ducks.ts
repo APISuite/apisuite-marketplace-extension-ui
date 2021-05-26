@@ -29,6 +29,7 @@ const initialState: MarketplaceStore = {
     createdAt: '',
     description: '',
     id: 0,
+    images: [],
     labels: [],
     logo: '',
     name: '',
