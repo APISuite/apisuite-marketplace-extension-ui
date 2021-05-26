@@ -106,8 +106,6 @@ const AppDetails: React.FC<AppDetailsProps> = ({
       })
     : []
 
-  console.log('imagesArray', imagesArray)
-
   return (
     <main>
       <section className={classes.appDetailsContainer}>
@@ -319,6 +317,9 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                 )}
               </div>
 
+              {/* The following condition is to be taken as explicit - meaning, we need to
+              explicitly check if the length of 'imagesArray' is, indeed, anything other
+              than zero. Not doing so will result in unwanted consequences. */}
               {imagesArray.length !== 0 && (
                 <ImageGallery
                   additionalClass={classes.appImageGallery}
