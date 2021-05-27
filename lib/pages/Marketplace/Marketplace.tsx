@@ -17,9 +17,9 @@ import {
   useTranslation,
 } from '@apisuite/fe-base'
 import { Pagination } from '@material-ui/lab'
-import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
-import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
-import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
+// import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
+// import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
+// import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded'
 import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded'
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded'
@@ -348,7 +348,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   // Carousel of 'featured apps'
 
-  const [currentSlide, setCurrentSlide] = useState(0)
+  // const [currentSlide, setCurrentSlide] = useState(0)
 
   const [page, setPage] = useState(1)
   const handleChange = (event, value) => {
