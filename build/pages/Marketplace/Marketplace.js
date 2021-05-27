@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, InputAdornment, Radio, RadioGroup, TextField, Typography, useConfig, useTranslation, } from '@apisuite/fe-base';
 import { Pagination } from '@material-ui/lab';
-import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded';
-import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded';
+// import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
+// import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
+// import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
@@ -199,7 +199,7 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
         return (React.createElement(Pagination, { count: pageCount || 1, onChange: handleChange, page: page, shape: "rounded", variant: "outlined" }));
     };
     // Carousel of 'featured apps'
-    const [currentSlide, setCurrentSlide] = useState(0);
+    // const [currentSlide, setCurrentSlide] = useState(0)
     const [page, setPage] = useState(1);
     const handleChange = (event, value) => {
         setPage(value);
@@ -278,34 +278,6 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                     !Object.values(publisherFilters).includes(true) ? (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: classes.appCatalogContainer },
                         React.createElement(AppCatalog, { appsToDisplay: allAppsList })),
-                    setPagination())) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText'))),
-                allMarketplaceApps && (React.createElement("div", { className: classes.featuredAppsOuterContainer },
-                    React.createElement("div", { className: classes.featuredAppsInnerContainer },
-                        React.createElement("p", { className: classes.featuredAppsTitle }, t('appMarketplace.featuredAppsTitle')),
-                        React.createElement("p", { className: classes.featuredAppsSubtitle }, t('appMarketplace.featuredAppsSubtitle')),
-                        React.createElement("div", { className: classes.featuredAppCardsSlider },
-                            React.createElement("div", { className: currentSlide === 1 || currentSlide === 2
-                                    ? classes.visibleFeaturedAppCardsSliderButton
-                                    : classes.invisibleFeaturedAppCardsSliderButton },
-                                React.createElement(ChevronLeftRoundedIcon, null)),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 1"),
-                                    React.createElement("p", null, "Publisher A"))),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 2"),
-                                    React.createElement("p", null, "Publisher B"))),
-                            React.createElement("div", { className: classes.featuredAppCard },
-                                React.createElement(AmpStoriesRoundedIcon, { className: classes.featuredAppCardLogo }),
-                                React.createElement("div", { className: classes.featuredAppCardInfo },
-                                    React.createElement("p", null, "Featured app 3"),
-                                    React.createElement("p", null, "Publisher C"))),
-                            React.createElement("div", { className: currentSlide === 0 || currentSlide === 1
-                                    ? classes.visibleFeaturedAppCardsSliderButton
-                                    : classes.invisibleFeaturedAppCardsSliderButton },
-                                React.createElement(ChevronRightRoundedIcon, null))))))))));
+                    setPagination())) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText')))))));
 };
 export default Marketplace;
