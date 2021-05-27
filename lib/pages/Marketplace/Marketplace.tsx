@@ -562,7 +562,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({
             </p>
           )}
 
-          {allMarketplaceApps && (
+          {/* FIXME: commented code out as not needed for not but this should be replaced by feature flags
+          allMarketplaceApps && (
             <div className={classes.featuredAppsOuterContainer}>
               <div className={classes.featuredAppsInnerContainer}>
                 <p className={classes.featuredAppsTitle}>
@@ -629,7 +630,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
                 </div>
               </div>
             </div>
-          )}
+          )*/}
         </div>
       </section>
     </main>
