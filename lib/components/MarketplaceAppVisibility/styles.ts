@@ -9,6 +9,21 @@ export default makeStyles((theme) => ({
     marginBottom: 40,
   },
 
+  disabledInputField: {
+    // Disabled text field's label styles
+    '& > label': {
+      color: 'rgba(0, 0, 0, 0.26) !important',
+    },
+
+    // Disabled text field's input text styles
+    '& .MuiInputBase-root': {
+      '& .MuiInputBase-input': {
+        backgroundColor: 'rgba(0, 0, 0, 0.12)',
+        borderRadius: 4,
+      },
+    },
+  },
+
   inputFields: {
     marginBottom: 25,
     marginTop: 0,

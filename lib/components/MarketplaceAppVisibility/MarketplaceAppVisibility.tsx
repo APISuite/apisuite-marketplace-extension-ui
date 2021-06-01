@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { TextField, useTranslation } from '@apisuite/fe-base'
+import clsx from 'clsx'
 import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonCheckedRounded'
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
 
@@ -10,6 +11,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
   formState,
   handleAppVisibility,
   handleChange,
+  userRoleID,
 }) => {
   const classes = useStyles()
 
@@ -93,7 +95,11 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
           </p>
 
           <TextField
-            className={classes.inputFields}
+            // This input field will be disabled when the user is NOT an admin (i.e., role ID is anything other than 2)
+            className={clsx(classes.inputFields, {
+              [classes.disabledInputField]: userRoleID !== 2,
+            })}
+            disabled={userRoleID !== 2}
             fullWidth
             helperText={t('appSettings.labelsFieldHelperText')}
             label={t('appSettings.labelsFieldLabel')}
