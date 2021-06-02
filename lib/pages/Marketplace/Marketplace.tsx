@@ -16,21 +16,23 @@ import {
   useConfig,
   useTranslation,
 } from '@apisuite/fe-base'
-import { Pagination } from '@material-ui/lab'
 // import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
 // import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
 // import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
+import { Pagination } from '@material-ui/lab'
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded'
 import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded'
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded'
 import SortRoundedIcon from '@material-ui/icons/SortRounded'
 
-import { MarketplaceProps } from './types'
-import AppCatalog from '../../components/AppCatalog'
-import marketplace from 'assets/marketplace.svg'
-import useStyles from './styles'
 import { APPS_PER_PAGE } from '../../constants/globals'
 import { debounce } from '../../util/debounce'
+import { MarketplaceProps } from './types'
+import AppCatalog from '../../components/AppCatalog'
+import Link from '../../components/Link'
+import marketplace from 'assets/marketplace.svg'
+import marketplaceApps from 'assets/marketplaceApps.svg'
+import useStyles from './styles'
 
 const Marketplace: React.FC<MarketplaceProps> = ({
   allMarketplaceApps,
@@ -41,10 +43,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   getAllMarketplaceLabelsAction,
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
+  pagination,
   retrievedAllMarketplaceApps,
   retrievedAllMarketplaceLabels,
   retrievedAllMarketplacePublishers,
-  pagination,
 }) => {
   const classes = useStyles()
 
@@ -330,7 +332,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     }
   }, [searchTerm])
 
-  // App pagination
+  // App's pagination
 
   const setPagination = () => {
     const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE)
@@ -351,50 +353,21 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   // const [currentSlide, setCurrentSlide] = useState(0)
 
   const [page, setPage] = useState(1)
+
   const handleChange = (event, value) => {
     setPage(value)
+
     filterAndSortApps({
       page: value,
       pageSize: APPS_PER_PAGE,
     })
   }
 
-  return (
-    <main>
-      {/* 1 - App Marketplace header */}
-      <header className={classes.appMarketHeader}>
-        <div className={classes.appMarketHeaderContentsContainer}>
-          {/* 1.1 - Header's title & search field */}
-          <div className={classes.appMarketHeaderTitleAndSearchField}>
-            <h1 className={classes.appMarketHeaderTitle}>
-              <>{t('appMarketplace.headerTitlePartOne')} </>
-              <>{portalName} </>
-              <>{t('appMarketplace.headerTitlePartTwo')}</>
-            </h1>
+  // Displaying of apps
 
-            <TextField
-              className={classes.appMarketHeaderSearchField}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchRoundedIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleSearchTermChanges}
-              placeholder={t('appMarketplace.searchForAppsTextField')}
-              variant="outlined"
-            />
-          </div>
-
-          {/* 1.2 - Header's image */}
-          <div>
-            <img className={classes.appMarketHeaderImage} src={marketplace} />
-          </div>
-        </div>
-      </header>
-
-      {/* 2 - App Markeplace's filters & apps */}
+  const displayMarketplaceApps = () => {
+    return (
+      /* 2 - App Markeplace's filters & apps */
       <section className={classes.appMarketFiltersAndAppsSection}>
         {/* 2.1 - App Markeplace's filters */}
         <div className={classes.appMarketFilters}>
@@ -562,8 +535,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({
             </p>
           )}
 
-          {/* FIXME: commented code out as not needed for not but this should be replaced by feature flags
-          allMarketplaceApps && (
+          {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
+          allAppsList && (
             <div className={classes.featuredAppsOuterContainer}>
               <div className={classes.featuredAppsInnerContainer}>
                 <p className={classes.featuredAppsTitle}>
@@ -633,6 +606,74 @@ const Marketplace: React.FC<MarketplaceProps> = ({
           )*/}
         </div>
       </section>
+    )
+  }
+
+  const displayNoMarketplaceApps = () => {
+    return (
+      /* 2 - No Markeplace apps to display */
+      <section className={classes.noMarketplaceAppsSection}>
+        <img className={classes.noMarketplaceAppsImage} src={marketplaceApps} />
+
+        <p className={classes.noMarketplaceAppsTitle}>
+          {t('appMarketplace.noAppsTitle')}
+        </p>
+
+        <p className={classes.noMarketplaceAppsSubtitle}>
+          {t('appMarketplace.noAppsSubtitlePartOne')}
+          <span>{t('appMarketplace.noAppsSubtitlePartTwo')}</span>
+        </p>
+
+        <Link
+          className={classes.createAppButtonStyling}
+          to={'/dashboard/apps/'}
+        >
+          {t('appMarketplace.createAppButtonLabel')}
+        </Link>
+      </section>
+    )
+  }
+
+  return (
+    <main>
+      {/* 1 - App Marketplace header */}
+      <header className={classes.appMarketHeader}>
+        <div className={classes.appMarketHeaderContentsContainer}>
+          {/* 1.1 - Header's title & search field */}
+          <div className={classes.appMarketHeaderTitleAndSearchField}>
+            <h1 className={classes.appMarketHeaderTitle}>
+              <>{t('appMarketplace.headerTitlePartOne')} </>
+              <>{portalName} </>
+              <>{t('appMarketplace.headerTitlePartTwo')}</>
+            </h1>
+
+            {allAppsList.length && (
+              <TextField
+                className={classes.appMarketHeaderSearchField}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchRoundedIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={handleSearchTermChanges}
+                placeholder={t('appMarketplace.searchForAppsTextField')}
+                variant="outlined"
+              />
+            )}
+          </div>
+
+          {/* 1.2 - Header's image */}
+          <div>
+            <img className={classes.appMarketHeaderImage} src={marketplace} />
+          </div>
+        </div>
+      </header>
+
+      {allAppsList.length
+        ? displayMarketplaceApps()
+        : displayNoMarketplaceApps()}
     </main>
   )
 }
