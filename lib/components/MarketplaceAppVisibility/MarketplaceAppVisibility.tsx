@@ -11,7 +11,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
   formState,
   handleAppVisibility,
   handleChange,
-  userRoleID,
+  userRole,
 }) => {
   const classes = useStyles()
 
@@ -95,11 +95,10 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
           </p>
 
           <TextField
-            // This input field will be disabled when the user is NOT an admin (i.e., role ID is anything other than 2)
             className={clsx(classes.inputFields, {
-              [classes.disabledInputField]: userRoleID !== 2,
+              [classes.disabledInputField]: userRole !== 'admin',
             })}
-            disabled={userRoleID !== 2}
+            disabled={userRole !== 'admin'}
             fullWidth
             helperText={t('appSettings.labelsFieldHelperText')}
             label={t('appSettings.labelsFieldLabel')}
