@@ -536,74 +536,74 @@ const Marketplace: React.FC<MarketplaceProps> = ({
           )}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
-allAppsList && (
-<div className={classes.featuredAppsOuterContainer}>
-<div className={classes.featuredAppsInnerContainer}>
-<p className={classes.featuredAppsTitle}>
-{t('appMarketplace.featuredAppsTitle')}
-</p>
+          allAppsList && (
+            <div className={classes.featuredAppsOuterContainer}>
+              <div className={classes.featuredAppsInnerContainer}>
+                <p className={classes.featuredAppsTitle}>
+                  {t('appMarketplace.featuredAppsTitle')}
+                </p>
 
-<p className={classes.featuredAppsSubtitle}>
-{t('appMarketplace.featuredAppsSubtitle')}
-</p>
+                <p className={classes.featuredAppsSubtitle}>
+                  {t('appMarketplace.featuredAppsSubtitle')}
+                </p>
 
-<div className={classes.featuredAppCardsSlider}>
-<div
-className={
-currentSlide === 1 || currentSlide === 2
-? classes.visibleFeaturedAppCardsSliderButton
-: classes.invisibleFeaturedAppCardsSliderButton
-}
->
-<ChevronLeftRoundedIcon />
-</div>
+                <div className={classes.featuredAppCardsSlider}>
+                  <div
+                    className={
+                      currentSlide === 1 || currentSlide === 2
+                        ? classes.visibleFeaturedAppCardsSliderButton
+                        : classes.invisibleFeaturedAppCardsSliderButton
+                    }
+                  >
+                    <ChevronLeftRoundedIcon />
+                  </div>
 
-<div className={classes.featuredAppCard}>
-<AmpStoriesRoundedIcon
-className={classes.featuredAppCardLogo}
-/>
+                  <div className={classes.featuredAppCard}>
+                    <AmpStoriesRoundedIcon
+                      className={classes.featuredAppCardLogo}
+                    />
 
-<div className={classes.featuredAppCardInfo}>
-<p>Featured app 1</p>
-<p>Publisher A</p>
-</div>
-</div>
+                    <div className={classes.featuredAppCardInfo}>
+                      <p>Featured app 1</p>
+                      <p>Publisher A</p>
+                    </div>
+                  </div>
 
-<div className={classes.featuredAppCard}>
-<AmpStoriesRoundedIcon
-className={classes.featuredAppCardLogo}
-/>
+                  <div className={classes.featuredAppCard}>
+                    <AmpStoriesRoundedIcon
+                      className={classes.featuredAppCardLogo}
+                    />
 
-<div className={classes.featuredAppCardInfo}>
-<p>Featured app 2</p>
-<p>Publisher B</p>
-</div>
-</div>
+                    <div className={classes.featuredAppCardInfo}>
+                      <p>Featured app 2</p>
+                      <p>Publisher B</p>
+                    </div>
+                  </div>
 
-<div className={classes.featuredAppCard}>
-<AmpStoriesRoundedIcon
-className={classes.featuredAppCardLogo}
-/>
+                  <div className={classes.featuredAppCard}>
+                    <AmpStoriesRoundedIcon
+                      className={classes.featuredAppCardLogo}
+                    />
 
-<div className={classes.featuredAppCardInfo}>
-<p>Featured app 3</p>
-<p>Publisher C</p>
-</div>
-</div>
+                    <div className={classes.featuredAppCardInfo}>
+                      <p>Featured app 3</p>
+                      <p>Publisher C</p>
+                    </div>
+                  </div>
 
-<div
-className={
-currentSlide === 0 || currentSlide === 1
-? classes.visibleFeaturedAppCardsSliderButton
-: classes.invisibleFeaturedAppCardsSliderButton
-}
->
-<ChevronRightRoundedIcon />
-</div>
-</div>
-</div>
-</div>
-)*/}
+                  <div
+                    className={
+                      currentSlide === 0 || currentSlide === 1
+                        ? classes.visibleFeaturedAppCardsSliderButton
+                        : classes.invisibleFeaturedAppCardsSliderButton
+                    }
+                  >
+                    <ChevronRightRoundedIcon />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )*/}
         </div>
       </section>
     )
