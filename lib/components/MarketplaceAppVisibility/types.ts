@@ -2,6 +2,7 @@ export type MarketplaceAppVisibilityProps = {
   formState: FormState
   handleAppVisibility: (selectedAppVisibility: string) => void
   handleChange: (changeEvent) => void
+  userRole: string
 }
 
 export interface FormState {
