@@ -295,11 +295,11 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   : '...'}
               </h1>
 
-              <p className={classes.appDescription}>
-                {selectedAppDetails && selectedAppDetails.shortDescription
-                  ? selectedAppDetails.shortDescription
-                  : t('appMarketplace.appDetails.noShortDescription')}
-              </p>
+              {selectedAppDetails && selectedAppDetails.shortDescription && (
+                <p className={classes.appDescription}>
+                  {selectedAppDetails.shortDescription}
+                </p>
+              )}
 
               <div className={classes.appLabelsContainer}>
                 {selectedAppDetails && selectedAppDetails.labels.length ? (
@@ -318,8 +318,8 @@ const AppDetails: React.FC<AppDetailsProps> = ({
               </div>
 
               {/* The following condition is to be taken as explicit - meaning, we need to
-              explicitly check if the length of 'imagesArray' is, indeed, anything other
-              than zero. Not doing so will result in unwanted consequences. */}
+explicitly check if the length of 'imagesArray' is, indeed, anything other
+than zero. Not doing so will result in unwanted consequences. */}
               {imagesArray.length !== 0 && (
                 <ImageGallery
                   additionalClass={classes.appImageGallery}
