@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, useTranslation } from '@apisuite/fe-base';
+import clsx from 'clsx';
 import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonCheckedRounded';
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded';
 import useStyles from './styles';
-const MarketplaceAppVisibility = ({ formState, handleAppVisibility, handleChange, }) => {
+const MarketplaceAppVisibility = ({ formState, handleAppVisibility, handleChange, userRole, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const t = (string, ...args) => {
@@ -37,7 +38,9 @@ const MarketplaceAppVisibility = ({ formState, handleAppVisibility, handleChange
                         React.createElement("p", null, t('appSettings.publicMarketplaceAppSubtitle'))))),
             React.createElement("div", { className: classes.rightSubSectionContainer },
                 React.createElement("p", { className: classes.appLabelsSubSectionDescription }, t('appSettings.appLabelsSubSectionDescription')),
-                React.createElement(TextField, { className: classes.inputFields, fullWidth: true, helperText: t('appSettings.labelsFieldHelperText'), label: t('appSettings.labelsFieldLabel'), margin: "dense", name: "appLabels", onChange: handleChange, type: "text", value: appLabels, variant: "outlined" }))),
+                React.createElement(TextField, { className: clsx(classes.inputFields, {
+                        [classes.disabledInputField]: userRole !== 'admin',
+                    }), disabled: userRole !== 'admin', fullWidth: true, helperText: t('appSettings.labelsFieldHelperText'), label: t('appSettings.labelsFieldLabel'), margin: "dense", name: "appLabels", onChange: handleChange, type: "text", value: appLabels, variant: "outlined" }))),
         React.createElement("hr", { className: classes.sectionSeparator })));
 };
 export default MarketplaceAppVisibility;

@@ -86,6 +86,21 @@ export default makeStyles((theme) => ({
         maxWidth: '425px',
         width: '100%',
     },
+    createAppButtonStyling: {
+        backgroundColor: theme.palette.primary.main,
+        borderRadius: `${theme.shape.borderRadius}px`,
+        color: `${theme.palette.primary.contrastText} !important`,
+        cursor: 'pointer',
+        fontSize: 16,
+        fontWeight: 500,
+        margin: '0px auto',
+        padding: '12px 20px',
+        textDecoration: 'none',
+        width: 175,
+        '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+        },
+    },
     featuredAppCard: {
         backgroundColor: theme.palette.common.white,
         borderRadius: theme.shape.borderRadius,
@@ -205,6 +220,31 @@ export default makeStyles((theme) => ({
         color: theme.palette.text.primary,
         fontSize: '12px',
         fontWeight: 400,
+    },
+    noMarketplaceAppsImage: {
+        filter: 'grayscale(100%)',
+        marginBottom: 24,
+        width: '320px',
+    },
+    noMarketplaceAppsSection: {
+        display: 'block',
+        margin: '40px 0px 80px 0px',
+        textAlign: 'center',
+    },
+    noMarketplaceAppsSubtitle: {
+        fontSize: 16,
+        fontWeight: 400,
+        marginBottom: 24,
+        '& > span': {
+            display: 'block',
+            fontWeight: 600,
+            marginTop: -5,
+        },
+    },
+    noMarketplaceAppsTitle: {
+        fontSize: 24,
+        fontWeight: 500,
+        marginBottom: 12,
     },
     notSelectedFilter: {
         fontSize: '16px',

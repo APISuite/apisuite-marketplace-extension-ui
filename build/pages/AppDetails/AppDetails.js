@@ -124,9 +124,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
                 React.createElement("h1", { className: classes.appTitle }, selectedAppDetails && selectedAppDetails.name
                     ? selectedAppDetails.name
                     : '...'),
-                React.createElement("p", { className: classes.appDescription }, selectedAppDetails && selectedAppDetails.shortDescription
-                    ? selectedAppDetails.shortDescription
-                    : t('appMarketplace.appDetails.noShortDescription')),
+                selectedAppDetails && selectedAppDetails.shortDescription && (React.createElement("p", { className: classes.appDescription }, selectedAppDetails.shortDescription)),
                 React.createElement("div", { className: classes.appLabelsContainer }, selectedAppDetails && selectedAppDetails.labels.length ? (selectedAppDetails.labels.map((label, index) => {
                     return (React.createElement("p", { className: classes.appLabel, key: `appLabel${index}` }, label));
                 })) : (React.createElement("p", { className: classes.appLabel }, t('appMarketplace.appDetails.noLabels')))),

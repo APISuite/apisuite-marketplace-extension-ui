@@ -2,6 +2,7 @@ import { makeStyles } from '@apisuite/fe-base';
 export default makeStyles((theme) => ({
     allSubbedMarketplaceAppsContainer: {
         display: 'flex',
+        marginTop: 40,
     },
     browseMarketplaceAppsButton: {
         backgroundColor: theme.palette.common.white,

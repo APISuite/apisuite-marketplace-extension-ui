@@ -22,6 +22,10 @@
                 "headerTitlePartOne": "Explore the",
                 "headerTitlePartTwo": "Marketplace",
                 "searchForAppsTextField": "Search for apps",
+                "noAppsTitle": "There are no applications in our Marketplace!",
+                "noAppsSubtitlePartOne": "We don't have any applications available... yet!",
+                "noAppsSubtitlePartTwo": "Be the first to create one!",
+                "createAppButtonLabel": "Create application",
                 "sortByTitle": "Sort by:",
                 "sortModes": {
                     "appName": "Application name",
