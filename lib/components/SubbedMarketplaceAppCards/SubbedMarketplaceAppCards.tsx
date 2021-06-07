@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Avatar,
   Box,
@@ -30,6 +30,8 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
     return trans.t(`extensions.marketplace.${string}`)
   }
 
+  const [isLoading, setLoading] = useState(true)
+
   useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
     of all information we presently have on some user's marketplace app subscriptions. */
@@ -39,6 +41,10 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
       getAllSubbedMarketplaceAppsAction(userID)
     }
   }, [userProfile])
+
+  useEffect(() => {
+    setLoading(!retrievedAllSubbedMarketplaceApps)
+  }, [retrievedAllSubbedMarketplaceApps])
 
   const stringChecker = (providedString: string) => {
     return providedString.length ? providedString : false
@@ -50,7 +56,7 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
   const subbedMarketplaceAppCardGenerator = (
     subbedMarketplaceApps: SubbedMarketplaceApp[]
   ) => {
-    if (!retrievedAllSubbedMarketplaceApps) {
+    if (isLoading) {
       return (
         <Box py={5}>
           <Typography
@@ -162,11 +168,11 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
         </Typography>
       </Box>
 
-      <Link className={classes.browseMarketplaceAppsButton} to={BASE_URI}>
-        <Typography variant="body1" display="block" gutterBottom>
+      <Typography variant="body1">
+        <Link className={classes.browseMarketplaceAppsButton} to={BASE_URI}>
           {t('appListing.browseMarketplaceApps')}
-        </Typography>
-      </Link>
+        </Link>
+      </Typography>
 
       <div className={classes.allSubbedMarketplaceAppsContainer}>
         {subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps)}
