@@ -103,44 +103,21 @@ export default makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     cursor: 'pointer',
     display: 'flex',
-    height: 100,
-    marginBottom: 12,
-    maxWidth: 400,
-    padding: 12,
     width: '100%',
 
     // Selects the 'public' app visibility container
     '&:nth-of-type(2)': {
-      marginBottom: 24,
+      marginBottom: theme.spacing(4),
     },
   },
 
   selectedAppVisibilityIcon: {
-    color: '#2DB7BA',
-    fontSize: 24,
-    marginRight: 8,
+    color: theme.palette.primary.main,
+    marginRight: theme.spacing(1),
   },
 
   notSelectedAppVisibilityIcon: {
-    color: '#D1D1D1',
-    fontSize: 24,
-    marginRight: 8,
-  },
-
-  appVisibilityText: {
-    '& > :first-child': {
-      color: theme.palette.text.primary,
-      fontSize: 16,
-      fontWeight: 500,
-      lineHeight: '23.5px',
-      marginBottom: 8,
-    },
-
-    '& > :last-child': {
-      color: theme.palette.text.hint,
-      fontSize: 14,
-      fontWeight: 300,
-      lineHeight: '20px',
-    },
+    color: theme.palette.grey[300],
+    marginRight: theme.spacing(1),
   },
 }))
