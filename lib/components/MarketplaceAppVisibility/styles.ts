@@ -84,7 +84,7 @@ export default makeStyles((theme) => ({
   sectionSeparator: {
     border: `1px solid ${theme.palette.grey[200]}`,
     borderRadius: theme.shape.borderRadius,
-    margin: '25px 0px 25px 0px',
+    margin: theme.spacing(5, 0),
     width: '100%',
   },
 
