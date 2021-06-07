@@ -1,5 +1,11 @@
 import React from 'react'
-import { Avatar, useTranslation } from '@apisuite/fe-base'
+import {
+  Avatar,
+  Box,
+  Chip,
+  Typography,
+  useTranslation,
+} from '@apisuite/fe-base'
 
 import { AppCatalogProps, AppDetails } from './types'
 import Link from '../Link'
@@ -33,35 +39,46 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
           )}
 
           <div className={classes.appCatalogEntryNameAndOwnerContainer}>
-            <p className={classes.appCatalogEntryName}>{appDetails.appName}</p>
+            <Typography variant="body1" className={classes.appCatalogEntryName}>
+              {appDetails.appName}
+            </Typography>
 
-            <p className={classes.appCatalogEntryOwner}>
+            <Typography
+              variant="subtitle2"
+              className={classes.appCatalogEntryOwner}
+            >
               {appDetails.appPublisher}
-            </p>
+            </Typography>
           </div>
         </div>
 
         <div className={classes.appCatalogEntryBottomDetails}>
-          <p className={classes.appCatalogEntryDescription}>
+          <Typography
+            variant="body2"
+            className={classes.appCatalogEntryDescription}
+          >
             {appDetails.appDescription}
-          </p>
+          </Typography>
 
           <div className={classes.appCatalogEntryLabelsContainer}>
             {appDetails.appLabels.length ? (
               appDetails.appLabels.map((appLabel, index) => {
                 return (
-                  <p
-                    className={classes.appCatalogEntryLabel}
-                    key={`appLabel${index}`}
-                  >
-                    {appLabel}
-                  </p>
+                  <Box mr={1} key={`appLabel${index}`}>
+                    <Chip
+                      className={classes.appCatalogEntryLabels}
+                      label={`${appLabel}`}
+                    />
+                  </Box>
                 )
               })
             ) : (
-              <p className={classes.appCatalogEntryLabel}>
-                {t('appMarketplace.noLabelsProvidedText')}
-              </p>
+              <Box mr={1}>
+                <Chip
+                  className={classes.appCatalogEntryLabels}
+                  label={`${t('appMarketplace.noLabelsProvidedText')}`}
+                />
+              </Box>
             )}
           </div>
         </div>

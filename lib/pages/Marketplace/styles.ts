@@ -92,9 +92,7 @@ export default makeStyles((theme) => ({
 
   appMarketHeaderTitle: {
     color: theme.palette.common.white,
-    fontSize: '42px',
-    fontWeight: 700,
-    marginBottom: '25px',
+    marginBottom: theme.spacing(4),
   },
 
   appMarketHeaderTitleAndSearchField: {

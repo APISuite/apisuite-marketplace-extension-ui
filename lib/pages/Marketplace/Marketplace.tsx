@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -495,13 +496,15 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
         {/* 2.2 - App Markeplace's apps */}
         <div className={classes.appMarketApps}>
-          <p className={classes.amountOfAppMarketAppsText}>
-            <span>
-              {pagination.rowCount || '0'}
-              <> {t('appMarketplace.amountOfAppsTextPartOne')} </>
-            </span>
-            <>{t('appMarketplace.amountOfAppsTextPartTwo')}</>
-          </p>
+          <Box mb={3}>
+            <Typography variant="h3">
+              <span>
+                {pagination.rowCount || '0'}
+                <> {t('appMarketplace.amountOfAppsTextPartOne')} </>
+              </span>
+              <>{t('appMarketplace.amountOfAppsTextPartTwo')}</>
+            </Typography>
+          </Box>
 
           {retrievedAllMarketplaceApps &&
           retrievedAllMarketplaceLabels &&
@@ -525,14 +528,18 @@ const Marketplace: React.FC<MarketplaceProps> = ({
                 {setPagination()}
               </>
             ) : (
-              <p className={classes.noAppsToDisplay}>
-                {t('appMarketplace.noAppsToDisplayText')}
-              </p>
+              <Box pt={5}>
+                <Typography variant="body1" className={classes.noAppsToDisplay}>
+                  {t('appMarketplace.noAppsToDisplayText')}
+                </Typography>
+              </Box>
             )
           ) : (
-            <p className={classes.noAppsToDisplay}>
-              {t('appMarketplace.retrievingAppsToDisplayText')}
-            </p>
+            <Box pt={5}>
+              <Typography variant="body1" className={classes.noAppsToDisplay}>
+                {t('appMarketplace.retrievingAppsToDisplayText')}
+              </Typography>
+            </Box>
           )}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
@@ -615,21 +622,23 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       <section className={classes.noMarketplaceAppsSection}>
         <img className={classes.noMarketplaceAppsImage} src={marketplaceApps} />
 
-        <p className={classes.noMarketplaceAppsTitle}>
+        <Typography className={classes.noMarketplaceAppsTitle}>
           {t('appMarketplace.noAppsTitle')}
-        </p>
+        </Typography>
 
-        <p className={classes.noMarketplaceAppsSubtitle}>
+        <Typography className={classes.noMarketplaceAppsSubtitle}>
           {t('appMarketplace.noAppsSubtitlePartOne')}
           <span>{t('appMarketplace.noAppsSubtitlePartTwo')}</span>
-        </p>
+        </Typography>
 
-        <Link
-          className={classes.createAppButtonStyling}
-          to={'/dashboard/apps/'}
-        >
-          {t('appMarketplace.createAppButtonLabel')}
-        </Link>
+        <Typography className={classes.noMarketplaceAppsSubtitle}>
+          <Link
+            className={classes.createAppButtonStyling}
+            to={'/dashboard/apps/'}
+          >
+            {t('appMarketplace.createAppButtonLabel')}
+          </Link>
+        </Typography>
       </section>
     )
   }
@@ -641,13 +650,13 @@ const Marketplace: React.FC<MarketplaceProps> = ({
         <div className={classes.appMarketHeaderContentsContainer}>
           {/* 1.1 - Header's title & search field */}
           <div className={classes.appMarketHeaderTitleAndSearchField}>
-            <h1 className={classes.appMarketHeaderTitle}>
+            <Typography variant="h1" className={classes.appMarketHeaderTitle}>
               <>{t('appMarketplace.headerTitlePartOne')} </>
               <>{portalName} </>
               <>{t('appMarketplace.headerTitlePartTwo')}</>
-            </h1>
+            </Typography>
 
-            {allAppsList.length && (
+            {!!allAppsList.length && (
               <TextField
                 className={classes.appMarketHeaderSearchField}
                 InputProps={{
@@ -671,9 +680,12 @@ const Marketplace: React.FC<MarketplaceProps> = ({
         </div>
       </header>
 
-      {allAppsList.length
-        ? displayMarketplaceApps()
-        : displayNoMarketplaceApps()}
+      {/* FIXME commented as logic needs change
+      {allAppsList.length > 0
+        ? displayNoMarketplaceApps()
+        : displayMarketplaceApps()}
+      */}
+      {displayMarketplaceApps()}
     </main>
   )
 }
