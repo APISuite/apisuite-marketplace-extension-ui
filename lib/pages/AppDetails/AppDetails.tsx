@@ -328,7 +328,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
             </section>
 
             <section className={classes.rightAppDetailsContainer}>
-              <Box pb={4}>
+              <Box pb={1.5}>
                 <Typography variant="h1">
                   {selectedAppDetails && selectedAppDetails.name
                     ? selectedAppDetails.name
@@ -337,51 +337,53 @@ const AppDetails: React.FC<AppDetailsProps> = ({
               </Box>
 
               {selectedAppDetails && selectedAppDetails.shortDescription && (
-                <Box pb={3}>
+                <Box pb={1.5}>
                   <Typography variant="h5">
                     {selectedAppDetails.shortDescription}
                   </Typography>
                 </Box>
               )}
 
-              <div className={classes.appLabelsContainer}>
+              <Box display="flex" flexWrap="wrap">
                 {selectedAppDetails && selectedAppDetails.labels.length ? (
                   selectedAppDetails.labels.map((label, index) => {
                     return (
-                      <Box m={1} key={`appLabel${index}`}>
+                      <Box mr={1} key={`appLabel${index}`}>
                         <Chip className={classes.appChip} label={`${label}`} />
                       </Box>
                     )
                   })
                 ) : (
-                  <Box m={1}>
+                  <Box mr={1}>
                     <Chip
                       className={classes.appChip}
                       label={`${t('appMarketplace.appDetails.noLabels')}`}
                     />
                   </Box>
                 )}
-              </div>
+              </Box>
 
               {/* The following condition is to be taken as explicit - meaning, we need to
 explicitly check if the length of 'imagesArray' is, indeed, anything other
 than zero. Not doing so will result in unwanted consequences. */}
               {imagesArray.length !== 0 && (
-                <ImageGallery
-                  additionalClass={classes.appImageGallery}
-                  items={imagesArray}
-                  showNav={false}
-                  showPlayButton={false}
-                />
+                <Box pt={5}>
+                  <ImageGallery
+                    additionalClass={classes.appImageGallery}
+                    items={imagesArray}
+                    showNav={false}
+                    showPlayButton={false}
+                  />
+                </Box>
               )}
 
-              <Box py={3}>
+              <Box pt={5} pb={3}>
                 <Typography variant="h3">
                   {t('appMarketplace.appDetails.partOfAppOverviewTitle')}
                 </Typography>
               </Box>
 
-              <Box pb={3}>
+              <Box pb={1}>
                 <Typography variant="body1">
                   {selectedAppDetails && selectedAppDetails.description
                     ? selectedAppDetails.description
@@ -391,7 +393,7 @@ than zero. Not doing so will result in unwanted consequences. */}
             </section>
           </>
         ) : (
-          <Box py={3}>
+          <Box py={3} display="flex" justifyContent="center" width={1}>
             <Typography variant="body1">
               {t('appMarketplace.appDetails.loadingAppDetails')}
             </Typography>

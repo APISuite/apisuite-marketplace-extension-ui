@@ -84,12 +84,6 @@ export default makeStyles((theme) => ({
     width: 'fit-content',
   },
 
-  appLabelsContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginBottom: '40px',
-  },
-
   appLinksSubSection: {
     height: '120px',
     width: '100%',
