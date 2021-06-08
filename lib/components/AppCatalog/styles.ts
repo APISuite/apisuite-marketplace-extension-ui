@@ -14,10 +14,10 @@ export default makeStyles((theme) => ({
     background: theme.palette.gradient.light,
     fontSize: '15px',
     fontWeight: 300,
-    height: '45px',
+    height: '40px',
     marginRight: '12.5px',
     textTransform: 'uppercase',
-    width: '45px',
+    width: '40px',
   },
 
   appCatalogEntryBottomDetails: {
@@ -29,8 +29,6 @@ export default makeStyles((theme) => ({
   appCatalogEntryDescription: {
     color: theme.palette.text.secondary,
     display: '-webkit-box',
-    fontSize: '14px',
-    fontWeight: 300,
     height: '35px',
     lineHeight: '18px',
     marginBottom: '15px',
@@ -44,9 +42,9 @@ export default makeStyles((theme) => ({
     borderRadius: '50%',
     fontSize: '20px',
     fontWeight: 300,
-    height: '45px',
+    height: '40px',
     marginRight: '12.5px',
-    width: '45px',
+    width: '40px',
   },
 
   appCatalogEntryLabel: {
@@ -59,6 +57,11 @@ export default makeStyles((theme) => ({
     marginRight: '7.5px',
     padding: '0px 7.5px',
     width: 'fit-content',
+  },
+
+  appCatalogEntryLabels: {
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.primary.main,
   },
 
   appCatalogEntryLabelsContainer: {
@@ -81,9 +84,6 @@ export default makeStyles((theme) => ({
 
   appCatalogEntryName: {
     color: theme.palette.text.primary,
-    fontSize: '16px',
-    fontWeight: 700,
-    marginBottom: '-10px',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -95,9 +95,7 @@ export default makeStyles((theme) => ({
   },
 
   appCatalogEntryOwner: {
-    color: theme.palette.text.hint,
-    fontSize: '14px',
-    fontWeight: 400,
+    color: theme.palette.text.primary,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

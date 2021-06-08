@@ -12,6 +12,7 @@ import {
   getAllMarketplaceLabelsActionSuccess,
   getAllMarketplacePublishersActionSuccess,
   getAllSubbedMarketplaceAppsActionSuccess,
+  getAllSubbedMarketplaceAppsActionError,
   getAppDetailsActionSuccess,
   getFilteredMarketplaceAppsActionSuccess,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
@@ -106,6 +107,7 @@ export function* getAllSubbedMarketplaceAppsActionSaga(
     yield put(getAllSubbedMarketplaceAppsActionSuccess(response.data))
   } catch (error) {
     console.log('Error fetching all subscribed marketplace apps')
+    yield put(getAllSubbedMarketplaceAppsActionError())
   }
 }
 

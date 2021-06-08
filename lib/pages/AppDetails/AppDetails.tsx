@@ -4,7 +4,14 @@ import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
 
 import { AppDetailsProps } from './types'
-import { Avatar, Button, useTranslation } from '@apisuite/fe-base'
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Typography,
+  useTranslation,
+} from '@apisuite/fe-base'
 import useStyles from './styles'
 
 const AppDetails: React.FC<AppDetailsProps> = ({
@@ -141,67 +148,83 @@ const AppDetails: React.FC<AppDetailsProps> = ({
               <hr className={classes.subSectionSeparator} />
 
               <div>
-                <p className={classes.subSectionTitle}>
-                  {t('appMarketplace.appDetails.subSectionTitleOne')}
-                </p>
+                <Box pb={1}>
+                  <Typography variant="body1">
+                    <strong>
+                      {t('appMarketplace.appDetails.subSectionTitleOne')}
+                    </strong>
+                  </Typography>
+                </Box>
 
                 {selectedAppDetails &&
                   !isURLEmpty(selectedAppDetails.websiteUrl) && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.websiteUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t('appMarketplace.appDetails.appLinks.websiteURL')}
-                    </a>
+                    <Typography variant="body1">
+                      <a
+                        className={classes.providedLink}
+                        href={selectedAppDetails.websiteUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {t('appMarketplace.appDetails.appLinks.websiteURL')}
+                      </a>
+                    </Typography>
                   )}
 
                 {selectedAppDetails && !isURLEmpty(selectedAppDetails.tosUrl) && (
-                  <a
-                    className={classes.providedLink}
-                    href={selectedAppDetails.tosUrl}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    {t('appMarketplace.appDetails.appLinks.tosURL')}
-                  </a>
+                  <Typography variant="body1">
+                    <a
+                      className={classes.providedLink}
+                      href={selectedAppDetails.tosUrl}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {t('appMarketplace.appDetails.appLinks.tosURL')}
+                    </a>
+                  </Typography>
                 )}
 
                 {selectedAppDetails &&
                   !isURLEmpty(selectedAppDetails.privacyUrl) && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.privacyUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t('appMarketplace.appDetails.appLinks.privacyPolicyURL')}
-                    </a>
+                    <Typography variant="body1">
+                      <a
+                        className={classes.providedLink}
+                        href={selectedAppDetails.privacyUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {t(
+                          'appMarketplace.appDetails.appLinks.privacyPolicyURL'
+                        )}
+                      </a>
+                    </Typography>
                   )}
 
                 {selectedAppDetails &&
                   !isURLEmpty(selectedAppDetails.youtubeUrl) && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.youtubeUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t('appMarketplace.appDetails.appLinks.youTubeURL')}
-                    </a>
+                    <Typography variant="body1">
+                      <a
+                        className={classes.providedLink}
+                        href={selectedAppDetails.youtubeUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {t('appMarketplace.appDetails.appLinks.youTubeURL')}
+                      </a>
+                    </Typography>
                   )}
 
                 {selectedAppDetails &&
                   !isURLEmpty(selectedAppDetails.supportUrl) && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.supportUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t('appMarketplace.appDetails.appLinks.supportURL')}
-                    </a>
+                    <Typography variant="body1">
+                      <a
+                        className={classes.providedLink}
+                        href={selectedAppDetails.supportUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {t('appMarketplace.appDetails.appLinks.supportURL')}
+                      </a>
+                    </Typography>
                   )}
 
                 {selectedAppDetails &&
@@ -210,140 +233,171 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                   isURLEmpty(selectedAppDetails.tosUrl) &&
                   isURLEmpty(selectedAppDetails.websiteUrl) &&
                   isURLEmpty(selectedAppDetails.youtubeUrl) && (
-                    <p className={classes.subSectionText}>
+                    <Typography variant="body1">
                       {t('appMarketplace.appDetails.appLinks.noAppLinks')}
-                    </p>
+                    </Typography>
                   )}
               </div>
 
               <hr className={classes.subSectionSeparator} />
 
               <div>
-                <p className={classes.subSectionTitle}>
-                  {t('appMarketplace.appDetails.subSectionTitleTwo')}
-                </p>
+                <Box pb={1}>
+                  <Typography variant="body1">
+                    <strong>
+                      {t('appMarketplace.appDetails.subSectionTitleTwo')}
+                    </strong>
+                  </Typography>
+                </Box>
 
-                <p className={classes.subSectionText}>
+                <Typography variant="body1">
                   {selectedAppDetails && selectedAppDetails.organization.name
                     ? selectedAppDetails.organization.name
                     : '...'}
-                </p>
+                </Typography>
               </div>
 
               <hr className={classes.subSectionSeparator} />
 
               <div>
-                <p className={classes.subSectionTitle}>
-                  {t('appMarketplace.appDetails.subSectionTitleThree')}
-                </p>
+                <Box pb={1}>
+                  <Typography variant="body1">
+                    <strong>
+                      {t('appMarketplace.appDetails.subSectionTitleThree')}
+                    </strong>
+                  </Typography>
+                </Box>
 
                 {selectedAppDetails &&
                   !isURLEmpty(selectedAppDetails.organization.tosUrl) && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.organization.tosUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t('appMarketplace.appDetails.publisherLinks.tosURL')}
-                    </a>
+                    <Typography variant="body1">
+                      <a
+                        className={classes.providedLink}
+                        href={selectedAppDetails.organization.tosUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {t('appMarketplace.appDetails.publisherLinks.tosURL')}
+                      </a>
+                    </Typography>
                   )}
 
                 {selectedAppDetails &&
                   !isURLEmpty(selectedAppDetails.organization.privacyUrl) && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.organization.privacyUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t(
-                        'appMarketplace.appDetails.publisherLinks.privacyPolicyURL'
-                      )}
-                    </a>
+                    <Typography variant="body1">
+                      <a
+                        className={classes.providedLink}
+                        href={selectedAppDetails.organization.privacyUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {t(
+                          'appMarketplace.appDetails.publisherLinks.privacyPolicyURL'
+                        )}
+                      </a>
+                    </Typography>
                   )}
 
                 {selectedAppDetails &&
                   !isURLEmpty(selectedAppDetails.organization.supportUrl) && (
-                    <a
-                      className={classes.providedLink}
-                      href={selectedAppDetails.organization.supportUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {t('appMarketplace.appDetails.publisherLinks.supportURL')}
-                    </a>
+                    <Typography variant="body1">
+                      <a
+                        className={classes.providedLink}
+                        href={selectedAppDetails.organization.supportUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {t(
+                          'appMarketplace.appDetails.publisherLinks.supportURL'
+                        )}
+                      </a>
+                    </Typography>
                   )}
 
                 {selectedAppDetails &&
                   isURLEmpty(selectedAppDetails.organization.privacyUrl) &&
                   isURLEmpty(selectedAppDetails.organization.supportUrl) &&
                   isURLEmpty(selectedAppDetails.organization.tosUrl) && (
-                    <p className={classes.subSectionText}>
+                    <Typography variant="body1">
                       {t(
                         'appMarketplace.appDetails.publisherLinks.noPublisherLinks'
                       )}
-                    </p>
+                    </Typography>
                   )}
               </div>
             </section>
 
             <section className={classes.rightAppDetailsContainer}>
-              <h1 className={classes.appTitle}>
-                {selectedAppDetails && selectedAppDetails.name
-                  ? selectedAppDetails.name
-                  : '...'}
-              </h1>
+              <Box pb={1.5}>
+                <Typography variant="h1">
+                  {selectedAppDetails && selectedAppDetails.name
+                    ? selectedAppDetails.name
+                    : '...'}
+                </Typography>
+              </Box>
 
               {selectedAppDetails && selectedAppDetails.shortDescription && (
-                <p className={classes.appDescription}>
-                  {selectedAppDetails.shortDescription}
-                </p>
+                <Box pb={1.5}>
+                  <Typography variant="h5">
+                    {selectedAppDetails.shortDescription}
+                  </Typography>
+                </Box>
               )}
 
-              <div className={classes.appLabelsContainer}>
+              <Box display="flex" flexWrap="wrap">
                 {selectedAppDetails && selectedAppDetails.labels.length ? (
                   selectedAppDetails.labels.map((label, index) => {
                     return (
-                      <p className={classes.appLabel} key={`appLabel${index}`}>
-                        {label}
-                      </p>
+                      <Box mr={1} key={`appLabel${index}`}>
+                        <Chip className={classes.appChip} label={`${label}`} />
+                      </Box>
                     )
                   })
                 ) : (
-                  <p className={classes.appLabel}>
-                    {t('appMarketplace.appDetails.noLabels')}
-                  </p>
+                  <Box mr={1}>
+                    <Chip
+                      className={classes.appChip}
+                      label={`${t('appMarketplace.appDetails.noLabels')}`}
+                    />
+                  </Box>
                 )}
-              </div>
+              </Box>
 
               {/* The following condition is to be taken as explicit - meaning, we need to
 explicitly check if the length of 'imagesArray' is, indeed, anything other
 than zero. Not doing so will result in unwanted consequences. */}
               {imagesArray.length !== 0 && (
-                <ImageGallery
-                  additionalClass={classes.appImageGallery}
-                  items={imagesArray}
-                  showNav={false}
-                  showPlayButton={false}
-                />
+                <Box pt={5}>
+                  <ImageGallery
+                    additionalClass={classes.appImageGallery}
+                    items={imagesArray}
+                    showNav={false}
+                    showPlayButton={false}
+                  />
+                </Box>
               )}
 
-              <h1 className={classes.appOverviewTitle}>
-                {t('appMarketplace.appDetails.partOfAppOverviewTitle')}
-              </h1>
+              <Box pt={5} pb={3}>
+                <Typography variant="h3">
+                  {t('appMarketplace.appDetails.partOfAppOverviewTitle')}
+                </Typography>
+              </Box>
 
-              <p className={classes.appOverviewDescription}>
-                {selectedAppDetails && selectedAppDetails.description
-                  ? selectedAppDetails.description
-                  : t('appMarketplace.appDetails.noAppOverview')}
-              </p>
+              <Box pb={1}>
+                <Typography variant="body1">
+                  {selectedAppDetails && selectedAppDetails.description
+                    ? selectedAppDetails.description
+                    : t('appMarketplace.appDetails.noAppOverview')}
+                </Typography>
+              </Box>
             </section>
           </>
         ) : (
-          <p className={classes.loadingAppDetails}>
-            {t('appMarketplace.appDetails.loadingAppDetails')}
-          </p>
+          <Box py={3} display="flex" justifyContent="center" width={1}>
+            <Typography variant="body1">
+              {t('appMarketplace.appDetails.loadingAppDetails')}
+            </Typography>
+          </Box>
         )}
       </section>
     </main>

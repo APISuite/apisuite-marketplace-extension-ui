@@ -84,6 +84,9 @@ export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION =
 export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS =
   'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS'
 
+export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR =
+  'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR'
+
 export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
 export const GET_APP_DETAILS_ACTION_SUCCESS =
   'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS'
@@ -156,6 +159,12 @@ export default function reducer(
     case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS: {
       return update(state, {
         allSubbedMarketplaceApps: { $set: action.allSubbedMarketplaceApps },
+        retrievedAllSubbedMarketplaceApps: { $set: true },
+      })
+    }
+
+    case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR: {
+      return update(state, {
         retrievedAllSubbedMarketplaceApps: { $set: true },
       })
     }
@@ -265,6 +274,12 @@ export function getAllSubbedMarketplaceAppsActionSuccess(
   return {
     type: GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS,
     allSubbedMarketplaceApps,
+  }
+}
+
+export function getAllSubbedMarketplaceAppsActionError() {
+  return {
+    type: GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR,
   }
 }
 

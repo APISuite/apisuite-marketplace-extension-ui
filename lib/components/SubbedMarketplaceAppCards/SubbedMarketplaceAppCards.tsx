@@ -1,5 +1,11 @@
-import React, { useEffect } from 'react'
-import { Avatar, useTranslation } from '@apisuite/fe-base'
+import React, { useEffect, useState } from 'react'
+import {
+  Avatar,
+  Box,
+  Typography,
+  useTranslation,
+  useTheme,
+} from '@apisuite/fe-base'
 import HeightRoundedIcon from '@material-ui/icons/HeightRounded'
 
 import { BASE_URI } from '../../helpers/constants'
@@ -18,9 +24,13 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
 
   const trans = useTranslation()
 
+  const { palette } = useTheme()
+
   const t = (string: string) => {
     return trans.t(`extensions.marketplace.${string}`)
   }
+
+  const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
@@ -32,6 +42,10 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
     }
   }, [userProfile])
 
+  useEffect(() => {
+    setLoading(!retrievedAllSubbedMarketplaceApps)
+  }, [retrievedAllSubbedMarketplaceApps])
+
   const stringChecker = (providedString: string) => {
     return providedString.length ? providedString : false
   }
@@ -42,19 +56,33 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
   const subbedMarketplaceAppCardGenerator = (
     subbedMarketplaceApps: SubbedMarketplaceApp[]
   ) => {
-    if (!retrievedAllSubbedMarketplaceApps) {
+    if (isLoading) {
       return (
-        <p className={classes.retrievingMarketplaceAppCards}>
-          {t('appListing.retrievingMarketplaceAppSubscriptions')}
-        </p>
+        <Box py={5}>
+          <Typography
+            variant="body1"
+            display="block"
+            gutterBottom
+            style={{ color: palette.text.secondary }}
+          >
+            {t('appListing.retrievingMarketplaceAppSubscriptions')}
+          </Typography>
+        </Box>
       )
     }
 
     if (subbedMarketplaceApps.length === 0) {
       return (
-        <p className={classes.loadingMarketplaceAppCards}>
-          {t('appListing.noMarketplaceAppSubscriptions')}
-        </p>
+        <Box py={5}>
+          <Typography
+            variant="body1"
+            display="block"
+            gutterBottom
+            style={{ color: palette.text.secondary }}
+          >
+            {t('appListing.noMarketplaceAppSubscriptions')}
+          </Typography>
+        </Box>
       )
     }
 
@@ -100,15 +128,23 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
               </div>
 
               <div className={classes.marketplaceAppCardBottomSection}>
-                <p className={classes.marketplaceAppCardTitle}>
+                <Typography
+                  className={classes.marketplaceAppCardTitle}
+                  variant="h4"
+                  display="block"
+                  gutterBottom
+                >
                   {subbedMarketplaceApp.name}
-                </p>
+                </Typography>
 
-                <p className={classes.marketplaceAppCardDescription}>
+                <Typography
+                  variant="body1"
+                  className={classes.marketplaceAppCardDescription}
+                >
                   {stringChecker(subbedMarketplaceApp.shortDescription) ||
                     stringChecker(subbedMarketplaceApp.description) ||
                     t('appListing.noAppDescriptionProvided')}
-                </p>
+                </Typography>
               </div>
             </div>
           </Link>
@@ -121,13 +157,22 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
 
   return (
     <div>
-      <p className={classes.marketplaceAppsContainerTitle}>
-        {t('appListing.marketplaceAppsSectionTitle')}
-      </p>
+      <Box pb={5} pt={3}>
+        <Typography
+          variant="h2"
+          display="block"
+          gutterBottom
+          style={{ color: palette.text.primary }}
+        >
+          {t('appListing.marketplaceAppsSectionTitle')}
+        </Typography>
+      </Box>
 
-      <Link className={classes.browseMarketplaceAppsButton} to={BASE_URI}>
-        {t('appListing.browseMarketplaceApps')}
-      </Link>
+      <Typography variant="body1">
+        <Link className={classes.browseMarketplaceAppsButton} to={BASE_URI}>
+          {t('appListing.browseMarketplaceApps')}
+        </Link>
+      </Typography>
 
       <div className={classes.allSubbedMarketplaceAppsContainer}>
         {subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps)}

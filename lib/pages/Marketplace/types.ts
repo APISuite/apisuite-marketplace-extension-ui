@@ -19,6 +19,7 @@ import {
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+  GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR,
 } from './ducks'
 
 export const roleNameOptions = [
@@ -210,6 +211,10 @@ export interface GetAllSubbedMarketplaceAppsActionSuccess extends Action {
   allSubbedMarketplaceApps: SubbedMarketplaceApp[]
 }
 
+export interface GetAllSubbedMarketplaceAppsActionError extends Action {
+  type: typeof GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR
+}
+
 export interface SubscribeToMarketplaceAppAction extends Action {
   type: typeof SUBSCRIBE_TO_MARKETPLACE_APP_ACTION
   userID: number
@@ -270,6 +275,7 @@ export type MarketplaceActions =
   | GetAllMarketplacePublishersActionSuccess
   | GetAllSubbedMarketplaceAppsAction
   | GetAllSubbedMarketplaceAppsActionSuccess
+  | GetAllSubbedMarketplaceAppsActionError
   | GetAppDetailsAction
   | GetAppDetailsActionSuccess
   | GetFilteredAppsMarketplaceAction

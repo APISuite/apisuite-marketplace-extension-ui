@@ -30,11 +30,9 @@ export default makeStyles((theme) => ({
     width: '150px',
   },
 
-  appDescription: {
-    color: theme.palette.text.primary,
-    fontSize: '20px',
-    fontWeight: 200,
-    marginBottom: '15px',
+  appChip: {
+    color: theme.palette.grey[100],
+    backgroundColor: theme.palette.text.primary,
   },
 
   appDetailsContainer: {
@@ -86,12 +84,6 @@ export default makeStyles((theme) => ({
     width: 'fit-content',
   },
 
-  appLabelsContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginBottom: '40px',
-  },
-
   appLinksSubSection: {
     height: '120px',
     width: '100%',
@@ -128,22 +120,9 @@ export default makeStyles((theme) => ({
     },
   },
 
-  appTitle: {
-    color: theme.palette.text.primary,
-    fontSize: '42px',
-    fontWeight: 700,
-    marginBottom: '20px',
-  },
-
   leftAppDetailsContainer: {
     maxWidth: '200px',
     width: '100%',
-  },
-
-  loadingAppDetails: {
-    color: theme.palette.text.primary,
-    fontSize: '20px',
-    fontWeight: 200,
   },
 
   providedLink: {

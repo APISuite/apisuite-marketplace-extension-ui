@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { TextField, useTranslation } from '@apisuite/fe-base'
+import {
+  Box,
+  Grid,
+  TextField,
+  Typography,
+  useTheme,
+  useTranslation,
+} from '@apisuite/fe-base'
 import clsx from 'clsx'
 import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonCheckedRounded'
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
@@ -17,6 +24,8 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
 
   const trans = useTranslation()
 
+  const { palette } = useTheme()
+
   const t = (string: string, ...args) => {
     return trans.t(`extensions.marketplace.${string}`, ...args)
   }
@@ -32,19 +41,36 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
   return (
     <>
       {/* 'Marketplace settings' section */}
-      <div className={classes.sectionContainer}>
+      <Grid container>
+        <Grid md={12}>
+          <Grid md={6} spacing={3}>
+            <Box pb={1.5}>
+              <Typography variant="h6" display="block" gutterBottom>
+                {t('appSettings.marketplaceSettingsSubSectionTitle')}
+              </Typography>
+            </Box>
+            <Box pb={5}>
+              <Typography
+                variant="body2"
+                display="block"
+                gutterBottom
+                style={{ color: palette.text.secondary }}
+              >
+                {t('appSettings.appLabelsSubSectionDescription')}
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
         {/* 'App visibility' subsection */}
-        <div className={classes.leftSubSectionContainer}>
-          <p className={classes.marketplaceSettingsSubSectionTitle}>
-            {t('appSettings.marketplaceSettingsSubSectionTitle')}
-          </p>
-
-          <div
+        <Grid item md={6} spacing={3}>
+          <Box
             className={classes.appVisibilityContainer}
             onClick={() => {
               handleAppVisibility('private')
               setAppVisibility('private')
             }}
+            mb={1.5}
+            p={1}
           >
             {appVisibility === 'private' ? (
               <RadioButtonCheckedRoundedIcon
@@ -56,19 +82,36 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
               />
             )}
 
-            <div className={classes.appVisibilityText}>
-              <p>{t('appSettings.privateMarketplaceAppTitle')}</p>
+            <Box>
+              <Box pb={1.5}>
+                <Typography
+                  variant="body2"
+                  display="block"
+                  style={{ color: palette.text.secondary }}
+                >
+                  {t('appSettings.privateMarketplaceAppTitle')}
+                </Typography>
+              </Box>
+              <Box pb={1.5}>
+                <Typography
+                  variant="body2"
+                  display="block"
+                  style={{ color: palette.text.secondary }}
+                >
+                  {t('appSettings.privateMarketplaceAppSubtitle')}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
 
-              <p>{t('appSettings.privateMarketplaceAppSubtitle')}</p>
-            </div>
-          </div>
-
-          <div
+          <Box
             className={classes.appVisibilityContainer}
             onClick={() => {
               handleAppVisibility('public')
               setAppVisibility('public')
             }}
+            mb={1.5}
+            p={1}
           >
             {appVisibility === 'public' ? (
               <RadioButtonCheckedRoundedIcon
@@ -80,37 +123,50 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
               />
             )}
 
-            <div className={classes.appVisibilityText}>
-              <p>{t('appSettings.publicMarketplaceAppTitle')}</p>
-
-              <p>{t('appSettings.publicMarketplaceAppSubtitle')}</p>
-            </div>
-          </div>
-        </div>
+            <Box>
+              <Box pb={1.5}>
+                <Typography
+                  variant="body2"
+                  display="block"
+                  style={{ color: palette.text.secondary }}
+                >
+                  {t('appSettings.publicMarketplaceAppTitle')}
+                </Typography>
+              </Box>
+              <Box pb={1.5}>
+                <Typography
+                  variant="body2"
+                  display="block"
+                  style={{ color: palette.text.secondary }}
+                >
+                  {t('appSettings.publicMarketplaceAppSubtitle')}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
 
         {/* 'App labels' subsection */}
-        <div className={classes.rightSubSectionContainer}>
-          <p className={classes.appLabelsSubSectionDescription}>
-            {t('appSettings.appLabelsSubSectionDescription')}
-          </p>
-
-          <TextField
-            className={clsx(classes.inputFields, {
-              [classes.disabledInputField]: userRole !== 'admin',
-            })}
-            disabled={userRole !== 'admin'}
-            fullWidth
-            helperText={t('appSettings.labelsFieldHelperText')}
-            label={t('appSettings.labelsFieldLabel')}
-            margin="dense"
-            name="appLabels"
-            onChange={handleChange}
-            type="text"
-            value={appLabels}
-            variant="outlined"
-          />
-        </div>
-      </div>
+        <Grid item md={6} spacing={3}>
+          <Box width={1} display="flex" justifyContent="space-around">
+            <TextField
+              className={clsx(classes.inputFields, {
+                [classes.disabledInputField]: userRole !== 'admin',
+              })}
+              disabled={userRole !== 'admin'}
+              fullWidth
+              helperText={t('appSettings.labelsFieldHelperText')}
+              label={t('appSettings.labelsFieldLabel')}
+              margin="dense"
+              name="appLabels"
+              onChange={handleChange}
+              type="text"
+              value={appLabels}
+              variant="outlined"
+            />
+          </Box>
+        </Grid>
+      </Grid>
 
       <hr className={classes.sectionSeparator} />
     </>
