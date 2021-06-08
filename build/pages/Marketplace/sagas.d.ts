@@ -13,7 +13,6 @@ export declare function getAllMarketplacePublishersActionSaga(): Generator<impor
 }>, void, unknown>;
 export declare function getAllSubbedMarketplaceAppsActionSaga(action: GetAllSubbedMarketplaceAppsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
-    allSubbedMarketplaceApps: import("./types").SubbedMarketplaceApp[];
 }>, void, unknown>;
 export declare function subscribeToMarketplaceAppActionSaga(action: SubscribeToMarketplaceAppAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;

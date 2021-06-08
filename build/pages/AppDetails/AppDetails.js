@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/scss/image-gallery.scss';
-import { Avatar, Button, useTranslation } from '@apisuite/fe-base';
+import { Avatar, Box, Button, Chip, Typography, useTranslation, } from '@apisuite/fe-base';
 import useStyles from './styles';
 const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction, getAppDetailsAction, retrievedSelectedAppDetails, selectedAppDetails, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, userProfile, }) => {
     const classes = useStyles();
@@ -85,53 +85,75 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
                         : t('appMarketplace.appDetails.appSubscribeButton'))),
                 React.createElement("hr", { className: classes.subSectionSeparator }),
                 React.createElement("div", null,
-                    React.createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleOne')),
+                    React.createElement(Box, { pb: 1 },
+                        React.createElement(Typography, { variant: "body1" },
+                            React.createElement("strong", null, t('appMarketplace.appDetails.subSectionTitleOne')))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.websiteUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.websiteUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.websiteURL'))),
-                    selectedAppDetails && !isURLEmpty(selectedAppDetails.tosUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.tosURL'))),
+                        !isURLEmpty(selectedAppDetails.websiteUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.websiteUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.websiteURL')))),
+                    selectedAppDetails && !isURLEmpty(selectedAppDetails.tosUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.tosURL')))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.privacyUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.privacyUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.privacyPolicyURL'))),
+                        !isURLEmpty(selectedAppDetails.privacyUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.privacyUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.privacyPolicyURL')))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.youtubeUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.youtubeUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.youTubeURL'))),
+                        !isURLEmpty(selectedAppDetails.youtubeUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.youtubeUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.youTubeURL')))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.supportUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.supportUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.supportURL'))),
+                        !isURLEmpty(selectedAppDetails.supportUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.supportUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.appLinks.supportURL')))),
                     selectedAppDetails &&
                         isURLEmpty(selectedAppDetails.privacyUrl) &&
                         isURLEmpty(selectedAppDetails.supportUrl) &&
                         isURLEmpty(selectedAppDetails.tosUrl) &&
                         isURLEmpty(selectedAppDetails.websiteUrl) &&
-                        isURLEmpty(selectedAppDetails.youtubeUrl) && (React.createElement("p", { className: classes.subSectionText }, t('appMarketplace.appDetails.appLinks.noAppLinks')))),
+                        isURLEmpty(selectedAppDetails.youtubeUrl) && (React.createElement(Typography, { variant: "body1" }, t('appMarketplace.appDetails.appLinks.noAppLinks')))),
                 React.createElement("hr", { className: classes.subSectionSeparator }),
                 React.createElement("div", null,
-                    React.createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleTwo')),
-                    React.createElement("p", { className: classes.subSectionText }, selectedAppDetails && selectedAppDetails.organization.name
+                    React.createElement(Box, { pb: 1 },
+                        React.createElement(Typography, { variant: "body1" },
+                            React.createElement("strong", null, t('appMarketplace.appDetails.subSectionTitleTwo')))),
+                    React.createElement(Typography, { variant: "body1" }, selectedAppDetails && selectedAppDetails.organization.name
                         ? selectedAppDetails.organization.name
                         : '...')),
                 React.createElement("hr", { className: classes.subSectionSeparator }),
                 React.createElement("div", null,
-                    React.createElement("p", { className: classes.subSectionTitle }, t('appMarketplace.appDetails.subSectionTitleThree')),
+                    React.createElement(Box, { pb: 1 },
+                        React.createElement(Typography, { variant: "body1" },
+                            React.createElement("strong", null, t('appMarketplace.appDetails.subSectionTitleThree')))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.organization.tosUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.tosURL'))),
+                        !isURLEmpty(selectedAppDetails.organization.tosUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.tosUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.tosURL')))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.organization.privacyUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.privacyUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.privacyPolicyURL'))),
+                        !isURLEmpty(selectedAppDetails.organization.privacyUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.privacyUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.privacyPolicyURL')))),
                     selectedAppDetails &&
-                        !isURLEmpty(selectedAppDetails.organization.supportUrl) && (React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.supportUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.supportURL'))),
+                        !isURLEmpty(selectedAppDetails.organization.supportUrl) && (React.createElement(Typography, { variant: "body1" },
+                        React.createElement("a", { className: classes.providedLink, href: selectedAppDetails.organization.supportUrl, rel: "noopener noreferrer", target: "_blank" }, t('appMarketplace.appDetails.publisherLinks.supportURL')))),
                     selectedAppDetails &&
                         isURLEmpty(selectedAppDetails.organization.privacyUrl) &&
                         isURLEmpty(selectedAppDetails.organization.supportUrl) &&
-                        isURLEmpty(selectedAppDetails.organization.tosUrl) && (React.createElement("p", { className: classes.subSectionText }, t('appMarketplace.appDetails.publisherLinks.noPublisherLinks'))))),
+                        isURLEmpty(selectedAppDetails.organization.tosUrl) && (React.createElement(Typography, { variant: "body1" }, t('appMarketplace.appDetails.publisherLinks.noPublisherLinks'))))),
             React.createElement("section", { className: classes.rightAppDetailsContainer },
-                React.createElement("h1", { className: classes.appTitle }, selectedAppDetails && selectedAppDetails.name
-                    ? selectedAppDetails.name
-                    : '...'),
-                selectedAppDetails && selectedAppDetails.shortDescription && (React.createElement("p", { className: classes.appDescription }, selectedAppDetails.shortDescription)),
-                React.createElement("div", { className: classes.appLabelsContainer }, selectedAppDetails && selectedAppDetails.labels.length ? (selectedAppDetails.labels.map((label, index) => {
-                    return (React.createElement("p", { className: classes.appLabel, key: `appLabel${index}` }, label));
-                })) : (React.createElement("p", { className: classes.appLabel }, t('appMarketplace.appDetails.noLabels')))),
-                imagesArray.length !== 0 && (React.createElement(ImageGallery, { additionalClass: classes.appImageGallery, items: imagesArray, showNav: false, showPlayButton: false })),
-                React.createElement("h1", { className: classes.appOverviewTitle }, t('appMarketplace.appDetails.partOfAppOverviewTitle')),
-                React.createElement("p", { className: classes.appOverviewDescription }, selectedAppDetails && selectedAppDetails.description
-                    ? selectedAppDetails.description
-                    : t('appMarketplace.appDetails.noAppOverview'))))) : (React.createElement("p", { className: classes.loadingAppDetails }, t('appMarketplace.appDetails.loadingAppDetails'))))));
+                React.createElement(Box, { pb: 1.5 },
+                    React.createElement(Typography, { variant: "h1" }, selectedAppDetails && selectedAppDetails.name
+                        ? selectedAppDetails.name
+                        : '...')),
+                selectedAppDetails && selectedAppDetails.shortDescription && (React.createElement(Box, { pb: 1.5 },
+                    React.createElement(Typography, { variant: "h5" }, selectedAppDetails.shortDescription))),
+                React.createElement(Box, { display: "flex", flexWrap: "wrap" }, selectedAppDetails && selectedAppDetails.labels.length ? (selectedAppDetails.labels.map((label, index) => {
+                    return (React.createElement(Box, { mr: 1, key: `appLabel${index}` },
+                        React.createElement(Chip, { className: classes.appChip, label: `${label}` })));
+                })) : (React.createElement(Box, { mr: 1 },
+                    React.createElement(Chip, { className: classes.appChip, label: `${t('appMarketplace.appDetails.noLabels')}` })))),
+                imagesArray.length !== 0 && (React.createElement(Box, { pt: 5 },
+                    React.createElement(ImageGallery, { additionalClass: classes.appImageGallery, items: imagesArray, showNav: false, showPlayButton: false }))),
+                React.createElement(Box, { pt: 5, pb: 3 },
+                    React.createElement(Typography, { variant: "h3" }, t('appMarketplace.appDetails.partOfAppOverviewTitle'))),
+                React.createElement(Box, { pb: 1 },
+                    React.createElement(Typography, { variant: "body1" }, selectedAppDetails && selectedAppDetails.description
+                        ? selectedAppDetails.description
+                        : t('appMarketplace.appDetails.noAppOverview')))))) : (React.createElement(Box, { py: 3, display: "flex", justifyContent: "center", width: 1 },
+            React.createElement(Typography, { variant: "body1" }, t('appMarketplace.appDetails.loadingAppDetails')))))));
 };
 export default AppDetails;

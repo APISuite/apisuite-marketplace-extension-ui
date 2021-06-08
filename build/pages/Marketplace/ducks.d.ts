@@ -8,6 +8,7 @@ export declare const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION = "Marketplace/GET_AL
 export declare const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS = "Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS";
 export declare const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION = "Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION";
 export declare const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS = "Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS";
+export declare const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR = "Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR";
 export declare const GET_APP_DETAILS_ACTION = "Marketplace/GET_APP_DETAILS_ACTION";
 export declare const GET_APP_DETAILS_ACTION_SUCCESS = "Marketplace/GET_APP_DETAILS_ACTION_SUCCESS";
 export declare const GET_FILTERED_MARKETPLACE_APPS_ACTION = "Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION";
@@ -56,6 +57,9 @@ export declare function getAllSubbedMarketplaceAppsAction(userID: number): {
 export declare function getAllSubbedMarketplaceAppsActionSuccess(allSubbedMarketplaceApps: SubbedMarketplaceApp[]): {
     type: string;
     allSubbedMarketplaceApps: SubbedMarketplaceApp[];
+};
+export declare function getAllSubbedMarketplaceAppsActionError(): {
+    type: string;
 };
 export declare function subscribeToMarketplaceAppAction(userID: number, appID: number): {
     type: string;

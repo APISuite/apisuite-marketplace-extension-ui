@@ -18,13 +18,6 @@ export default makeStyles((theme) => ({
             backgroundColor: theme.palette.common.white,
         },
     },
-    loadingMarketplaceAppCards: {
-        color: theme.palette.text.secondary,
-        fontSize: '16px',
-        fontWeight: 200,
-        marginBottom: '40px',
-        marginTop: '40px',
-    },
     marketplaceAppCard: {
         height: '331.5px',
         marginBottom: '15px',
@@ -85,9 +78,6 @@ export default makeStyles((theme) => ({
     },
     marketplaceAppCardTitle: {
         color: theme.palette.text.primary,
-        fontSize: '22px',
-        fontWeight: 400,
-        marginBottom: '12px',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
@@ -111,19 +101,5 @@ export default makeStyles((theme) => ({
         fontSize: '30px',
         position: 'absolute',
         transform: 'translate(165px, 10px) rotate(45deg)',
-    },
-    marketplaceAppsContainerTitle: {
-        color: theme.palette.text.primary,
-        fontSize: '24px',
-        fontWeight: 400,
-        marginBottom: '40px',
-        marginTop: '24px',
-    },
-    retrievingMarketplaceAppCards: {
-        color: theme.palette.text.secondary,
-        fontSize: '16px',
-        fontWeight: 200,
-        marginBottom: '40px',
-        marginTop: '40px',
     },
 }));

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, InputAdornment, Radio, RadioGroup, TextField, Typography, useConfig, useTranslation, } from '@apisuite/fe-base';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, InputAdornment, Radio, RadioGroup, TextField, Typography, useConfig, useTranslation, } from '@apisuite/fe-base';
 // import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
 // import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
 // import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
@@ -248,14 +248,15 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                         React.createElement(AccordionDetails, null,
                             React.createElement(FormGroup, null, publisherFilterElements.length !== 0 ? (publisherFilterElements) : (React.createElement("p", { className: classes.noFiltersAvailable }, t('appMarketplace.filterByModes.noPublishers')))))))),
             React.createElement("div", { className: classes.appMarketApps },
-                React.createElement("p", { className: classes.amountOfAppMarketAppsText },
-                    React.createElement("span", null,
-                        pagination.rowCount || '0',
-                        React.createElement(React.Fragment, null,
-                            " ",
-                            t('appMarketplace.amountOfAppsTextPartOne'),
-                            " ")),
-                    React.createElement(React.Fragment, null, t('appMarketplace.amountOfAppsTextPartTwo'))),
+                React.createElement(Box, { mb: 3 },
+                    React.createElement(Typography, { variant: "h3" },
+                        React.createElement("span", null,
+                            pagination.rowCount || '0',
+                            React.createElement(React.Fragment, null,
+                                " ",
+                                t('appMarketplace.amountOfAppsTextPartOne'),
+                                " ")),
+                        React.createElement(React.Fragment, null, t('appMarketplace.amountOfAppsTextPartTwo')))),
                 retrievedAllMarketplaceApps &&
                     retrievedAllMarketplaceLabels &&
                     retrievedAllMarketplacePublishers ? (filteredAppsList.length > 0 ? (React.createElement(React.Fragment, null,
@@ -266,24 +267,27 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                     !Object.values(publisherFilters).includes(true) ? (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: classes.appCatalogContainer },
                         React.createElement(AppCatalog, { appsToDisplay: allAppsList })),
-                    setPagination())) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText')))) : (React.createElement("p", { className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText'))))));
+                    setPagination())) : (React.createElement(Box, { pt: 5 },
+                    React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText'))))) : (React.createElement(Box, { pt: 5 },
+                    React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText')))))));
     };
     const displayNoMarketplaceApps = () => {
         return (
         /* 2 - No Markeplace apps to display */
         React.createElement("section", { className: classes.noMarketplaceAppsSection },
             React.createElement("img", { className: classes.noMarketplaceAppsImage, src: marketplaceApps }),
-            React.createElement("p", { className: classes.noMarketplaceAppsTitle }, t('appMarketplace.noAppsTitle')),
-            React.createElement("p", { className: classes.noMarketplaceAppsSubtitle },
+            React.createElement(Typography, { className: classes.noMarketplaceAppsTitle }, t('appMarketplace.noAppsTitle')),
+            React.createElement(Typography, { className: classes.noMarketplaceAppsSubtitle },
                 t('appMarketplace.noAppsSubtitlePartOne'),
                 React.createElement("span", null, t('appMarketplace.noAppsSubtitlePartTwo'))),
-            React.createElement(Link, { className: classes.createAppButtonStyling, to: '/dashboard/apps/' }, t('appMarketplace.createAppButtonLabel'))));
+            React.createElement(Typography, { className: classes.noMarketplaceAppsSubtitle },
+                React.createElement(Link, { className: classes.createAppButtonStyling, to: '/dashboard/apps/' }, t('appMarketplace.createAppButtonLabel')))));
     };
     return (React.createElement("main", null,
         React.createElement("header", { className: classes.appMarketHeader },
             React.createElement("div", { className: classes.appMarketHeaderContentsContainer },
                 React.createElement("div", { className: classes.appMarketHeaderTitleAndSearchField },
-                    React.createElement("h1", { className: classes.appMarketHeaderTitle },
+                    React.createElement(Typography, { variant: "h1", className: classes.appMarketHeaderTitle },
                         React.createElement(React.Fragment, null,
                             t('appMarketplace.headerTitlePartOne'),
                             " "),
@@ -291,14 +295,12 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                             portalName,
                             " "),
                         React.createElement(React.Fragment, null, t('appMarketplace.headerTitlePartTwo'))),
-                    allAppsList.length && (React.createElement(TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
+                    !!allAppsList.length && (React.createElement(TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
                             endAdornment: (React.createElement(InputAdornment, { position: "end" },
                                 React.createElement(SearchRoundedIcon, null))),
                         }, onChange: handleSearchTermChanges, placeholder: t('appMarketplace.searchForAppsTextField'), variant: "outlined" }))),
                 React.createElement("div", null,
                     React.createElement("img", { className: classes.appMarketHeaderImage, src: marketplace })))),
-        allAppsList.length
-            ? displayMarketplaceApps()
-            : displayNoMarketplaceApps()));
+        displayMarketplaceApps()));
 };
 export default Marketplace;
