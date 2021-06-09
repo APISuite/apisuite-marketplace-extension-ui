@@ -304,12 +304,18 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       }
     })
 
+    const hasFilters = [
+      publisherFiltersForFilterAction,
+      labelFiltersForFilterAction,
+    ].some((f) => f.length)
+
     getFilteredMarketplaceAppsAction({
       org_id: publisherFiltersForFilterAction,
       label: labelFiltersForFilterAction,
       sort_by: sortModeForFilterAction,
       order: orderModeForFilterAction,
-      page,
+      // if filter changed reset page to 1
+      page: hasFilters ? 1 : page,
       pageSize,
       search: searchTerm.toLowerCase(),
     })
@@ -321,15 +327,29 @@ const Marketplace: React.FC<MarketplaceProps> = ({
     setFiltersHaveChanged(false)
   }, [filtersHaveChanged, labelFilters, publisherFilters, sortMode])
 
+  const [debounceCalled, setDebounceCalled] = useState(false)
+
   useEffect(() => {
     if (searchTerm.length === 0) {
+      if (debounceCalled) {
+        debounce(
+          'MARKETPLACE_FILTER_BY_SEARCH',
+          () => {
+            // cancel the previous debounce it there was any
+          },
+          100
+        )
+        setDebounceCalled(false)
+      }
       filterAndSortApps({ page, pageSize: APPS_PER_PAGE })
     } else {
       debounce(
         'MARKETPLACE_FILTER_BY_SEARCH',
-        () => filterAndSortApps({ page, pageSize: APPS_PER_PAGE }),
+        // if search is being used set page to 1
+        () => filterAndSortApps({ page: 1, pageSize: APPS_PER_PAGE }),
         1000
       )
+      setDebounceCalled(true)
     }
   }, [searchTerm])
 
