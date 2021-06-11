@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react'
 import {
   Avatar,
   Box,
+  Grid,
   Typography,
   useTranslation,
   useTheme,
 } from '@apisuite/fe-base'
-import HeightRoundedIcon from '@material-ui/icons/HeightRounded'
 
 import { BASE_URI } from '../../helpers/constants'
 import { SubbedMarketplaceApp } from '../../pages/Marketplace/types'
 import { SubbedMarketplaceAppCardsProps } from './types'
 import Link from '../Link'
+import { AppCard } from '../AppCard/AppCard'
 import useStyles from './styles'
 
 const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
@@ -100,54 +101,52 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
         ]
 
         return (
-          <Link
-            className={classes.marketplaceAppCardLink}
-            key={`marketplaceAppCardLink${index}`}
-            to={`${BASE_URI}/app-details/${subbedMarketplaceApp.id}`}
-          >
-            <div className={classes.marketplaceAppCard}>
-              <div className={classes.marketplaceAppCardTopSection}>
-                <HeightRoundedIcon
-                  className={
-                    subbedMarketplaceApp.logo !== ''
-                      ? classes.marketplaceAppCardWithImageIcon
-                      : classes.marketplaceAppCardWithAvatarIcon
-                  }
-                />
+          <Grid item key={`marketplaceAppCardLink${index}`} xs={4}>
+            <Link
+              className={classes.marketplaceAppCardLink}
+              to={`${BASE_URI}/app-details/${subbedMarketplaceApp.id}`}
+            >
+              <AppCard
+                media={
+                  <Box textAlign="center">
+                    {subbedMarketplaceApp.logo !== '' ? (
+                      <Avatar
+                        className={classes.marketplaceAppCardImage}
+                        src={subbedMarketplaceApp.logo}
+                      />
+                    ) : (
+                      <Avatar className={classes.marketplaceAppCardAvatar}>
+                        {appNameInitials}
+                      </Avatar>
+                    )}
+                  </Box>
+                }
+                cardContent={
+                  <>
+                    <Typography
+                      className={classes.marketplaceAppCardTitle}
+                      variant="h4"
+                      display="block"
+                      gutterBottom
+                    >
+                      {subbedMarketplaceApp.name}
+                    </Typography>
 
-                {subbedMarketplaceApp.logo !== '' ? (
-                  <img
-                    className={classes.marketplaceAppCardImage}
-                    src={subbedMarketplaceApp.logo}
-                  />
-                ) : (
-                  <Avatar className={classes.marketplaceAppCardAvatar}>
-                    {appNameInitials}
-                  </Avatar>
-                )}
-              </div>
-
-              <div className={classes.marketplaceAppCardBottomSection}>
-                <Typography
-                  className={classes.marketplaceAppCardTitle}
-                  variant="h4"
-                  display="block"
-                  gutterBottom
-                >
-                  {subbedMarketplaceApp.name}
-                </Typography>
-
-                <Typography
-                  variant="body1"
-                  className={classes.marketplaceAppCardDescription}
-                >
-                  {stringChecker(subbedMarketplaceApp.shortDescription) ||
-                    stringChecker(subbedMarketplaceApp.description) ||
-                    t('appListing.noAppDescriptionProvided')}
-                </Typography>
-              </div>
-            </div>
-          </Link>
+                    <Typography
+                      variant="body1"
+                      className={classes.marketplaceAppCardDescription}
+                    >
+                      {stringChecker(subbedMarketplaceApp.shortDescription) ||
+                        stringChecker(subbedMarketplaceApp.description) ||
+                        t('appListing.noAppDescriptionProvided')}
+                    </Typography>
+                  </>
+                }
+                contentStyle={classes.marketplaceAppCardBottomSection}
+                icon="open_in_full"
+              />
+            </Link>
+          </Grid>
         )
       }
     )
@@ -174,9 +173,11 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
         </Link>
       </Typography>
 
-      <div className={classes.allSubbedMarketplaceAppsContainer}>
-        {subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps)}
-      </div>
+      <Box mt={5}>
+        <Grid container spacing={3}>
+          {subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps)}
+        </Grid>
+      </Box>
     </div>
   )
 }

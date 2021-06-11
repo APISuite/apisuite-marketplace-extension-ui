@@ -517,10 +517,12 @@ const Marketplace: React.FC<MarketplaceProps> = ({
         {/* 2.2 - App Markeplace's apps */}
         <div className={classes.appMarketApps}>
           <Box mb={3}>
-            <Typography variant="h3">
+            <Typography variant="h6">
               <span>
-                {pagination.rowCount || '0'}
-                <> {t('appMarketplace.amountOfAppsTextPartOne')} </>
+                <strong>
+                  {pagination.rowCount || '0'}
+                  <> {t('appMarketplace.amountOfAppsTextPartOne')} </>
+                </strong>
               </span>
               <>{t('appMarketplace.amountOfAppsTextPartTwo')}</>
             </Typography>

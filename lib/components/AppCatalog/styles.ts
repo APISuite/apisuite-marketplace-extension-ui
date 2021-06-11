@@ -1,28 +1,16 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
-  appCatalogEntry: {
-    backgroundColor: theme.palette.common.white,
-    border: `1px solid ${theme.palette.grey['300']}`,
-    borderRadius: theme.shape.borderRadius,
-    height: '175px',
-    padding: '20px 20px 0px 20px',
-    width: '215px',
-  },
-
   appCatalogEntryAvatar: {
     background: theme.palette.gradient.light,
-    fontSize: '15px',
-    fontWeight: 300,
     height: '40px',
-    marginRight: '12.5px',
+    marginRight: theme.spacing(1.5),
     textTransform: 'uppercase',
     width: '40px',
   },
 
   appCatalogEntryBottomDetails: {
     display: 'block',
-    maxWidth: '175px',
     width: '100%',
   },
 
@@ -31,7 +19,7 @@ export default makeStyles((theme) => ({
     display: '-webkit-box',
     height: '35px',
     lineHeight: '18px',
-    marginBottom: '15px',
+    marginBottom: theme.spacing(2),
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     '-webkit-box-orient': 'vertical',
@@ -40,10 +28,8 @@ export default makeStyles((theme) => ({
 
   appCatalogEntryImage: {
     borderRadius: '50%',
-    fontSize: '20px',
-    fontWeight: 300,
     height: '40px',
-    marginRight: '12.5px',
+    marginRight: theme.spacing(1.5),
     width: '40px',
   },
 
@@ -51,17 +37,15 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.grey['100'],
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.text.primary,
-    fontSize: '12px',
-    fontWeight: 300,
     height: '27.5px',
-    marginRight: '7.5px',
-    padding: '0px 7.5px',
+    marginRight: theme.spacing(1),
+    padding: theme.spacing(0, 1),
     width: 'fit-content',
   },
 
   appCatalogEntryLabels: {
     color: theme.palette.primary.contrastText,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
   },
 
   appCatalogEntryLabelsContainer: {
@@ -72,14 +56,7 @@ export default makeStyles((theme) => ({
   },
 
   appCatalogEntryLink: {
-    marginBottom: '25px',
-    marginRight: '25px',
     textDecoration: 'none',
-
-    '&:hover': {
-      cursor: 'pointer',
-      filter: 'drop-shadow(0px 2.5px 2.5px rgba(0, 0, 0, 0.25))',
-    },
   },
 
   appCatalogEntryName: {
@@ -102,26 +79,23 @@ export default makeStyles((theme) => ({
   },
 
   appCatalogEntryText: {
-    padding: '15px 12.5px 15px 0px',
+    padding: theme.spacing(2, 1.5, 2, 0),
     width: '130px',
   },
 
   appCatalogEntryTopDetails: {
     display: 'flex',
-    marginBottom: '15px',
-    maxWidth: '175px',
+    marginBottom: theme.spacing(2),
     width: '100%',
   },
 
   appCatalogEntryVersion: {
     borderRadius: theme.shape.borderRadius,
-    marginRight: '8px',
-    padding: '5px 10px',
+    marginRight: theme.spacing(1),
+    padding: theme.spacing(0.5, 1.5),
   },
 
   appCatalogEntryVersionAndAccess: {
     color: theme.palette.text.hint,
-    fontSize: '14px',
-    fontWeight: 300,
   },
 }))
