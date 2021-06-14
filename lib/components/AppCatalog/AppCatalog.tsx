@@ -3,12 +3,14 @@ import {
   Avatar,
   Box,
   Chip,
+  Grid,
   Typography,
   useTranslation,
 } from '@apisuite/fe-base'
 
 import { AppCatalogProps, AppDetails } from './types'
 import Link from '../Link'
+import { AppCard } from '../AppCard/AppCard'
 import useStyles from './styles'
 
 const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
@@ -25,80 +27,93 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
     const appInitials = appSplitName[0].slice(0, 2)
 
     return (
-      <div className={classes.appCatalogEntry} key={`appCatalogEntry${index}`}>
-        <div className={classes.appCatalogEntryTopDetails}>
-          {appDetails.appLogo !== '' ? (
-            <img
-              className={classes.appCatalogEntryImage}
-              src={appDetails.appLogo}
-            />
-          ) : (
-            <Avatar className={classes.appCatalogEntryAvatar}>
-              {appInitials}
-            </Avatar>
-          )}
+      <AppCard
+        cardContent={
+          <>
+            <div className={classes.appCatalogEntryTopDetails}>
+              {appDetails.appLogo !== '' ? (
+                <img
+                  className={classes.appCatalogEntryImage}
+                  src={appDetails.appLogo}
+                />
+              ) : (
+                <Avatar className={classes.appCatalogEntryAvatar}>
+                  <Typography variant="body1">{appInitials}</Typography>
+                </Avatar>
+              )}
 
-          <div className={classes.appCatalogEntryNameAndOwnerContainer}>
-            <Typography variant="body1" className={classes.appCatalogEntryName}>
-              {appDetails.appName}
-            </Typography>
+              <div className={classes.appCatalogEntryNameAndOwnerContainer}>
+                <Typography
+                  variant="body1"
+                  className={classes.appCatalogEntryName}
+                >
+                  {appDetails.appName}
+                </Typography>
 
-            <Typography
-              variant="subtitle2"
-              className={classes.appCatalogEntryOwner}
-            >
-              {appDetails.appPublisher}
-            </Typography>
-          </div>
-        </div>
+                <Typography
+                  variant="subtitle2"
+                  className={classes.appCatalogEntryOwner}
+                >
+                  {appDetails.appPublisher}
+                </Typography>
+              </div>
+            </div>
 
-        <div className={classes.appCatalogEntryBottomDetails}>
-          <Typography
-            variant="body2"
-            className={classes.appCatalogEntryDescription}
-          >
-            {appDetails.appDescription}
-          </Typography>
+            <div className={classes.appCatalogEntryBottomDetails}>
+              <Typography
+                variant="body2"
+                className={classes.appCatalogEntryDescription}
+              >
+                {appDetails.appDescription}
+              </Typography>
 
-          <div className={classes.appCatalogEntryLabelsContainer}>
-            {appDetails.appLabels.length ? (
-              appDetails.appLabels.map((appLabel, index) => {
-                return (
-                  <Box mr={1} key={`appLabel${index}`}>
+              <div className={classes.appCatalogEntryLabelsContainer}>
+                {appDetails.appLabels.length ? (
+                  appDetails.appLabels.map((appLabel, index) => {
+                    return (
+                      <Box mr={1} key={`appLabel${index}`}>
+                        <Chip
+                          className={classes.appCatalogEntryLabels}
+                          label={`${appLabel}`}
+                        />
+                      </Box>
+                    )
+                  })
+                ) : (
+                  <Box mr={1}>
                     <Chip
                       className={classes.appCatalogEntryLabels}
-                      label={`${appLabel}`}
+                      label={`${t('appMarketplace.noLabelsProvidedText')}`}
                     />
                   </Box>
-                )
-              })
-            ) : (
-              <Box mr={1}>
-                <Chip
-                  className={classes.appCatalogEntryLabels}
-                  label={`${t('appMarketplace.noLabelsProvidedText')}`}
-                />
-              </Box>
-            )}
-          </div>
-        </div>
-      </div>
+                )}
+              </div>
+            </div>
+          </>
+        }
+        key={`appCatalogEntry${index}`}
+      />
     )
   }
 
   const appCatalogEntries = appsToDisplay.map((appDetails, index) => {
     return (
-      <Link
-        className={classes.appCatalogEntryLink}
-        key={`linkToApp${index}`}
-        to={`marketplace/app-details/${appDetails.appID}`}
-      >
-        {generateAppCatalogEntry(appDetails, index)}
-      </Link>
+      <Grid item key={`linkToApp${index}`} md={4}>
+        <Link
+          className={classes.appCatalogEntryLink}
+          to={`marketplace/app-details/${appDetails.appID}`}
+        >
+          {generateAppCatalogEntry(appDetails, index)}
+        </Link>
+      </Grid>
     )
   })
 
-  return <>{appCatalogEntries}</>
+  return (
+    <Grid container spacing={2}>
+      {appCatalogEntries}
+    </Grid>
+  )
 }
 
 export default AppCatalog
