@@ -66,14 +66,12 @@ export default makeStyles((theme) => ({
         width: '100%',
         // The input field itself
         '& input': {
-            color: theme.palette.grey['300'],
-            fontSize: '16px',
-            fontWeight: 400,
+            color: theme.palette.text.secondary,
             height: '10px',
         },
         // The input field's SVG icon
         '& svg': {
-            color: theme.palette.grey['300'],
+            color: theme.palette.text.secondary,
         },
     },
     appMarketHeaderTitle: {

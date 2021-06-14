@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Typography, useTranslation, useTheme, } from '@apisuite/fe-base';
-import HeightRoundedIcon from '@material-ui/icons/HeightRounded';
+import { Avatar, Box, Grid, Typography, useTranslation, useTheme, } from '@apisuite/fe-base';
 import { BASE_URI } from '../../helpers/constants';
 import Link from '../Link';
+import { AppCard } from '../AppCard/AppCard';
 import useStyles from './styles';
 const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction, retrievedAllSubbedMarketplaceApps, userProfile, }) => {
     const classes = useStyles();
@@ -46,18 +46,13 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
                 ...allMarketplaceAppNames,
                 subbedMarketplaceApp.name,
             ];
-            return (React.createElement(Link, { className: classes.marketplaceAppCardLink, key: `marketplaceAppCardLink${index}`, to: `${BASE_URI}/app-details/${subbedMarketplaceApp.id}` },
-                React.createElement("div", { className: classes.marketplaceAppCard },
-                    React.createElement("div", { className: classes.marketplaceAppCardTopSection },
-                        React.createElement(HeightRoundedIcon, { className: subbedMarketplaceApp.logo !== ''
-                                ? classes.marketplaceAppCardWithImageIcon
-                                : classes.marketplaceAppCardWithAvatarIcon }),
-                        subbedMarketplaceApp.logo !== '' ? (React.createElement("img", { className: classes.marketplaceAppCardImage, src: subbedMarketplaceApp.logo })) : (React.createElement(Avatar, { className: classes.marketplaceAppCardAvatar }, appNameInitials))),
-                    React.createElement("div", { className: classes.marketplaceAppCardBottomSection },
-                        React.createElement(Typography, { className: classes.marketplaceAppCardTitle, variant: "h4", display: "block", gutterBottom: true }, subbedMarketplaceApp.name),
-                        React.createElement(Typography, { variant: "body1", className: classes.marketplaceAppCardDescription }, stringChecker(subbedMarketplaceApp.shortDescription) ||
-                            stringChecker(subbedMarketplaceApp.description) ||
-                            t('appListing.noAppDescriptionProvided'))))));
+            return (React.createElement(Grid, { item: true, key: `marketplaceAppCardLink${index}`, xs: 4 },
+                React.createElement(Link, { className: classes.marketplaceAppCardLink, to: `${BASE_URI}/app-details/${subbedMarketplaceApp.id}` },
+                    React.createElement(AppCard, { media: React.createElement(Box, { textAlign: "center" }, subbedMarketplaceApp.logo !== '' ? (React.createElement(Avatar, { className: classes.marketplaceAppCardImage, src: subbedMarketplaceApp.logo })) : (React.createElement(Avatar, { className: classes.marketplaceAppCardAvatar }, appNameInitials))), cardContent: React.createElement(React.Fragment, null,
+                            React.createElement(Typography, { className: classes.marketplaceAppCardTitle, variant: "h4", display: "block", gutterBottom: true }, subbedMarketplaceApp.name),
+                            React.createElement(Typography, { variant: "body1", className: classes.marketplaceAppCardDescription }, stringChecker(subbedMarketplaceApp.shortDescription) ||
+                                stringChecker(subbedMarketplaceApp.description) ||
+                                t('appListing.noAppDescriptionProvided'))), contentStyle: classes.marketplaceAppCardBottomSection, icon: "open_in_full" }))));
         });
         return allSubbedMarketplaceAppCardsArray;
     };
@@ -66,6 +61,7 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
             React.createElement(Typography, { variant: "h2", display: "block", gutterBottom: true, style: { color: palette.text.primary } }, t('appListing.marketplaceAppsSectionTitle'))),
         React.createElement(Typography, { variant: "body1" },
             React.createElement(Link, { className: classes.browseMarketplaceAppsButton, to: BASE_URI }, t('appListing.browseMarketplaceApps'))),
-        React.createElement("div", { className: classes.allSubbedMarketplaceAppsContainer }, subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps))));
+        React.createElement(Box, { mt: 5 },
+            React.createElement(Grid, { container: true, spacing: 3 }, subbedMarketplaceAppCardGenerator(allSubbedMarketplaceApps)))));
 };
 export default SubbedMarketplaceAppCards;

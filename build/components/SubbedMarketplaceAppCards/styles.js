@@ -1,9 +1,5 @@
 import { makeStyles } from '@apisuite/fe-base';
 export default makeStyles((theme) => ({
-    allSubbedMarketplaceAppsContainer: {
-        display: 'flex',
-        marginTop: 40,
-    },
     browseMarketplaceAppsButton: {
         backgroundColor: theme.palette.common.white,
         border: `1px solid ${theme.palette.grey['300']}`,
@@ -44,13 +40,8 @@ export default makeStyles((theme) => ({
         width: '120px',
     },
     marketplaceAppCardBottomSection: {
-        backgroundColor: '#F5F5F5',
-        border: `1px solid ${theme.palette.grey['300']}`,
-        borderRadius: theme.shape.borderRadius,
-        borderTop: 'none',
-        borderTopLeftRadius: '0px',
-        borderTopRightRadius: '0px',
-        padding: '12px 24px 24px 24px',
+        backgroundColor: theme.palette.grey[100],
+        padding: `${theme.spacing(1.5, 3, 3, 3)}`,
     },
     marketplaceAppCardDescription: {
         color: theme.palette.text.secondary,
