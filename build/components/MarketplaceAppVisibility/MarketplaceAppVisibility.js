@@ -18,6 +18,7 @@ const MarketplaceAppVisibility = ({ formState, handleAppVisibility, handleChange
         setAppLabels(formState.values.appLabels);
     }, [appLabels, appVisibility, formState]);
     return (React.createElement(React.Fragment, null,
+        React.createElement("hr", { className: classes.sectionSeparator }),
         React.createElement(Grid, { container: true },
             React.createElement(Grid, { md: 12 },
                 React.createElement(Grid, { md: 6, spacing: 3 },
