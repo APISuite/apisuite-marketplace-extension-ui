@@ -42,20 +42,6 @@ npm run build:watch
 
 Don't forget to add the component to your `index.ts` exports if you want the library to export the component!
 
-### Release a new version
-
-To release a new version use [npm's version command](https://docs.npmjs.com/cli/version).
-
-For instance, to create a patch release, run:
-
-    npm version patch
-
-This will build the project, increment the version's patch field, commit these new changes and tag the commit.
-
-Then, don't forget the push the repo and the tags:
-
-    git push && git push origin --tags
-
 ### Installing Component Library Locally
 
 While developing the extension, you might want to test it in the APISuite portal. You can install it there with
