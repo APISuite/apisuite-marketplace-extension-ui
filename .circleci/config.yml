@@ -10,7 +10,14 @@ jobs:
     executor: node14-executor
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "package-lock.json" }}
       - run: npm install
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
       - run: GH_TOKEN=$GH_TOKEN npx semantic-release
 
 workflows:
