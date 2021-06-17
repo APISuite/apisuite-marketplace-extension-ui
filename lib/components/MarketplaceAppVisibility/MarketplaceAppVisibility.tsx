@@ -40,6 +40,8 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
 
   return (
     <>
+      <hr className={classes.sectionSeparator} />
+
       {/* 'Marketplace settings' section */}
       <Grid container>
         <Grid md={12}>
