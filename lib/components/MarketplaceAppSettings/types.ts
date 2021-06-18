@@ -1,4 +1,4 @@
-export type MarketplaceAppVisibilityProps = {
+export type MarketplaceAppSettingsProps = {
   formState: FormState
   handleAppVisibility: (selectedAppVisibility: string) => void
   handleChange: (changeEvent) => void

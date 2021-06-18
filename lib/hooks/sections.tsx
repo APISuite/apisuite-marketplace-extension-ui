@@ -2,7 +2,7 @@ import React from 'react'
 
 import { HookSections } from '@apisuite/extension-ui-types/v1'
 
-import MarketplaceAppVisibility from '../components/MarketplaceAppVisibility'
+import MarketplaceAppSettings from '../components/MarketplaceAppSettings'
 import SubbedMarketplaceAppCards from '../components/SubbedMarketplaceAppCards'
 
 type SectionsConfig = {
@@ -10,7 +10,7 @@ type SectionsConfig = {
 }
 
 const sections: SectionsConfig = {
-  ['MARKETPLACE_APP_VISIBILITY']: MarketplaceAppVisibility,
+  ['MARKETPLACE_APP_SETTINGS']: MarketplaceAppSettings,
   ['SUBBED_MARKETPLACE_APPS']: SubbedMarketplaceAppCards,
 }
 

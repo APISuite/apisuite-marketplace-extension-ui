@@ -11,10 +11,10 @@ import clsx from 'clsx'
 import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonCheckedRounded'
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
 
-import { MarketplaceAppVisibilityProps } from './types'
+import { MarketplaceAppSettingsProps } from './types'
 import useStyles from './styles'
 
-const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
+const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
   formState,
   handleAppVisibility,
   handleChange,
@@ -42,8 +42,6 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
 
   return (
     <>
-      <hr className={classes.sectionSeparator} />
-
       {/* 'Marketplace settings' section */}
       <Grid container>
         <Grid md={12}>
@@ -79,7 +77,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
                   ? formState.errorMsgs.appDirectURL
                   : ''
               }
-              label="Application URL"
+              label={t('appSettings.appDirectURLFieldLabel')}
               margin="dense"
               name="appDirectURL"
               onChange={handleChange}
@@ -201,4 +199,4 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
   )
 }
 
-export default MarketplaceAppVisibility
+export default MarketplaceAppSettings
