@@ -30,6 +30,8 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
     return trans.t(`extensions.marketplace.${string}`, ...args)
   }
 
+  const adminRole = 'admin'
+
   const [appVisibility, setAppVisibility] = useState('')
   const [appDirectURL, setAppDirectURL] = useState('')
   const [appLabels, setAppLabels] = useState('')
@@ -38,7 +40,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
     setAppVisibility(formState.values.appVisibility)
     setAppDirectURL(formState.values.appDirectURL)
     setAppLabels(formState.values.appLabels)
-  }, [appDirectURL, appLabels, appVisibility, formState])
+  }, [formState])
 
   return (
     <>
@@ -65,7 +67,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
           </Grid>
         </Grid>
 
-        {/* 'App visibility' subsection */}
+        {/* 'App direct URL & labels' subsection */}
         <Grid item md={6} spacing={3}>
           <Box width={1}>
             <TextField
@@ -90,9 +92,9 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
           <Box width={1}>
             <TextField
               className={clsx(classes.inputFields, {
-                [classes.disabledInputField]: userRole !== 'admin',
+                [classes.disabledInputField]: userRole !== adminRole,
               })}
-              disabled={userRole !== 'admin'}
+              disabled={userRole !== adminRole}
               fullWidth
               helperText={t('appSettings.labelsFieldHelperText')}
               label={t('appSettings.labelsFieldLabel')}
@@ -106,7 +108,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
           </Box>
         </Grid>
 
-        {/* 'App labels' subsection */}
+        {/* 'App visibility' subsection */}
         <Grid item md={6} spacing={3}>
           <Box
             className={classes.appVisibilityContainer}
