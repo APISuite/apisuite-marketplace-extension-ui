@@ -45,9 +45,9 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
   return (
     <>
       {/* 'Marketplace settings' section */}
-      <Grid container>
-        <Grid md={12}>
-          <Grid md={6} spacing={3}>
+      <Grid container spacing={3}>
+        <Grid item md={12}>
+          <Grid item md={6}>
             <Box pb={1.5}>
               <Typography variant="h6" display="block" gutterBottom>
                 {t('appSettings.marketplaceSettingsSubSectionTitle')}
@@ -68,7 +68,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
         </Grid>
 
         {/* 'App direct URL & labels' subsection */}
-        <Grid item md={6} spacing={3}>
+        <Grid item md={6}>
           <Box width={1}>
             <TextField
               className={classes.inputFields}
@@ -109,7 +109,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
         </Grid>
 
         {/* 'App visibility' subsection */}
-        <Grid item md={6} spacing={3}>
+        <Grid item md={6}>
           <Box
             className={classes.appVisibilityContainer}
             onClick={() => {
