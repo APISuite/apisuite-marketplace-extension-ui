@@ -31,12 +31,14 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
   }
 
   const [appVisibility, setAppVisibility] = useState('')
+  const [appDirectURL, setAppDirectURL] = useState('')
   const [appLabels, setAppLabels] = useState('')
 
   useEffect(() => {
     setAppVisibility(formState.values.appVisibility)
+    setAppDirectURL(formState.values.appDirectURL)
     setAppLabels(formState.values.appLabels)
-  }, [appLabels, appVisibility, formState])
+  }, [appDirectURL, appLabels, appVisibility, formState])
 
   return (
     <>
@@ -51,6 +53,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
                 {t('appSettings.marketplaceSettingsSubSectionTitle')}
               </Typography>
             </Box>
+
             <Box pb={5}>
               <Typography
                 variant="body2"
@@ -63,7 +66,49 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
             </Box>
           </Grid>
         </Grid>
+
         {/* 'App visibility' subsection */}
+        <Grid item md={6} spacing={3}>
+          <Box width={1}>
+            <TextField
+              className={classes.inputFields}
+              error={formState.errors.appDirectURL}
+              fullWidth
+              helperText={
+                formState.errors.appDirectURL
+                  ? formState.errorMsgs.appDirectURL
+                  : ''
+              }
+              label="Application URL"
+              margin="dense"
+              name="appDirectURL"
+              onChange={handleChange}
+              type="text"
+              value={appDirectURL}
+              variant="outlined"
+            />
+          </Box>
+
+          <Box width={1}>
+            <TextField
+              className={clsx(classes.inputFields, {
+                [classes.disabledInputField]: userRole !== 'admin',
+              })}
+              disabled={userRole !== 'admin'}
+              fullWidth
+              helperText={t('appSettings.labelsFieldHelperText')}
+              label={t('appSettings.labelsFieldLabel')}
+              margin="dense"
+              name="appLabels"
+              onChange={handleChange}
+              type="text"
+              value={appLabels}
+              variant="outlined"
+            />
+          </Box>
+        </Grid>
+
+        {/* 'App labels' subsection */}
         <Grid item md={6} spacing={3}>
           <Box
             className={classes.appVisibilityContainer}
@@ -94,6 +139,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
                   {t('appSettings.privateMarketplaceAppTitle')}
                 </Typography>
               </Box>
+
               <Box pb={1.5}>
                 <Typography
                   variant="body2"
@@ -135,6 +181,7 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
                   {t('appSettings.publicMarketplaceAppTitle')}
                 </Typography>
               </Box>
+
               <Box pb={1.5}>
                 <Typography
                   variant="body2"
@@ -145,27 +192,6 @@ const MarketplaceAppVisibility: React.FC<MarketplaceAppVisibilityProps> = ({
                 </Typography>
               </Box>
             </Box>
-          </Box>
-        </Grid>
-
-        {/* 'App labels' subsection */}
-        <Grid item md={6} spacing={3}>
-          <Box width={1} display="flex" justifyContent="space-around">
-            <TextField
-              className={clsx(classes.inputFields, {
-                [classes.disabledInputField]: userRole !== 'admin',
-              })}
-              disabled={userRole !== 'admin'}
-              fullWidth
-              helperText={t('appSettings.labelsFieldHelperText')}
-              label={t('appSettings.labelsFieldLabel')}
-              margin="dense"
-              name="appLabels"
-              onChange={handleChange}
-              type="text"
-              value={appLabels}
-              variant="outlined"
-            />
           </Box>
         </Grid>
       </Grid>
