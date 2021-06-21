@@ -148,15 +148,17 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                 </Button>
 
                 {selectedAppDetails && selectedAppDetails.directUrl && (
-                  <Link
-                    className={classes.accessAppButton}
-                    to={selectedAppDetails.directUrl}
-                  >
-                    <Button>
-                      {t('appMarketplace.appDetails.accessAppButtonLabel')}
-                      <LaunchRoundedIcon />
-                    </Button>
-                  </Link>
+                  <Box mt={2}>
+                    <Link
+                      className={classes.accessAppButton}
+                      to={selectedAppDetails.directUrl}
+                    >
+                      <Button color="primary" fullWidth variant="outlined">
+                        {t('appMarketplace.appDetails.accessAppButtonLabel')}
+                        <LaunchRoundedIcon />
+                      </Button>
+                    </Link>
+                  </Box>
                 )}
               </div>
 

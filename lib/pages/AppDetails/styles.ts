@@ -2,31 +2,13 @@ import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
   accessAppButton: {
-    display: 'block',
-    marginTop: 12,
     textDecoration: 'none',
 
     // Button's styling
     '& > :first-child': {
-      backgroundColor: theme.palette.common.white,
-      border: `1px solid ${theme.palette.primary.main}`,
-      borderRadius: theme.shape.borderRadius,
-      color: theme.palette.text.primary,
-      fontSize: '16px',
-      fontWeight: 500,
-      textTransform: 'inherit',
-      width: '100%',
-
       // Button icon's styling
       '& > span > svg': {
-        marginLeft: 6,
-      },
-
-      '&:active, &:hover, &:link, &:visited': {
-        backgroundColor: theme.palette.common.white,
-        borderColor: theme.palette.primary.main,
-        borderRadius: theme.shape.borderRadius,
-        color: theme.palette.text.primary,
+        marginLeft: 12,
       },
     },
   },
