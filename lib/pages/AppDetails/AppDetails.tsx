@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
 
@@ -31,6 +31,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
   const t = (string: string) => {
     return trans.t(`extensions.marketplace.${string}`)
   }
+  const history = useHistory()
 
   // 1. All subbed Marketplace apps' retrieval
 
@@ -71,6 +72,27 @@ const AppDetails: React.FC<AppDetailsProps> = ({
       setIsUserSubbedToApp(true)
     }
   }, [allSubbedMarketplaceApps])
+
+  const getSubscribeButtonTranslation = () => {
+    if (userProfile && userProfile.id) {
+      return isUserSubbedToApp
+        ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
+        : t('appMarketplace.appDetails.appSubscribeButton')
+    }
+    return t('appMarketplace.appDetails.signinToSubscribe')
+  }
+
+  const handleNotLoggedUserSubscription = () => {
+    if (userProfile && userProfile.id) {
+      handleMarketplaceAppSubscription()
+    } else {
+      history.push(
+        `/auth/signin?destinationPath=${encodeURI(
+          '/marketplace/app-details/' + selectedAppDetails.id
+        )}`
+      )
+    }
+  }
 
   const handleMarketplaceAppSubscription = () => {
     const userID = parseInt(userProfile.id)
@@ -137,11 +159,9 @@ const AppDetails: React.FC<AppDetailsProps> = ({
                       ? classes.appAlreadySubscribedButton
                       : classes.appSubscribeButton
                   }
-                  onClick={handleMarketplaceAppSubscription}
+                  onClick={handleNotLoggedUserSubscription}
                 >
-                  {isUserSubbedToApp
-                    ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
-                    : t('appMarketplace.appDetails.appSubscribeButton')}
+                  {getSubscribeButtonTranslation()}
                 </Button>
               </div>
 
