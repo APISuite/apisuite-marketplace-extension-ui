@@ -1,6 +1,22 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
+  accessAppButton: {
+    textDecoration: 'none',
+
+    // Button's styling
+    '& > :first-child': {
+      // Button icon's styling
+      '& > span > svg': {
+        marginLeft: theme.spacing(2),
+      },
+    },
+  },
+
+  addedSpacing: {
+    marginTop: `${theme.spacing(8)}px !important`,
+  },
+
   appAlreadySubscribedButton: {
     backgroundColor: theme.palette.secondary.main,
     borderColor: theme.palette.secondary.main,
