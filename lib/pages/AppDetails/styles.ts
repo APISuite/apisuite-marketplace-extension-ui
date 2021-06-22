@@ -8,13 +8,13 @@ export default makeStyles((theme) => ({
     '& > :first-child': {
       // Button icon's styling
       '& > span > svg': {
-        marginLeft: 12,
+        marginLeft: theme.spacing(2),
       },
     },
   },
 
   addedSpacing: {
-    marginTop: '60px !important',
+    marginTop: `${theme.spacing(8)}px !important`,
   },
 
   appAlreadySubscribedButton: {
