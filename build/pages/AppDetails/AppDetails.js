@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/scss/image-gallery.scss';
 import clsx from 'clsx';
@@ -13,6 +13,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
     const t = (string) => {
         return trans.t(`extensions.marketplace.${string}`);
     };
+    const history = useHistory();
     // 1. All subbed Marketplace apps' retrieval
     /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > allSubbedMarketplaceApps')
     of all information we presently have on a user's marketplace app subscriptions. This will come in handy when
@@ -43,6 +44,22 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
             setIsUserSubbedToApp(true);
         }
     }, [allSubbedMarketplaceApps]);
+    const getSubscribeButtonTranslation = () => {
+        if (userProfile && userProfile.id) {
+            return isUserSubbedToApp
+                ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
+                : t('appMarketplace.appDetails.appSubscribeButton');
+        }
+        return t('appMarketplace.appDetails.signinToSubscribe');
+    };
+    const handleNotLoggedUserSubscription = () => {
+        if (userProfile && userProfile.id) {
+            handleMarketplaceAppSubscription();
+        }
+        else {
+            history.push(`/auth/signin?destinationPath=${encodeURI('/marketplace/app-details/' + selectedAppDetails.id)}`);
+        }
+    };
     const handleMarketplaceAppSubscription = () => {
         const userID = parseInt(userProfile.id);
         const selectedAppID = selectedAppDetails.id;
@@ -83,9 +100,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
                     selectedAppDetails && selectedAppDetails.logo !== '' ? (React.createElement("img", { className: classes.appImage, src: selectedAppDetails.logo })) : (React.createElement(Avatar, { className: classes.appAvatar }, appNameInitials ? appNameInitials : '...')),
                     React.createElement(Button, { className: isUserSubbedToApp
                             ? classes.appAlreadySubscribedButton
-                            : classes.appSubscribeButton, onClick: handleMarketplaceAppSubscription }, isUserSubbedToApp
-                        ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
-                        : t('appMarketplace.appDetails.appSubscribeButton')),
+                            : classes.appSubscribeButton, onClick: handleNotLoggedUserSubscription }, getSubscribeButtonTranslation()),
                     selectedAppDetails && selectedAppDetails.directUrl && (React.createElement(Box, { mt: 2 },
                         React.createElement(Link, { className: classes.accessAppButton, to: selectedAppDetails.directUrl },
                             React.createElement(Button, { color: "primary", fullWidth: true, variant: "outlined" },

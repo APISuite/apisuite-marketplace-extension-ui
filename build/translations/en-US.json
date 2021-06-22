@@ -73,7 +73,8 @@
                     "noShortDescription": "No short description provided",
                     "noLabels": "No labels provided",
                     "partOfAppOverviewTitle": "Overview",
-                    "noAppOverview": "No application overview provided"
+                    "noAppOverview": "No application overview provided",
+                    "signinToSubscribe": "Sign in to Subscribe"
                 }
             }
         }
