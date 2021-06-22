@@ -13,6 +13,7 @@ const initialState = {
     selectedAppDetails: {
         createdAt: '',
         description: '',
+        directUrl: '',
         id: 0,
         images: [],
         labels: [],

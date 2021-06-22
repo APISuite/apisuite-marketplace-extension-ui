@@ -9,14 +9,15 @@
                 "retrievingMarketplaceAppSubscriptions": "Retrieving all subscribed Marketplace apps..."
             },
             "appSettings": {
-                "marketplaceSettingsSubSectionTitle": "Publishing settings",
+                "marketplaceSettingsSubSectionTitle": "Marketplace settings",
                 "appLabelsSubSectionDescription": "Set your app's visibility, and add labels to it.",
                 "privateMarketplaceAppTitle": "Private",
                 "privateMarketplaceAppSubtitle": "This application is intended only for testing or private use, and will not be displayed on the Marketplace.",
                 "publicMarketplaceAppTitle": "Public",
                 "publicMarketplaceAppSubtitle": "This application is eligible for display on the Marketplace.",
                 "labelsFieldLabel": "Labels",
-                "labelsFieldHelperText": "Each provided label should be separated by a comma."
+                "labelsFieldHelperText": "Each provided label should be separated by a comma.",
+                "appDirectURLFieldLabel": "Application URL"
             },
             "appMarketplace": {
                 "headerTitlePartOne": "Explore the",
@@ -51,6 +52,7 @@
                     "loadingAppDetails": "Loading the selected app's details...",
                     "appSubscribeButton": "Subscribe app",
                     "appAlreadySubscribedButton": "Subscribed to app",
+                    "accessAppButtonLabel": "Access app",
                     "subSectionTitleOne": "Application links:",
                     "subSectionTitleTwo": "Published by:",
                     "subSectionTitleThree": "Publisher links:",

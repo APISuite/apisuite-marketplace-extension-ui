@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import MarketplaceAppVisibility from './MarketplaceAppVisibility';
+import MarketplaceAppSettings from './MarketplaceAppSettings';
 export const mapStateToProps = ({ profile }) => ({
     userRole: profile.profile.current_org.role.name,
 });
-export default connect(mapStateToProps, null)(MarketplaceAppVisibility);
+export default connect(mapStateToProps, null)(MarketplaceAppSettings);

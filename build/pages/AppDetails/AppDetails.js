@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/scss/image-gallery.scss';
+import clsx from 'clsx';
 import { Avatar, Box, Button, Chip, Typography, useTranslation, } from '@apisuite/fe-base';
+import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded';
+import Link from '../../components/Link';
 import useStyles from './styles';
 const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction, getAppDetailsAction, retrievedSelectedAppDetails, selectedAppDetails, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, userProfile, }) => {
     const classes = useStyles();
@@ -82,8 +85,15 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
                             ? classes.appAlreadySubscribedButton
                             : classes.appSubscribeButton, onClick: handleMarketplaceAppSubscription }, isUserSubbedToApp
                         ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
-                        : t('appMarketplace.appDetails.appSubscribeButton'))),
-                React.createElement("hr", { className: classes.subSectionSeparator }),
+                        : t('appMarketplace.appDetails.appSubscribeButton')),
+                    selectedAppDetails && selectedAppDetails.directUrl && (React.createElement(Box, { mt: 2 },
+                        React.createElement(Link, { className: classes.accessAppButton, to: selectedAppDetails.directUrl },
+                            React.createElement(Button, { color: "primary", fullWidth: true, variant: "outlined" },
+                                t('appMarketplace.appDetails.accessAppButtonLabel'),
+                                React.createElement(LaunchRoundedIcon, null)))))),
+                React.createElement("hr", { className: clsx(classes.subSectionSeparator, {
+                        [classes.addedSpacing]: selectedAppDetails && selectedAppDetails.directUrl,
+                    }) }),
                 React.createElement("div", null,
                     React.createElement(Box, { pb: 1 },
                         React.createElement(Typography, { variant: "body1" },

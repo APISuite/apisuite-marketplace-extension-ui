@@ -1,8 +1,8 @@
 import React from 'react';
-import MarketplaceAppVisibility from '../components/MarketplaceAppVisibility';
+import MarketplaceAppSettings from '../components/MarketplaceAppSettings';
 import SubbedMarketplaceAppCards from '../components/SubbedMarketplaceAppCards';
 const sections = {
-    ['MARKETPLACE_APP_VISIBILITY']: MarketplaceAppVisibility,
+    ['MARKETPLACE_APP_SETTINGS']: MarketplaceAppSettings,
     ['SUBBED_MARKETPLACE_APPS']: SubbedMarketplaceAppCards,
 };
 const hookSections = (section, props) => {

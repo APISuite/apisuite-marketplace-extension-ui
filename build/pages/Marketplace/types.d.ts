@@ -62,6 +62,7 @@ export declare type UserProfile = {
 export interface AppDetails {
     createdAt: string;
     description: string;
+    directUrl: string;
     id: number;
     images: string[];
     labels: string[];
