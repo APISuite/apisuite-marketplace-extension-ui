@@ -364,7 +364,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
         onChange={handleChange}
         page={page}
         shape="rounded"
-        variant="outlined"
+        color="primary"
       />
     )
   }
