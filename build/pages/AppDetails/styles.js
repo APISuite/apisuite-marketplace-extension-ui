@@ -61,7 +61,7 @@ export default makeStyles((theme) => ({
         // Images
         '& .image-gallery-content .image-gallery-slide .image-gallery-image': {
             borderRadius: 10,
-            height: 435,
+            height: 250,
         },
         // Thumbnails
         '& .image-gallery-thumbnail .image-gallery-thumbnail-image': {

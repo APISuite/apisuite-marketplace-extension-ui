@@ -213,7 +213,7 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
     // App's pagination
     const setPagination = () => {
         const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE);
-        return (React.createElement(Pagination, { count: pageCount || 1, onChange: handleChange, page: page, shape: "rounded", variant: "outlined" }));
+        return (React.createElement(Pagination, { count: pageCount || 1, onChange: handleChange, page: page, shape: "rounded", color: "primary" }));
     };
     // Carousel of 'featured apps'
     // const [currentSlide, setCurrentSlide] = useState(0)
