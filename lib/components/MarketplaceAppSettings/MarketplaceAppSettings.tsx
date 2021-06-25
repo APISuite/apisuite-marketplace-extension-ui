@@ -131,11 +131,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
 
             <Box>
               <Box pb={1.5}>
-                <Typography
-                  variant="body2"
-                  display="block"
-                  style={{ color: palette.text.secondary }}
-                >
+                <Typography variant="body2" display="block">
                   {t('appSettings.privateMarketplaceAppTitle')}
                 </Typography>
               </Box>
@@ -173,11 +169,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
 
             <Box>
               <Box pb={1.5}>
-                <Typography
-                  variant="body2"
-                  display="block"
-                  style={{ color: palette.text.secondary }}
-                >
+                <Typography variant="body2" display="block">
                   {t('appSettings.publicMarketplaceAppTitle')}
                 </Typography>
               </Box>
