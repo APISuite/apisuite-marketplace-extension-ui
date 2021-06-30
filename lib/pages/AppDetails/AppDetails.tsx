@@ -19,9 +19,9 @@ import Link from '../../components/Link'
 import {
   getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
-  unsubscribeToMarketplaceAppAction,
-  subscribeToMarketplaceAppAction,
   getFilteredMarketplaceAppsAction,
+  subscribeToMarketplaceAppAction,
+  unsubscribeToMarketplaceAppAction,
 } from '../Marketplace/ducks'
 import appDetailsSelector from './selector'
 import useStyles from './styles'
@@ -32,8 +32,8 @@ const AppDetails: React.FC = () => {
 
   const {
     allSubbedMarketplaceApps,
-    filteredMarketplaceApps,
-    retrievedFilteredMarketplaceApps,
+    publisherApps,
+    retrievedPublisherApps,
     retrievedSelectedAppDetails,
     selectedAppDetails,
     userProfile,
@@ -159,25 +159,28 @@ const AppDetails: React.FC = () => {
   useEffect(() => {
     if (retrievedSelectedAppDetails) {
       dispatch(
-        getFilteredMarketplaceAppsAction({
-          org_id: [`${selectedAppDetails.orgId}`],
-          label: [],
-          sort_by: 'updated',
-          order: 'desc',
-          page: 1,
-          pageSize: 4,
-          search: '',
-        })
+        getFilteredMarketplaceAppsAction(
+          {
+            org_id: [`${selectedAppDetails.orgId}`],
+            label: [],
+            sort_by: 'updated',
+            order: 'desc',
+            page: 1,
+            pageSize: 4,
+            search: '',
+          },
+          'publisher'
+        )
       )
     }
   }, [retrievedSelectedAppDetails])
 
   // Filters out the app in view if present, and reduces the retrieved apps to 3 if not
   useEffect(() => {
-    if (retrievedFilteredMarketplaceApps) {
+    if (retrievedPublisherApps) {
       /* We only want the three most recently updated apps, and we want them in a format
       that can be used by our App Catalog component. */
-      const appsFromPublisher = filteredMarketplaceApps
+      const appsFromPublisher = publisherApps
         .filter((app) => {
           return app.id !== selectedAppDetails.id
         })
@@ -191,7 +194,7 @@ const AppDetails: React.FC = () => {
 
       setMoreAppsFromPublisher(appsFromPublisher)
     }
-  }, [retrievedFilteredMarketplaceApps])
+  }, [retrievedPublisherApps])
 
   return (
     <main>
@@ -488,7 +491,7 @@ than zero. Not doing so will result in unwanted consequences. */}
                 </Typography>
               </Box>
 
-              {moreAppsFromPublisher.length && (
+              {!!moreAppsFromPublisher.length && (
                 <>
                   <hr className={classes.subSectionSeparator} />
 

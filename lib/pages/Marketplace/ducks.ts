@@ -8,24 +8,33 @@ import {
   MarketplaceStore,
   SubbedMarketplaceApp,
   Pagination,
+  View,
 } from './types'
 
 /** Initial state */
 
 const initialState: MarketplaceStore = {
+  // 'Marketplace' view
   allMarketplaceApps: [],
   allMarketplaceLabels: [],
   allMarketplacePublishers: [],
   allSubbedMarketplaceApps: [],
 
   filteredMarketplaceApps: [],
-  retrievedFilteredMarketplaceApps: false,
 
   retrievedAllMarketplaceApps: false,
   retrievedAllMarketplaceLabels: false,
   retrievedAllMarketplacePublishers: false,
   retrievedAllSubbedMarketplaceApps: false,
 
+  pagination: {
+    page: 1,
+    pageCount: 0,
+    pageSize: 1,
+    rowCount: 0,
+  },
+
+  // 'App details' view
   selectedAppDetails: {
     createdAt: '',
     description: '',
@@ -53,13 +62,10 @@ const initialState: MarketplaceStore = {
   },
   retrievedSelectedAppDetails: false,
 
-  pagination: {
-    page: 1,
-    pageCount: 0,
-    pageSize: 1,
-    rowCount: 0,
-  },
+  publisherApps: [],
+  retrievedPublisherApps: false,
 
+  // 'App creating/editing' views
   marketplaceAppVisibility: 'private',
   marketplaceAppLabels: [],
 }
@@ -182,17 +188,28 @@ export default function reducer(
     }
 
     case GET_FILTERED_MARKETPLACE_APPS_ACTION: {
-      return update(state, {
-        retrievedFilteredMarketplaceApps: { $set: false },
-      })
+      if (action.view === 'marketplace') {
+        return state
+      } else {
+        return update(state, {
+          retrievedPublisherApps: { $set: false },
+        })
+      }
     }
 
     case GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS: {
-      return update(state, {
-        filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
-        pagination: { $set: action.pagination },
-        retrievedFilteredMarketplaceApps: { $set: true },
-      })
+      if (action.view === 'marketplace') {
+        return update(state, {
+          filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
+          pagination: { $set: action.pagination },
+        })
+      } else {
+        return update(state, {
+          pagination: { $set: action.pagination },
+          publisherApps: { $set: action.filteredMarketplaceApps },
+          retrievedPublisherApps: { $set: true },
+        })
+      }
     }
 
     case GET_APP_DETAILS_ACTION: {
@@ -319,16 +336,18 @@ export function unsubscribeToMarketplaceAppActionSuccess() {
   }
 }
 
-export function getFilteredMarketplaceAppsAction(filters: Filters) {
+export function getFilteredMarketplaceAppsAction(filters: Filters, view: View) {
   return {
     type: GET_FILTERED_MARKETPLACE_APPS_ACTION,
     filters,
+    view,
   }
 }
 
 export function getFilteredMarketplaceAppsActionSuccess(payload: {
   filteredMarketplaceApps: AppDetails[]
   pagination: Pagination
+  view: View
 }) {
   return {
     type: GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,

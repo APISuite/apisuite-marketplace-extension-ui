@@ -7,19 +7,19 @@ import {
   GET_ALL_MARKETPLACE_LABELS_ACTION,
   GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS,
   GET_ALL_MARKETPLACE_PUBLISHERS_ACTION,
+  GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR,
   GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS,
   GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION,
   GET_APP_DETAILS_ACTION_SUCCESS,
   GET_APP_DETAILS_ACTION,
   GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
-  SET_MARKETPLACE_APP_VISIBILITY_ACTION,
   SET_MARKETPLACE_APP_LABELS_ACTION,
+  SET_MARKETPLACE_APP_VISIBILITY_ACTION,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
-  GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR,
 } from './ducks'
 
 export const roleNameOptions = [
@@ -28,6 +28,8 @@ export const roleNameOptions = [
   'developer',
   'organizationOwner',
 ] as const
+
+export type View = 'marketplace' | 'publisher'
 
 export interface Response {
   isError: boolean
@@ -66,24 +68,29 @@ export interface Pagination {
   rowCount: number
 }
 export interface MarketplaceStore {
+  // 'Marketplace' view
   allMarketplaceApps: AppDetails[]
   allMarketplaceLabels: string[]
   allMarketplacePublishers: MarketplacePublisher[]
   allSubbedMarketplaceApps: SubbedMarketplaceApp[]
 
   filteredMarketplaceApps: AppDetails[]
-  retrievedFilteredMarketplaceApps: boolean
 
   retrievedAllMarketplaceApps: boolean
   retrievedAllMarketplaceLabels: boolean
   retrievedAllMarketplacePublishers: boolean
   retrievedAllSubbedMarketplaceApps: boolean
 
+  pagination: Pagination
+
+  // 'App details' view
   selectedAppDetails: AppDetails
   retrievedSelectedAppDetails: boolean
 
-  pagination: Pagination
+  publisherApps: AppDetails[]
+  retrievedPublisherApps: boolean
 
+  // 'App creating/editing' views
   marketplaceAppVisibility: 'private' | 'public'
   marketplaceAppLabels: string[]
 }
@@ -218,12 +225,14 @@ export interface UnsubscribeToMarketplaceAppActionSuccess extends Action {
 export interface GetFilteredAppsMarketplaceAction extends Action {
   type: typeof GET_FILTERED_MARKETPLACE_APPS_ACTION
   filters: Filters
+  view: View
 }
 
 export interface GetFilteredAppsMarketplaceActionSuccess extends Action {
   type: typeof GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS
   filteredMarketplaceApps: AppDetails[]
   pagination: Pagination
+  view: View
 }
 
 export interface GetAppDetailsAction extends Action {
@@ -254,14 +263,14 @@ export type MarketplaceActions =
   | GetAllMarketplacePublishersAction
   | GetAllMarketplacePublishersActionSuccess
   | GetAllSubbedMarketplaceAppsAction
-  | GetAllSubbedMarketplaceAppsActionSuccess
   | GetAllSubbedMarketplaceAppsActionError
+  | GetAllSubbedMarketplaceAppsActionSuccess
   | GetAppDetailsAction
   | GetAppDetailsActionSuccess
   | GetFilteredAppsMarketplaceAction
   | GetFilteredAppsMarketplaceActionSuccess
-  | SetMarketplaceAppVisibilityAction
   | SetMarketplaceAppLabelsAction
+  | SetMarketplaceAppVisibilityAction
   | SubscribeToMarketplaceAppAction
   | SubscribeToMarketplaceAppActionSuccess
   | UnsubscribeToMarketplaceAppAction

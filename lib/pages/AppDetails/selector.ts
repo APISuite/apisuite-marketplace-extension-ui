@@ -6,9 +6,8 @@ const appDetailsSelector = createSelector(
   (marketplace, profile) => {
     return {
       allSubbedMarketplaceApps: marketplace.allSubbedMarketplaceApps,
-      filteredMarketplaceApps: marketplace.filteredMarketplaceApps,
-      retrievedFilteredMarketplaceApps:
-        marketplace.retrievedFilteredMarketplaceApps,
+      publisherApps: marketplace.publisherApps,
+      retrievedPublisherApps: marketplace.retrievedPublisherApps,
       retrievedSelectedAppDetails: marketplace.retrievedSelectedAppDetails,
       selectedAppDetails: marketplace.selectedAppDetails,
       userProfile: profile.profile.user,

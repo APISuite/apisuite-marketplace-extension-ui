@@ -11,8 +11,8 @@ import {
   getAllMarketplaceAppsActionSuccess,
   getAllMarketplaceLabelsActionSuccess,
   getAllMarketplacePublishersActionSuccess,
-  getAllSubbedMarketplaceAppsActionSuccess,
   getAllSubbedMarketplaceAppsActionError,
+  getAllSubbedMarketplaceAppsActionSuccess,
   getAppDetailsActionSuccess,
   getFilteredMarketplaceAppsActionSuccess,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
@@ -244,10 +244,11 @@ export function* getFilteredMarketplaceAppsActionSaga(
       getFilteredMarketplaceAppsActionSuccess({
         filteredMarketplaceApps,
         pagination: response.pagination,
+        view: action.view,
       })
     )
   } catch (error) {
-    console.log('Error fetching all marketplace apps', error)
+    console.log('Error fetching filtered marketplace apps', error)
   }
 }
 

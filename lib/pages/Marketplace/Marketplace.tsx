@@ -298,16 +298,19 @@ const Marketplace: React.FC = () => {
     ].some((f) => f.length)
 
     dispatch(
-      getFilteredMarketplaceAppsAction({
-        org_id: publisherFiltersForFilterAction,
-        label: labelFiltersForFilterAction,
-        sort_by: sortModeForFilterAction,
-        order: orderModeForFilterAction,
-        // if filter changed reset page to 1
-        page: hasFilters ? 1 : page,
-        pageSize,
-        search: searchTerm.toLowerCase(),
-      })
+      getFilteredMarketplaceAppsAction(
+        {
+          org_id: publisherFiltersForFilterAction,
+          label: labelFiltersForFilterAction,
+          sort_by: sortModeForFilterAction,
+          order: orderModeForFilterAction,
+          // if filter changed reset page to 1
+          page: hasFilters ? 1 : page,
+          pageSize,
+          search: searchTerm.toLowerCase(),
+        },
+        'marketplace'
+      )
     )
   }
 
