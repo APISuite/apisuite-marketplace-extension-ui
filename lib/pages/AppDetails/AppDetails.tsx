@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
@@ -15,24 +16,30 @@ import {
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded'
 import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
-import useStyles from './styles'
-import { AppDetailsProps } from './types'
-import appDetailsMapping from '../../util/appDetailsMapping'
-
-const AppDetails: React.FC<AppDetailsProps> = ({
-  allSubbedMarketplaceApps,
-  filteredMarketplaceApps,
+import {
   getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
-  getFilteredMarketplaceAppsAction,
-  retrievedFilteredMarketplaceApps,
-  retrievedSelectedAppDetails,
-  selectedAppDetails,
-  subscribeToMarketplaceAppAction,
   unsubscribeToMarketplaceAppAction,
-  userProfile,
-}) => {
+  subscribeToMarketplaceAppAction,
+  getFilteredMarketplaceAppsAction,
+} from '../Marketplace/ducks'
+import appDetailsSelector from './selector'
+import useStyles from './styles'
+import appDetailsMapping from '../../util/appDetailsMapping'
+
+const AppDetails: React.FC = () => {
   const classes = useStyles()
+
+  const {
+    allSubbedMarketplaceApps,
+    filteredMarketplaceApps,
+    retrievedFilteredMarketplaceApps,
+    retrievedSelectedAppDetails,
+    selectedAppDetails,
+    userProfile,
+  } = useSelector(appDetailsSelector)
+
+  const dispatch = useDispatch()
 
   const trans = useTranslation()
 
@@ -51,7 +58,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     if (userProfile && userProfile.id) {
       const userID = parseInt(userProfile.id)
 
-      getAllSubbedMarketplaceAppsAction(userID)
+      dispatch(getAllSubbedMarketplaceAppsAction(userID))
     }
   }, [userProfile])
 
@@ -63,7 +70,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
   /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > selectedAppDetails')
   of all information we presently have on the currently selected marketplace app. */
   useEffect(() => {
-    if (appID !== '') getAppDetailsAction(appID)
+    if (appID !== '') dispatch(getAppDetailsAction(appID))
   }, [appID])
 
   const [isUserSubbedToApp, setIsUserSubbedToApp] = useState(false)
@@ -108,10 +115,10 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     const selectedAppID = selectedAppDetails.id
 
     if (isUserSubbedToApp) {
-      unsubscribeToMarketplaceAppAction(userID, selectedAppID)
+      dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
       setIsUserSubbedToApp(false)
     } else {
-      subscribeToMarketplaceAppAction(userID, selectedAppID)
+      dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
       setIsUserSubbedToApp(true)
     }
   }
@@ -151,15 +158,17 @@ const AppDetails: React.FC<AppDetailsProps> = ({
   // Retrieves the 4 latest apps from the publisher
   useEffect(() => {
     if (retrievedSelectedAppDetails) {
-      getFilteredMarketplaceAppsAction({
-        org_id: [`${selectedAppDetails.orgId}`],
-        label: [],
-        sort_by: 'updated',
-        order: 'desc',
-        page: 1,
-        pageSize: 4,
-        search: '',
-      })
+      dispatch(
+        getFilteredMarketplaceAppsAction({
+          org_id: [`${selectedAppDetails.orgId}`],
+          label: [],
+          sort_by: 'updated',
+          order: 'desc',
+          page: 1,
+          pageSize: 4,
+          search: '',
+        })
+      )
     }
   }, [retrievedSelectedAppDetails])
 

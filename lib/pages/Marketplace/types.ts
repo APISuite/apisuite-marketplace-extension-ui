@@ -153,28 +153,6 @@ export interface SettingsData {
   supportURL: string
 }
 
-export interface MarketplaceProps {
-  allMarketplaceApps: AppDetails[]
-  allMarketplaceLabels: string[]
-  allMarketplacePublishers: MarketplacePublisher[]
-
-  filteredMarketplaceApps: AppDetails[]
-
-  getAllMarketplaceAppsAction: (pagination: {
-    page: number
-    pageSize: number
-  }) => void
-  getAllMarketplaceLabelsAction: () => void
-  getAllMarketplacePublishersAction: () => void
-  getFilteredMarketplaceAppsAction: (filters: Filters) => void
-
-  retrievedAllMarketplaceApps: boolean
-  retrievedAllMarketplaceLabels: boolean
-  retrievedAllMarketplacePublishers: boolean
-
-  pagination: Pagination
-}
-
 export interface GetAllMarketplaceAppsAction extends Action {
   type: typeof GET_ALL_MARKETPLACE_APPS_ACTION
   pagination: { page: number; pageSize: number }

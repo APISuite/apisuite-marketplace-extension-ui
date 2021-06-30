@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Accordion,
   AccordionDetails,
@@ -28,31 +29,37 @@ import SortRoundedIcon from '@material-ui/icons/SortRounded'
 
 import { APPS_PER_PAGE } from '../../constants/globals'
 import { debounce } from '../../util/debounce'
-import { MarketplaceProps } from './types'
 import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
 import marketplace from 'assets/marketplace.svg'
 import marketplaceApps from 'assets/marketplaceApps.svg'
 import useStyles from './styles'
 import appDetailsMapping from '../../util/appDetailsMapping'
-
-const Marketplace: React.FC<MarketplaceProps> = ({
-  allMarketplaceApps,
-  allMarketplaceLabels,
-  allMarketplacePublishers,
-  filteredMarketplaceApps,
+import marketplaceSelector from './selector'
+import {
   getAllMarketplaceAppsAction,
   getAllMarketplaceLabelsAction,
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
-  pagination,
-  retrievedAllMarketplaceApps,
-  retrievedAllMarketplaceLabels,
-  retrievedAllMarketplacePublishers,
-}) => {
+} from './ducks'
+
+const Marketplace: React.FC = () => {
   const classes = useStyles()
 
   const { portalName } = useConfig()
+
+  const {
+    allMarketplaceApps,
+    allMarketplaceLabels,
+    allMarketplacePublishers,
+    filteredMarketplaceApps,
+    retrievedAllMarketplaceApps,
+    retrievedAllMarketplaceLabels,
+    retrievedAllMarketplacePublishers,
+    pagination,
+  } = useSelector(marketplaceSelector)
+
+  const dispatch = useDispatch()
 
   const trans = useTranslation()
 
@@ -63,9 +70,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
     of all information we presently have on public apps, and their respective labels & publishers. */
-    getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE })
-    getAllMarketplaceLabelsAction()
-    getAllMarketplacePublishersAction()
+    dispatch(getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE }))
+    dispatch(getAllMarketplaceLabelsAction())
+    dispatch(getAllMarketplacePublishersAction())
   }, [])
 
   const [allAppsList, setAllAppsList] = useState([])
@@ -290,16 +297,18 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       labelFiltersForFilterAction,
     ].some((f) => f.length)
 
-    getFilteredMarketplaceAppsAction({
-      org_id: publisherFiltersForFilterAction,
-      label: labelFiltersForFilterAction,
-      sort_by: sortModeForFilterAction,
-      order: orderModeForFilterAction,
-      // if filter changed reset page to 1
-      page: hasFilters ? 1 : page,
-      pageSize,
-      search: searchTerm.toLowerCase(),
-    })
+    dispatch(
+      getFilteredMarketplaceAppsAction({
+        org_id: publisherFiltersForFilterAction,
+        label: labelFiltersForFilterAction,
+        sort_by: sortModeForFilterAction,
+        order: orderModeForFilterAction,
+        // if filter changed reset page to 1
+        page: hasFilters ? 1 : page,
+        pageSize,
+        search: searchTerm.toLowerCase(),
+      })
+    )
   }
 
   useEffect(() => {
