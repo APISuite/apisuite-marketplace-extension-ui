@@ -180,8 +180,6 @@ const AppDetails: React.FC<AppDetailsProps> = ({
           )
         })
 
-      console.log('appsFromPublisher', appsFromPublisher)
-
       setMoreAppsFromPublisher(appsFromPublisher)
     }
   }, [retrievedFilteredMarketplaceApps])
