@@ -19,6 +19,7 @@ const initialState: MarketplaceStore = {
   allSubbedMarketplaceApps: [],
 
   filteredMarketplaceApps: [],
+  retrievedFilteredMarketplaceApps: false,
 
   retrievedAllMarketplaceApps: false,
   retrievedAllMarketplaceLabels: false,
@@ -181,13 +182,16 @@ export default function reducer(
     }
 
     case GET_FILTERED_MARKETPLACE_APPS_ACTION: {
-      return state
+      return update(state, {
+        retrievedFilteredMarketplaceApps: { $set: false },
+      })
     }
 
     case GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS: {
       return update(state, {
         filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
         pagination: { $set: action.pagination },
+        retrievedFilteredMarketplaceApps: { $set: true },
       })
     }
 

@@ -13,14 +13,18 @@ import {
   useTranslation,
 } from '@apisuite/fe-base'
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded'
+import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
 import useStyles from './styles'
 import { AppDetailsProps } from './types'
 
 const AppDetails: React.FC<AppDetailsProps> = ({
   allSubbedMarketplaceApps,
+  filteredMarketplaceApps,
   getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
+  getFilteredMarketplaceAppsAction,
+  retrievedFilteredMarketplaceApps,
   retrievedSelectedAppDetails,
   selectedAppDetails,
   subscribeToMarketplaceAppAction,
@@ -82,7 +86,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
         ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
         : t('appMarketplace.appDetails.appSubscribeButton')
     }
-    return t('appMarketplace.appDetails.signinToSubscribe')
+    return t('appMarketplace.appDetails.signInToSubscribe')
   }
 
   const handleNotLoggedUserSubscription = () => {
@@ -137,6 +141,62 @@ const AppDetails: React.FC<AppDetailsProps> = ({
         }
       })
     : []
+
+  // 4. 'More (Marketplace apps) from publisher' section logic
+
+  const [moreAppsFromPublisher, setMoreAppsFromPublisher] = useState([])
+
+  /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > filteredMarketplaceApps')
+  of - at most - four marketplace apps belonging to a particular publisher (i.e., organisation).
+  
+  We retrieve and store four marketplace apps on the off-chance that one of them happens to be the one we are
+  presently looking at on the 'App Details' view - if that is the case, we'll exclude it from the
+  'More (Marketplace apps) from publisher' section later on. */
+  useEffect(() => {
+    if (retrievedSelectedAppDetails) {
+      getFilteredMarketplaceAppsAction({
+        org_id: [`${selectedAppDetails.orgId}`],
+        label: [],
+        sort_by: 'updated',
+        order: 'desc',
+        page: 1,
+        pageSize: 4, // A 'pageSize' of 4 gets us, at most, 4 apps
+        search: '',
+      })
+    }
+  }, [retrievedSelectedAppDetails])
+
+  useEffect(() => {
+    if (retrievedFilteredMarketplaceApps) {
+      const appsFromPublisher = filteredMarketplaceApps.filter((app) => {
+        return app.id !== selectedAppDetails.id
+      })
+
+      /* We only want the three most recently updated apps, and we want them in a format
+      that can be used by our App Catalog component. */
+      const processedAppsFromPublisher = appsFromPublisher
+        .slice(0, 3)
+        .map((app) => {
+          return {
+            appDescription:
+              app.shortDescription.length > 0
+                ? app.shortDescription
+                : app.description.length > 0
+                ? app.description
+                : t('appMarketplace.noDescriptionAvailableText'),
+            appID: app.id,
+            appLabels: app.labels,
+            appLogo: app.logo,
+            appName: app.name,
+            appPublisher: app.organization.name,
+            appUpdatedAt: app.updatedAt,
+            linkFromWithinAppDetails: true,
+          }
+        })
+
+      setMoreAppsFromPublisher(processedAppsFromPublisher)
+    }
+  }, [retrievedFilteredMarketplaceApps])
 
   return (
     <main>
@@ -425,13 +485,41 @@ than zero. Not doing so will result in unwanted consequences. */}
                 </Typography>
               </Box>
 
-              <Box pb={1}>
+              <Box pb={moreAppsFromPublisher.length ? 5 : 1}>
                 <Typography variant="body1">
                   {selectedAppDetails && selectedAppDetails.description
                     ? selectedAppDetails.description
                     : t('appMarketplace.appDetails.noAppOverview')}
                 </Typography>
               </Box>
+
+              {moreAppsFromPublisher.length && (
+                <>
+                  <hr className={classes.subSectionSeparator} />
+
+                  <Box pb={3} pt={5}>
+                    <Typography variant="h6">
+                      <>
+                        {t('appMarketplace.appDetails.moreByPublisherTitle')}
+                        {selectedAppDetails &&
+                        selectedAppDetails.organization.name
+                          ? selectedAppDetails.organization.name
+                          : '...'}
+                      </>
+                    </Typography>
+                  </Box>
+
+                  <Box pb={3}>
+                    <AppCatalog appsToDisplay={moreAppsFromPublisher} />
+                  </Box>
+
+                  <Box>
+                    <Button color="primary" disabled variant="outlined">
+                      {t('appMarketplace.appDetails.viewMoreButtonLabel')}
+                    </Button>
+                  </Box>
+                </>
+              )}
             </section>
           </>
         ) : (

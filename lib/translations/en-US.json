@@ -51,6 +51,7 @@
         "appDetails": {
           "loadingAppDetails": "Loading the selected app's details...",
           "appSubscribeButton": "Subscribe app",
+          "signInToSubscribe": "Sign in to Subscribe",
           "appAlreadySubscribedButton": "Subscribed to app",
           "accessAppButtonLabel": "Access app",
           "subSectionTitleOne": "Application links:",
@@ -74,7 +75,8 @@
           "noLabels": "No labels provided",
           "partOfAppOverviewTitle": "Overview",
           "noAppOverview": "No application overview provided",
-          "signinToSubscribe": "Sign in to Subscribe"
+          "moreByPublisherTitle": "More by ",
+          "viewMoreButtonLabel": "View more"
         }
       }
     }

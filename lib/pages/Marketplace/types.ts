@@ -72,6 +72,7 @@ export interface MarketplaceStore {
   allSubbedMarketplaceApps: SubbedMarketplaceApp[]
 
   filteredMarketplaceApps: AppDetails[]
+  retrievedFilteredMarketplaceApps: boolean
 
   retrievedAllMarketplaceApps: boolean
   retrievedAllMarketplaceLabels: boolean
