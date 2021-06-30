@@ -34,6 +34,7 @@ import Link from '../../components/Link'
 import marketplace from 'assets/marketplace.svg'
 import marketplaceApps from 'assets/marketplaceApps.svg'
 import useStyles from './styles'
+import appDetailsMapping from '../../util/appDetailsMapping'
 
 const Marketplace: React.FC<MarketplaceProps> = ({
   allMarketplaceApps,
@@ -76,20 +77,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
     if (allAvailableAppsArray.length) {
       const newAllAvailableAppsArray = allAvailableAppsArray.map((app) => {
-        return {
-          appDescription:
-            app.shortDescription.length > 0
-              ? app.shortDescription
-              : app.description.length > 0
-              ? app.description
-              : t('appMarketplace.noDescriptionAvailableText'),
-          appID: app.id,
-          appLabels: app.labels,
-          appLogo: app.logo,
-          appName: app.name,
-          appPublisher: app.organization.name,
-          appUpdatedAt: app.updatedAt,
-        }
+        return appDetailsMapping(
+          app,
+          t('appMarketplace.noDescriptionAvailableText')
+        )
       })
 
       setAllAppsList(newAllAvailableAppsArray)
@@ -243,20 +234,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
     if (filteredAppsArray.length) {
       const newFilteredAppsArray = filteredAppsArray.map((filteredApp) => {
-        return {
-          appDescription:
-            filteredApp.shortDescription.length > 0
-              ? filteredApp.shortDescription
-              : filteredApp.description.length > 0
-              ? filteredApp.description
-              : t('appMarketplace.noDescriptionAvailableText'),
-          appID: filteredApp.id,
-          appLabels: filteredApp.labels,
-          appLogo: filteredApp.logo,
-          appName: filteredApp.name,
-          appPublisher: filteredApp.organization.name,
-          appUpdatedAt: filteredApp.updatedAt,
-        }
+        return appDetailsMapping(
+          filteredApp,
+          t('appMarketplace.noDescriptionAvailableText')
+        )
       })
 
       setFilteredAppsList(newFilteredAppsArray)

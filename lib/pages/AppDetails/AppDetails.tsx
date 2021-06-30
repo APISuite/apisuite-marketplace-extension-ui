@@ -17,6 +17,7 @@ import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
 import useStyles from './styles'
 import { AppDetailsProps } from './types'
+import appDetailsMapping from '../../util/appDetailsMapping'
 
 const AppDetails: React.FC<AppDetailsProps> = ({
   allSubbedMarketplaceApps,
@@ -38,6 +39,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
   const t = (string: string) => {
     return trans.t(`extensions.marketplace.${string}`)
   }
+
   const history = useHistory()
 
   // 1. All subbed Marketplace apps' retrieval
@@ -172,21 +174,13 @@ const AppDetails: React.FC<AppDetailsProps> = ({
         })
         .slice(0, 3)
         .map((app) => {
-          return {
-            appDescription:
-              app.shortDescription.length > 0
-                ? app.shortDescription
-                : app.description.length > 0
-                ? app.description
-                : t('appMarketplace.noDescriptionAvailableText'),
-            appID: app.id,
-            appLabels: app.labels,
-            appLogo: app.logo,
-            appName: app.name,
-            appPublisher: app.organization.name,
-            appUpdatedAt: app.updatedAt,
-          }
+          return appDetailsMapping(
+            app,
+            t('appMarketplace.noDescriptionAvailableText')
+          )
         })
+
+      console.log('appsFromPublisher', appsFromPublisher)
 
       setMoreAppsFromPublisher(appsFromPublisher)
     }
