@@ -23,7 +23,7 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
   }
 
   const generateAppCatalogEntry = (appDetails: AppDetails, index: number) => {
-    const appSplitName = appDetails.appName.split(' ')
+    const appSplitName = appDetails.name.split(' ')
     const appInitials = appSplitName[0].slice(0, 2)
 
     return (
@@ -31,10 +31,10 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
         cardContent={
           <>
             <div className={classes.appCatalogEntryTopDetails}>
-              {appDetails.appLogo !== '' ? (
+              {appDetails.logo !== '' ? (
                 <img
                   className={classes.appCatalogEntryImage}
-                  src={appDetails.appLogo}
+                  src={appDetails.logo}
                 />
               ) : (
                 <Avatar className={classes.appCatalogEntryAvatar}>
@@ -47,14 +47,14 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
                   variant="body1"
                   className={classes.appCatalogEntryName}
                 >
-                  {appDetails.appName}
+                  {appDetails.name}
                 </Typography>
 
                 <Typography
                   variant="subtitle2"
                   className={classes.appCatalogEntryOwner}
                 >
-                  {appDetails.appPublisher}
+                  {appDetails.publisher}
                 </Typography>
               </div>
             </div>
@@ -64,12 +64,12 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
                 variant="body2"
                 className={classes.appCatalogEntryDescription}
               >
-                {appDetails.appDescription}
+                {appDetails.description}
               </Typography>
 
               <div className={classes.appCatalogEntryLabelsContainer}>
-                {appDetails.appLabels.length ? (
-                  appDetails.appLabels.map((appLabel, index) => {
+                {appDetails.labels.length ? (
+                  appDetails.labels.map((appLabel, index) => {
                     return (
                       <Box mr={1} key={`appLabel${index}`}>
                         <Chip
@@ -101,7 +101,7 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
       <Grid item key={`linkToApp${index}`} md={4}>
         <Link
           className={classes.appCatalogEntryLink}
-          to={`/marketplace/app-details/${appDetails.appID}`}
+          to={`/marketplace/app-details/${appDetails.id}`}
         >
           {generateAppCatalogEntry(appDetails, index)}
         </Link>

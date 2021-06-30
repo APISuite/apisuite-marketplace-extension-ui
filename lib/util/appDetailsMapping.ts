@@ -5,15 +5,15 @@ export default function appDetailsMapping(
   noDescriptionString: string
 ) {
   return {
-    appDescription:
+    description:
       appDetails.shortDescription ||
       appDetails.description ||
       noDescriptionString,
-    appID: appDetails.id,
-    appLabels: appDetails.labels,
-    appLogo: appDetails.logo,
-    appName: appDetails.name,
-    appPublisher: appDetails.organization.name,
-    appUpdatedAt: appDetails.updatedAt,
+    id: appDetails.id,
+    labels: appDetails.labels,
+    logo: appDetails.logo,
+    name: appDetails.name,
+    publisher: appDetails.organization.name,
+    updatedAt: appDetails.updatedAt,
   }
 }
