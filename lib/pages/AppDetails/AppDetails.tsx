@@ -185,7 +185,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
             appName: app.name,
             appPublisher: app.organization.name,
             appUpdatedAt: app.updatedAt,
-            linkFromWithin: true,
+            useAbsoluteRoute: true,
           }
         })
 
