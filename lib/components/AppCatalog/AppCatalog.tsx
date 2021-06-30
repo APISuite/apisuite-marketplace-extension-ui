@@ -101,11 +101,7 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
       <Grid item key={`linkToApp${index}`} md={4}>
         <Link
           className={classes.appCatalogEntryLink}
-          to={
-            appDetails.useAbsoluteRoute
-              ? `${appDetails.appID}`
-              : `marketplace/app-details/${appDetails.appID}`
-          }
+          to={`/marketplace/app-details/${appDetails.appID}`}
         >
           {generateAppCatalogEntry(appDetails, index)}
         </Link>
