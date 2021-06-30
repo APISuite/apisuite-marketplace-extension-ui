@@ -146,12 +146,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
 
   const [moreAppsFromPublisher, setMoreAppsFromPublisher] = useState([])
 
-  /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > filteredMarketplaceApps')
-  of - at most - four marketplace apps belonging to a particular publisher (i.e., organisation).
-  
-  We retrieve and store four marketplace apps on the off-chance that one of them happens to be the one we are
-  presently looking at on the 'App Details' view - if that is the case, we'll exclude it from the
-  'More (Marketplace apps) from publisher' section later on. */
+  // Retrieves the 4 latest apps from the publisher
   useEffect(() => {
     if (retrievedSelectedAppDetails) {
       getFilteredMarketplaceAppsAction({
@@ -160,21 +155,21 @@ const AppDetails: React.FC<AppDetailsProps> = ({
         sort_by: 'updated',
         order: 'desc',
         page: 1,
-        pageSize: 4, // A 'pageSize' of 4 gets us, at most, 4 apps
+        pageSize: 4,
         search: '',
       })
     }
   }, [retrievedSelectedAppDetails])
 
+  // Filters out the app in view if present, and reduces the retrieved apps to 3 if not
   useEffect(() => {
     if (retrievedFilteredMarketplaceApps) {
-      const appsFromPublisher = filteredMarketplaceApps.filter((app) => {
-        return app.id !== selectedAppDetails.id
-      })
-
       /* We only want the three most recently updated apps, and we want them in a format
       that can be used by our App Catalog component. */
-      const processedAppsFromPublisher = appsFromPublisher
+      const appsFromPublisher = filteredMarketplaceApps
+        .filter((app) => {
+          return app.id !== selectedAppDetails.id
+        })
         .slice(0, 3)
         .map((app) => {
           return {
@@ -190,11 +185,11 @@ const AppDetails: React.FC<AppDetailsProps> = ({
             appName: app.name,
             appPublisher: app.organization.name,
             appUpdatedAt: app.updatedAt,
-            linkFromWithinAppDetails: true,
+            linkFromWithin: true,
           }
         })
 
-      setMoreAppsFromPublisher(processedAppsFromPublisher)
+      setMoreAppsFromPublisher(appsFromPublisher)
     }
   }, [retrievedFilteredMarketplaceApps])
 

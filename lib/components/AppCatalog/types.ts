@@ -9,5 +9,5 @@ export type AppDetails = {
   appLogo: string
   appName: string
   appPublisher: string
-  linkFromWithinAppDetails?: boolean
+  linkFromWithin?: boolean
 }

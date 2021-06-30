@@ -102,7 +102,7 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
         <Link
           className={classes.appCatalogEntryLink}
           to={
-            appDetails.linkFromWithinAppDetails
+            appDetails.linkFromWithin
               ? `${appDetails.appID}`
               : `marketplace/app-details/${appDetails.appID}`
           }
