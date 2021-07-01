@@ -1,14 +1,14 @@
+import { i18n } from '@apisuite/fe-base'
 import { AppDetails } from '../pages/Marketplace/types'
 
-export default function appDetailsMapping(
-  appDetails: AppDetails,
-  noDescriptionString: string
-) {
+export default function appDetailsMapping(appDetails: AppDetails) {
   return {
     description:
       appDetails.shortDescription ||
       appDetails.description ||
-      noDescriptionString,
+      i18n.t(
+        'extensions.marketplace.appMarketplace.noDescriptionAvailableText'
+      ),
     id: appDetails.id,
     labels: appDetails.labels,
     logo: appDetails.logo,

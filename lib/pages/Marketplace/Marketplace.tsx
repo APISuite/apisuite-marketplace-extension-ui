@@ -84,10 +84,7 @@ const Marketplace: React.FC = () => {
 
     if (allAvailableAppsArray.length) {
       const newAllAvailableAppsArray = allAvailableAppsArray.map((app) => {
-        return appDetailsMapping(
-          app,
-          t('appMarketplace.noDescriptionAvailableText')
-        )
+        return appDetailsMapping(app)
       })
 
       setAllAppsList(newAllAvailableAppsArray)
@@ -241,10 +238,7 @@ const Marketplace: React.FC = () => {
 
     if (filteredAppsArray.length) {
       const newFilteredAppsArray = filteredAppsArray.map((filteredApp) => {
-        return appDetailsMapping(
-          filteredApp,
-          t('appMarketplace.noDescriptionAvailableText')
-        )
+        return appDetailsMapping(filteredApp)
       })
 
       setFilteredAppsList(newFilteredAppsArray)

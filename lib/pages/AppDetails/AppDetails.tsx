@@ -186,10 +186,7 @@ const AppDetails: React.FC = () => {
         })
         .slice(0, 3)
         .map((app) => {
-          return appDetailsMapping(
-            app,
-            t('appMarketplace.noDescriptionAvailableText')
-          )
+          return appDetailsMapping(app)
         })
 
       setMoreAppsFromPublisher(appsFromPublisher)
