@@ -19,6 +19,8 @@ import {
   subscribeToMarketplaceAppActionSuccess,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   unsubscribeToMarketplaceAppActionSuccess,
+  getPublisherAppsSampleActionSuccess,
+  GET_PUBLISHER_APPS_SAMPLE_ACTION,
 } from './ducks'
 
 import {
@@ -26,11 +28,13 @@ import {
   GetAllSubbedMarketplaceAppsAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
+  GetPublisherAppsSampleAction,
   SubscribeToMarketplaceAppAction,
   UnsubscribeToMarketplaceAppAction,
 } from './types'
 
 import { API_URL, MARKETPLACE_API_URL } from '../../constants/endpoints'
+import appDetailsMapping from '../../util/appDetailsMapping'
 
 export function* getAllMarketplaceAppsActionSaga(
   action: GetAllMarketplaceAppsAction
@@ -270,6 +274,39 @@ export function* getAppDetailsActionSaga(action: GetAppDetailsAction) {
   }
 }
 
+export function* getPublisherAppsSampleActionSaga(
+  action: GetPublisherAppsSampleAction
+) {
+  try {
+    const getPublisherAppsSampleActionUrl = `${API_URL}/apps/public?org_id=${action.orgID}&sort_by=updated&order=desc&page=1&pageSize=4`
+
+    const response = yield call(request, {
+      url: getPublisherAppsSampleActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    const publisherAppsSample = response.rows
+      .filter((app) => {
+        return app.id !== action.appID
+      })
+      .slice(0, 3)
+      .map((app) => {
+        return appDetailsMapping(app)
+      })
+
+    yield put(
+      getPublisherAppsSampleActionSuccess({
+        publisherAppsSample,
+      })
+    )
+  } catch (error) {
+    console.log('Error fetching a sample of publisher apps', error)
+  }
+}
+
 function* rootSaga() {
   yield takeLatest(
     GET_ALL_MARKETPLACE_APPS_ACTION,
@@ -300,6 +337,10 @@ function* rootSaga() {
     getFilteredMarketplaceAppsActionSaga
   )
   yield takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga)
+  yield takeLatest(
+    GET_PUBLISHER_APPS_SAMPLE_ACTION,
+    getPublisherAppsSampleActionSaga
+  )
 }
 
 export default rootSaga

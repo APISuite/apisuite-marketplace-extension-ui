@@ -62,8 +62,12 @@ const initialState: MarketplaceStore = {
   },
   retrievedSelectedAppDetails: false,
 
-  publisherApps: [],
-  retrievedPublisherApps: false,
+  publisherAppsSample: [],
+  retrievedPublisherAppsSample: false,
+
+  // 'Publisher details' view
+  allPublisherApps: [],
+  retrievedAllPublisherApps: false,
 
   // 'App creating/editing' views
   marketplaceAppVisibility: 'private',
@@ -98,6 +102,11 @@ export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR =
 export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
 export const GET_APP_DETAILS_ACTION_SUCCESS =
   'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS'
+
+export const GET_PUBLISHER_APPS_SAMPLE_ACTION =
+  'Marketplace/GET_PUBLISHER_APPS_SAMPLE_ACTION'
+export const GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS =
+  'Marketplace/GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS'
 
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION =
   'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION'
@@ -192,7 +201,7 @@ export default function reducer(
         return state
       } else {
         return update(state, {
-          retrievedPublisherApps: { $set: false },
+          retrievedAllPublisherApps: { $set: false },
         })
       }
     }
@@ -206,8 +215,8 @@ export default function reducer(
       } else {
         return update(state, {
           pagination: { $set: action.pagination },
-          publisherApps: { $set: action.filteredMarketplaceApps },
-          retrievedPublisherApps: { $set: true },
+          allPublisherApps: { $set: action.filteredMarketplaceApps },
+          retrievedAllPublisherApps: { $set: true },
         })
       }
     }
@@ -222,6 +231,19 @@ export default function reducer(
       return update(state, {
         selectedAppDetails: { $set: action.appDetails },
         retrievedSelectedAppDetails: { $set: true },
+      })
+    }
+
+    case GET_PUBLISHER_APPS_SAMPLE_ACTION: {
+      return update(state, {
+        retrievedPublisherAppsSample: { $set: false },
+      })
+    }
+
+    case GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS: {
+      return update(state, {
+        publisherAppsSample: { $set: action.publisherAppsSample },
+        retrievedPublisherAppsSample: { $set: true },
       })
     }
 
@@ -361,6 +383,23 @@ export function getAppDetailsAction(appID: string) {
 
 export function getAppDetailsActionSuccess(appDetails: AppDetails) {
   return { type: GET_APP_DETAILS_ACTION_SUCCESS, appDetails }
+}
+
+export function getPublisherAppsSampleAction(orgID: number, appID: number) {
+  return {
+    type: GET_PUBLISHER_APPS_SAMPLE_ACTION,
+    orgID,
+    appID,
+  }
+}
+
+export function getPublisherAppsSampleActionSuccess(payload: {
+  publisherAppsSample: AppDetails[]
+}) {
+  return {
+    type: GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS,
+    ...payload,
+  }
 }
 
 export function setMarketplaceAppVisibilityAction(

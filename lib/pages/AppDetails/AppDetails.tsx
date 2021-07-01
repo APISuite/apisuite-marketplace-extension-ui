@@ -20,20 +20,20 @@ import {
   getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
   getFilteredMarketplaceAppsAction,
+  getPublisherAppsSampleAction,
   subscribeToMarketplaceAppAction,
   unsubscribeToMarketplaceAppAction,
 } from '../Marketplace/ducks'
 import appDetailsSelector from './selector'
 import useStyles from './styles'
-import appDetailsMapping from '../../util/appDetailsMapping'
 
 const AppDetails: React.FC = () => {
   const classes = useStyles()
 
   const {
     allSubbedMarketplaceApps,
-    publisherApps,
-    retrievedPublisherApps,
+    publisherAppsSample,
+    retrievedPublisherAppsSample,
     retrievedSelectedAppDetails,
     selectedAppDetails,
     userProfile,
@@ -153,45 +153,17 @@ const AppDetails: React.FC = () => {
 
   // 4. 'More (Marketplace apps) from publisher' section logic
 
-  const [moreAppsFromPublisher, setMoreAppsFromPublisher] = useState([])
-
-  // Retrieves the 4 latest apps from the publisher
+  // Retrieves - at most - 3 last updated apps from the publisher
   useEffect(() => {
     if (retrievedSelectedAppDetails) {
       dispatch(
-        getFilteredMarketplaceAppsAction(
-          {
-            org_id: [`${selectedAppDetails.orgId}`],
-            label: [],
-            sort_by: 'updated',
-            order: 'desc',
-            page: 1,
-            pageSize: 4,
-            search: '',
-          },
-          'publisher'
+        getPublisherAppsSampleAction(
+          selectedAppDetails.orgId,
+          selectedAppDetails.id
         )
       )
     }
   }, [retrievedSelectedAppDetails])
-
-  // Filters out the app in view if present, and reduces the retrieved apps to 3 if not
-  useEffect(() => {
-    if (retrievedPublisherApps) {
-      /* We only want the three most recently updated apps, and we want them in a format
-      that can be used by our App Catalog component. */
-      const appsFromPublisher = publisherApps
-        .filter((app) => {
-          return app.id !== selectedAppDetails.id
-        })
-        .slice(0, 3)
-        .map((app) => {
-          return appDetailsMapping(app)
-        })
-
-      setMoreAppsFromPublisher(appsFromPublisher)
-    }
-  }, [retrievedPublisherApps])
 
   return (
     <main>
@@ -488,7 +460,7 @@ than zero. Not doing so will result in unwanted consequences. */}
                 </Typography>
               </Box>
 
-              {!!moreAppsFromPublisher.length && (
+              {retrievedPublisherAppsSample && (
                 <>
                   <Box pt={4}>
                     <hr className={classes.subSectionSeparator} />
@@ -507,7 +479,7 @@ than zero. Not doing so will result in unwanted consequences. */}
                   </Box>
 
                   <Box pb={3}>
-                    <AppCatalog appsToDisplay={moreAppsFromPublisher} />
+                    <AppCatalog appsToDisplay={publisherAppsSample} />
                   </Box>
 
                   <Box>

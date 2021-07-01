@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect'
+import { MarketplaceStore } from './types'
 
 const marketplaceSelector = createSelector(
   ({ marketplace }: any) => marketplace,
-  (marketplace) => {
+  (marketplace: MarketplaceStore) => {
     return {
       allMarketplaceApps: marketplace.allMarketplaceApps,
       allMarketplaceLabels: marketplace.allMarketplaceLabels,

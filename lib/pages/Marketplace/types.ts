@@ -12,6 +12,8 @@ import {
   GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION,
   GET_APP_DETAILS_ACTION_SUCCESS,
   GET_APP_DETAILS_ACTION,
+  GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS,
+  GET_PUBLISHER_APPS_SAMPLE_ACTION,
   GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS,
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
   SET_MARKETPLACE_APP_LABELS_ACTION,
@@ -87,8 +89,12 @@ export interface MarketplaceStore {
   selectedAppDetails: AppDetails
   retrievedSelectedAppDetails: boolean
 
-  publisherApps: AppDetails[]
-  retrievedPublisherApps: boolean
+  publisherAppsSample: AppDetails[]
+  retrievedPublisherAppsSample: boolean
+
+  // 'Publisher details' view
+  allPublisherApps: AppDetails[]
+  retrievedAllPublisherApps: boolean
 
   // 'App creating/editing' views
   marketplaceAppVisibility: 'private' | 'public'
@@ -245,6 +251,17 @@ export interface GetAppDetailsActionSuccess extends Action {
   appDetails: AppDetails
 }
 
+export interface GetPublisherAppsSampleAction extends Action {
+  type: typeof GET_PUBLISHER_APPS_SAMPLE_ACTION
+  orgID: number
+  appID: number
+}
+
+export interface GetPublisherAppsSampleActionSuccess extends Action {
+  type: typeof GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS
+  publisherAppsSample: AppDetails[]
+}
+
 export interface SetMarketplaceAppVisibilityAction extends Action {
   type: typeof SET_MARKETPLACE_APP_VISIBILITY_ACTION
   marketplaceAppVisibility: 'private' | 'public'
@@ -267,6 +284,8 @@ export type MarketplaceActions =
   | GetAllSubbedMarketplaceAppsActionSuccess
   | GetAppDetailsAction
   | GetAppDetailsActionSuccess
+  | GetPublisherAppsSampleAction
+  | GetPublisherAppsSampleActionSuccess
   | GetFilteredAppsMarketplaceAction
   | GetFilteredAppsMarketplaceActionSuccess
   | SetMarketplaceAppLabelsAction
