@@ -483,7 +483,7 @@ than zero. Not doing so will result in unwanted consequences. */}
                 </Typography>
               </Box>
 
-              <Box pb={moreAppsFromPublisher.length ? 5 : 1}>
+              <Box pb={1}>
                 <Typography variant="body1">
                   {selectedAppDetails && selectedAppDetails.description
                     ? selectedAppDetails.description
@@ -493,7 +493,9 @@ than zero. Not doing so will result in unwanted consequences. */}
 
               {!!moreAppsFromPublisher.length && (
                 <>
-                  <hr className={classes.subSectionSeparator} />
+                  <Box pt={4}>
+                    <hr className={classes.subSectionSeparator} />
+                  </Box>
 
                   <Box pb={3} pt={5}>
                     <Typography variant="h6">
