@@ -244,7 +244,9 @@ export function* getFilteredMarketplaceAppsActionSaga(
       },
     })
 
-    const filteredMarketplaceApps = response.rows
+    const filteredMarketplaceApps = response.rows.map((app) => {
+      return appDetailsMapping(app)
+    })
 
     yield put(
       getFilteredMarketplaceAppsActionSuccess({

@@ -34,7 +34,6 @@ import Link from '../../components/Link'
 import marketplace from 'assets/marketplace.svg'
 import marketplaceApps from 'assets/marketplaceApps.svg'
 import useStyles from './styles'
-import appDetailsMapping from '../../util/appDetailsMapping'
 import marketplaceSelector from './selector'
 import {
   getAllMarketplaceAppsAction,
@@ -212,24 +211,6 @@ const Marketplace: React.FC = () => {
   }
 
   /* App filtering & sorting process */
-
-  const [filteredAppsList, setFilteredAppsList] = useState([])
-
-  useEffect(() => {
-    /* Once 'marketplace -> filteredMarketplaceApps' info is made available to us, we process it
-    so as to later display it on our 'Apps catalog' section. */
-    const filteredAppsArray = filteredMarketplaceApps
-
-    if (filteredAppsArray.length) {
-      const newFilteredAppsArray = filteredAppsArray.map((filteredApp) => {
-        return appDetailsMapping(filteredApp)
-      })
-
-      setFilteredAppsList(newFilteredAppsArray)
-    } else {
-      setFilteredAppsList([])
-    }
-  }, [filteredMarketplaceApps])
 
   const filterAndSortApps = ({
     page = 1,
@@ -502,10 +483,10 @@ const Marketplace: React.FC = () => {
           {retrievedAllMarketplaceApps &&
           retrievedAllMarketplaceLabels &&
           retrievedAllMarketplacePublishers ? (
-            filteredAppsList.length > 0 ? (
+            filteredMarketplaceApps.length > 0 ? (
               <>
                 <div className={classes.appCatalogContainer}>
-                  <AppCatalog appsToDisplay={filteredAppsList} />
+                  <AppCatalog appsToDisplay={filteredMarketplaceApps} />
                 </div>
 
                 {setPagination()}
