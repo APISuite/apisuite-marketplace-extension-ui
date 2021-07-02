@@ -42,8 +42,8 @@ const AppDetails: React.FC = () => {
 
   const trans = useTranslation()
 
-  const t = (string: string) => {
-    return trans.t(`extensions.marketplace.${string}`)
+  const t = (string: string, ...args) => {
+    return trans.t(`extensions.marketplace.${string}`, ...args)
   }
 
   const history = useHistory()
@@ -467,13 +467,13 @@ than zero. Not doing so will result in unwanted consequences. */}
 
                   <Box pb={3} pt={5}>
                     <Typography variant="h6">
-                      <>
-                        {t('appMarketplace.appDetails.moreByPublisherTitle')}
-                        {selectedAppDetails &&
-                        selectedAppDetails.organization.name
-                          ? selectedAppDetails.organization.name
-                          : '...'}
-                      </>
+                      {t('appMarketplace.appDetails.moreByPublisherTitle', {
+                        publisher:
+                          selectedAppDetails &&
+                          selectedAppDetails.organization.name
+                            ? selectedAppDetails.organization.name
+                            : '...',
+                      })}
                     </Typography>
                   </Box>
 

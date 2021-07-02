@@ -75,7 +75,7 @@
           "noLabels": "No labels provided",
           "partOfAppOverviewTitle": "Overview",
           "noAppOverview": "No application overview provided",
-          "moreByPublisherTitle": "More by ",
+          "moreByPublisherTitle": "More by {{publisher}}",
           "viewMoreButtonLabel": "View more"
         }
       }
