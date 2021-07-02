@@ -11,14 +11,16 @@ import {
   getAllMarketplaceAppsActionSuccess,
   getAllMarketplaceLabelsActionSuccess,
   getAllMarketplacePublishersActionSuccess,
-  getAllSubbedMarketplaceAppsActionSuccess,
   getAllSubbedMarketplaceAppsActionError,
+  getAllSubbedMarketplaceAppsActionSuccess,
   getAppDetailsActionSuccess,
   getFilteredMarketplaceAppsActionSuccess,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   subscribeToMarketplaceAppActionSuccess,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   unsubscribeToMarketplaceAppActionSuccess,
+  getPublisherAppsSampleActionSuccess,
+  GET_PUBLISHER_APPS_SAMPLE_ACTION,
 } from './ducks'
 
 import {
@@ -26,11 +28,13 @@ import {
   GetAllSubbedMarketplaceAppsAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
+  GetPublisherAppsSampleAction,
   SubscribeToMarketplaceAppAction,
   UnsubscribeToMarketplaceAppAction,
 } from './types'
 
 import { API_URL, MARKETPLACE_API_URL } from '../../constants/endpoints'
+import appDetailsMapping from '../../util/appDetailsMapping'
 
 export function* getAllMarketplaceAppsActionSaga(
   action: GetAllMarketplaceAppsAction
@@ -46,7 +50,9 @@ export function* getAllMarketplaceAppsActionSaga(
       },
     })
 
-    const allMarketplaceApps = response.rows
+    const allMarketplaceApps = response.rows.map((app) => {
+      return appDetailsMapping(app)
+    })
 
     yield put(getAllMarketplaceAppsActionSuccess(allMarketplaceApps))
   } catch (error) {
@@ -238,16 +244,19 @@ export function* getFilteredMarketplaceAppsActionSaga(
       },
     })
 
-    const filteredMarketplaceApps = response.rows
+    const filteredMarketplaceApps = response.rows.map((app) => {
+      return appDetailsMapping(app)
+    })
 
     yield put(
       getFilteredMarketplaceAppsActionSuccess({
         filteredMarketplaceApps,
         pagination: response.pagination,
+        view: action.view,
       })
     )
   } catch (error) {
-    console.log('Error fetching all marketplace apps', error)
+    console.log('Error fetching filtered marketplace apps', error)
   }
 }
 
@@ -266,6 +275,39 @@ export function* getAppDetailsActionSaga(action: GetAppDetailsAction) {
     yield put(getAppDetailsActionSuccess(response))
   } catch (error) {
     console.log("Error fetching the selected app's details")
+  }
+}
+
+export function* getPublisherAppsSampleActionSaga(
+  action: GetPublisherAppsSampleAction
+) {
+  try {
+    const getPublisherAppsSampleActionUrl = `${API_URL}/apps/public?org_id=${action.orgID}&sort_by=updated&order=desc&page=1&pageSize=4`
+
+    const response = yield call(request, {
+      url: getPublisherAppsSampleActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    const publisherAppsSample = response.rows
+      .filter((app) => {
+        return app.id !== action.appID
+      })
+      .slice(0, 3)
+      .map((app) => {
+        return appDetailsMapping(app)
+      })
+
+    yield put(
+      getPublisherAppsSampleActionSuccess({
+        publisherAppsSample,
+      })
+    )
+  } catch (error) {
+    console.log('Error fetching a sample of publisher apps', error)
   }
 }
 
@@ -299,6 +341,10 @@ function* rootSaga() {
     getFilteredMarketplaceAppsActionSaga
   )
   yield takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga)
+  yield takeLatest(
+    GET_PUBLISHER_APPS_SAMPLE_ACTION,
+    getPublisherAppsSampleActionSaga
+  )
 }
 
 export default rootSaga

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/scss/image-gallery.scss'
@@ -13,27 +14,38 @@ import {
   useTranslation,
 } from '@apisuite/fe-base'
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded'
+import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
-import useStyles from './styles'
-import { AppDetailsProps } from './types'
-
-const AppDetails: React.FC<AppDetailsProps> = ({
-  allSubbedMarketplaceApps,
+import {
   getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
-  retrievedSelectedAppDetails,
-  selectedAppDetails,
+  getPublisherAppsSampleAction,
   subscribeToMarketplaceAppAction,
   unsubscribeToMarketplaceAppAction,
-  userProfile,
-}) => {
+} from '../Marketplace/ducks'
+import appDetailsSelector from './selector'
+import useStyles from './styles'
+
+const AppDetails: React.FC = () => {
   const classes = useStyles()
+
+  const {
+    allSubbedMarketplaceApps,
+    publisherAppsSample,
+    retrievedPublisherAppsSample,
+    retrievedSelectedAppDetails,
+    selectedAppDetails,
+    userProfile,
+  } = useSelector(appDetailsSelector)
+
+  const dispatch = useDispatch()
 
   const trans = useTranslation()
 
-  const t = (string: string) => {
-    return trans.t(`extensions.marketplace.${string}`)
+  const t = (string: string, ...args) => {
+    return trans.t(`extensions.marketplace.${string}`, ...args)
   }
+
   const history = useHistory()
 
   // 1. All subbed Marketplace apps' retrieval
@@ -45,7 +57,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     if (userProfile && userProfile.id) {
       const userID = parseInt(userProfile.id)
 
-      getAllSubbedMarketplaceAppsAction(userID)
+      dispatch(getAllSubbedMarketplaceAppsAction(userID))
     }
   }, [userProfile])
 
@@ -57,7 +69,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
   /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > selectedAppDetails')
   of all information we presently have on the currently selected marketplace app. */
   useEffect(() => {
-    if (appID !== '') getAppDetailsAction(appID)
+    if (appID !== '') dispatch(getAppDetailsAction(appID))
   }, [appID])
 
   const [isUserSubbedToApp, setIsUserSubbedToApp] = useState(false)
@@ -82,7 +94,7 @@ const AppDetails: React.FC<AppDetailsProps> = ({
         ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
         : t('appMarketplace.appDetails.appSubscribeButton')
     }
-    return t('appMarketplace.appDetails.signinToSubscribe')
+    return t('appMarketplace.appDetails.signInToSubscribe')
   }
 
   const handleNotLoggedUserSubscription = () => {
@@ -102,10 +114,10 @@ const AppDetails: React.FC<AppDetailsProps> = ({
     const selectedAppID = selectedAppDetails.id
 
     if (isUserSubbedToApp) {
-      unsubscribeToMarketplaceAppAction(userID, selectedAppID)
+      dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
       setIsUserSubbedToApp(false)
     } else {
-      subscribeToMarketplaceAppAction(userID, selectedAppID)
+      dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
       setIsUserSubbedToApp(true)
     }
   }
@@ -137,6 +149,20 @@ const AppDetails: React.FC<AppDetailsProps> = ({
         }
       })
     : []
+
+  // 4. 'More (Marketplace apps) from publisher' section logic
+
+  // Retrieves - at most - 3 last updated apps from the publisher
+  useEffect(() => {
+    if (retrievedSelectedAppDetails) {
+      dispatch(
+        getPublisherAppsSampleAction(
+          selectedAppDetails.orgId,
+          selectedAppDetails.id
+        )
+      )
+    }
+  }, [retrievedSelectedAppDetails])
 
   return (
     <main>
@@ -432,6 +458,36 @@ than zero. Not doing so will result in unwanted consequences. */}
                     : t('appMarketplace.appDetails.noAppOverview')}
                 </Typography>
               </Box>
+
+              {retrievedPublisherAppsSample && !!publisherAppsSample.length && (
+                <>
+                  <Box pt={4}>
+                    <hr className={classes.subSectionSeparator} />
+                  </Box>
+
+                  <Box pb={3} pt={5}>
+                    <Typography variant="h6">
+                      {t('appMarketplace.appDetails.moreByPublisherTitle', {
+                        publisher:
+                          selectedAppDetails &&
+                          selectedAppDetails.organization.name
+                            ? selectedAppDetails.organization.name
+                            : '...',
+                      })}
+                    </Typography>
+                  </Box>
+
+                  <Box pb={3}>
+                    <AppCatalog appsToDisplay={publisherAppsSample} />
+                  </Box>
+
+                  <Box>
+                    <Button color="primary" disabled variant="outlined">
+                      {t('appMarketplace.appDetails.viewMoreButtonLabel')}
+                    </Button>
+                  </Box>
+                </>
+              )}
             </section>
           </>
         ) : (

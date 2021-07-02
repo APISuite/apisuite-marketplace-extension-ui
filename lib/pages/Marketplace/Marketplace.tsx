@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Accordion,
   AccordionDetails,
@@ -28,30 +29,36 @@ import SortRoundedIcon from '@material-ui/icons/SortRounded'
 
 import { APPS_PER_PAGE } from '../../constants/globals'
 import { debounce } from '../../util/debounce'
-import { MarketplaceProps } from './types'
 import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
 import marketplace from 'assets/marketplace.svg'
 import marketplaceApps from 'assets/marketplaceApps.svg'
 import useStyles from './styles'
-
-const Marketplace: React.FC<MarketplaceProps> = ({
-  allMarketplaceApps,
-  allMarketplaceLabels,
-  allMarketplacePublishers,
-  filteredMarketplaceApps,
+import marketplaceSelector from './selector'
+import {
   getAllMarketplaceAppsAction,
   getAllMarketplaceLabelsAction,
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
-  pagination,
-  retrievedAllMarketplaceApps,
-  retrievedAllMarketplaceLabels,
-  retrievedAllMarketplacePublishers,
-}) => {
+} from './ducks'
+
+const Marketplace: React.FC = () => {
   const classes = useStyles()
 
   const { portalName } = useConfig()
+
+  const {
+    allMarketplaceApps,
+    allMarketplaceLabels,
+    allMarketplacePublishers,
+    filteredMarketplaceApps,
+    retrievedAllMarketplaceApps,
+    retrievedAllMarketplaceLabels,
+    retrievedAllMarketplacePublishers,
+    pagination,
+  } = useSelector(marketplaceSelector)
+
+  const dispatch = useDispatch()
 
   const trans = useTranslation()
 
@@ -62,39 +69,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({
   useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
     of all information we presently have on public apps, and their respective labels & publishers. */
-    getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE })
-    getAllMarketplaceLabelsAction()
-    getAllMarketplacePublishersAction()
+    dispatch(getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE }))
+    dispatch(getAllMarketplaceLabelsAction())
+    dispatch(getAllMarketplacePublishersAction())
   }, [])
-
-  const [allAppsList, setAllAppsList] = useState([])
-
-  useEffect(() => {
-    /* Once 'marketplace -> allMarketplaceApps' info is made available to us, we process it
-    so as to later display it on our 'Apps catalog' section. */
-    const allAvailableAppsArray = allMarketplaceApps
-
-    if (allAvailableAppsArray.length) {
-      const newAllAvailableAppsArray = allAvailableAppsArray.map((app) => {
-        return {
-          appDescription:
-            app.shortDescription.length > 0
-              ? app.shortDescription
-              : app.description.length > 0
-              ? app.description
-              : t('appMarketplace.noDescriptionAvailableText'),
-          appID: app.id,
-          appLabels: app.labels,
-          appLogo: app.logo,
-          appName: app.name,
-          appPublisher: app.organization.name,
-          appUpdatedAt: app.updatedAt,
-        }
-      })
-
-      setAllAppsList(newAllAvailableAppsArray)
-    }
-  }, [allMarketplaceApps])
 
   /* App filtering & sorting set-up */
 
@@ -234,37 +212,6 @@ const Marketplace: React.FC<MarketplaceProps> = ({
 
   /* App filtering & sorting process */
 
-  const [filteredAppsList, setFilteredAppsList] = useState([])
-
-  useEffect(() => {
-    /* Once 'marketplace -> filteredMarketplaceApps' info is made available to us, we process it
-    so as to later display it on our 'Apps catalog' section. */
-    const filteredAppsArray = filteredMarketplaceApps
-
-    if (filteredAppsArray.length) {
-      const newFilteredAppsArray = filteredAppsArray.map((filteredApp) => {
-        return {
-          appDescription:
-            filteredApp.shortDescription.length > 0
-              ? filteredApp.shortDescription
-              : filteredApp.description.length > 0
-              ? filteredApp.description
-              : t('appMarketplace.noDescriptionAvailableText'),
-          appID: filteredApp.id,
-          appLabels: filteredApp.labels,
-          appLogo: filteredApp.logo,
-          appName: filteredApp.name,
-          appPublisher: filteredApp.organization.name,
-          appUpdatedAt: filteredApp.updatedAt,
-        }
-      })
-
-      setFilteredAppsList(newFilteredAppsArray)
-    } else {
-      setFilteredAppsList([])
-    }
-  }, [filteredMarketplaceApps])
-
   const filterAndSortApps = ({
     page = 1,
     pageSize = APPS_PER_PAGE,
@@ -309,16 +256,21 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       labelFiltersForFilterAction,
     ].some((f) => f.length)
 
-    getFilteredMarketplaceAppsAction({
-      org_id: publisherFiltersForFilterAction,
-      label: labelFiltersForFilterAction,
-      sort_by: sortModeForFilterAction,
-      order: orderModeForFilterAction,
-      // if filter changed reset page to 1
-      page: hasFilters ? 1 : page,
-      pageSize,
-      search: searchTerm.toLowerCase(),
-    })
+    dispatch(
+      getFilteredMarketplaceAppsAction(
+        {
+          org_id: publisherFiltersForFilterAction,
+          label: labelFiltersForFilterAction,
+          sort_by: sortModeForFilterAction,
+          order: orderModeForFilterAction,
+          // if filter changed reset page to 1
+          page: hasFilters ? 1 : page,
+          pageSize,
+          search: searchTerm.toLowerCase(),
+        },
+        'marketplace'
+      )
+    )
   }
 
   useEffect(() => {
@@ -531,10 +483,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({
           {retrievedAllMarketplaceApps &&
           retrievedAllMarketplaceLabels &&
           retrievedAllMarketplacePublishers ? (
-            filteredAppsList.length > 0 ? (
+            filteredMarketplaceApps.length > 0 ? (
               <>
                 <div className={classes.appCatalogContainer}>
-                  <AppCatalog appsToDisplay={filteredAppsList} />
+                  <AppCatalog appsToDisplay={filteredMarketplaceApps} />
                 </div>
 
                 {setPagination()}
@@ -544,7 +496,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
               !Object.values(publisherFilters).includes(true) ? (
               <>
                 <div className={classes.appCatalogContainer}>
-                  <AppCatalog appsToDisplay={allAppsList} />
+                  <AppCatalog appsToDisplay={allMarketplaceApps} />
                 </div>
 
                 {setPagination()}
@@ -565,7 +517,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
           )}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
-          allAppsList && (
+          allMarketplaceApps && (
             <div className={classes.featuredAppsOuterContainer}>
               <div className={classes.featuredAppsInnerContainer}>
                 <p className={classes.featuredAppsTitle}>
@@ -678,7 +630,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
               <>{t('appMarketplace.headerTitlePartTwo')}</>
             </Typography>
 
-            {!!allAppsList.length && (
+            {!!allMarketplaceApps.length && (
               <TextField
                 className={classes.appMarketHeaderSearchField}
                 InputProps={{
@@ -703,7 +655,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({
       </header>
 
       {/* FIXME commented as logic needs change
-      {allAppsList.length > 0
+      {allMarketplaceApps.length > 0
         ? displayNoMarketplaceApps()
         : displayMarketplaceApps()}
       */}
