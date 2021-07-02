@@ -19,7 +19,6 @@ import Link from '../../components/Link'
 import {
   getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
-  getFilteredMarketplaceAppsAction,
   getPublisherAppsSampleAction,
   subscribeToMarketplaceAppAction,
   unsubscribeToMarketplaceAppAction,
@@ -460,7 +459,7 @@ than zero. Not doing so will result in unwanted consequences. */}
                 </Typography>
               </Box>
 
-              {retrievedPublisherAppsSample && (
+              {retrievedPublisherAppsSample && !!publisherAppsSample.length && (
                 <>
                   <Box pt={4}>
                     <hr className={classes.subSectionSeparator} />

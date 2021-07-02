@@ -50,7 +50,9 @@ export function* getAllMarketplaceAppsActionSaga(
       },
     })
 
-    const allMarketplaceApps = response.rows
+    const allMarketplaceApps = response.rows.map((app) => {
+      return appDetailsMapping(app)
+    })
 
     yield put(getAllMarketplaceAppsActionSuccess(allMarketplaceApps))
   } catch (error) {

@@ -75,22 +75,6 @@ const Marketplace: React.FC = () => {
     dispatch(getAllMarketplacePublishersAction())
   }, [])
 
-  const [allAppsList, setAllAppsList] = useState([])
-
-  useEffect(() => {
-    /* Once 'marketplace -> allMarketplaceApps' info is made available to us, we process it
-    so as to later display it on our 'Apps catalog' section. */
-    const allAvailableAppsArray = allMarketplaceApps
-
-    if (allAvailableAppsArray.length) {
-      const newAllAvailableAppsArray = allAvailableAppsArray.map((app) => {
-        return appDetailsMapping(app)
-      })
-
-      setAllAppsList(newAllAvailableAppsArray)
-    }
-  }, [allMarketplaceApps])
-
   /* App filtering & sorting set-up */
 
   // 1 - Search term filter
@@ -531,7 +515,7 @@ const Marketplace: React.FC = () => {
               !Object.values(publisherFilters).includes(true) ? (
               <>
                 <div className={classes.appCatalogContainer}>
-                  <AppCatalog appsToDisplay={allAppsList} />
+                  <AppCatalog appsToDisplay={allMarketplaceApps} />
                 </div>
 
                 {setPagination()}
@@ -552,7 +536,7 @@ const Marketplace: React.FC = () => {
           )}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
-          allAppsList && (
+          allMarketplaceApps && (
             <div className={classes.featuredAppsOuterContainer}>
               <div className={classes.featuredAppsInnerContainer}>
                 <p className={classes.featuredAppsTitle}>
@@ -665,7 +649,7 @@ const Marketplace: React.FC = () => {
               <>{t('appMarketplace.headerTitlePartTwo')}</>
             </Typography>
 
-            {!!allAppsList.length && (
+            {!!allMarketplaceApps.length && (
               <TextField
                 className={classes.appMarketHeaderSearchField}
                 InputProps={{
@@ -690,7 +674,7 @@ const Marketplace: React.FC = () => {
       </header>
 
       {/* FIXME commented as logic needs change
-      {allAppsList.length > 0
+      {allMarketplaceApps.length > 0
         ? displayNoMarketplaceApps()
         : displayMarketplaceApps()}
       */}
