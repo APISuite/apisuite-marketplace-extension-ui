@@ -1,6 +1,7 @@
 import update from 'immutability-helper';
 /** Initial state */
 const initialState = {
+    // 'Marketplace' view
     allMarketplaceApps: [],
     allMarketplaceLabels: [],
     allMarketplacePublishers: [],
@@ -10,6 +11,13 @@ const initialState = {
     retrievedAllMarketplaceLabels: false,
     retrievedAllMarketplacePublishers: false,
     retrievedAllSubbedMarketplaceApps: false,
+    pagination: {
+        page: 1,
+        pageCount: 0,
+        pageSize: 1,
+        rowCount: 0,
+    },
+    // 'App details' view
     selectedAppDetails: {
         createdAt: '',
         description: '',
@@ -36,12 +44,12 @@ const initialState = {
         youtubeUrl: '',
     },
     retrievedSelectedAppDetails: false,
-    pagination: {
-        page: 1,
-        pageCount: 0,
-        pageSize: 1,
-        rowCount: 0,
-    },
+    publisherAppsSample: [],
+    retrievedPublisherAppsSample: false,
+    // 'Publisher details' view
+    allPublisherApps: [],
+    retrievedAllPublisherApps: false,
+    // 'App creating/editing' views
     marketplaceAppVisibility: 'private',
     marketplaceAppLabels: [],
 };
@@ -57,6 +65,8 @@ export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS = 'Marketplace/GET_A
 export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR = 'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR';
 export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION';
 export const GET_APP_DETAILS_ACTION_SUCCESS = 'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS';
+export const GET_PUBLISHER_APPS_SAMPLE_ACTION = 'Marketplace/GET_PUBLISHER_APPS_SAMPLE_ACTION';
+export const GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS = 'Marketplace/GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS';
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION';
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS';
 export const SUBSCRIBE_TO_MARKETPLACE_APP_ACTION = 'Marketplace/SUBSCRIBE_TO_MARKETPLACE_APP_ACTION';
@@ -118,13 +128,29 @@ export default function reducer(state = initialState, action) {
             return state;
         }
         case GET_FILTERED_MARKETPLACE_APPS_ACTION: {
-            return state;
+            if (action.view === 'marketplace') {
+                return state;
+            }
+            else {
+                return update(state, {
+                    retrievedAllPublisherApps: { $set: false },
+                });
+            }
         }
         case GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS: {
-            return update(state, {
-                filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
-                pagination: { $set: action.pagination },
-            });
+            if (action.view === 'marketplace') {
+                return update(state, {
+                    filteredMarketplaceApps: { $set: action.filteredMarketplaceApps },
+                    pagination: { $set: action.pagination },
+                });
+            }
+            else {
+                return update(state, {
+                    pagination: { $set: action.pagination },
+                    allPublisherApps: { $set: action.filteredMarketplaceApps },
+                    retrievedAllPublisherApps: { $set: true },
+                });
+            }
         }
         case GET_APP_DETAILS_ACTION: {
             return update(state, {
@@ -135,6 +161,17 @@ export default function reducer(state = initialState, action) {
             return update(state, {
                 selectedAppDetails: { $set: action.appDetails },
                 retrievedSelectedAppDetails: { $set: true },
+            });
+        }
+        case GET_PUBLISHER_APPS_SAMPLE_ACTION: {
+            return update(state, {
+                retrievedPublisherAppsSample: { $set: false },
+            });
+        }
+        case GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS: {
+            return update(state, {
+                publisherAppsSample: { $set: action.publisherAppsSample },
+                retrievedPublisherAppsSample: { $set: true },
             });
         }
         case SET_MARKETPLACE_APP_VISIBILITY_ACTION: {
@@ -217,10 +254,11 @@ export function unsubscribeToMarketplaceAppActionSuccess() {
         type: UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
     };
 }
-export function getFilteredMarketplaceAppsAction(filters) {
+export function getFilteredMarketplaceAppsAction(filters, view) {
     return {
         type: GET_FILTERED_MARKETPLACE_APPS_ACTION,
         filters,
+        view,
     };
 }
 export function getFilteredMarketplaceAppsActionSuccess(payload) {
@@ -234,6 +272,19 @@ export function getAppDetailsAction(appID) {
 }
 export function getAppDetailsActionSuccess(appDetails) {
     return { type: GET_APP_DETAILS_ACTION_SUCCESS, appDetails };
+}
+export function getPublisherAppsSampleAction(orgID, appID) {
+    return {
+        type: GET_PUBLISHER_APPS_SAMPLE_ACTION,
+        orgID,
+        appID,
+    };
+}
+export function getPublisherAppsSampleActionSuccess(payload) {
+    return {
+        type: GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS,
+        ...payload,
+    };
 }
 export function setMarketplaceAppVisibilityAction(marketplaceAppVisibility) {
     return {

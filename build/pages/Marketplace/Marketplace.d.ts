@@ -1,4 +1,3 @@
 import React from 'react';
-import { MarketplaceProps } from './types';
-declare const Marketplace: React.FC<MarketplaceProps>;
+declare const Marketplace: React.FC;
 export default Marketplace;

@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/scss/image-gallery.scss';
 import clsx from 'clsx';
 import { Avatar, Box, Button, Chip, Typography, useTranslation, } from '@apisuite/fe-base';
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded';
+import AppCatalog from '../../components/AppCatalog';
 import Link from '../../components/Link';
+import { getAllSubbedMarketplaceAppsAction, getAppDetailsAction, getPublisherAppsSampleAction, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, } from '../Marketplace/ducks';
+import appDetailsSelector from './selector';
 import useStyles from './styles';
-const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsAction, getAppDetailsAction, retrievedSelectedAppDetails, selectedAppDetails, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, userProfile, }) => {
+const AppDetails = () => {
     const classes = useStyles();
+    const { allSubbedMarketplaceApps, publisherAppsSample, retrievedPublisherAppsSample, retrievedSelectedAppDetails, selectedAppDetails, userProfile, } = useSelector(appDetailsSelector);
+    const dispatch = useDispatch();
     const trans = useTranslation();
-    const t = (string) => {
-        return trans.t(`extensions.marketplace.${string}`);
+    const t = (string, ...args) => {
+        return trans.t(`extensions.marketplace.${string}`, ...args);
     };
     const history = useHistory();
     // 1. All subbed Marketplace apps' retrieval
@@ -21,7 +27,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
     useEffect(() => {
         if (userProfile && userProfile.id) {
             const userID = parseInt(userProfile.id);
-            getAllSubbedMarketplaceAppsAction(userID);
+            dispatch(getAllSubbedMarketplaceAppsAction(userID));
         }
     }, [userProfile]);
     // 2. Subscription logic for the currently selected Marketplace app
@@ -31,7 +37,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
     of all information we presently have on the currently selected marketplace app. */
     useEffect(() => {
         if (appID !== '')
-            getAppDetailsAction(appID);
+            dispatch(getAppDetailsAction(appID));
     }, [appID]);
     const [isUserSubbedToApp, setIsUserSubbedToApp] = useState(false);
     /* The following effect code will check if the currently selected app is one that
@@ -50,7 +56,7 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
                 ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
                 : t('appMarketplace.appDetails.appSubscribeButton');
         }
-        return t('appMarketplace.appDetails.signinToSubscribe');
+        return t('appMarketplace.appDetails.signInToSubscribe');
     };
     const handleNotLoggedUserSubscription = () => {
         if (userProfile && userProfile.id) {
@@ -64,11 +70,11 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
         const userID = parseInt(userProfile.id);
         const selectedAppID = selectedAppDetails.id;
         if (isUserSubbedToApp) {
-            unsubscribeToMarketplaceAppAction(userID, selectedAppID);
+            dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID));
             setIsUserSubbedToApp(false);
         }
         else {
-            subscribeToMarketplaceAppAction(userID, selectedAppID);
+            dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID));
             setIsUserSubbedToApp(true);
         }
     };
@@ -93,6 +99,13 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
             };
         })
         : [];
+    // 4. 'More (Marketplace apps) from publisher' section logic
+    // Retrieves - at most - 3 last updated apps from the publisher
+    useEffect(() => {
+        if (retrievedSelectedAppDetails) {
+            dispatch(getPublisherAppsSampleAction(selectedAppDetails.orgId, selectedAppDetails.id));
+        }
+    }, [retrievedSelectedAppDetails]);
     return (React.createElement("main", null,
         React.createElement("section", { className: classes.appDetailsContainer }, retrievedSelectedAppDetails ? (React.createElement(React.Fragment, null,
             React.createElement("section", { className: classes.leftAppDetailsContainer },
@@ -178,7 +191,21 @@ const AppDetails = ({ allSubbedMarketplaceApps, getAllSubbedMarketplaceAppsActio
                 React.createElement(Box, { pb: 1 },
                     React.createElement(Typography, { variant: "body1" }, selectedAppDetails && selectedAppDetails.description
                         ? selectedAppDetails.description
-                        : t('appMarketplace.appDetails.noAppOverview')))))) : (React.createElement(Box, { py: 3, display: "flex", justifyContent: "center", width: 1 },
+                        : t('appMarketplace.appDetails.noAppOverview'))),
+                retrievedPublisherAppsSample && !!publisherAppsSample.length && (React.createElement(React.Fragment, null,
+                    React.createElement(Box, { pt: 4 },
+                        React.createElement("hr", { className: classes.subSectionSeparator })),
+                    React.createElement(Box, { pb: 3, pt: 5 },
+                        React.createElement(Typography, { variant: "h6" }, t('appMarketplace.appDetails.moreByPublisherTitle', {
+                            publisher: selectedAppDetails &&
+                                selectedAppDetails.organization.name
+                                ? selectedAppDetails.organization.name
+                                : '...',
+                        }))),
+                    React.createElement(Box, { pb: 3 },
+                        React.createElement(AppCatalog, { appsToDisplay: publisherAppsSample })),
+                    React.createElement(Box, null,
+                        React.createElement(Button, { color: "primary", disabled: true, variant: "outlined" }, t('appMarketplace.appDetails.viewMoreButtonLabel')))))))) : (React.createElement(Box, { py: 3, display: "flex", justifyContent: "center", width: 1 },
             React.createElement(Typography, { variant: "body1" }, t('appMarketplace.appDetails.loadingAppDetails')))))));
 };
 export default AppDetails;

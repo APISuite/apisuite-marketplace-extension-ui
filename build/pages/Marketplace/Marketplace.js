@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, InputAdornment, Radio, RadioGroup, TextField, Typography, useConfig, useTranslation, } from '@apisuite/fe-base';
 // import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
 // import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
@@ -15,9 +16,13 @@ import Link from '../../components/Link';
 import marketplace from 'assets/marketplace.svg';
 import marketplaceApps from 'assets/marketplaceApps.svg';
 import useStyles from './styles';
-const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplacePublishers, filteredMarketplaceApps, getAllMarketplaceAppsAction, getAllMarketplaceLabelsAction, getAllMarketplacePublishersAction, getFilteredMarketplaceAppsAction, pagination, retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers, }) => {
+import marketplaceSelector from './selector';
+import { getAllMarketplaceAppsAction, getAllMarketplaceLabelsAction, getAllMarketplacePublishersAction, getFilteredMarketplaceAppsAction, } from './ducks';
+const Marketplace = () => {
     const classes = useStyles();
     const { portalName } = useConfig();
+    const { allMarketplaceApps, allMarketplaceLabels, allMarketplacePublishers, filteredMarketplaceApps, retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers, pagination, } = useSelector(marketplaceSelector);
+    const dispatch = useDispatch();
     const trans = useTranslation();
     const t = (string) => {
         return trans.t(`extensions.marketplace.${string}`);
@@ -25,34 +30,10 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
     useEffect(() => {
         /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
         of all information we presently have on public apps, and their respective labels & publishers. */
-        getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE });
-        getAllMarketplaceLabelsAction();
-        getAllMarketplacePublishersAction();
+        dispatch(getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE }));
+        dispatch(getAllMarketplaceLabelsAction());
+        dispatch(getAllMarketplacePublishersAction());
     }, []);
-    const [allAppsList, setAllAppsList] = useState([]);
-    useEffect(() => {
-        /* Once 'marketplace -> allMarketplaceApps' info is made available to us, we process it
-        so as to later display it on our 'Apps catalog' section. */
-        const allAvailableAppsArray = allMarketplaceApps;
-        if (allAvailableAppsArray.length) {
-            const newAllAvailableAppsArray = allAvailableAppsArray.map((app) => {
-                return {
-                    appDescription: app.shortDescription.length > 0
-                        ? app.shortDescription
-                        : app.description.length > 0
-                            ? app.description
-                            : t('appMarketplace.noDescriptionAvailableText'),
-                    appID: app.id,
-                    appLabels: app.labels,
-                    appLogo: app.logo,
-                    appName: app.name,
-                    appPublisher: app.organization.name,
-                    appUpdatedAt: app.updatedAt,
-                };
-            });
-            setAllAppsList(newAllAvailableAppsArray);
-        }
-    }, [allMarketplaceApps]);
     /* App filtering & sorting set-up */
     // 1 - Search term filter
     const [searchTerm, setSearchTerm] = useState('');
@@ -122,33 +103,6 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
         setSortMode(selectedSortMode);
     };
     /* App filtering & sorting process */
-    const [filteredAppsList, setFilteredAppsList] = useState([]);
-    useEffect(() => {
-        /* Once 'marketplace -> filteredMarketplaceApps' info is made available to us, we process it
-        so as to later display it on our 'Apps catalog' section. */
-        const filteredAppsArray = filteredMarketplaceApps;
-        if (filteredAppsArray.length) {
-            const newFilteredAppsArray = filteredAppsArray.map((filteredApp) => {
-                return {
-                    appDescription: filteredApp.shortDescription.length > 0
-                        ? filteredApp.shortDescription
-                        : filteredApp.description.length > 0
-                            ? filteredApp.description
-                            : t('appMarketplace.noDescriptionAvailableText'),
-                    appID: filteredApp.id,
-                    appLabels: filteredApp.labels,
-                    appLogo: filteredApp.logo,
-                    appName: filteredApp.name,
-                    appPublisher: filteredApp.organization.name,
-                    appUpdatedAt: filteredApp.updatedAt,
-                };
-            });
-            setFilteredAppsList(newFilteredAppsArray);
-        }
-        else {
-            setFilteredAppsList([]);
-        }
-    }, [filteredMarketplaceApps]);
     const filterAndSortApps = ({ page = 1, pageSize = APPS_PER_PAGE, }) => {
         if (!(retrievedAllMarketplaceApps &&
             retrievedAllMarketplaceLabels &&
@@ -177,7 +131,7 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
             publisherFiltersForFilterAction,
             labelFiltersForFilterAction,
         ].some((f) => f.length);
-        getFilteredMarketplaceAppsAction({
+        dispatch(getFilteredMarketplaceAppsAction({
             org_id: publisherFiltersForFilterAction,
             label: labelFiltersForFilterAction,
             sort_by: sortModeForFilterAction,
@@ -186,7 +140,7 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
             page: hasFilters ? 1 : page,
             pageSize,
             search: searchTerm.toLowerCase(),
-        });
+        }, 'marketplace'));
     };
     useEffect(() => {
         filterAndSortApps({ page, pageSize: APPS_PER_PAGE });
@@ -275,14 +229,14 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                         React.createElement(React.Fragment, null, t('appMarketplace.amountOfAppsTextPartTwo')))),
                 retrievedAllMarketplaceApps &&
                     retrievedAllMarketplaceLabels &&
-                    retrievedAllMarketplacePublishers ? (filteredAppsList.length > 0 ? (React.createElement(React.Fragment, null,
+                    retrievedAllMarketplacePublishers ? (filteredMarketplaceApps.length > 0 ? (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: classes.appCatalogContainer },
-                        React.createElement(AppCatalog, { appsToDisplay: filteredAppsList })),
+                        React.createElement(AppCatalog, { appsToDisplay: filteredMarketplaceApps })),
                     setPagination())) : searchTerm.length === 0 &&
                     !Object.values(labelFilters).includes(true) &&
                     !Object.values(publisherFilters).includes(true) ? (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: classes.appCatalogContainer },
-                        React.createElement(AppCatalog, { appsToDisplay: allAppsList })),
+                        React.createElement(AppCatalog, { appsToDisplay: allMarketplaceApps })),
                     setPagination())) : (React.createElement(Box, { pt: 5 },
                     React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText'))))) : (React.createElement(Box, { pt: 5 },
                     React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText')))))));
@@ -311,7 +265,7 @@ const Marketplace = ({ allMarketplaceApps, allMarketplaceLabels, allMarketplaceP
                             portalName,
                             " "),
                         React.createElement(React.Fragment, null, t('appMarketplace.headerTitlePartTwo'))),
-                    !!allAppsList.length && (React.createElement(TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
+                    !!allMarketplaceApps.length && (React.createElement(TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
                             endAdornment: (React.createElement(InputAdornment, { position: "end" },
                                 React.createElement(SearchRoundedIcon, null))),
                         }, onChange: handleSearchTermChanges, placeholder: t('appMarketplace.searchForAppsTextField'), variant: "outlined" }))),

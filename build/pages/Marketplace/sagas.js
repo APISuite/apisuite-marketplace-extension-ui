@@ -1,7 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import request from '../../util/request';
-import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionSuccess, getAllSubbedMarketplaceAppsActionError, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, } from './ducks';
+import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionError, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, getPublisherAppsSampleActionSuccess, GET_PUBLISHER_APPS_SAMPLE_ACTION, } from './ducks';
 import { API_URL, MARKETPLACE_API_URL } from '../../constants/endpoints';
+import appDetailsMapping from '../../util/appDetailsMapping';
 export function* getAllMarketplaceAppsActionSaga(action) {
     try {
         const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`;
@@ -12,7 +13,9 @@ export function* getAllMarketplaceAppsActionSaga(action) {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        const allMarketplaceApps = response.rows;
+        const allMarketplaceApps = response.rows.map((app) => {
+            return appDetailsMapping(app);
+        });
         yield put(getAllMarketplaceAppsActionSuccess(allMarketplaceApps));
     }
     catch (error) {
@@ -176,14 +179,17 @@ export function* getFilteredMarketplaceAppsActionSaga(action) {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        const filteredMarketplaceApps = response.rows;
+        const filteredMarketplaceApps = response.rows.map((app) => {
+            return appDetailsMapping(app);
+        });
         yield put(getFilteredMarketplaceAppsActionSuccess({
             filteredMarketplaceApps,
             pagination: response.pagination,
+            view: action.view,
         }));
     }
     catch (error) {
-        console.log('Error fetching all marketplace apps', error);
+        console.log('Error fetching filtered marketplace apps', error);
     }
 }
 export function* getAppDetailsActionSaga(action) {
@@ -202,6 +208,32 @@ export function* getAppDetailsActionSaga(action) {
         console.log("Error fetching the selected app's details");
     }
 }
+export function* getPublisherAppsSampleActionSaga(action) {
+    try {
+        const getPublisherAppsSampleActionUrl = `${API_URL}/apps/public?org_id=${action.orgID}&sort_by=updated&order=desc&page=1&pageSize=4`;
+        const response = yield call(request, {
+            url: getPublisherAppsSampleActionUrl,
+            method: 'GET',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+        });
+        const publisherAppsSample = response.rows
+            .filter((app) => {
+            return app.id !== action.appID;
+        })
+            .slice(0, 3)
+            .map((app) => {
+            return appDetailsMapping(app);
+        });
+        yield put(getPublisherAppsSampleActionSuccess({
+            publisherAppsSample,
+        }));
+    }
+    catch (error) {
+        console.log('Error fetching a sample of publisher apps', error);
+    }
+}
 function* rootSaga() {
     yield takeLatest(GET_ALL_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSaga);
     yield takeLatest(GET_ALL_MARKETPLACE_LABELS_ACTION, getAllMarketplaceLabelsActionSaga);
@@ -211,5 +243,6 @@ function* rootSaga() {
     yield takeLatest(UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSaga);
     yield takeLatest(GET_FILTERED_MARKETPLACE_APPS_ACTION, getFilteredMarketplaceAppsActionSaga);
     yield takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga);
+    yield takeLatest(GET_PUBLISHER_APPS_SAMPLE_ACTION, getPublisherAppsSampleActionSaga);
 }
 export default rootSaga;
