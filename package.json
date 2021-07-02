@@ -122,7 +122,8 @@
     "immutability-helper": "3.1.1",
     "react-dropzone": "11.2.4",
     "react-image-gallery": "1.0.9",
-    "react-portal-overlay": "1.0.1"
+    "react-portal-overlay": "1.0.1",
+    "reselect": "^4.0.0"
   },
   "release": {
     "branches": [
