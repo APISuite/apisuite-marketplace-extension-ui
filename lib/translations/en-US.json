@@ -78,6 +78,14 @@
           "moreByPublisherTitle": "More by {{publisher}}",
           "viewMoreButtonLabel": "View more"
         }
+      },
+      "publisherDetails": {
+        "appsByPublisherTitle": "Applications by {{publisher}}",
+        "privacyUrl": "Privacy policy",
+        "supportUrl": "Support",
+        "tosUrl": "Terms & Conditions",
+        "websiteUrl": "Publisher website",
+        "youtubeUrl": "Publisher YouTube"
       }
     }
   }
