@@ -161,7 +161,9 @@ const AppDetails: React.FC = () => {
             className={classes.publisherAvatar}
             src={publisherDetails.logo}
           >
-            {publisherNameInitials}
+            <Typography style={{ color: palette.common.white }} variant="h2">
+              {publisherNameInitials}
+            </Typography>
           </Avatar>
         </Grid>
 
