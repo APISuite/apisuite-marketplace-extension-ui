@@ -50,7 +50,7 @@ const Marketplace: React.FC = () => {
 
   const { palette } = useTheme()
 
-  const { navigation, portalName } = useConfig()
+  const { clientName, navigation, portalName } = useConfig()
 
   const {
     allMarketplaceApps,
@@ -68,8 +68,8 @@ const Marketplace: React.FC = () => {
 
   const trans = useTranslation()
 
-  const t = (string: string) => {
-    return trans.t(`extensions.marketplace.${string}`)
+  const t = (string: string, ...args) => {
+    return trans.t(`extensions.marketplace.${string}`, ...args)
   }
 
   useEffect(() => {
@@ -369,7 +369,11 @@ const Marketplace: React.FC = () => {
               </Link>
             </Button>,
           ]}
-          textArray={[t('appMarketplace.ctaCard.text')]}
+          textArray={[
+            t('appMarketplace.ctaCard.text', {
+              portalOwner: clientName ? clientName : '...',
+            }),
+          ]}
           title={t('appMarketplace.ctaCard.title')}
         />
       </Box>

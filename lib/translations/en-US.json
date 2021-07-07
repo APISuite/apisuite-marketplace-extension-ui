@@ -51,7 +51,7 @@
         "ctaCard": {
           "buttonLabel": "Create application",
           "title": "Are you a Developer?",
-          "text": "Create and publish your own applications on 's Marketplace through our developer portal!"
+          "text": "Create and publish your own applications on {{portalOwner}}'s Marketplace through our developer portal!"
         },
         "appDetails": {
           "loadingAppDetails": "Loading the selected app's details...",
