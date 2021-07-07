@@ -102,6 +102,11 @@ const AppCatalog: React.FC<AppCatalogProps> = ({
   const appCatalogEntries = appsToDisplay.map((appDetails, index) => {
     return (
       <Grid
+        className={
+          catalogMode && catalogMode === 'publisher'
+            ? classes.publisherCatalogEntry
+            : classes.marketplaceCatalogEntry
+        }
         item
         key={`linkToApp${index}`}
         md={catalogMode && catalogMode === 'publisher' ? 'auto' : 4}

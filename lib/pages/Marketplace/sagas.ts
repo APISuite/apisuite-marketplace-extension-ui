@@ -318,18 +318,10 @@ export function* getPublisherDetailsActionSaga(
   action: GetPublisherDetailsAction
 ) {
   try {
-    const publisherDetailsResponse = yield call(request, {
-      url: `${API_URL}/organizations/${action.publisherID}`,
+    const publisherDetails = yield call(request, {
+      url: `${API_URL}/organizations/publishers/${action.publisherID}`,
       method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      },
     })
-
-    const publisherDetails = {
-      id: action.publisherID,
-      ...publisherDetailsResponse,
-    }
 
     yield put(getPublisherDetailsActionSuccess(publisherDetails))
   } catch (error) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
+import clsx from 'clsx'
 
 import {
   Avatar,
@@ -158,7 +159,11 @@ const AppDetails: React.FC = () => {
       >
         <Grid item>
           <Avatar
-            className={classes.publisherAvatar}
+            className={clsx(
+              classes.publisherAvatar,
+              { [classes.avatarWithImage]: publisherDetails.logo },
+              { [classes.avatarWithoutImage]: !publisherDetails.logo }
+            )}
             src={publisherDetails.logo}
           >
             <Typography style={{ color: palette.common.white }} variant="h2">
