@@ -46,9 +46,7 @@ import CTACard from '../../components/CTACard'
 const Marketplace: React.FC = () => {
   const classes = useStyles()
 
-  const { navigation, portalName, sso } = useConfig()
-
-  console.log('navigationConfig', navigation, 'sso', sso)
+  const { navigation, portalName } = useConfig()
 
   const {
     allMarketplaceApps,
