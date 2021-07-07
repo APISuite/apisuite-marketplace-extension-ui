@@ -1,7 +1,8 @@
+import { ReactElement } from 'react'
+
 export type CTACardProps = {
-  ctaCardButtonLabel: string
-  ctaCardButtonLink: string
-  ctaCardContent?: JSX.Element
-  ctaCardTextArray?: string[]
-  ctaCardTitle?: string
+  actions: ReactElement[]
+  content?: JSX.Element
+  textArray?: string[]
+  title?: string
 }

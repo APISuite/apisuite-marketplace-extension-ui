@@ -5,6 +5,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -16,6 +17,7 @@ import {
   TextField,
   Typography,
   useConfig,
+  useTheme,
   useTranslation,
 } from '@apisuite/fe-base'
 // import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
@@ -46,6 +48,8 @@ import CTACard from '../../components/CTACard'
 const Marketplace: React.FC = () => {
   const classes = useStyles()
 
+  const { palette } = useTheme()
+
   const { navigation, portalName } = useConfig()
 
   const {
@@ -57,6 +61,7 @@ const Marketplace: React.FC = () => {
     retrievedAllMarketplaceLabels,
     retrievedAllMarketplacePublishers,
     pagination,
+    userProfile,
   } = useSelector(marketplaceSelector)
 
   const dispatch = useDispatch()
@@ -325,21 +330,47 @@ const Marketplace: React.FC = () => {
   // 'Are you a Developer' CTA card
 
   const generateCTACard = () => {
-    let cardLink = null
+    let cardLink = '/auth/signin'
 
-    navigation.anonymous.tabs.forEach((tab) => {
-      if (tab.action === '/home') cardLink = '/home'
-    })
+    /*
+      Upon clicking the CTA's button:
+      1. If signed in, we direct the user to 'Dashboard -> Overview'.
+      2. If signed out, we check if 'Home' is hidden.
+      2.a. If not hidden, we direct the user to 'Home'.
+      2.b. If hidden, we direct the user to the 'Sign in' view.
+    */
+    if (userProfile.id) {
+      cardLink = '/dashboard/apps'
+    } else {
+      navigation.anonymous.tabs.forEach((tab) => {
+        if (tab.action === '/home') cardLink = '/home'
+      })
+    }
 
     return (
       <Box mt={5}>
         <CTACard
-          ctaCardButtonLabel="Create application"
-          ctaCardButtonLink={cardLink ?? '/auth/signin'}
-          ctaCardTextArray={[
-            'Create and publish your own applications on Acme’s Marketplace through our developer portal!',
+          actions={[
+            <Button
+              color="primary"
+              disableElevation
+              key="createAppButtonKey"
+              size="large"
+              variant="contained"
+            >
+              <Link
+                style={{
+                  color: palette.common.white,
+                  textDecoration: 'none',
+                }}
+                to={cardLink}
+              >
+                {t('appMarketplace.ctaCard.buttonLabel')}
+              </Link>
+            </Button>,
           ]}
-          ctaCardTitle="Are you a Developer?"
+          textArray={[t('appMarketplace.ctaCard.text')]}
+          title={t('appMarketplace.ctaCard.title')}
         />
       </Box>
     )

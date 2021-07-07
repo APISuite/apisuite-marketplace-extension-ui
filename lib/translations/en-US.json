@@ -48,6 +48,11 @@
         "noLabelsProvidedText": "No labels provided",
         "featuredAppsTitle": "Featured apps",
         "featuredAppsSubtitle": "Ready to try? Subscribe to one of your featured apps to get started!",
+        "ctaCard": {
+          "buttonLabel": "Create application",
+          "title": "Are you a Developer?",
+          "text": "Create and publish your own applications on 's Marketplace through our developer portal!"
+        },
         "appDetails": {
           "loadingAppDetails": "Loading the selected app's details...",
           "appSubscribeButton": "Subscribe app",

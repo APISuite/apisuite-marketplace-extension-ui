@@ -1,22 +1,21 @@
 import React from 'react'
 import {
   Box,
-  Button,
+  Card,
+  CardActions,
+  CardContent,
   Grid,
-  Paper,
   Typography,
   useTheme,
 } from '@apisuite/fe-base'
 
-import Link from '../../components/Link'
 import { CTACardProps } from './types'
 
 const CTACard: React.FC<CTACardProps> = ({
-  ctaCardButtonLabel,
-  ctaCardButtonLink,
-  ctaCardContent,
-  ctaCardTextArray,
-  ctaCardTitle,
+  actions,
+  content,
+  textArray,
+  title,
 }) => {
   const { palette } = useTheme()
 
@@ -38,8 +37,8 @@ const CTACard: React.FC<CTACardProps> = ({
   }
 
   return (
-    <Paper elevation={3}>
-      <Box px={3} py={3}>
+    <Card elevation={3}>
+      <Box>
         <Grid
           alignItems="center"
           container
@@ -47,40 +46,29 @@ const CTACard: React.FC<CTACardProps> = ({
           justify="space-between"
         >
           <Grid item xs={8}>
-            {ctaCardTitle && (
-              <Typography gutterBottom variant="h4">
-                {ctaCardTitle}
-              </Typography>
-            )}
+            <CardContent>
+              {title && (
+                <Typography gutterBottom variant="h4">
+                  {title}
+                </Typography>
+              )}
 
-            {!!ctaCardTextArray.length && generateCTAText(ctaCardTextArray)}
+              {!!textArray.length && generateCTAText(textArray)}
 
-            {ctaCardContent}
+              {content}
+            </CardContent>
           </Grid>
 
           <Grid item xs={4}>
-            <Box alignItems="center" display="flex" pl={5}>
-              <Button
-                color="primary"
-                disableElevation
-                size="large"
-                variant="contained"
-              >
-                <Link
-                  style={{
-                    color: palette.common.white,
-                    textDecoration: 'none',
-                  }}
-                  to={ctaCardButtonLink}
-                >
-                  {ctaCardButtonLabel}
-                </Link>
-              </Button>
-            </Box>
+            <CardActions>
+              <Box alignItems="center" display="flex" pl={5}>
+                {actions}
+              </Box>
+            </CardActions>
           </Grid>
         </Grid>
       </Box>
-    </Paper>
+    </Card>
   )
 }
 
