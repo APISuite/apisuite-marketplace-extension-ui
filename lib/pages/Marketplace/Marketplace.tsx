@@ -41,11 +41,14 @@ import {
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
 } from './ducks'
+import CTACard from '../../components/CTACard'
 
 const Marketplace: React.FC = () => {
   const classes = useStyles()
 
-  const { portalName } = useConfig()
+  const { navigation, portalName, sso } = useConfig()
+
+  console.log('navigationConfig', navigation, 'sso', sso)
 
   const {
     allMarketplaceApps,
@@ -321,6 +324,29 @@ const Marketplace: React.FC = () => {
     )
   }
 
+  // 'Are you a Developer' CTA card
+
+  const generateCTACard = () => {
+    let cardLink = null
+
+    navigation.anonymous.tabs.forEach((tab) => {
+      if (tab.action === '/home') cardLink = '/home'
+    })
+
+    return (
+      <Box mt={5}>
+        <CTACard
+          ctaCardButtonLabel="Create application"
+          ctaCardButtonLink={cardLink ?? '/auth/signin'}
+          ctaCardTextArray={[
+            'Create and publish your own applications on Acme’s Marketplace through our developer portal!',
+          ]}
+          ctaCardTitle="Are you a Developer?"
+        />
+      </Box>
+    )
+  }
+
   // Carousel of 'featured apps'
 
   // const [currentSlide, setCurrentSlide] = useState(0)
@@ -515,6 +541,8 @@ const Marketplace: React.FC = () => {
               </Typography>
             </Box>
           )}
+
+          {generateCTACard()}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
           allMarketplaceApps && (
