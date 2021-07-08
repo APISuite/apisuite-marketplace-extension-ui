@@ -334,18 +334,13 @@ const Marketplace: React.FC = () => {
 
     /*
       Upon clicking the CTA's button:
-      1. If signed in, we direct the user to 'Dashboard -> Overview'.
-      2. If signed out, we check if 'Home' is hidden.
-      2.a. If not hidden, we direct the user to 'Home'.
-      2.b. If hidden, we direct the user to the 'Sign in' view.
+      1. We check if 'Home' is hidden.
+      1.a. If hidden, we direct the user to the 'Sign in' view.
+      1.b. If not hidden, we direct the user to 'Home'.
     */
-    if (userProfile.id) {
-      cardLink = '/dashboard/apps'
-    } else {
-      navigation.anonymous.tabs.forEach((tab) => {
-        if (tab.action === '/home') cardLink = '/home'
-      })
-    }
+    navigation.anonymous.tabs.forEach((tab) => {
+      if (tab.action === '/home') cardLink = '/home'
+    })
 
     return (
       <Box mt={5}>
@@ -575,7 +570,7 @@ const Marketplace: React.FC = () => {
             </Box>
           )}
 
-          {generateCTACard()}
+          {userProfile.id === '' && generateCTACard()}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
           allMarketplaceApps && (
