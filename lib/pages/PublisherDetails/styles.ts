@@ -20,9 +20,7 @@ export default makeStyles((theme) => ({
   },
 
   publisherCard: {
-    backgroundColor: theme.palette.background.default,
     border: `2px solid ${theme.palette.grey[300]}`,
-    borderRadius: theme.shape.borderRadius,
     margin: `${theme.spacing(0)}px auto`,
     padding: `${theme.spacing(4.375)}px 0px`,
   },
