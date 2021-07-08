@@ -1,2 +1,2 @@
 export declare const name = "@apisuite/apisuite-marketplace-extension-ui";
-export declare const version = "1.3.0";
+export declare const version = "1.4.0";

@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import request from '../../util/request';
-import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionError, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, getPublisherAppsSampleActionSuccess, GET_PUBLISHER_APPS_SAMPLE_ACTION, } from './ducks';
+import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, GET_PUBLISHER_APPS_SAMPLE_ACTION, GET_PUBLISHER_DETAILS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionError, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, getPublisherAppsSampleActionSuccess, getPublisherDetailsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, getPublisherDetailsActionError, } from './ducks';
 import { API_URL, MARKETPLACE_API_URL } from '../../constants/endpoints';
 import appDetailsMapping from '../../util/appDetailsMapping';
 export function* getAllMarketplaceAppsActionSaga(action) {
@@ -234,6 +234,19 @@ export function* getPublisherAppsSampleActionSaga(action) {
         console.log('Error fetching a sample of publisher apps', error);
     }
 }
+export function* getPublisherDetailsActionSaga(action) {
+    try {
+        const publisherDetails = yield call(request, {
+            url: `${API_URL}/organizations/publishers/${action.publisherID}`,
+            method: 'GET',
+        });
+        yield put(getPublisherDetailsActionSuccess(publisherDetails));
+    }
+    catch (error) {
+        console.log("Error retrieving the publisher's details", error);
+        yield put(getPublisherDetailsActionError());
+    }
+}
 function* rootSaga() {
     yield takeLatest(GET_ALL_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSaga);
     yield takeLatest(GET_ALL_MARKETPLACE_LABELS_ACTION, getAllMarketplaceLabelsActionSaga);
@@ -244,5 +257,6 @@ function* rootSaga() {
     yield takeLatest(GET_FILTERED_MARKETPLACE_APPS_ACTION, getFilteredMarketplaceAppsActionSaga);
     yield takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga);
     yield takeLatest(GET_PUBLISHER_APPS_SAMPLE_ACTION, getPublisherAppsSampleActionSaga);
+    yield takeLatest(GET_PUBLISHER_DETAILS_ACTION, getPublisherDetailsActionSaga);
 }
 export default rootSaga;

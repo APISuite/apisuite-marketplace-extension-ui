@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION_SUCCESS, GET_APP_DETAILS_ACTION, GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS, GET_PUBLISHER_APPS_SAMPLE_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION, SET_MARKETPLACE_APP_LABELS_ACTION, SET_MARKETPLACE_APP_VISIBILITY_ACTION, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION } from './ducks';
+import { GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION_SUCCESS, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS, GET_FILTERED_MARKETPLACE_APPS_ACTION, GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS, GET_PUBLISHER_APPS_SAMPLE_ACTION, GET_PUBLISHER_DETAILS_ACTION_ERROR, GET_PUBLISHER_DETAILS_ACTION_SUCCESS, GET_PUBLISHER_DETAILS_ACTION, SET_MARKETPLACE_APP_LABELS_ACTION, SET_MARKETPLACE_APP_VISIBILITY_ACTION, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION } from './ducks';
 export declare const roleNameOptions: readonly ["", "admin", "developer", "organizationOwner"];
 export declare type View = 'marketplace' | 'publisher';
 export interface Response {
@@ -49,6 +49,9 @@ export interface MarketplaceStore {
     retrievedSelectedAppDetails: boolean;
     publisherAppsSample: AppDetails[];
     retrievedPublisherAppsSample: boolean;
+    publisherDetails: PublisherDetails;
+    retrievedPublisherDetails: boolean;
+    retrievedPublisherDetailsError: boolean;
     allPublisherApps: AppDetails[];
     retrievedAllPublisherApps: boolean;
     marketplaceAppVisibility: 'private' | 'public';
@@ -86,6 +89,18 @@ export interface AppDetails {
     supportUrl: string;
     tosUrl: string;
     updatedAt: string;
+    websiteUrl: string;
+    youtubeUrl: string;
+}
+export interface PublisherDetails {
+    description: string;
+    id: string;
+    logo: string;
+    name: string;
+    privacyUrl: string;
+    supportUrl: string;
+    tosUrl: string;
+    vat: string;
     websiteUrl: string;
     youtubeUrl: string;
 }
@@ -192,6 +207,17 @@ export interface GetPublisherAppsSampleActionSuccess extends Action {
     type: typeof GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS;
     publisherAppsSample: AppDetails[];
 }
+export interface GetPublisherDetailsAction extends Action {
+    type: typeof GET_PUBLISHER_DETAILS_ACTION;
+    publisherID: string;
+}
+export interface GetPublisherDetailsActionSuccess extends Action {
+    type: typeof GET_PUBLISHER_DETAILS_ACTION_SUCCESS;
+    publisherDetails: PublisherDetails;
+}
+export interface GetPublisherDetailsActionError extends Action {
+    type: typeof GET_PUBLISHER_DETAILS_ACTION_ERROR;
+}
 export interface SetMarketplaceAppVisibilityAction extends Action {
     type: typeof SET_MARKETPLACE_APP_VISIBILITY_ACTION;
     marketplaceAppVisibility: 'private' | 'public';
@@ -200,4 +226,4 @@ export interface SetMarketplaceAppLabelsAction extends Action {
     type: typeof SET_MARKETPLACE_APP_LABELS_ACTION;
     marketplaceAppLabels: string[];
 }
-export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetAllSubbedMarketplaceAppsAction | GetAllSubbedMarketplaceAppsActionError | GetAllSubbedMarketplaceAppsActionSuccess | GetAppDetailsAction | GetAppDetailsActionSuccess | GetPublisherAppsSampleAction | GetPublisherAppsSampleActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess | SetMarketplaceAppLabelsAction | SetMarketplaceAppVisibilityAction | SubscribeToMarketplaceAppAction | SubscribeToMarketplaceAppActionSuccess | UnsubscribeToMarketplaceAppAction | UnsubscribeToMarketplaceAppActionSuccess;
+export declare type MarketplaceActions = GetAllMarketplaceAppsAction | GetAllMarketplaceAppsActionSuccess | GetAllMarketplaceLabelsAction | GetAllMarketplaceLabelsActionSuccess | GetAllMarketplacePublishersAction | GetAllMarketplacePublishersActionSuccess | GetAllSubbedMarketplaceAppsAction | GetAllSubbedMarketplaceAppsActionError | GetAllSubbedMarketplaceAppsActionSuccess | GetAppDetailsAction | GetAppDetailsActionSuccess | GetFilteredAppsMarketplaceAction | GetFilteredAppsMarketplaceActionSuccess | GetPublisherAppsSampleAction | GetPublisherAppsSampleActionSuccess | GetPublisherDetailsAction | GetPublisherDetailsActionSuccess | GetPublisherDetailsActionError | SetMarketplaceAppLabelsAction | SetMarketplaceAppVisibilityAction | SubscribeToMarketplaceAppAction | SubscribeToMarketplaceAppActionSuccess | UnsubscribeToMarketplaceAppAction | UnsubscribeToMarketplaceAppActionSuccess;

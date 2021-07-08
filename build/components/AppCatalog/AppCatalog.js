@@ -3,7 +3,7 @@ import { Avatar, Box, Chip, Grid, Typography, useTranslation, } from '@apisuite/
 import Link from '../Link';
 import { AppCard } from '../AppCard/AppCard';
 import useStyles from './styles';
-const AppCatalog = ({ appsToDisplay }) => {
+const AppCatalog = ({ appsToDisplay, catalogMode, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const t = (string) => {
@@ -28,7 +28,7 @@ const AppCatalog = ({ appsToDisplay }) => {
                         React.createElement(Chip, { className: classes.appCatalogEntryLabels, label: `${t('appMarketplace.noLabelsProvidedText')}` })))))), key: `appCatalogEntry${index}` }));
     };
     const appCatalogEntries = appsToDisplay.map((appDetails, index) => {
-        return (React.createElement(Grid, { item: true, key: `linkToApp${index}`, md: 4 },
+        return (React.createElement(Grid, { item: true, key: `linkToApp${index}`, md: catalogMode && catalogMode === 'publisher' ? 'auto' : 4, style: { width: 217 } },
             React.createElement(Link, { className: classes.appCatalogEntryLink, to: `/marketplace/app-details/${appDetails.id}` }, generateAppCatalogEntry(appDetails, index))));
     });
     return (React.createElement(Grid, { container: true, spacing: 2 }, appCatalogEntries));

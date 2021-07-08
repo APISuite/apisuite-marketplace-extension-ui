@@ -9,7 +9,7 @@ import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import SortRoundedIcon from '@material-ui/icons/SortRounded';
-import { APPS_PER_PAGE } from '../../constants/globals';
+import { MARKETPLACE_APPS_PER_PAGE } from '../../constants/globals';
 import { debounce } from '../../util/debounce';
 import AppCatalog from '../../components/AppCatalog';
 import Link from '../../components/Link';
@@ -32,7 +32,7 @@ const Marketplace = () => {
     useEffect(() => {
         /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
         of all information we presently have on public apps, and their respective labels & publishers. */
-        dispatch(getAllMarketplaceAppsAction({ page, pageSize: APPS_PER_PAGE }));
+        dispatch(getAllMarketplaceAppsAction({ page, pageSize: MARKETPLACE_APPS_PER_PAGE }));
         dispatch(getAllMarketplaceLabelsAction());
         dispatch(getAllMarketplacePublishersAction());
     }, []);
@@ -105,7 +105,7 @@ const Marketplace = () => {
         setSortMode(selectedSortMode);
     };
     /* App filtering & sorting process */
-    const filterAndSortApps = ({ page = 1, pageSize = APPS_PER_PAGE, }) => {
+    const filterAndSortApps = ({ page = 1, pageSize = MARKETPLACE_APPS_PER_PAGE, }) => {
         if (!(retrievedAllMarketplaceApps &&
             retrievedAllMarketplaceLabels &&
             retrievedAllMarketplacePublishers)) {
@@ -145,7 +145,7 @@ const Marketplace = () => {
         }, 'marketplace'));
     };
     useEffect(() => {
-        filterAndSortApps({ page, pageSize: APPS_PER_PAGE });
+        filterAndSortApps({ page, pageSize: MARKETPLACE_APPS_PER_PAGE });
         setFiltersHaveChanged(false);
     }, [filtersHaveChanged, labelFilters, publisherFilters, sortMode]);
     const [debounceCalled, setDebounceCalled] = useState(false);
@@ -157,18 +157,26 @@ const Marketplace = () => {
                 }, 100);
                 setDebounceCalled(false);
             }
-            filterAndSortApps({ page, pageSize: APPS_PER_PAGE });
+            filterAndSortApps({ page, pageSize: MARKETPLACE_APPS_PER_PAGE });
         }
         else {
             debounce('MARKETPLACE_FILTER_BY_SEARCH', 
             // if search is being used set page to 1
-            () => filterAndSortApps({ page: 1, pageSize: APPS_PER_PAGE }), 1000);
+            () => filterAndSortApps({ page: 1, pageSize: MARKETPLACE_APPS_PER_PAGE }), 1000);
             setDebounceCalled(true);
         }
     }, [searchTerm]);
     // App's pagination
+    const [page, setPage] = useState(1);
+    const handleChange = (event, value) => {
+        setPage(value);
+        filterAndSortApps({
+            page: value,
+            pageSize: MARKETPLACE_APPS_PER_PAGE,
+        });
+    };
     const setPagination = () => {
-        const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE);
+        const pageCount = Math.ceil(pagination.rowCount / MARKETPLACE_APPS_PER_PAGE);
         return (React.createElement(Pagination, { count: pageCount || 1, onChange: handleChange, page: page, shape: "rounded", color: "primary" }));
     };
     // 'Are you a Developer' CTA card
@@ -199,14 +207,6 @@ const Marketplace = () => {
     };
     // Carousel of 'featured apps'
     // const [currentSlide, setCurrentSlide] = useState(0)
-    const [page, setPage] = useState(1);
-    const handleChange = (event, value) => {
-        setPage(value);
-        filterAndSortApps({
-            page: value,
-            pageSize: APPS_PER_PAGE,
-        });
-    };
     // Displaying of apps
     const displayMarketplaceApps = () => {
         return (

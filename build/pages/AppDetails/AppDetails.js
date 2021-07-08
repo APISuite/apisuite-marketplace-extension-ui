@@ -11,6 +11,7 @@ import Link from '../../components/Link';
 import { getAllSubbedMarketplaceAppsAction, getAppDetailsAction, getPublisherAppsSampleAction, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, } from '../Marketplace/ducks';
 import appDetailsSelector from './selector';
 import useStyles from './styles';
+import { BASE_URI } from '../../helpers/constants';
 const AppDetails = () => {
     const classes = useStyles();
     const { allSubbedMarketplaceApps, publisherAppsSample, retrievedPublisherAppsSample, retrievedSelectedAppDetails, selectedAppDetails, userProfile, } = useSelector(appDetailsSelector);
@@ -151,9 +152,10 @@ const AppDetails = () => {
                     React.createElement(Box, { pb: 1 },
                         React.createElement(Typography, { variant: "body1" },
                             React.createElement("strong", null, t('appMarketplace.appDetails.subSectionTitleTwo')))),
-                    React.createElement(Typography, { variant: "body1" }, selectedAppDetails && selectedAppDetails.organization.name
-                        ? selectedAppDetails.organization.name
-                        : '...')),
+                    React.createElement(Link, { style: { textDecoration: 'none' }, to: `${BASE_URI}/publisher-details/${selectedAppDetails.organization.id}` },
+                        React.createElement(Typography, { variant: "body1" }, selectedAppDetails && selectedAppDetails.organization.name
+                            ? selectedAppDetails.organization.name
+                            : '...'))),
                 React.createElement("hr", { className: classes.subSectionSeparator }),
                 React.createElement("div", null,
                     React.createElement(Box, { pb: 1 },
@@ -205,7 +207,8 @@ const AppDetails = () => {
                     React.createElement(Box, { pb: 3 },
                         React.createElement(AppCatalog, { appsToDisplay: publisherAppsSample })),
                     React.createElement(Box, null,
-                        React.createElement(Button, { color: "primary", disabled: true, variant: "outlined" }, t('appMarketplace.appDetails.viewMoreButtonLabel')))))))) : (React.createElement(Box, { py: 3, display: "flex", justifyContent: "center", width: 1 },
+                        React.createElement(Link, { style: { textDecoration: 'none' }, to: `${BASE_URI}/publisher-details/${selectedAppDetails.organization.id}` },
+                            React.createElement(Button, { color: "primary", variant: "outlined" }, t('appMarketplace.appDetails.viewMoreButtonLabel'))))))))) : (React.createElement(Box, { py: 3, display: "flex", justifyContent: "center", width: 1 },
             React.createElement(Typography, { variant: "body1" }, t('appMarketplace.appDetails.loadingAppDetails')))))));
 };
 export default AppDetails;
