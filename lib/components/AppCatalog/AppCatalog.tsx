@@ -13,7 +13,10 @@ import Link from '../Link'
 import { AppCard } from '../AppCard/AppCard'
 import useStyles from './styles'
 
-const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
+const AppCatalog: React.FC<AppCatalogProps> = ({
+  appsToDisplay,
+  catalogMode,
+}) => {
   const classes = useStyles()
 
   const trans = useTranslation()
@@ -98,7 +101,12 @@ const AppCatalog: React.FC<AppCatalogProps> = ({ appsToDisplay }) => {
 
   const appCatalogEntries = appsToDisplay.map((appDetails, index) => {
     return (
-      <Grid item key={`linkToApp${index}`} md={4}>
+      <Grid
+        item
+        key={`linkToApp${index}`}
+        md={catalogMode && catalogMode === 'publisher' ? 'auto' : 4}
+        style={{ width: 217 }}
+      >
         <Link
           className={classes.appCatalogEntryLink}
           to={`/marketplace/app-details/${appDetails.id}`}

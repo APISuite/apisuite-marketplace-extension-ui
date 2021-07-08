@@ -1,5 +1,6 @@
 export type AppCatalogProps = {
   appsToDisplay: AppDetails[]
+  catalogMode?: 'marketplace' | 'publisher'
 }
 
 export type AppDetails = {

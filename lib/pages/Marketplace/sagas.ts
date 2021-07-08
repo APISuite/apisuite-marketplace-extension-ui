@@ -8,6 +8,8 @@ import {
   GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION,
   GET_APP_DETAILS_ACTION,
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
+  GET_PUBLISHER_APPS_SAMPLE_ACTION,
+  GET_PUBLISHER_DETAILS_ACTION,
   getAllMarketplaceAppsActionSuccess,
   getAllMarketplaceLabelsActionSuccess,
   getAllMarketplacePublishersActionSuccess,
@@ -15,12 +17,13 @@ import {
   getAllSubbedMarketplaceAppsActionSuccess,
   getAppDetailsActionSuccess,
   getFilteredMarketplaceAppsActionSuccess,
+  getPublisherAppsSampleActionSuccess,
+  getPublisherDetailsActionSuccess,
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   subscribeToMarketplaceAppActionSuccess,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   unsubscribeToMarketplaceAppActionSuccess,
-  getPublisherAppsSampleActionSuccess,
-  GET_PUBLISHER_APPS_SAMPLE_ACTION,
+  getPublisherDetailsActionError,
 } from './ducks'
 
 import {
@@ -29,6 +32,7 @@ import {
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
   GetPublisherAppsSampleAction,
+  GetPublisherDetailsAction,
   SubscribeToMarketplaceAppAction,
   UnsubscribeToMarketplaceAppAction,
 } from './types'
@@ -311,6 +315,22 @@ export function* getPublisherAppsSampleActionSaga(
   }
 }
 
+export function* getPublisherDetailsActionSaga(
+  action: GetPublisherDetailsAction
+) {
+  try {
+    const publisherDetails = yield call(request, {
+      url: `${API_URL}/organizations/publishers/${action.publisherID}`,
+      method: 'GET',
+    })
+
+    yield put(getPublisherDetailsActionSuccess(publisherDetails))
+  } catch (error) {
+    console.log("Error retrieving the publisher's details", error)
+    yield put(getPublisherDetailsActionError())
+  }
+}
+
 function* rootSaga() {
   yield takeLatest(
     GET_ALL_MARKETPLACE_APPS_ACTION,
@@ -345,6 +365,7 @@ function* rootSaga() {
     GET_PUBLISHER_APPS_SAMPLE_ACTION,
     getPublisherAppsSampleActionSaga
   )
+  yield takeLatest(GET_PUBLISHER_DETAILS_ACTION, getPublisherDetailsActionSaga)
 }
 
 export default rootSaga

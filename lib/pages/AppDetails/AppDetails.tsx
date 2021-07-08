@@ -25,6 +25,7 @@ import {
 } from '../Marketplace/ducks'
 import appDetailsSelector from './selector'
 import useStyles from './styles'
+import { BASE_URI } from '../../helpers/constants'
 
 const AppDetails: React.FC = () => {
   const classes = useStyles()
@@ -318,11 +319,16 @@ const AppDetails: React.FC = () => {
                   </Typography>
                 </Box>
 
-                <Typography variant="body1">
-                  {selectedAppDetails && selectedAppDetails.organization.name
-                    ? selectedAppDetails.organization.name
-                    : '...'}
-                </Typography>
+                <Link
+                  style={{ textDecoration: 'none' }}
+                  to={`${BASE_URI}/publisher-details/${selectedAppDetails.organization.id}`}
+                >
+                  <Typography variant="body1">
+                    {selectedAppDetails && selectedAppDetails.organization.name
+                      ? selectedAppDetails.organization.name
+                      : '...'}
+                  </Typography>
+                </Link>
               </div>
 
               <hr className={classes.subSectionSeparator} />
@@ -482,9 +488,14 @@ than zero. Not doing so will result in unwanted consequences. */}
                   </Box>
 
                   <Box>
-                    <Button color="primary" disabled variant="outlined">
-                      {t('appMarketplace.appDetails.viewMoreButtonLabel')}
-                    </Button>
+                    <Link
+                      style={{ textDecoration: 'none' }}
+                      to={`${BASE_URI}/publisher-details/${selectedAppDetails.organization.id}`}
+                    >
+                      <Button color="primary" variant="outlined">
+                        {t('appMarketplace.appDetails.viewMoreButtonLabel')}
+                      </Button>
+                    </Link>
                   </Box>
                 </>
               )}
