@@ -149,7 +149,7 @@ const AppDetails: React.FC = () => {
   }, [currentPage, retrievedPublisherDetails])
 
   const generatePublisherDetails = () => {
-    if (!retrievedPublisherDetails && retrievedPublisherDetailsError) {
+    if (retrievedPublisherDetails && !retrievedPublisherDetailsError) {
       return (
         <>
           {/* Publisher card */}
@@ -247,9 +247,17 @@ const AppDetails: React.FC = () => {
       )
     } else {
       return (
-        <Typography style={{ color: palette.text.primary }} variant="h6">
-          {t('publisherDetails.errorMessage')}
-        </Typography>
+        <Box
+          alignItems="center"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          py={10}
+        >
+          <Typography style={{ color: palette.text.primary }} variant="h6">
+            {t('publisherDetails.errorMessage')}
+          </Typography>
+        </Box>
       )
     }
   }

@@ -86,7 +86,7 @@
         "tosUrl": "Terms & Conditions",
         "websiteUrl": "Publisher website",
         "youtubeUrl": "Publisher YouTube",
-        "errorMessage": "An error retrieving the publisher details occurred. Please, refresh the page."
+        "errorMessage": "We couldn't find the publisher you're trying to access. Please, select another one from the available publishers."
       }
     }
   }
