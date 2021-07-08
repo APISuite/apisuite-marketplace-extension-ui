@@ -5,6 +5,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -16,6 +17,7 @@ import {
   TextField,
   Typography,
   useConfig,
+  useTheme,
   useTranslation,
 } from '@apisuite/fe-base'
 // import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
@@ -41,11 +43,14 @@ import {
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
 } from './ducks'
+import CTACard from '../../components/CTACard'
 
 const Marketplace: React.FC = () => {
   const classes = useStyles()
 
-  const { portalName } = useConfig()
+  const { palette } = useTheme()
+
+  const { clientName, navigation, portalName } = useConfig()
 
   const {
     allMarketplaceApps,
@@ -56,14 +61,15 @@ const Marketplace: React.FC = () => {
     retrievedAllMarketplaceLabels,
     retrievedAllMarketplacePublishers,
     pagination,
+    userProfile,
   } = useSelector(marketplaceSelector)
 
   const dispatch = useDispatch()
 
   const trans = useTranslation()
 
-  const t = (string: string) => {
-    return trans.t(`extensions.marketplace.${string}`)
+  const t = (string: string, ...args) => {
+    return trans.t(`extensions.marketplace.${string}`, ...args)
   }
 
   useEffect(() => {
@@ -321,6 +327,54 @@ const Marketplace: React.FC = () => {
     )
   }
 
+  // 'Are you a Developer' CTA card
+
+  const generateCTACard = () => {
+    let cardLink = '/auth/signin'
+
+    /*
+      Upon clicking the CTA's button:
+      1. We check if 'Home' is hidden.
+      1.a. If hidden, we direct the user to the 'Sign in' view.
+      1.b. If not hidden, we direct the user to 'Home'.
+    */
+    navigation.anonymous.tabs.forEach((tab) => {
+      if (tab.action === '/home') cardLink = '/home'
+    })
+
+    return (
+      <Box mt={5}>
+        <CTACard
+          actions={[
+            <Button
+              color="primary"
+              disableElevation
+              key="createAppButtonKey"
+              size="large"
+              variant="contained"
+            >
+              <Link
+                style={{
+                  color: palette.common.white,
+                  textDecoration: 'none',
+                }}
+                to={cardLink}
+              >
+                {t('appMarketplace.ctaCard.buttonLabel')}
+              </Link>
+            </Button>,
+          ]}
+          textArray={[
+            t('appMarketplace.ctaCard.text', {
+              portalOwner: clientName || '...',
+            }),
+          ]}
+          title={t('appMarketplace.ctaCard.title')}
+        />
+      </Box>
+    )
+  }
+
   // Carousel of 'featured apps'
 
   // const [currentSlide, setCurrentSlide] = useState(0)
@@ -515,6 +569,8 @@ const Marketplace: React.FC = () => {
               </Typography>
             </Box>
           )}
+
+          {userProfile.id === '' && generateCTACard()}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
           allMarketplaceApps && (

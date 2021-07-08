@@ -3,7 +3,8 @@ import { MarketplaceStore } from './types'
 
 const marketplaceSelector = createSelector(
   ({ marketplace }: any) => marketplace,
-  (marketplace: MarketplaceStore) => {
+  ({ profile }: any) => profile,
+  (marketplace: MarketplaceStore, profile) => {
     return {
       allMarketplaceApps: marketplace.allMarketplaceApps,
       allMarketplaceLabels: marketplace.allMarketplaceLabels,
@@ -16,6 +17,7 @@ const marketplaceSelector = createSelector(
       retrievedAllMarketplacePublishers:
         marketplace.retrievedAllMarketplacePublishers,
       pagination: marketplace.pagination,
+      userProfile: profile.profile.user,
     }
   }
 )
