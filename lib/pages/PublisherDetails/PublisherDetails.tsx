@@ -8,6 +8,7 @@ import {
   Box,
   Container,
   Grid,
+  Paper,
   Typography,
   useTheme,
   useTranslation,
@@ -23,7 +24,7 @@ import {
 } from '../Marketplace/ducks'
 import { PUBLISHER_APPS_PER_PAGE } from '../../constants/globals'
 
-const AppDetails: React.FC = () => {
+const PublisherDetails: React.FC = () => {
   const classes = useStyles()
 
   const { palette } = useTheme()
@@ -156,6 +157,7 @@ const AppDetails: React.FC = () => {
           <Grid
             alignItems="center"
             className={classes.publisherCard}
+            component={Paper}
             container
             direction="row"
             justify="flex-start"
@@ -269,4 +271,4 @@ const AppDetails: React.FC = () => {
   )
 }
 
-export default AppDetails
+export default PublisherDetails

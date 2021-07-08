@@ -3,8 +3,7 @@ import { makeStyles } from '@apisuite/fe-base'
 export default makeStyles((theme) => ({
   avatarWithImage: {
     backgroundColor: 'transparent',
-    backgroundImage:
-      'repeating-linear-gradient(45deg, #ECEDEF 25%, transparent 25%, transparent 75%, #ECEDEF 75%, #ECEDEF), repeating-linear-gradient(45deg, #ECEDEF 25%, #FFFFFF 25%, #FFFFFF 75%, #ECEDEF 75%, #ECEDEF)',
+    backgroundImage: `repeating-linear-gradient(45deg, ${theme.palette.grey[50]} 25%, transparent 25%, transparent 75%, ${theme.palette.grey[50]} 75%, ${theme.palette.grey[50]}), repeating-linear-gradient(45deg, ${theme.palette.grey[50]} 25%, ${theme.palette.common.white} 25%, ${theme.palette.common.white} 75%, ${theme.palette.grey[50]} 75%, ${theme.palette.grey[50]})`,
     backgroundPosition: '0 0, 10px 10px',
     backgroundSize: '20px 20px',
     opacity: 0.8,
@@ -30,12 +29,8 @@ export default makeStyles((theme) => ({
 
   publisherAvatar: {
     height: 120,
-    margin: `${theme.spacing(0)}px ${theme.spacing(5)}px`,
+    margin: theme.spacing(0, 5),
     textTransform: 'uppercase',
     width: 120,
-
-    '& > img': {
-      height: 'auto',
-    },
   },
 }))
