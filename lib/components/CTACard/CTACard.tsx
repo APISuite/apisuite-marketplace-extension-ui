@@ -48,7 +48,7 @@ export const CTACard: React.FC<CTACardProps> = ({
           <Grid item xs={8}>
             <CardContent
               style={{
-                padding: spacing(3, 0, 0, 5),
+                padding: spacing(3, 0, 3, 5),
               }}
             >
               {title && (
