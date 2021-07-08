@@ -10,6 +10,8 @@ const publisherDetailsSelector = createSelector(
       publisherDetails: marketplace.publisherDetails,
       retrievedAllPublisherApps: marketplace.retrievedAllPublisherApps,
       retrievedPublisherDetails: marketplace.retrievedPublisherDetails,
+      retrievedPublisherDetailsError:
+        marketplace.retrievedPublisherDetailsError,
     }
   }
 )

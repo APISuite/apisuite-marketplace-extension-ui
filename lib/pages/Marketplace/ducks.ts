@@ -81,6 +81,7 @@ const initialState: MarketplaceStore = {
     youtubeUrl: '',
   },
   retrievedPublisherDetails: false,
+  retrievedPublisherDetailsError: false,
 
   allPublisherApps: [],
   retrievedAllPublisherApps: false,
@@ -145,6 +146,8 @@ export const GET_PUBLISHER_DETAILS_ACTION =
   'Marketplace/GET_PUBLISHER_DETAILS_ACTION'
 export const GET_PUBLISHER_DETAILS_ACTION_SUCCESS =
   'Marketplace/GET_PUBLISHER_DETAILS_ACTION_SUCCESS'
+export const GET_PUBLISHER_DETAILS_ACTION_ERROR =
+  'Marketplace/GET_PUBLISHER_DETAILS_ACTION_ERROR'
 
 // 'App creating/editing' views
 
@@ -285,6 +288,14 @@ export default function reducer(
       return update(state, {
         publisherDetails: { $set: action.publisherDetails },
         retrievedPublisherDetails: { $set: true },
+        retrievedPublisherDetailsError: { $set: false },
+      })
+    }
+
+    case GET_PUBLISHER_DETAILS_ACTION_ERROR: {
+      return update(state, {
+        retrievedPublisherDetails: { $set: false },
+        retrievedPublisherDetailsError: { $set: true },
       })
     }
 
@@ -455,6 +466,10 @@ export function getPublisherDetailsActionSuccess(
   publisherDetails: PublisherDetails
 ) {
   return { type: GET_PUBLISHER_DETAILS_ACTION_SUCCESS, publisherDetails }
+}
+
+export function getPublisherDetailsActionError() {
+  return { type: GET_PUBLISHER_DETAILS_ACTION_ERROR }
 }
 
 // 'App creating/editing' views

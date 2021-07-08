@@ -40,6 +40,7 @@ const AppDetails: React.FC = () => {
     publisherDetails,
     retrievedAllPublisherApps,
     retrievedPublisherDetails,
+    retrievedPublisherDetailsError,
   } = useSelector(publisherDetailsSelector)
 
   const dispatch = useDispatch()
@@ -147,90 +148,115 @@ const AppDetails: React.FC = () => {
     }
   }, [currentPage, retrievedPublisherDetails])
 
-  return (
-    <Container className={classes.pageContainer}>
-      {/* Publisher card */}
-      <Grid
-        alignItems="center"
-        className={classes.publisherCard}
-        container
-        direction="row"
-        justify="flex-start"
-      >
-        <Grid item>
-          <Avatar
-            className={clsx(
-              classes.publisherAvatar,
-              { [classes.avatarWithImage]: publisherDetails.logo },
-              { [classes.avatarWithoutImage]: !publisherDetails.logo }
-            )}
-            src={publisherDetails.logo}
+  const generatePublisherDetails = () => {
+    if (!retrievedPublisherDetails && retrievedPublisherDetailsError) {
+      return (
+        <>
+          {/* Publisher card */}
+          <Grid
+            alignItems="center"
+            className={classes.publisherCard}
+            container
+            direction="row"
+            justify="flex-start"
           >
-            <Typography style={{ color: palette.common.white }} variant="h2">
-              {publisherNameInitials}
-            </Typography>
-          </Avatar>
-        </Grid>
+            <Grid item>
+              <Avatar
+                className={clsx(
+                  classes.publisherAvatar,
+                  { [classes.avatarWithImage]: publisherDetails.logo },
+                  { [classes.avatarWithoutImage]: !publisherDetails.logo }
+                )}
+                src={publisherDetails.logo}
+              >
+                <Typography
+                  style={{ color: palette.common.white }}
+                  variant="h2"
+                >
+                  {publisherNameInitials}
+                </Typography>
+              </Avatar>
+            </Grid>
 
-        <Grid item>
-          <Box mb={1.25}>
-            <Typography style={{ color: palette.text.primary }} variant="h1">
-              {publisherDetails.name}
-            </Typography>
-          </Box>
-
-          <Box mb={3}>
-            <Typography
-              style={{ color: palette.text.secondary }}
-              variant="body1"
-            >
-              {publisherDetails.description}
-            </Typography>
-          </Box>
-
-          {generatePublisherLinks({
-            websiteUrl: publisherDetails.websiteUrl,
-            supportUrl: publisherDetails.supportUrl,
-            tosUrl: publisherDetails.tosUrl,
-            privacyUrl: publisherDetails.privacyUrl,
-            youtubeUrl: publisherDetails.youtubeUrl,
-          })}
-        </Grid>
-      </Grid>
-
-      {/* Publisher apps */}
-      <Grid
-        alignItems="flex-start"
-        container
-        direction="row"
-        justify="flex-start"
-      >
-        <Grid item>
-          <Box mb={4} mt={5}>
-            <Typography style={{ color: palette.text.primary }} variant="h6">
-              {t('publisherDetails.appsByPublisherTitle', {
-                publisher:
-                  publisherDetails && publisherDetails.name
-                    ? publisherDetails.name
-                    : '...',
-              })}
-            </Typography>
-          </Box>
-
-          {retrievedAllPublisherApps && (
-            <>
-              <Box mb={3}>
-                <AppCatalog
-                  appsToDisplay={allPublisherApps}
-                  catalogMode="publisher"
-                />
+            <Grid item>
+              <Box mb={1.25}>
+                <Typography
+                  style={{ color: palette.text.primary }}
+                  variant="h1"
+                >
+                  {publisherDetails.name}
+                </Typography>
               </Box>
 
-              <Box mb={10}>{generatePagination()}</Box>
-            </>
-          )}
-        </Grid>
-      </Grid>
+              <Box mb={3}>
+                <Typography
+                  style={{ color: palette.text.secondary }}
+                  variant="body1"
+                >
+                  {publisherDetails.description}
+                </Typography>
+              </Box>
+
+              {generatePublisherLinks({
+                websiteUrl: publisherDetails.websiteUrl,
+                supportUrl: publisherDetails.supportUrl,
+                tosUrl: publisherDetails.tosUrl,
+                privacyUrl: publisherDetails.privacyUrl,
+                youtubeUrl: publisherDetails.youtubeUrl,
+              })}
+            </Grid>
+          </Grid>
+
+          {/* Publisher apps */}
+          <Grid
+            alignItems="flex-start"
+            container
+            direction="row"
+            justify="flex-start"
+          >
+            <Grid item>
+              <Box mb={4} mt={5}>
+                <Typography
+                  style={{ color: palette.text.primary }}
+                  variant="h6"
+                >
+                  {t('publisherDetails.appsByPublisherTitle', {
+                    publisher:
+                      publisherDetails && publisherDetails.name
+                        ? publisherDetails.name
+                        : '...',
+                  })}
+                </Typography>
+              </Box>
+
+              {retrievedAllPublisherApps && (
+                <>
+                  <Box mb={3}>
+                    <AppCatalog
+                      appsToDisplay={allPublisherApps}
+                      catalogMode="publisher"
+                    />
+                  </Box>
+
+                  <Box mb={10}>{generatePagination()}</Box>
+                </>
+              )}
+            </Grid>
+          </Grid>
+        </>
+      )
+    } else {
+      return (
+        <Typography style={{ color: palette.text.primary }} variant="h6">
+          {t('publisherDetails.errorMessage')}
+        </Typography>
+      )
+    }
+  }
+
+  return (
+    <Container className={classes.pageContainer}>
+      {generatePublisherDetails()}
     </Container>
   )
 }

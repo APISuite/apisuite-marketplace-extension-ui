@@ -23,6 +23,7 @@ import {
   subscribeToMarketplaceAppActionSuccess,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   unsubscribeToMarketplaceAppActionSuccess,
+  getPublisherDetailsActionError,
 } from './ducks'
 
 import {
@@ -326,6 +327,7 @@ export function* getPublisherDetailsActionSaga(
     yield put(getPublisherDetailsActionSuccess(publisherDetails))
   } catch (error) {
     console.log("Error retrieving the publisher's details", error)
+    yield put(getPublisherDetailsActionError())
   }
 }
 

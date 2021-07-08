@@ -85,7 +85,8 @@
         "supportUrl": "Support",
         "tosUrl": "Terms & Conditions",
         "websiteUrl": "Publisher website",
-        "youtubeUrl": "Publisher YouTube"
+        "youtubeUrl": "Publisher YouTube",
+        "errorMessage": "An error retrieving the publisher details occurred. Please, refresh the page."
       }
     }
   }

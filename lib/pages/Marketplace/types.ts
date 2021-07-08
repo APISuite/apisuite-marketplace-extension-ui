@@ -16,6 +16,7 @@ import {
   GET_FILTERED_MARKETPLACE_APPS_ACTION,
   GET_PUBLISHER_APPS_SAMPLE_ACTION_SUCCESS,
   GET_PUBLISHER_APPS_SAMPLE_ACTION,
+  GET_PUBLISHER_DETAILS_ACTION_ERROR,
   GET_PUBLISHER_DETAILS_ACTION_SUCCESS,
   GET_PUBLISHER_DETAILS_ACTION,
   SET_MARKETPLACE_APP_LABELS_ACTION,
@@ -97,6 +98,7 @@ export interface MarketplaceStore {
   // 'Publisher details' view
   publisherDetails: PublisherDetails
   retrievedPublisherDetails: boolean
+  retrievedPublisherDetailsError: boolean
 
   allPublisherApps: AppDetails[]
   retrievedAllPublisherApps: boolean
@@ -290,6 +292,10 @@ export interface GetPublisherDetailsActionSuccess extends Action {
   publisherDetails: PublisherDetails
 }
 
+export interface GetPublisherDetailsActionError extends Action {
+  type: typeof GET_PUBLISHER_DETAILS_ACTION_ERROR
+}
+
 export interface SetMarketplaceAppVisibilityAction extends Action {
   type: typeof SET_MARKETPLACE_APP_VISIBILITY_ACTION
   marketplaceAppVisibility: 'private' | 'public'
@@ -318,6 +324,7 @@ export type MarketplaceActions =
   | GetPublisherAppsSampleActionSuccess
   | GetPublisherDetailsAction
   | GetPublisherDetailsActionSuccess
+  | GetPublisherDetailsActionError
   | SetMarketplaceAppLabelsAction
   | SetMarketplaceAppVisibilityAction
   | SubscribeToMarketplaceAppAction
