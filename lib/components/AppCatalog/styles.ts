@@ -98,12 +98,4 @@ export default makeStyles((theme) => ({
   appCatalogEntryVersionAndAccess: {
     color: theme.palette.text.hint,
   },
-
-  marketplaceCatalogEntry: {
-    width: 220,
-  },
-
-  publisherCatalogEntry: {
-    width: 217,
-  },
 }))
