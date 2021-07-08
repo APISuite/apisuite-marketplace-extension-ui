@@ -27,7 +27,7 @@ import { PUBLISHER_APPS_PER_PAGE } from '../../constants/globals'
 const PublisherDetails: React.FC = () => {
   const classes = useStyles()
 
-  const { palette } = useTheme()
+  const theme = useTheme()
 
   const trans = useTranslation()
 
@@ -77,7 +77,7 @@ const PublisherDetails: React.FC = () => {
             <Link to={providedPublisherLinks[link]}>
               <Typography
                 style={{
-                  color: palette.text.secondary,
+                  color: theme.palette.info.main,
                   textDecoration: 'underline',
                 }}
                 variant="body1"
@@ -156,11 +156,15 @@ const PublisherDetails: React.FC = () => {
           {/* Publisher card */}
           <Grid
             alignItems="center"
-            className={classes.publisherCard}
             component={Paper}
             container
             direction="row"
+            elevation={1}
             justify="flex-start"
+            style={{
+              margin: `${theme.spacing(0)}px auto`,
+              padding: theme.spacing(4.375, 0),
+            }}
           >
             <Grid item>
               <Avatar
@@ -172,7 +176,7 @@ const PublisherDetails: React.FC = () => {
                 src={publisherDetails.logo}
               >
                 <Typography
-                  style={{ color: palette.common.white }}
+                  style={{ color: theme.palette.common.white }}
                   variant="h2"
                 >
                   {publisherNameInitials}
@@ -183,7 +187,7 @@ const PublisherDetails: React.FC = () => {
             <Grid item>
               <Box mb={1.25}>
                 <Typography
-                  style={{ color: palette.text.primary }}
+                  style={{ color: theme.palette.text.primary }}
                   variant="h1"
                 >
                   {publisherDetails.name}
@@ -192,7 +196,7 @@ const PublisherDetails: React.FC = () => {
 
               <Box mb={3}>
                 <Typography
-                  style={{ color: palette.text.secondary }}
+                  style={{ color: theme.palette.text.secondary }}
                   variant="body1"
                 >
                   {publisherDetails.description}
@@ -219,7 +223,7 @@ const PublisherDetails: React.FC = () => {
             <Grid item>
               <Box mb={4} mt={5}>
                 <Typography
-                  style={{ color: palette.text.primary }}
+                  style={{ color: theme.palette.text.primary }}
                   variant="h6"
                 >
                   {t('publisherDetails.appsByPublisherTitle', {
@@ -256,7 +260,10 @@ const PublisherDetails: React.FC = () => {
           justifyContent="center"
           py={10}
         >
-          <Typography style={{ color: palette.text.primary }} variant="h6">
+          <Typography
+            style={{ color: theme.palette.text.primary }}
+            variant="h6"
+          >
             {t('publisherDetails.errorMessage')}
           </Typography>
         </Box>
