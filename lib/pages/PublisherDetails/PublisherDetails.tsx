@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import {
   Avatar,
   Box,
+  CircularProgress,
   Container,
   Grid,
   Paper,
@@ -149,6 +150,32 @@ export const PublisherDetails: React.FC = () => {
     }
   }, [currentPage, retrievedPublisherDetails])
 
+  const getErrorView = () => (
+    <Box
+      alignItems="center"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      py={10}
+    >
+      <Typography style={{ color: palette.text.primary }} variant="h6">
+        {t('publisherDetails.errorMessage')}
+      </Typography>
+    </Box>
+  )
+
+  const getLoadingView = () => (
+    <Box
+      alignItems="center"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      py={10}
+    >
+      <CircularProgress />
+    </Box>
+  )
+
   const generatePublisherDetails = () => {
     if (retrievedPublisherDetails && !retrievedPublisherDetailsError) {
       return (
@@ -252,19 +279,7 @@ export const PublisherDetails: React.FC = () => {
         </>
       )
     } else {
-      return (
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          py={10}
-        >
-          <Typography style={{ color: palette.text.primary }} variant="h6">
-            {t('publisherDetails.errorMessage')}
-          </Typography>
-        </Box>
-      )
+      return retrievedPublisherDetailsError ? getErrorView() : getLoadingView()
     }
   }
 
