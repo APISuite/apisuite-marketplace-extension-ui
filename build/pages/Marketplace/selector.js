@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-const marketplaceSelector = createSelector(({ marketplace }) => marketplace, (marketplace) => {
+const marketplaceSelector = createSelector(({ marketplace }) => marketplace, ({ profile }) => profile, (marketplace, profile) => {
     return {
         allMarketplaceApps: marketplace.allMarketplaceApps,
         allMarketplaceLabels: marketplace.allMarketplaceLabels,
@@ -9,6 +9,7 @@ const marketplaceSelector = createSelector(({ marketplace }) => marketplace, (ma
         retrievedAllMarketplaceLabels: marketplace.retrievedAllMarketplaceLabels,
         retrievedAllMarketplacePublishers: marketplace.retrievedAllMarketplacePublishers,
         pagination: marketplace.pagination,
+        userProfile: profile.profile.user,
     };
 });
 export default marketplaceSelector;

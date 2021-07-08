@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, InputAdornment, Radio, RadioGroup, TextField, Typography, useConfig, useTranslation, } from '@apisuite/fe-base';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, InputAdornment, Radio, RadioGroup, TextField, Typography, useConfig, useTheme, useTranslation, } from '@apisuite/fe-base';
 // import AmpStoriesRoundedIcon from '@material-ui/icons/AmpStoriesRounded'
 // import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded'
 // import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
@@ -18,14 +18,16 @@ import marketplaceApps from 'assets/marketplaceApps.svg';
 import useStyles from './styles';
 import marketplaceSelector from './selector';
 import { getAllMarketplaceAppsAction, getAllMarketplaceLabelsAction, getAllMarketplacePublishersAction, getFilteredMarketplaceAppsAction, } from './ducks';
+import CTACard from '../../components/CTACard';
 const Marketplace = () => {
     const classes = useStyles();
-    const { portalName } = useConfig();
-    const { allMarketplaceApps, allMarketplaceLabels, allMarketplacePublishers, filteredMarketplaceApps, retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers, pagination, } = useSelector(marketplaceSelector);
+    const { palette } = useTheme();
+    const { clientName, navigation, portalName } = useConfig();
+    const { allMarketplaceApps, allMarketplaceLabels, allMarketplacePublishers, filteredMarketplaceApps, retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers, pagination, userProfile, } = useSelector(marketplaceSelector);
     const dispatch = useDispatch();
     const trans = useTranslation();
-    const t = (string) => {
-        return trans.t(`extensions.marketplace.${string}`);
+    const t = (string, ...args) => {
+        return trans.t(`extensions.marketplace.${string}`, ...args);
     };
     useEffect(() => {
         /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
@@ -169,6 +171,32 @@ const Marketplace = () => {
         const pageCount = Math.ceil(pagination.rowCount / APPS_PER_PAGE);
         return (React.createElement(Pagination, { count: pageCount || 1, onChange: handleChange, page: page, shape: "rounded", color: "primary" }));
     };
+    // 'Are you a Developer' CTA card
+    const generateCTACard = () => {
+        let cardLink = '/auth/signin';
+        /*
+          Upon clicking the CTA's button:
+          1. We check if 'Home' is hidden.
+          1.a. If hidden, we direct the user to the 'Sign in' view.
+          1.b. If not hidden, we direct the user to 'Home'.
+        */
+        navigation.anonymous.tabs.forEach((tab) => {
+            if (tab.action === '/home')
+                cardLink = '/home';
+        });
+        return (React.createElement(Box, { mt: 5 },
+            React.createElement(CTACard, { actions: [
+                    React.createElement(Button, { color: "primary", disableElevation: true, key: "createAppButtonKey", size: "large", variant: "contained" },
+                        React.createElement(Link, { style: {
+                                color: palette.common.white,
+                                textDecoration: 'none',
+                            }, to: cardLink }, t('appMarketplace.ctaCard.buttonLabel'))),
+                ], textArray: [
+                    t('appMarketplace.ctaCard.text', {
+                        portalOwner: clientName || '...',
+                    }),
+                ], title: t('appMarketplace.ctaCard.title') })));
+    };
     // Carousel of 'featured apps'
     // const [currentSlide, setCurrentSlide] = useState(0)
     const [page, setPage] = useState(1);
@@ -239,7 +267,8 @@ const Marketplace = () => {
                         React.createElement(AppCatalog, { appsToDisplay: allMarketplaceApps })),
                     setPagination())) : (React.createElement(Box, { pt: 5 },
                     React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText'))))) : (React.createElement(Box, { pt: 5 },
-                    React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText')))))));
+                    React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText')))),
+                userProfile.id === '' && generateCTACard())));
     };
     const displayNoMarketplaceApps = () => {
         return (
