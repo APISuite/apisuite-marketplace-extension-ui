@@ -43,7 +43,7 @@ import {
   getAllMarketplacePublishersAction,
   getFilteredMarketplaceAppsAction,
 } from './ducks'
-import CTACard from '../../components/CTACard'
+import { CTACard } from '../../components/CTACard'
 
 const Marketplace: React.FC = () => {
   const classes = useStyles()

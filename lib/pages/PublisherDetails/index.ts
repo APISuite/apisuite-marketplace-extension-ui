@@ -1,1 +1,1 @@
-export { default } from './PublisherDetails'
+export { PublisherDetails } from './PublisherDetails'
