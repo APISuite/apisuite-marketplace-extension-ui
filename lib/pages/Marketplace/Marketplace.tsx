@@ -366,7 +366,7 @@ const Marketplace: React.FC = () => {
           ]}
           textArray={[
             t('appMarketplace.ctaCard.text', {
-              portalOwner: clientName ? clientName : '...',
+              portalOwner: clientName || '...',
             }),
           ]}
           title={t('appMarketplace.ctaCard.title')}
