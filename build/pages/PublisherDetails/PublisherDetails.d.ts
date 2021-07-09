@@ -1,3 +1,2 @@
 import React from 'react';
-declare const PublisherDetails: React.FC;
-export default PublisherDetails;
+export declare const PublisherDetails: React.FC;

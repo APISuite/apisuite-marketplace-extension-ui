@@ -15,11 +15,6 @@ export default makeStyles((theme) => ({
         maxWidth: 900,
         width: '100%',
     },
-    publisherCard: {
-        border: `2px solid ${theme.palette.grey[300]}`,
-        margin: `${theme.spacing(0)}px auto`,
-        padding: `${theme.spacing(4.375)}px 0px`,
-    },
     publisherAvatar: {
         height: 120,
         margin: theme.spacing(0, 5),

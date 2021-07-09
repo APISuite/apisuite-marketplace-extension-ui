@@ -18,7 +18,7 @@ import marketplaceApps from 'assets/marketplaceApps.svg';
 import useStyles from './styles';
 import marketplaceSelector from './selector';
 import { getAllMarketplaceAppsAction, getAllMarketplaceLabelsAction, getAllMarketplacePublishersAction, getFilteredMarketplaceAppsAction, } from './ducks';
-import CTACard from '../../components/CTACard';
+import { CTACard } from '../../components/CTACard';
 const Marketplace = () => {
     const classes = useStyles();
     const { palette } = useTheme();

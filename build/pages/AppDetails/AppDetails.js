@@ -208,7 +208,7 @@ const AppDetails = () => {
                         React.createElement(AppCatalog, { appsToDisplay: publisherAppsSample })),
                     React.createElement(Box, null,
                         React.createElement(Link, { style: { textDecoration: 'none' }, to: `${BASE_URI}/publisher-details/${selectedAppDetails.organization.id}` },
-                            React.createElement(Button, { color: "primary", variant: "outlined" }, t('appMarketplace.appDetails.viewMoreButtonLabel'))))))))) : (React.createElement(Box, { py: 3, display: "flex", justifyContent: "center", width: 1 },
+                            React.createElement(Button, { color: "secondary", variant: "outlined" }, t('appMarketplace.appDetails.viewMoreButtonLabel'))))))))) : (React.createElement(Box, { py: 3, display: "flex", justifyContent: "center", width: 1 },
             React.createElement(Typography, { variant: "body1" }, t('appMarketplace.appDetails.loadingAppDetails')))))));
 };
 export default AppDetails;
