@@ -3,7 +3,7 @@ import { HookPages, PageEntry } from '@apisuite/extension-ui-types'
 import { BASE_URI } from '../helpers/constants'
 import AppDetails from '../pages/AppDetails'
 import Marketplace from '../pages/Marketplace'
-import PublisherDetails from '../pages/PublisherDetails'
+import { PublisherDetails } from '../pages/PublisherDetails'
 
 const pagesConfig: PageEntry[] = [
   {

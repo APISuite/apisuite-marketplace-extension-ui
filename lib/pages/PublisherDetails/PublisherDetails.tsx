@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import {
   Avatar,
   Box,
+  CircularProgress,
   Container,
   Grid,
   Paper,
@@ -24,10 +25,10 @@ import {
 } from '../Marketplace/ducks'
 import { PUBLISHER_APPS_PER_PAGE } from '../../constants/globals'
 
-const PublisherDetails: React.FC = () => {
+export const PublisherDetails: React.FC = () => {
   const classes = useStyles()
 
-  const { palette } = useTheme()
+  const { palette, spacing } = useTheme()
 
   const trans = useTranslation()
 
@@ -77,7 +78,7 @@ const PublisherDetails: React.FC = () => {
             <Link to={providedPublisherLinks[link]}>
               <Typography
                 style={{
-                  color: palette.text.secondary,
+                  color: palette.info.main,
                   textDecoration: 'underline',
                 }}
                 variant="body1"
@@ -149,6 +150,32 @@ const PublisherDetails: React.FC = () => {
     }
   }, [currentPage, retrievedPublisherDetails])
 
+  const getErrorView = () => (
+    <Box
+      alignItems="center"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      py={10}
+    >
+      <Typography style={{ color: palette.text.primary }} variant="h6">
+        {t('publisherDetails.errorMessage')}
+      </Typography>
+    </Box>
+  )
+
+  const getLoadingView = () => (
+    <Box
+      alignItems="center"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      py={10}
+    >
+      <CircularProgress />
+    </Box>
+  )
+
   const generatePublisherDetails = () => {
     if (retrievedPublisherDetails && !retrievedPublisherDetailsError) {
       return (
@@ -156,11 +183,15 @@ const PublisherDetails: React.FC = () => {
           {/* Publisher card */}
           <Grid
             alignItems="center"
-            className={classes.publisherCard}
             component={Paper}
             container
             direction="row"
+            elevation={1}
             justify="flex-start"
+            style={{
+              margin: `${spacing(0)}px auto`,
+              padding: spacing(4.375, 0),
+            }}
           >
             <Grid item>
               <Avatar
@@ -248,19 +279,7 @@ const PublisherDetails: React.FC = () => {
         </>
       )
     } else {
-      return (
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          py={10}
-        >
-          <Typography style={{ color: palette.text.primary }} variant="h6">
-            {t('publisherDetails.errorMessage')}
-          </Typography>
-        </Box>
-      )
+      return retrievedPublisherDetailsError ? getErrorView() : getLoadingView()
     }
   }
 
@@ -270,5 +289,3 @@ const PublisherDetails: React.FC = () => {
     </Container>
   )
 }
-
-export default PublisherDetails

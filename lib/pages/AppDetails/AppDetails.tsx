@@ -492,7 +492,7 @@ than zero. Not doing so will result in unwanted consequences. */}
                       style={{ textDecoration: 'none' }}
                       to={`${BASE_URI}/publisher-details/${selectedAppDetails.organization.id}`}
                     >
-                      <Button color="primary" variant="outlined">
+                      <Button color="secondary" variant="outlined">
                         {t('appMarketplace.appDetails.viewMoreButtonLabel')}
                       </Button>
                     </Link>

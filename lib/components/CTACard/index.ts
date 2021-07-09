@@ -1,1 +1,1 @@
-export { default } from './CTACard'
+export { CTACard } from './CTACard'

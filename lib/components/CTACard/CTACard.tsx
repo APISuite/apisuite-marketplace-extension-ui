@@ -11,13 +11,13 @@ import {
 
 import { CTACardProps } from './types'
 
-const CTACard: React.FC<CTACardProps> = ({
+export const CTACard: React.FC<CTACardProps> = ({
   actions,
   content,
   textArray,
   title,
 }) => {
-  const { palette } = useTheme()
+  const { palette, spacing } = useTheme()
 
   const generateCTAText = (ctaTextArray: string[]) => {
     const numberOfParagraphs = ctaTextArray.length
@@ -28,7 +28,7 @@ const CTACard: React.FC<CTACardProps> = ({
           style={{ color: palette.text.secondary }}
           gutterBottom={index < numberOfParagraphs - 1}
           key={`ctaText${index}`}
-          variant="h6"
+          variant="body1"
         >
           {ctaText}
         </Typography>
@@ -46,9 +46,13 @@ const CTACard: React.FC<CTACardProps> = ({
           justify="space-between"
         >
           <Grid item xs={8}>
-            <CardContent>
+            <CardContent
+              style={{
+                padding: spacing(3, 0, 3, 5),
+              }}
+            >
               {title && (
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant="h3">
                   {title}
                 </Typography>
               )}
@@ -60,8 +64,8 @@ const CTACard: React.FC<CTACardProps> = ({
           </Grid>
 
           <Grid item xs={4}>
-            <CardActions>
-              <Box alignItems="center" display="flex" pl={5}>
+            <CardActions style={{ paddingRight: spacing(5) }}>
+              <Box alignItems="center" display="flex">
                 {actions}
               </Box>
             </CardActions>
@@ -71,5 +75,3 @@ const CTACard: React.FC<CTACardProps> = ({
     </Card>
   )
 }
-
-export default CTACard
