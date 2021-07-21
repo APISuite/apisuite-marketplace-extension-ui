@@ -137,7 +137,7 @@ export interface AppDetails {
   }
   orgId: number
   privacyUrl: string
-  summary: string
+  shortDescription: string
   supportUrl: string
   tosUrl: string
   updatedAt: string
