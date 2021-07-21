@@ -10,37 +10,23 @@ export const MarkdownDisplayer: React.FC<MarkdownDisplayerProps> = ({
   const { palette, typography } = useTheme()
 
   /* For us to 'brand' our markdown, we need to completely override
-  the markdown displayer component's (i.e., 'Editor') in-built theme.
+  the markdown displayer component's (i.e., 'Editor') in-built (light) theme.
   
   Please refer to 'https://github.com/outline/rich-markdown-editor' for more details. */
-  const markdownDisplayerTheming = {
+  const customTheme = {
     ...theme,
-    code: palette.secondary.contrastText,
-    codeAttr: null,
-    codeBackground: palette.secondary.main,
-    codeBorder: null,
-    codeComment: null,
-    codeEntity: null,
-    codeFunction: null,
-    codeImportant: null,
-    codeInserted: null,
-    codeKeyword: null,
-    codeNumber: null,
-    codePlaceholder: null,
-    codeProperty: null,
-    codePunctuation: null,
-    codeSelector: null,
-    codeStatement: null,
-    codeString: palette.primary.main,
-    codeTag: palette.primary.main,
     divider: palette.grey[200],
     fontFamily: typography.fontFamily,
     fontFamilyMono: typography.fontFamily,
     link: palette.info.main,
+    noticeInfoBackground: palette.info.light,
+    noticeInfoText: palette.info.dark,
+    noticeTipBackground: palette.primary.main,
+    noticeTipText: palette.primary.contrastText,
+    noticeWarningBackground: palette.warning.light,
+    noticeWarningText: palette.warning.dark,
     text: palette.text.primary,
   }
 
-  return (
-    <Editor defaultValue={content} readOnly theme={markdownDisplayerTheming} />
-  )
+  return <Editor defaultValue={content} readOnly theme={customTheme} />
 }
