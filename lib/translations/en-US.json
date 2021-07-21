@@ -4,7 +4,7 @@
       "appListing": {
         "browseMarketplaceApps": "Browse the app marketplace",
         "marketplaceAppsSectionTitle": "Marketplace applications",
-        "noAppDescriptionProvided": "No description provided",
+        "noAppSummaryProvided": "No summary provided",
         "noMarketplaceAppSubscriptions": "You have not subscribed to any marketplace apps yet.",
         "retrievingMarketplaceAppSubscriptions": "Retrieving all subscribed Marketplace apps..."
       },
@@ -44,7 +44,7 @@
         "amountOfAppsTextPartTwo": "available",
         "noAppsToDisplayText": "No apps to display!",
         "retrievingAppsToDisplayText": "Retrieving all apps, please hold...",
-        "noDescriptionAvailableText": "No description provided",
+        "noSummaryAvailableText": "No summary provided",
         "noLabelsProvidedText": "No labels provided",
         "featuredAppsTitle": "Featured apps",
         "featuredAppsSubtitle": "Ready to try? Subscribe to one of your featured apps to get started!",
@@ -76,7 +76,7 @@
             "supportURL": "Support URL",
             "noPublisherLinks": "No publisher links provided"
           },
-          "noShortDescription": "No short description provided",
+          "noSummary": "No summary provided",
           "noLabels": "No labels provided",
           "partOfAppOverviewTitle": "Overview",
           "noAppOverview": "No application overview provided",

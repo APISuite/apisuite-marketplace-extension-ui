@@ -3,12 +3,9 @@ import { AppDetails } from '../pages/Marketplace/types'
 
 export default function appDetailsMapping(appDetails: AppDetails) {
   return {
-    description:
-      appDetails.shortDescription ||
-      appDetails.description ||
-      i18n.t(
-        'extensions.marketplace.appMarketplace.noDescriptionAvailableText'
-      ),
+    summary:
+      appDetails.summary ||
+      i18n.t('extensions.marketplace.appMarketplace.noSummaryAvailableText'),
     id: appDetails.id,
     labels: appDetails.labels,
     logo: appDetails.logo,

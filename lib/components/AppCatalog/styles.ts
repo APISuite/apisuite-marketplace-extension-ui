@@ -14,7 +14,7 @@ export default makeStyles((theme) => ({
     width: '100%',
   },
 
-  appCatalogEntryDescription: {
+  appCatalogEntrySummary: {
     color: theme.palette.text.secondary,
     display: '-webkit-box',
     height: '35px',

@@ -52,7 +52,7 @@ const initialState: MarketplaceStore = {
     },
     orgId: 0,
     privacyUrl: '',
-    shortDescription: '',
+    summary: '',
     supportUrl: '',
     tosUrl: '',
     updatedAt: '',

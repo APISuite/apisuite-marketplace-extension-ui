@@ -411,10 +411,10 @@ const AppDetails: React.FC = () => {
                 </Typography>
               </Box>
 
-              {selectedAppDetails && selectedAppDetails.shortDescription && (
+              {selectedAppDetails && selectedAppDetails.summary && (
                 <Box pb={1.5}>
                   <Typography variant="h5">
-                    {selectedAppDetails.shortDescription}
+                    {selectedAppDetails.summary}
                   </Typography>
                 </Box>
               )}

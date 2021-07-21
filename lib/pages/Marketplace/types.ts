@@ -53,7 +53,7 @@ export interface SubbedMarketplaceApp {
   name: string
   publisherId: number
   publisherName: string
-  shortDescription: string
+  summary: string
 }
 
 export interface Filters {
@@ -137,7 +137,7 @@ export interface AppDetails {
   }
   orgId: number
   privacyUrl: string
-  shortDescription: string
+  summary: string
   supportUrl: string
   tosUrl: string
   updatedAt: string

@@ -51,7 +51,7 @@ export default makeStyles((theme) => ({
     padding: `${theme.spacing(1.5, 3, 3, 3)}`,
   },
 
-  marketplaceAppCardDescription: {
+  marketplaceAppCardSummary: {
     color: theme.palette.text.secondary,
     display: '-webkit-box',
     fontSize: '16px',
