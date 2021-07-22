@@ -134,11 +134,10 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
 
                     <Typography
                       variant="body1"
-                      className={classes.marketplaceAppCardDescription}
+                      className={classes.marketplaceAppCardSummary}
                     >
-                      {stringChecker(subbedMarketplaceApp.shortDescription) ||
-                        stringChecker(subbedMarketplaceApp.description) ||
-                        t('appListing.noAppDescriptionProvided')}
+                      {stringChecker(subbedMarketplaceApp.summary) ||
+                        t('appListing.noAppSummaryProvided')}
                     </Typography>
                   </>
                 }
