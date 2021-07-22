@@ -1,6 +1,7 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
+  // Adding a comment here, to delete in the meantime (just to force a new build process)
   appCatalogEntryAvatar: {
     background: theme.palette.gradient.light,
     height: '40px',
