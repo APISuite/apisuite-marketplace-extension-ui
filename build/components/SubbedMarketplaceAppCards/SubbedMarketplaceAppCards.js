@@ -50,9 +50,8 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
                 React.createElement(Link, { className: classes.marketplaceAppCardLink, to: `${BASE_URI}/app-details/${subbedMarketplaceApp.id}` },
                     React.createElement(AppCard, { media: React.createElement(Box, { textAlign: "center" }, subbedMarketplaceApp.logo !== '' ? (React.createElement(Avatar, { className: classes.marketplaceAppCardImage, src: subbedMarketplaceApp.logo })) : (React.createElement(Avatar, { className: classes.marketplaceAppCardAvatar }, appNameInitials))), cardContent: React.createElement(React.Fragment, null,
                             React.createElement(Typography, { className: classes.marketplaceAppCardTitle, variant: "h4", display: "block", gutterBottom: true }, subbedMarketplaceApp.name),
-                            React.createElement(Typography, { variant: "body1", className: classes.marketplaceAppCardDescription }, stringChecker(subbedMarketplaceApp.shortDescription) ||
-                                stringChecker(subbedMarketplaceApp.description) ||
-                                t('appListing.noAppDescriptionProvided'))), contentStyle: classes.marketplaceAppCardBottomSection, icon: "open_in_full" }))));
+                            React.createElement(Typography, { variant: "body1", className: classes.marketplaceAppCardSummary }, stringChecker(subbedMarketplaceApp.summary) ||
+                                t('appListing.noAppSummaryProvided'))), contentStyle: classes.marketplaceAppCardBottomSection, icon: "open_in_full" }))));
         });
         return allSubbedMarketplaceAppCardsArray;
     };

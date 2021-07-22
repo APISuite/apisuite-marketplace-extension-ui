@@ -43,7 +43,7 @@ export default makeStyles((theme) => ({
         backgroundColor: theme.palette.grey[100],
         padding: `${theme.spacing(1.5, 3, 3, 3)}`,
     },
-    marketplaceAppCardDescription: {
+    marketplaceAppCardSummary: {
         color: theme.palette.text.secondary,
         display: '-webkit-box',
         fontSize: '16px',

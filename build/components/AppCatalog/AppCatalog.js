@@ -20,7 +20,7 @@ const AppCatalog = ({ appsToDisplay, catalogMode, }) => {
                         React.createElement(Typography, { variant: "body1", className: classes.appCatalogEntryName }, appDetails.name),
                         React.createElement(Typography, { variant: "subtitle2", className: classes.appCatalogEntryOwner }, appDetails.publisher))),
                 React.createElement("div", { className: classes.appCatalogEntryBottomDetails },
-                    React.createElement(Typography, { variant: "body2", className: classes.appCatalogEntryDescription }, appDetails.description),
+                    React.createElement(Typography, { variant: "body2", className: classes.appCatalogEntrySummary }, appDetails.summary),
                     React.createElement("div", { className: classes.appCatalogEntryLabelsContainer }, appDetails.labels.length ? (appDetails.labels.map((appLabel, index) => {
                         return (React.createElement(Box, { mr: 1, key: `appLabel${index}` },
                             React.createElement(Chip, { className: classes.appCatalogEntryLabels, label: `${appLabel}` })));

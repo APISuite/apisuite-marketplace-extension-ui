@@ -64,7 +64,16 @@ export function* getAllSubbedMarketplaceAppsActionSaga(action) {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        yield put(getAllSubbedMarketplaceAppsActionSuccess(response.data));
+        const allSubbedMarketplaceApps = response.data.map((app) => ({
+            description: app.description,
+            id: app.id,
+            logo: app.logo,
+            name: app.name,
+            publisherId: app.publisherId,
+            publisherName: app.publisherName,
+            summary: app.shortDescription,
+        }));
+        yield put(getAllSubbedMarketplaceAppsActionSuccess(allSubbedMarketplaceApps));
     }
     catch (error) {
         console.log('Error fetching all subscribed marketplace apps');
