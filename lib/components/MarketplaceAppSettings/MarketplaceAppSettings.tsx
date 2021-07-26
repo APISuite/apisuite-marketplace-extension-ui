@@ -47,7 +47,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
   }
 
   useEffect(() => {
-    setAppVisibility(data.visibility)
+    setAppVisibility(data.visibility || 'private')
   }, [data])
 
   return (
@@ -131,11 +131,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
             name="appVisibility"
             render={({ field }) => (
               <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="app visibility"
-                  name="appVisibility"
-                  defaultValue={appVisibility}
-                >
+                <RadioGroup aria-label="app visibility" name="appVisibility">
                   <Box
                     className={classes.appVisibilityContainer}
                     flexDirection="column"
