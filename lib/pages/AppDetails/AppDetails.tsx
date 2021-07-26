@@ -16,6 +16,7 @@ import {
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded'
 import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
+import { MarkdownDisplayer } from '../../components/MarkdownDisplayer'
 import {
   getAllSubbedMarketplaceAppsAction,
   getAppDetailsAction,
@@ -459,9 +460,13 @@ than zero. Not doing so will result in unwanted consequences. */}
 
               <Box pb={1}>
                 <Typography variant="body1">
-                  {selectedAppDetails && selectedAppDetails.description
-                    ? selectedAppDetails.description
-                    : t('appMarketplace.appDetails.noAppOverview')}
+                  {selectedAppDetails && selectedAppDetails.description ? (
+                    <MarkdownDisplayer
+                      content={selectedAppDetails.description}
+                    />
+                  ) : (
+                    t('appMarketplace.appDetails.noAppOverview')
+                  )}
                 </Typography>
               </Box>
 

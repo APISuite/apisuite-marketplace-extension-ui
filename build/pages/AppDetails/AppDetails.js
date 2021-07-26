@@ -8,6 +8,7 @@ import { Avatar, Box, Button, Chip, Typography, useTranslation, } from '@apisuit
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded';
 import AppCatalog from '../../components/AppCatalog';
 import Link from '../../components/Link';
+import { MarkdownDisplayer } from '../../components/MarkdownDisplayer';
 import { getAllSubbedMarketplaceAppsAction, getAppDetailsAction, getPublisherAppsSampleAction, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, } from '../Marketplace/ducks';
 import appDetailsSelector from './selector';
 import useStyles from './styles';
@@ -191,9 +192,7 @@ const AppDetails = () => {
                 React.createElement(Box, { pt: 5, pb: 3 },
                     React.createElement(Typography, { variant: "h3" }, t('appMarketplace.appDetails.partOfAppOverviewTitle'))),
                 React.createElement(Box, { pb: 1 },
-                    React.createElement(Typography, { variant: "body1" }, selectedAppDetails && selectedAppDetails.description
-                        ? selectedAppDetails.description
-                        : t('appMarketplace.appDetails.noAppOverview'))),
+                    React.createElement(Typography, { variant: "body1" }, selectedAppDetails && selectedAppDetails.description ? (React.createElement(MarkdownDisplayer, { content: selectedAppDetails.description })) : (t('appMarketplace.appDetails.noAppOverview')))),
                 retrievedPublisherAppsSample && !!publisherAppsSample.length && (React.createElement(React.Fragment, null,
                     React.createElement(Box, { pt: 4 },
                         React.createElement("hr", { className: classes.subSectionSeparator })),

@@ -10,7 +10,7 @@ export interface FormState {
         appDirectURL: boolean;
         appPrivacyURL: boolean;
         appRedirectURI: boolean;
-        appShortDescription: boolean;
+        appSummary: boolean;
         appSupportURL: boolean;
         appTermsURL: boolean;
         appWebsiteURL: boolean;
@@ -21,7 +21,7 @@ export interface FormState {
         appDirectURL: string;
         appPrivacyURL: string;
         appRedirectURI: string;
-        appShortDescription: string;
+        appSummary: string;
         appSupportURL: string;
         appTermsURL: string;
         appWebsiteURL: string;
@@ -32,7 +32,7 @@ export interface FormState {
         appClientID: string;
         appClientSecret: string;
         appDirectURL: string;
-        appFullDescription: string;
+        appDescription: string;
         appLabels: string;
         appMetaDescription: string;
         appMetaKey: string;
@@ -41,7 +41,7 @@ export interface FormState {
         appName: string;
         appPrivacyURL: string;
         appRedirectURI: string;
-        appShortDescription: string;
+        appSummary: string;
         appSupportURL: string;
         appTermsURL: string;
         appVisibility: string;

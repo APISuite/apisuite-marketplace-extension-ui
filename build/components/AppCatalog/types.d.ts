@@ -3,7 +3,7 @@ export declare type AppCatalogProps = {
     catalogMode?: 'marketplace' | 'publisher';
 };
 export declare type AppDetails = {
-    description: string;
+    summary: string;
     id: number;
     labels: string[];
     logo: string;

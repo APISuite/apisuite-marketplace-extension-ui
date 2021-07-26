@@ -65,9 +65,9 @@ const AppCatalog: React.FC<AppCatalogProps> = ({
             <div className={classes.appCatalogEntryBottomDetails}>
               <Typography
                 variant="body2"
-                className={classes.appCatalogEntryDescription}
+                className={classes.appCatalogEntrySummary}
               >
-                {appDetails.description}
+                {appDetails.summary}
               </Typography>
 
               <div className={classes.appCatalogEntryLabelsContainer}>
