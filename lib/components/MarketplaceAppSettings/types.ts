@@ -1,52 +1,32 @@
+import {
+  Control,
+  DeepMap,
+  FieldError,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormReset,
+  UseFormSetValue,
+} from 'react-hook-form/dist/types'
+
 export type MarketplaceAppSettingsProps = {
-  formState: FormState
-  handleAppVisibility: (selectedAppVisibility: string) => void
-  handleChange: (changeEvent) => void
+  formUtil: {
+    control: Control
+    errors: DeepMap<FormFields, FieldError>
+    getValues: UseFormGetValues<FormFields>
+    reset: UseFormReset<FormFields>
+    register: UseFormRegister<FormFields>
+    setValue: UseFormSetValue<FormFields>
+  }
+  data: {
+    directURL: string
+    labels: string
+    visibility: string
+  }
   userRole: string
 }
 
-export interface FormState {
-  errors: {
-    appAvatarURL: boolean
-    appDirectURL: boolean
-    appPrivacyURL: boolean
-    appRedirectURI: boolean
-    appSummary: boolean
-    appSupportURL: boolean
-    appTermsURL: boolean
-    appWebsiteURL: boolean
-    appYouTubeURL: boolean
-  }
-  errorMsgs: {
-    appAvatarURL: string
-    appDirectURL: string
-    appPrivacyURL: string
-    appRedirectURI: string
-    appSummary: string
-    appSupportURL: string
-    appTermsURL: string
-    appWebsiteURL: string
-    appYouTubeURL: string
-  }
-  values: {
-    appAvatarURL: string
-    appClientID: string
-    appClientSecret: string
-    appDirectURL: string
-    appDescription: string
-    appLabels: string
-    appMetaDescription: string
-    appMetaKey: string
-    appMetaTitle: string
-    appMetaValue: string
-    appName: string
-    appPrivacyURL: string
-    appRedirectURI: string
-    appSummary: string
-    appSupportURL: string
-    appTermsURL: string
-    appVisibility: string
-    appWebsiteURL: string
-    appYouTubeURL: string
-  }
+export type FormFields = {
+  appDirectURL: string
+  appLabels: string
+  appVisibility: string
 }
