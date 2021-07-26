@@ -58,7 +58,7 @@ export declare function getAllMarketplacePublishersActionSuccess(allMarketplaceP
 export declare function getFilteredMarketplaceAppsAction(filters: Filters, view: View): {
     type: string;
     filters: Filters;
-    view: "marketplace" | "publisher";
+    view: View;
 };
 export declare function getFilteredMarketplaceAppsActionSuccess(payload: {
     filteredMarketplaceApps: AppDetails[];

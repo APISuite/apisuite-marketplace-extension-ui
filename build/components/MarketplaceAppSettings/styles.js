@@ -92,12 +92,4 @@ export default makeStyles((theme) => ({
             marginBottom: theme.spacing(4),
         },
     },
-    selectedAppVisibilityIcon: {
-        color: theme.palette.primary.main,
-        marginRight: theme.spacing(1),
-    },
-    notSelectedAppVisibilityIcon: {
-        color: theme.palette.grey[300],
-        marginRight: theme.spacing(1),
-    },
 }));

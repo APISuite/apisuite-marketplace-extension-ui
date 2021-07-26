@@ -17,7 +17,8 @@
                 "publicMarketplaceAppSubtitle": "This application is eligible for display on the Marketplace.",
                 "labelsFieldLabel": "Labels",
                 "labelsFieldHelperText": "Each provided label should be separated by a comma.",
-                "appDirectURLFieldLabel": "Application URL"
+                "appDirectURLFieldLabel": "Application URL",
+                "invalidURL": "The provided URL is not valid."
             },
             "appMarketplace": {
                 "headerTitlePartOne": "Explore the",

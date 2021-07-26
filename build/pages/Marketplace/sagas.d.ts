@@ -23,7 +23,7 @@ export declare function unsubscribeToMarketplaceAppActionSaga(action: Unsubscrib
 export declare function getFilteredMarketplaceAppsActionSaga(action: GetFilteredAppsMarketplaceAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     filteredMarketplaceApps: import("./types").AppDetails[];
     pagination: import("./types").Pagination;
-    view: "marketplace" | "publisher";
+    view: import("./types").View;
     type: string;
 }>, void, unknown>;
 export declare function getAppDetailsActionSaga(action: GetAppDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
