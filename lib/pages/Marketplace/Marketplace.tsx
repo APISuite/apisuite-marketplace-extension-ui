@@ -684,9 +684,11 @@ const Marketplace: React.FC = () => {
           {/* 1.1 - Header's title & search field */}
           <div className={classes.appMarketHeaderTitleAndSearchField}>
             <Typography variant="h1" className={classes.appMarketHeaderTitle}>
-              <>{t('appMarketplace.headerTitlePartOne')} </>
-              <>{portalName} </>
-              <>{t('appMarketplace.headerTitlePartTwo')}</>
+              <>
+                {t('appMarketplace.headerTitle', {
+                  portalName,
+                })}
+              </>
             </Typography>
 
             {!!allMarketplaceApps.length && (
