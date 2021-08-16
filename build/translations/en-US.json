@@ -21,8 +21,7 @@
                 "invalidURL": "The provided URL is not valid."
             },
             "appMarketplace": {
-                "headerTitlePartOne": "Explore the",
-                "headerTitlePartTwo": "Marketplace",
+                "headerTitle": "Explore the {{portalName}} Marketplace",
                 "searchForAppsTextField": "Search for apps",
                 "noAppsTitle": "There are no applications in our Marketplace!",
                 "noAppsSubtitlePartOne": "We don't have any applications available... yet!",

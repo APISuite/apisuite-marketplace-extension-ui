@@ -287,13 +287,9 @@ const Marketplace = () => {
             React.createElement("div", { className: classes.appMarketHeaderContentsContainer },
                 React.createElement("div", { className: classes.appMarketHeaderTitleAndSearchField },
                     React.createElement(Typography, { variant: "h1", className: classes.appMarketHeaderTitle },
-                        React.createElement(React.Fragment, null,
-                            t('appMarketplace.headerTitlePartOne'),
-                            " "),
-                        React.createElement(React.Fragment, null,
+                        React.createElement(React.Fragment, null, t('appMarketplace.headerTitle', {
                             portalName,
-                            " "),
-                        React.createElement(React.Fragment, null, t('appMarketplace.headerTitlePartTwo'))),
+                        }))),
                     !!allMarketplaceApps.length && (React.createElement(TextField, { className: classes.appMarketHeaderSearchField, InputProps: {
                             endAdornment: (React.createElement(InputAdornment, { position: "end" },
                                 React.createElement(SearchRoundedIcon, null))),
