@@ -61,6 +61,7 @@ const Marketplace: React.FC = () => {
     retrievedAllMarketplaceLabels,
     retrievedAllMarketplacePublishers,
     pagination,
+    userCurrentOrg,
     userProfile,
   } = useSelector(marketplaceSelector)
 
@@ -341,20 +342,32 @@ const Marketplace: React.FC = () => {
     )
   }
 
-  // 'Are you a Developer' CTA card
+  // CTA card
 
-  const generateCTACard = () => {
-    let cardLink = '/auth/signin'
-
-    /*
-      Upon clicking the CTA's button:
-      1. We check if 'Home' is hidden.
-      1.a. If hidden, we direct the user to the 'Sign in' view.
-      1.b. If not hidden, we direct the user to 'Home'.
-    */
-    navigation.anonymous.tabs.forEach((tab) => {
-      if (tab.action === '/home') cardLink = '/home'
+  const generateCTACard = (roleID: number) => {
+    let cardTitle = t('appMarketplace.ctaCard.unauthorisedUser.title')
+    let cardText = t('appMarketplace.ctaCard.unauthorisedUser.text', {
+      portalOwner: clientName || '...',
     })
+    let cardButtonLabel = t(
+      'appMarketplace.ctaCard.unauthorisedUser.buttonLabel'
+    )
+    let cardLink = '/home'
+
+    if (roleID === 2 || roleID === 3 || roleID === 4) {
+      cardTitle = t('appMarketplace.ctaCard.nonBaseUser.title')
+      cardText = t('appMarketplace.ctaCard.nonBaseUser.text', {
+        portalOwner: clientName || '...',
+      })
+      cardButtonLabel = t('appMarketplace.ctaCard.nonBaseUser.buttonLabel')
+      cardLink = '/dashboard/apps'
+    }
+
+    if (roleID === 5) {
+      cardTitle = t('appMarketplace.ctaCard.baseUser.title')
+      cardText = t('appMarketplace.ctaCard.baseUser.text')
+      cardButtonLabel = t('appMarketplace.ctaCard.baseUser.buttonLabel')
+    }
 
     return (
       <Box mt={5}>
@@ -374,16 +387,12 @@ const Marketplace: React.FC = () => {
                 }}
                 to={cardLink}
               >
-                {t('appMarketplace.ctaCard.buttonLabel')}
+                {cardButtonLabel}
               </Link>
             </Button>,
           ]}
-          textArray={[
-            t('appMarketplace.ctaCard.text', {
-              portalOwner: clientName || '...',
-            }),
-          ]}
-          title={t('appMarketplace.ctaCard.title')}
+          textArray={[cardText]}
+          title={cardTitle}
         />
       </Box>
     )
@@ -573,7 +582,21 @@ const Marketplace: React.FC = () => {
             </Box>
           )}
 
-          {userProfile.id === '' && generateCTACard()}
+          {/* Unauthorised user */}
+          {!userProfile.id && generateCTACard(0)}
+
+          {/* Base user */}
+          {userProfile.id &&
+            (Object.keys(userCurrentOrg).length === 0 ||
+              (Object.keys(userCurrentOrg).length !== 0 &&
+                userCurrentOrg.role.id === 5)) &&
+            generateCTACard(5)}
+
+          {/* Admin, org owner, or developer */}
+          {userProfile.id &&
+            Object.keys(userCurrentOrg).length !== 0 &&
+            userCurrentOrg.role.id !== 5 &&
+            generateCTACard(userCurrentOrg.role.id)}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
           allMarketplaceApps && (

@@ -49,9 +49,21 @@
         "featuredAppsTitle": "Featured apps",
         "featuredAppsSubtitle": "Ready to try? Subscribe to one of your featured apps to get started!",
         "ctaCard": {
-          "buttonLabel": "Go to portal",
-          "title": "Are you a Developer?",
-          "text": "Publish and market your own applications on {{portalOwner}}'s Marketplace through our developer portal!"
+          "unauthorisedUser": {
+            "buttonLabel": "Go to portal",
+            "title": "Are you a Developer?",
+            "text": "Publish and market your own applications on {{portalOwner}}'s Marketplace through our developer portal!"
+          },
+          "baseUser": {
+            "buttonLabel": "Go to portal",
+            "title": "Are you a Developer?",
+            "text": "Get an overview on how to create your first application as a base user in the portal page."
+          },
+          "nonBaseUser": {
+            "buttonLabel": "Create application",
+            "title": "Create your own applications",
+            "text": "Publish and market your own applications on {{portalOwner}}'s Marketplace through our developer portal!"
+          }
         },
         "appDetails": {
           "loadingAppDetails": "Loading the selected app's details...",
