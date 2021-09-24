@@ -29,7 +29,7 @@ import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded'
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded'
 import SortRoundedIcon from '@material-ui/icons/SortRounded'
 
-import { MARKETPLACE_APPS_PER_PAGE } from '../../constants/globals'
+import { MARKETPLACE_APPS_PER_PAGE, ROLES } from '../../constants/globals'
 import { debounce } from '../../util/debounce'
 import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
@@ -50,7 +50,7 @@ const Marketplace: React.FC = () => {
 
   const { palette } = useTheme()
 
-  const { clientName, navigation, portalName } = useConfig()
+  const { clientName, portalName } = useConfig()
 
   const {
     allMarketplaceApps,
@@ -344,7 +344,7 @@ const Marketplace: React.FC = () => {
 
   // CTA card
 
-  const generateCTACard = (roleID: number) => {
+  const generateCTACard = (roleName: string) => {
     let cardTitle = t('appMarketplace.ctaCard.unauthorisedUser.title')
     let cardText = t('appMarketplace.ctaCard.unauthorisedUser.text', {
       portalOwner: clientName || '...',
@@ -354,7 +354,11 @@ const Marketplace: React.FC = () => {
     )
     let cardLink = '/home'
 
-    if (roleID === 2 || roleID === 3 || roleID === 4) {
+    if (
+      roleName === ROLES.admin.value ||
+      roleName === ROLES.organizationOwner.value ||
+      roleName === ROLES.developer.value
+    ) {
       cardTitle = t('appMarketplace.ctaCard.nonBaseUser.title')
       cardText = t('appMarketplace.ctaCard.nonBaseUser.text', {
         portalOwner: clientName || '...',
@@ -363,7 +367,7 @@ const Marketplace: React.FC = () => {
       cardLink = '/dashboard/apps'
     }
 
-    if (roleID === 5) {
+    if (roleName === ROLES.baseUser.value) {
       cardTitle = t('appMarketplace.ctaCard.baseUser.title')
       cardText = t('appMarketplace.ctaCard.baseUser.text')
       cardButtonLabel = t('appMarketplace.ctaCard.baseUser.buttonLabel')
@@ -583,20 +587,20 @@ const Marketplace: React.FC = () => {
           )}
 
           {/* Unauthorised user */}
-          {!userProfile.id && generateCTACard(0)}
+          {!userProfile.id && generateCTACard('')}
 
           {/* Base user */}
           {userProfile.id &&
             (Object.keys(userCurrentOrg).length === 0 ||
               (Object.keys(userCurrentOrg).length !== 0 &&
-                userCurrentOrg.role.id === 5)) &&
-            generateCTACard(5)}
+                userCurrentOrg.role.name === ROLES.baseUser.value)) &&
+            generateCTACard(ROLES.baseUser.value)}
 
           {/* Admin, org owner, or developer */}
           {userProfile.id &&
             Object.keys(userCurrentOrg).length !== 0 &&
-            userCurrentOrg.role.id !== 5 &&
-            generateCTACard(userCurrentOrg.role.id)}
+            userCurrentOrg.role.id !== ROLES.baseUser.value &&
+            generateCTACard(userCurrentOrg.role.name)}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
           allMarketplaceApps && (
