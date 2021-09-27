@@ -592,8 +592,7 @@ const Marketplace: React.FC = () => {
           {/* Base user */}
           {userProfile.id &&
             (Object.keys(userCurrentOrg).length === 0 ||
-              (Object.keys(userCurrentOrg).length !== 0 &&
-                userCurrentOrg.role.name === ROLES.baseUser.value)) &&
+              userCurrentOrg.role.name === ROLES.baseUser.value) &&
             generateCTACard(ROLES.baseUser.value)}
 
           {/* Admin, org owner, or developer */}
