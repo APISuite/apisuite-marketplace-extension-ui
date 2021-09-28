@@ -64,7 +64,7 @@ export const CTACard: React.FC<CTACardProps> = ({
           </Grid>
 
           <Grid item xs={4}>
-            <CardActions style={{ paddingRight: spacing(5) }}>
+            <CardActions style={{ paddingLeft: spacing(5) }}>
               <Box alignItems="center" display="flex">
                 {actions}
               </Box>
