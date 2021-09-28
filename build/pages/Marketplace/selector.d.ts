@@ -7,6 +7,7 @@ declare const marketplaceSelector: import("reselect").OutputSelector<any, {
     retrievedAllMarketplaceLabels: boolean;
     retrievedAllMarketplacePublishers: boolean;
     pagination: import("./types").Pagination;
+    userCurrentOrg: any;
     userProfile: any;
 }, (res1: any, res2: any) => {
     allMarketplaceApps: import("./types").AppDetails[];
@@ -17,6 +18,7 @@ declare const marketplaceSelector: import("reselect").OutputSelector<any, {
     retrievedAllMarketplaceLabels: boolean;
     retrievedAllMarketplacePublishers: boolean;
     pagination: import("./types").Pagination;
+    userCurrentOrg: any;
     userProfile: any;
 }>;
 export default marketplaceSelector;

@@ -19,6 +19,6 @@ export const CTACard = ({ actions, content, textArray, title, }) => {
                         !!textArray.length && generateCTAText(textArray),
                         content)),
                 React.createElement(Grid, { item: true, xs: 4 },
-                    React.createElement(CardActions, { style: { paddingRight: spacing(5) } },
+                    React.createElement(CardActions, { style: { paddingLeft: spacing(5) } },
                         React.createElement(Box, { alignItems: "center", display: "flex" }, actions)))))));
 };

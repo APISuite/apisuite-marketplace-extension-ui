@@ -9,6 +9,7 @@ const marketplaceSelector = createSelector(({ marketplace }) => marketplace, ({ 
         retrievedAllMarketplaceLabels: marketplace.retrievedAllMarketplaceLabels,
         retrievedAllMarketplacePublishers: marketplace.retrievedAllMarketplacePublishers,
         pagination: marketplace.pagination,
+        userCurrentOrg: profile.profile.current_org,
         userProfile: profile.profile.user,
     };
 });

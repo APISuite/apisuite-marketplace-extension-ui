@@ -9,7 +9,7 @@ import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import SortRoundedIcon from '@material-ui/icons/SortRounded';
-import { MARKETPLACE_APPS_PER_PAGE } from '../../constants/globals';
+import { MARKETPLACE_APPS_PER_PAGE, ROLES } from '../../constants/globals';
 import { debounce } from '../../util/debounce';
 import AppCatalog from '../../components/AppCatalog';
 import Link from '../../components/Link';
@@ -22,8 +22,8 @@ import { CTACard } from '../../components/CTACard';
 const Marketplace = () => {
     const classes = useStyles();
     const { palette } = useTheme();
-    const { clientName, navigation, portalName } = useConfig();
-    const { allMarketplaceApps, allMarketplaceLabels, allMarketplacePublishers, filteredMarketplaceApps, retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers, pagination, userProfile, } = useSelector(marketplaceSelector);
+    const { clientName, portalName } = useConfig();
+    const { allMarketplaceApps, allMarketplaceLabels, allMarketplacePublishers, filteredMarketplaceApps, retrievedAllMarketplaceApps, retrievedAllMarketplaceLabels, retrievedAllMarketplacePublishers, pagination, userCurrentOrg, userProfile, } = useSelector(marketplaceSelector);
     const dispatch = useDispatch();
     const trans = useTranslation();
     const t = (string, ...args) => {
@@ -179,31 +179,37 @@ const Marketplace = () => {
         const pageCount = Math.ceil(pagination.rowCount / MARKETPLACE_APPS_PER_PAGE);
         return (React.createElement(Pagination, { count: pageCount || 1, onChange: handleChange, page: page, shape: "rounded", color: "primary" }));
     };
-    // 'Are you a Developer' CTA card
-    const generateCTACard = () => {
-        let cardLink = '/auth/signin';
-        /*
-          Upon clicking the CTA's button:
-          1. We check if 'Home' is hidden.
-          1.a. If hidden, we direct the user to the 'Sign in' view.
-          1.b. If not hidden, we direct the user to 'Home'.
-        */
-        navigation.anonymous.tabs.forEach((tab) => {
-            if (tab.action === '/home')
-                cardLink = '/home';
+    // CTA card
+    const generateCTACard = (roleName) => {
+        let cardTitle = t('appMarketplace.ctaCard.unauthorisedUser.title');
+        let cardText = t('appMarketplace.ctaCard.unauthorisedUser.text', {
+            portalOwner: clientName || '...',
         });
+        let cardButtonLabel = t('appMarketplace.ctaCard.unauthorisedUser.buttonLabel');
+        let cardLink = '/home';
+        if (roleName === ROLES.admin.value ||
+            roleName === ROLES.organizationOwner.value ||
+            roleName === ROLES.developer.value) {
+            cardTitle = t('appMarketplace.ctaCard.nonBaseUser.title');
+            cardText = t('appMarketplace.ctaCard.nonBaseUser.text', {
+                portalOwner: clientName || '...',
+            });
+            cardButtonLabel = t('appMarketplace.ctaCard.nonBaseUser.buttonLabel');
+            cardLink = '/dashboard/apps';
+        }
+        if (roleName === ROLES.baseUser.value) {
+            cardTitle = t('appMarketplace.ctaCard.baseUser.title');
+            cardText = t('appMarketplace.ctaCard.baseUser.text');
+            cardButtonLabel = t('appMarketplace.ctaCard.baseUser.buttonLabel');
+        }
         return (React.createElement(Box, { mt: 5 },
             React.createElement(CTACard, { actions: [
                     React.createElement(Button, { color: "primary", disableElevation: true, key: "createAppButtonKey", size: "large", variant: "contained" },
                         React.createElement(Link, { style: {
                                 color: palette.common.white,
                                 textDecoration: 'none',
-                            }, to: cardLink }, t('appMarketplace.ctaCard.buttonLabel'))),
-                ], textArray: [
-                    t('appMarketplace.ctaCard.text', {
-                        portalOwner: clientName || '...',
-                    }),
-                ], title: t('appMarketplace.ctaCard.title') })));
+                            }, to: cardLink }, cardButtonLabel)),
+                ], textArray: [cardText], title: cardTitle })));
     };
     // Carousel of 'featured apps'
     // const [currentSlide, setCurrentSlide] = useState(0)
@@ -268,7 +274,15 @@ const Marketplace = () => {
                     setPagination())) : (React.createElement(Box, { pt: 5 },
                     React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText'))))) : (React.createElement(Box, { pt: 5 },
                     React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText')))),
-                userProfile.id === '' && generateCTACard())));
+                !userProfile.id && generateCTACard(''),
+                userProfile.id &&
+                    (Object.keys(userCurrentOrg).length === 0 ||
+                        userCurrentOrg.role.name === ROLES.baseUser.value) &&
+                    generateCTACard(ROLES.baseUser.value),
+                userProfile.id &&
+                    Object.keys(userCurrentOrg).length !== 0 &&
+                    userCurrentOrg.role.id !== ROLES.baseUser.value &&
+                    generateCTACard(userCurrentOrg.role.name))));
     };
     const displayNoMarketplaceApps = () => {
         return (
