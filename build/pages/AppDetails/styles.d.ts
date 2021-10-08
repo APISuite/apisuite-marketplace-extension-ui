@@ -1,2 +1,0 @@
-declare const _default: (props?: any) => import("@material-ui/styles").ClassNameMap<"accessAppButton" | "addedSpacing" | "appAlreadySubscribedButton" | "appAvatar" | "appChip" | "appDetailsContainer" | "appImage" | "appImageGallery" | "appLabel" | "appLinksSubSection" | "appOverviewDescription" | "appOverviewTitle" | "appSubscribeButton" | "leftAppDetailsContainer" | "providedLink" | "rightAppDetailsContainer" | "subSectionSeparator" | "subSectionText" | "subSectionTitle" | "topMostSubSection">;
-export default _default;

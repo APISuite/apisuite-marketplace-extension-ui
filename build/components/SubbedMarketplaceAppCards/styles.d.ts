@@ -1,2 +1,0 @@
-declare const _default: (props?: any) => import("@material-ui/styles").ClassNameMap<"browseMarketplaceAppsButton" | "marketplaceAppCard" | "marketplaceAppCardAvatar" | "marketplaceAppCardBottomSection" | "marketplaceAppCardSummary" | "marketplaceAppCardImage" | "marketplaceAppCardLink" | "marketplaceAppCardTitle" | "marketplaceAppCardTopSection" | "marketplaceAppCardWithAvatarIcon" | "marketplaceAppCardWithImageIcon">;
-export default _default;
