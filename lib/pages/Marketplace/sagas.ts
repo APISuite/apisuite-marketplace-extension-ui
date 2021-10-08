@@ -173,87 +173,45 @@ export function* unsubscribeToMarketplaceAppActionSaga(
   }
 }
 
+/**
+ * Takes a list of items and builds a string usable as a URL query string.
+ * Ex.: buildQueryParameters([1,2], 'user') => 'user=1&user=2'
+ * */
+function buildQueryParameters(items: string[], paramName: string): string {
+  let params = ''
+  for (let i = 0; i < items.length; i++) {
+    if (i === 0) {
+      params = `${paramName}=${items[i]}`
+      continue
+    }
+    params += `&${paramName}=${items[i]}`
+  }
+  return params
+}
+
 export function* getFilteredMarketplaceAppsActionSaga(
   action: GetFilteredAppsMarketplaceAction
 ) {
   try {
-    let getFilteredMarketplaceAppsActionUrl = `${API_URL}/apps/public`
+    const pagination = `page=${action.filters.page}&pageSize=${action.filters.pageSize}`
+    let appsURL = `${API_URL}/apps/public?${pagination}`
 
-    let orgIDParameters = ''
-    let labelParameters = ''
-    let sortModeParameters = ''
-    let orderModeParameters = ''
-
-    if (action.filters.org_id.length !== 0) {
-      action.filters.org_id.map((orgID, index) => {
-        if (index === 0) {
-          orgIDParameters = orgIDParameters + `?org_id=${orgID}`
-        } else {
-          orgIDParameters = orgIDParameters + `&org_id=${orgID}`
-        }
-      })
-    }
-
-    if (action.filters.label.length !== 0) {
-      action.filters.label.map((label, index) => {
-        if (index === 0 && orgIDParameters.length === 0) {
-          labelParameters = labelParameters + `?label=${label}`
-        } else {
-          labelParameters = labelParameters + `&label=${label}`
-        }
-      })
-    }
-
-    if (orgIDParameters.length === 0 && labelParameters.length === 0) {
-      sortModeParameters =
-        sortModeParameters + `?sort_by=${action.filters.sort_by}`
-    } else {
-      sortModeParameters =
-        sortModeParameters + `&sort_by=${action.filters.sort_by}`
-    }
-
-    if (
-      orgIDParameters.length === 0 &&
-      labelParameters.length === 0 &&
-      sortModeParameters.length === 0
-    ) {
-      orderModeParameters =
-        orderModeParameters + `?order=${action.filters.order}`
-    } else {
-      orderModeParameters =
-        orderModeParameters + `&order=${action.filters.order}`
-    }
-
-    let prefix =
-      orgIDParameters.length === 0 &&
-      labelParameters.length === 0 &&
-      sortModeParameters.length === 0
-        ? '?'
-        : '&'
-    const pagination = `${prefix}page=${action.filters.page}&pageSize=${action.filters.pageSize}`
-
-    prefix =
-      orgIDParameters.length === 0 &&
-      labelParameters.length === 0 &&
-      sortModeParameters.length === 0 &&
-      pagination.length === 0
-        ? '?'
-        : '&'
+    const orgIDParams = buildQueryParameters(action.filters.org_id, 'org_id')
+    const labelParams = buildQueryParameters(action.filters.label, 'label')
+    const sortParams = buildQueryParameters([action.filters.sort_by], 'sort_by')
+    const orderParams = buildQueryParameters([action.filters.order], 'order')
     const search = action.filters.search.length
-      ? `${prefix}search=${action.filters.search}`
+      ? `search=${action.filters.search}`
       : ''
 
-    getFilteredMarketplaceAppsActionUrl =
-      getFilteredMarketplaceAppsActionUrl +
-      orgIDParameters +
-      labelParameters +
-      sortModeParameters +
-      orderModeParameters +
-      pagination +
-      search
+    const params = [orgIDParams, labelParams, sortParams, orderParams, search]
+      .filter((p) => p.length)
+      .join('&')
+
+    appsURL = params.length ? `${appsURL}&${params}` : appsURL
 
     const response = yield call(request, {
-      url: getFilteredMarketplaceAppsActionUrl,
+      url: appsURL,
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
