@@ -21,10 +21,9 @@
     "lint": "tsc --noEmit && eslint \"lib/{,**/}*.ts{,x}\"",
     "build": "node ./scripts/write-info && rimraf ./build && tsc",
     "build:watch": "npm-watch build",
-    "version": "npm run build && git add -A build lib/constants/info.ts",
+    "version": "npm run build && git add -A lib/constants/info.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepublishOnly": "npm run build",
     "precommit": "lint-staged"
   },
   "lint-staged": {
