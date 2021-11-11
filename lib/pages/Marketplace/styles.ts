@@ -1,7 +1,6 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 import appCarouselBackground from 'assets/appCarouselBackground.svg'
-import spaceBackground from 'assets/space-background.svg'
 
 export default makeStyles((theme) => ({
   amountOfAppMarketAppsText: {
@@ -48,17 +47,17 @@ export default makeStyles((theme) => ({
   appMarketHeader: {
     // First color is a fallback one - do not remove!
     background: theme.palette.primary.main,
-    backgroundImage: 'url(' + spaceBackground + ')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     borderBottom: '4px solid rgba(20, 40, 60, 0.1)',
-    height: '335px',
-    marginTop: '110px',
+    height: '485px',
+    paddingTop: '150px',
     width: '100%',
   },
 
   appMarketHeaderContentsContainer: {
     display: 'flex',
+    height: '335px',
     justifyContent: 'space-between',
     margin: '0px auto',
     maxWidth: '1200px',
