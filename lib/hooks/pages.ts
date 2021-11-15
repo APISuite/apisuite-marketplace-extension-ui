@@ -11,6 +11,7 @@ const pagesConfig: PageEntry[] = [
     component: Marketplace,
     exact: true,
     path: BASE_URI,
+    layoutProps: { contractibleMenu: true },
   },
   {
     auth: false,
