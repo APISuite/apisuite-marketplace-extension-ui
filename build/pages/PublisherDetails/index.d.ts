@@ -1,0 +1,1 @@
+export { PublisherDetails } from './PublisherDetails';
