@@ -28,6 +28,7 @@ import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded'
 import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded'
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded'
 import SortRoundedIcon from '@material-ui/icons/SortRounded'
+import clsx from 'clsx'
 
 import { MARKETPLACE_APPS_PER_PAGE, ROLES } from '../../constants/globals'
 import { debounce } from '../../util/debounce'
@@ -35,6 +36,7 @@ import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
 import marketplace from 'assets/marketplace.svg'
 import marketplaceApps from 'assets/marketplaceApps.svg'
+import spaceBackground from 'assets/space-background.svg'
 import useStyles from './styles'
 import marketplaceSelector from './selector'
 import {
@@ -48,7 +50,7 @@ import { CTACard } from '../../components/CTACard'
 const Marketplace: React.FC = () => {
   const classes = useStyles()
 
-  const { palette } = useTheme()
+  const { custom, palette } = useTheme()
 
   const { clientName, portalName } = useConfig()
 
@@ -705,7 +707,14 @@ const Marketplace: React.FC = () => {
   return (
     <main>
       {/* 1 - App Marketplace header */}
-      <header className={classes.appMarketHeader}>
+      <header
+        className={classes.appMarketHeader}
+        style={{
+          backgroundImage: `url('${
+            custom?.images?.marketplace?.background || spaceBackground
+          }')`,
+        }}
+      >
         <div className={classes.appMarketHeaderContentsContainer}>
           {/* 1.1 - Header's title & search field */}
           <div className={classes.appMarketHeaderTitleAndSearchField}>
@@ -735,8 +744,14 @@ const Marketplace: React.FC = () => {
           </div>
 
           {/* 1.2 - Header's image */}
-          <div>
-            <img className={classes.appMarketHeaderImage} src={marketplace} />
+          <div style={{ display: 'flex' }}>
+            <img
+              className={clsx({
+                [classes.appMarketHeaderImage]: !custom?.images?.marketplace
+                  ?.hero,
+              })}
+              src={custom?.images?.marketplace?.hero || marketplace}
+            />
           </div>
         </div>
       </header>
