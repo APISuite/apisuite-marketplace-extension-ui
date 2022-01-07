@@ -3,7 +3,7 @@ const { hostname } = window.location;
 export const IS_CLOUD = hostname.indexOf('.cloud.apisuite.io') >= 0;
 function buildCloudServiceUrl(service) {
     const client = hostname.substring(0, hostname.indexOf('.'));
-    const apiHostname = hostname.replace(client, `${service}.${client}`);
+    const apiHostname = hostname.replace(client, `${client}-${service}`);
     return `https://${apiHostname}`;
 }
 /**
