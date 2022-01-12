@@ -1,32 +1,12 @@
-/** Endpoints constants */
-const { hostname } = window.location;
-export const IS_CLOUD = hostname.indexOf('.cloud.apisuite.io') >= 0;
-function buildCloudServiceUrl(service) {
-    const client = hostname.substring(0, hostname.indexOf('.'));
-    const apiHostname = hostname.replace(client, `${client}-${service}`);
-    return `https://${apiHostname}`;
-}
-/**
- * For when running in the cloud environment.
- * Given the current Portal hostname, get the corresponding domain for another
- * service running in a given subdomain prefix.
- * Ex: ${client}.cloud.apisuite.io -> ${service}.${client}.cloud.apisuite.io
- *
- * @param service
- */
-export function getCloudUrlForSubdomainSuffix(service) {
-    if (IS_CLOUD)
-        return buildCloudServiceUrl(service);
-    return null;
-}
+import core from '../helpers/core';
 function getApiUrl() {
-    if (IS_CLOUD)
-        return buildCloudServiceUrl('api');
+    if (core().IS_CLOUD)
+        return core().buildCloudBackendUrl();
     return process.env.API_URL || '';
 }
 function getMarketplaceApiUrl() {
-    if (IS_CLOUD)
-        return buildCloudServiceUrl('marketplace-api');
+    if (core().IS_CLOUD)
+        return core().buildCloudBackendUrl('ext-marketplace');
     return process.env.MARKETPLACE_API_URL || '';
 }
 export const API_URL = getApiUrl();
