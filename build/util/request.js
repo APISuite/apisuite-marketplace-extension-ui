@@ -3,7 +3,7 @@
  * fetch wrapper
  */
 import axios from 'axios';
-import { API_URL } from '../constants/endpoints';
+import { getApiUrl } from '../constants/endpoints';
 function checkToken(response) {
     const search = response.request.responseURL.split('?')[1];
     const urlParams = new URLSearchParams(search);
@@ -61,14 +61,14 @@ export async function requestInform(init) {
     return checkStatus(response);
 }
 export async function apiRequest(init) {
-    const baseUrl = `${API_URL}`;
+    const baseUrl = `${getApiUrl()}`;
     return request({
         ...init,
         url: `${baseUrl}${init.url}`,
     });
 }
 export async function apiRequestInform(init) {
-    const baseUrl = `${API_URL}`;
+    const baseUrl = `${getApiUrl()}`;
     return requestInform({
         ...init,
         url: `${baseUrl}${init.url}`,

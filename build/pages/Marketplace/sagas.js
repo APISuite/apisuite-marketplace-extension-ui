@@ -1,11 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import request from '../../util/request';
 import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, GET_PUBLISHER_APPS_SAMPLE_ACTION, GET_PUBLISHER_DETAILS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionError, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, getPublisherAppsSampleActionSuccess, getPublisherDetailsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, getPublisherDetailsActionError, } from './ducks';
-import { API_URL, MARKETPLACE_API_URL } from '../../constants/endpoints';
+import { getApiUrl, getMarketplaceApiUrl } from '../../constants/endpoints';
 import appDetailsMapping from '../../util/appDetailsMapping';
 export function* getAllMarketplaceAppsActionSaga(action) {
     try {
-        const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`;
+        const getAllMarketplaceAppsActionUrl = `${getApiUrl()}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`;
         const response = yield call(request, {
             url: getAllMarketplaceAppsActionUrl,
             method: 'GET',
@@ -24,7 +24,7 @@ export function* getAllMarketplaceAppsActionSaga(action) {
 }
 export function* getAllMarketplaceLabelsActionSaga() {
     try {
-        const getAllMarketplaceLabelsActionUrl = `${API_URL}/apps/public/labels`;
+        const getAllMarketplaceLabelsActionUrl = `${getApiUrl()}/apps/public/labels`;
         const response = yield call(request, {
             url: getAllMarketplaceLabelsActionUrl,
             method: 'GET',
@@ -40,7 +40,7 @@ export function* getAllMarketplaceLabelsActionSaga() {
 }
 export function* getAllMarketplacePublishersActionSaga() {
     try {
-        const getAllMarketplacePublishersActionUrl = `${API_URL}/organizations/publishers`;
+        const getAllMarketplacePublishersActionUrl = `${getApiUrl()}/organizations/publishers`;
         const response = yield call(request, {
             url: getAllMarketplacePublishersActionUrl,
             method: 'GET',
@@ -56,7 +56,7 @@ export function* getAllMarketplacePublishersActionSaga() {
 }
 export function* getAllSubbedMarketplaceAppsActionSaga(action) {
     try {
-        const getAllSubbedMarketplaceAppsActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions`;
+        const getAllSubbedMarketplaceAppsActionUrl = `${getMarketplaceApiUrl()}/users/${action.userID}/subscriptions`;
         const response = yield call(request, {
             url: getAllSubbedMarketplaceAppsActionUrl,
             method: 'GET',
@@ -82,7 +82,7 @@ export function* getAllSubbedMarketplaceAppsActionSaga(action) {
 }
 export function* subscribeToMarketplaceAppActionSaga(action) {
     try {
-        const subscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`;
+        const subscribeToMarketplaceAppActionUrl = `${getMarketplaceApiUrl()}/users/${action.userID}/subscriptions/${action.appID}`;
         yield call(request, {
             url: subscribeToMarketplaceAppActionUrl,
             method: 'POST',
@@ -98,7 +98,7 @@ export function* subscribeToMarketplaceAppActionSaga(action) {
 }
 export function* unsubscribeToMarketplaceAppActionSaga(action) {
     try {
-        const unsubscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`;
+        const unsubscribeToMarketplaceAppActionUrl = `${getMarketplaceApiUrl()}/users/${action.userID}/subscriptions/${action.appID}`;
         yield call(request, {
             url: unsubscribeToMarketplaceAppActionUrl,
             method: 'DELETE',
@@ -130,7 +130,7 @@ function buildQueryParameters(items, paramName) {
 export function* getFilteredMarketplaceAppsActionSaga(action) {
     try {
         const pagination = `page=${action.filters.page}&pageSize=${action.filters.pageSize}`;
-        let appsURL = `${API_URL}/apps/public?${pagination}`;
+        let appsURL = `${getApiUrl()}/apps/public?${pagination}`;
         const orgIDParams = buildQueryParameters(action.filters.org_id, 'org_id');
         const labelParams = buildQueryParameters(action.filters.label, 'label');
         const sortParams = buildQueryParameters([action.filters.sort_by], 'sort_by');
@@ -164,7 +164,7 @@ export function* getFilteredMarketplaceAppsActionSaga(action) {
 }
 export function* getAppDetailsActionSaga(action) {
     try {
-        const getAppDetailsActionUrl = `${API_URL}/apps/public/${action.appID}`;
+        const getAppDetailsActionUrl = `${getApiUrl()}/apps/public/${action.appID}`;
         const response = yield call(request, {
             url: getAppDetailsActionUrl,
             method: 'GET',
@@ -180,7 +180,7 @@ export function* getAppDetailsActionSaga(action) {
 }
 export function* getPublisherAppsSampleActionSaga(action) {
     try {
-        const getPublisherAppsSampleActionUrl = `${API_URL}/apps/public?org_id=${action.orgID}&sort_by=updated&order=desc&page=1&pageSize=4`;
+        const getPublisherAppsSampleActionUrl = `${getApiUrl()}/apps/public?org_id=${action.orgID}&sort_by=updated&order=desc&page=1&pageSize=4`;
         const response = yield call(request, {
             url: getPublisherAppsSampleActionUrl,
             method: 'GET',
@@ -207,7 +207,7 @@ export function* getPublisherAppsSampleActionSaga(action) {
 export function* getPublisherDetailsActionSaga(action) {
     try {
         const publisherDetails = yield call(request, {
-            url: `${API_URL}/organizations/publishers/${action.publisherID}`,
+            url: `${getApiUrl()}/organizations/publishers/${action.publisherID}`,
             method: 'GET',
         });
         yield put(getPublisherDetailsActionSuccess(publisherDetails));
