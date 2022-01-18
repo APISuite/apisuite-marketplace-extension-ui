@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import {
   Box,
+  Chip,
   FormControl,
-  FormControlLabel,
   Grid,
-  Radio,
   RadioGroup,
   TextField,
   Typography,
@@ -12,10 +11,10 @@ import {
   useTranslation,
 } from '@apisuite/fe-base'
 import clsx from 'clsx'
-import { Controller } from 'react-hook-form'
+import { Controller, useFieldArray } from 'react-hook-form'
+import { RadioBox } from '../RadioBox'
 
-import { isValidURL } from '../../util/formValidation'
-import { MarketplaceAppSettingsProps } from './types'
+import { MarketplaceAppSettingsProps, Visibility } from './types'
 import useStyles from './styles'
 
 const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
@@ -24,31 +23,66 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
   userRole,
 }) => {
   const classes = useStyles()
-
   const trans = useTranslation()
-
-  const { palette } = useTheme()
-
+  const { palette, shape, spacing } = useTheme()
   const t = (string: string, ...args) => {
     return trans.t(`extensions.marketplace.${string}`, ...args)
   }
 
+  // FIXME this role should come from a common place
   const adminRole = 'admin'
 
-  const [appVisibility, setAppVisibility] = useState('private')
+  const [visibility, setAppVisibility] = useState<Visibility>(
+    Visibility.PRIVATE
+  )
+  const [labels, setLabels] = useState('')
 
-  const validateURI = (uri: string | number) => {
-    const stringURI = uri ? uri.toString() : null
-
-    if (stringURI === null || stringURI.length === 0) return true
-    if (stringURI.length > 0) return isValidURL(stringURI)
-
-    return false
-  }
+  const { append, fields, remove } = useFieldArray({
+    name: 'labels',
+    control: formUtil.control,
+  })
 
   useEffect(() => {
-    setAppVisibility(data.visibility || 'private')
+    const vi = formUtil.getValues('visibility')
+    const lb = formUtil.getValues('labels')
+    if (!vi && !lb) {
+      formUtil.register('visibility', { required: true })
+      formUtil.register('labels')
+    }
+    if (!vi) {
+      formUtil.setValue('visibility', data.visibility || Visibility.PRIVATE)
+    }
+    if (!Array.isArray(lb) || !lb.length) {
+      if (data.labels && data.labels.length) {
+        append(data.labels)
+      }
+    }
+  }, [data, formUtil])
+
+  useEffect(() => {
+    setAppVisibility(data.visibility || Visibility.PRIVATE)
   }, [data])
+
+  const handleVisibilityChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAppVisibility(event.target.value as Visibility)
+  }
+
+  const handleTag = (e) => {
+    const labelTags = e.target.value
+    const tags = labelTags
+      .split(',')
+      .map((l) => l.trim())
+      .filter(Boolean)
+
+    if (labelTags.split(',').length > 1 && tags.length > 0) {
+      append(tags[0])
+      setLabels('')
+    } else {
+      setLabels(labelTags)
+    }
+  }
 
   return (
     <>
@@ -58,148 +92,142 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
           <Grid item md={6}>
             <Box pb={1.5}>
               <Typography variant="h6" display="block" gutterBottom>
-                {t('appSettings.marketplaceSettingsSubSectionTitle')}
-              </Typography>
-            </Box>
-
-            <Box pb={5}>
-              <Typography
-                variant="body2"
-                display="block"
-                gutterBottom
-                style={{ color: palette.text.secondary }}
-              >
-                {t('appSettings.appLabelsSubSectionDescription')}
+                {t('appSettings.labelsFieldLabel')}
               </Typography>
             </Box>
           </Grid>
         </Grid>
 
-        {/* 'App direct URL & labels' subsection */}
-        <Grid item md={6}>
+        {/* 'Labels' subsection */}
+        <Grid item md={12}>
           <Box width={1}>
-            <Controller
-              control={formUtil.control}
-              name="appDirectURL"
-              render={({ field }) => (
-                <TextField
-                  className={classes.inputFields}
-                  error={!!formUtil.errors.appDirectURL}
-                  {...field}
-                  fullWidth
-                  helperText={formUtil.errors.appDirectURL?.message}
-                  label={t('appSettings.appDirectURLFieldLabel')}
-                  margin="dense"
-                  type="text"
-                  variant="outlined"
-                />
-              )}
-              rules={{
-                validate: (value) =>
-                  validateURI(value) || t('appSettings.invalidURL'),
+            <fieldset
+              className={clsx(classes.inputFields, {
+                [classes.disabledLabels]: userRole !== adminRole,
+              })}
+              style={{
+                border: `1px solid ${palette.divider}`,
+                borderRadius: shape.borderRadius,
+                marginBottom: spacing(1),
               }}
-            />
-          </Box>
-
-          <Box width={1}>
-            <Controller
-              control={formUtil.control}
-              name="appLabels"
-              render={({ field }) => (
-                <TextField
-                  className={clsx(classes.inputFields, {
-                    [classes.disabledInputField]: userRole !== adminRole,
-                  })}
+            >
+              <legend>
+                <Typography style={{ color: palette.label }} variant="caption">
+                  {t('appSettings.labelsFieldLabel')}
+                </Typography>
+              </legend>
+              {fields.map((field, index) => (
+                <Chip
+                  color="secondary"
                   disabled={userRole !== adminRole}
-                  {...field}
-                  fullWidth
-                  helperText={t('appSettings.labelsFieldHelperText')}
-                  label={t('appSettings.labelsFieldLabel')}
-                  margin="dense"
-                  type="text"
-                  variant="outlined"
+                  key={field.id}
+                  label={formUtil.getValues(`labels.${index}` as const)}
+                  onDelete={() => remove(index)}
+                  style={{ margin: spacing(1) }}
                 />
-              )}
-            />
+              ))}
+              <TextField
+                className={clsx(classes.inputFields, {
+                  [classes.disabledInputField]: userRole !== adminRole,
+                })}
+                color="secondary"
+                disabled={userRole !== adminRole}
+                fullWidth
+                InputProps={{
+                  disableUnderline: true,
+                }}
+                margin="dense"
+                onChange={handleTag}
+                style={{ marginBottom: spacing(1) }}
+                type="text"
+                value={labels}
+                variant="standard"
+              />
+            </fieldset>
+            <legend style={{ marginBottom: spacing(3) }}>
+              <Typography style={{ color: palette.label }} variant="caption">
+                {t('appSettings.labelsFieldHelperText')}
+              </Typography>
+            </legend>
           </Box>
         </Grid>
 
         {/* 'App visibility' subsection */}
-        <Grid item md={6}>
-          <Controller
-            control={formUtil.control}
-            name="appVisibility"
-            render={({ field }) => (
-              <FormControl component="fieldset">
-                <RadioGroup aria-label="app visibility" name="appVisibility">
-                  <Box
-                    className={classes.appVisibilityContainer}
-                    flexDirection="column"
-                    onClick={() => {
-                      formUtil.setValue('appVisibility', 'private', {
-                        shouldDirty: appVisibility === 'public',
-                      })
-                      setAppVisibility('private')
+        <Grid container item>
+          <Grid container item md={12}>
+            <Grid item md={6}>
+              <Box pb={1.5}>
+                <Typography variant="h6" display="block" gutterBottom>
+                  {t('appSettings.marketplaceSettings.visibility.title')} *
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item md={6}>
+              <Box pb={5}>
+                <Typography
+                  variant="body2"
+                  display="block"
+                  gutterBottom
+                  style={{ color: palette.text.secondary }}
+                >
+                  {t('appSettings.marketplaceSettings.visibility.description')}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+          <Grid item md={12}>
+            <Controller
+              control={formUtil.control}
+              defaultValue={Visibility.PRIVATE}
+              name="visibility"
+              render={({ field }) => (
+                <FormControl component="fieldset" style={{ width: '100%' }}>
+                  <RadioGroup
+                    aria-label="app visibility"
+                    name="visibility"
+                    onChange={handleVisibilityChange}
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}
-                    mb={1.5}
-                    p={1}
+                    value={visibility}
                   >
-                    <Box>
-                      <FormControlLabel
-                        checked={appVisibility === 'private'}
-                        control={<Radio color="primary" />}
-                        {...field}
-                        label={t('appSettings.privateMarketplaceAppTitle')}
-                        labelPlacement="end"
-                        value="private"
-                      />
-                    </Box>
-                    <Box pl={3.75} pb={1.5}>
-                      <Typography
-                        variant="body2"
-                        display="block"
-                        style={{ color: palette.text.secondary }}
-                      >
-                        {t('appSettings.privateMarketplaceAppSubtitle')}
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box
-                    className={classes.appVisibilityContainer}
-                    flexDirection="column"
-                    onClick={() => {
-                      formUtil.setValue('appVisibility', 'public', {
-                        shouldDirty: appVisibility === 'private',
-                      })
-                      setAppVisibility('public')
-                    }}
-                    mb={1.5}
-                    p={1}
-                  >
-                    <Box>
-                      <FormControlLabel
-                        checked={appVisibility === 'public'}
-                        control={<Radio color="primary" />}
-                        {...field}
-                        label={t('appSettings.publicMarketplaceAppTitle')}
-                        labelPlacement="end"
-                        value="public"
-                      />
-                    </Box>
-                    <Box pl={3.75} pb={1.5}>
-                      <Typography
-                        variant="body2"
-                        display="block"
-                        style={{ color: palette.text.secondary }}
-                      >
-                        {t('appSettings.publicMarketplaceAppSubtitle')}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </RadioGroup>
-              </FormControl>
-            )}
-          />
+                    <RadioBox
+                      description={t(
+                        'appSettings.privateMarketplaceAppSubtitle'
+                      )}
+                      label={t('appSettings.privateMarketplaceAppTitle')}
+                      {...field}
+                      onClick={() => {
+                        formUtil.setValue('visibility', Visibility.PRIVATE, {
+                          shouldDirty: visibility === Visibility.PUBLIC,
+                        })
+                        setAppVisibility(Visibility.PRIVATE)
+                      }}
+                      selected={visibility}
+                      value={Visibility.PRIVATE}
+                    />
+                    <RadioBox
+                      description={t(
+                        'appSettings.publicMarketplaceAppSubtitle'
+                      )}
+                      {...field}
+                      label={t('appSettings.publicMarketplaceAppTitle')}
+                      onClick={() => {
+                        formUtil.setValue('visibility', Visibility.PUBLIC, {
+                          shouldDirty: visibility === Visibility.PRIVATE,
+                        })
+                        setAppVisibility(Visibility.PUBLIC)
+                      }}
+                      selected={visibility}
+                      value={Visibility.PUBLIC}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              )}
+              rules={{ required: true }}
+            />
+          </Grid>
         </Grid>
       </Grid>
 

@@ -2,6 +2,7 @@ import React from 'react'
 
 import { HookSections } from '@apisuite/extension-ui-types/v1'
 
+import { ApplicationURL } from '../components/ExternalFormSection'
 import MarketplaceAppSettings from '../components/MarketplaceAppSettings'
 import SubbedMarketplaceAppCards from '../components/SubbedMarketplaceAppCards'
 
@@ -10,6 +11,7 @@ type SectionsConfig = {
 }
 
 const sections: SectionsConfig = {
+  ['APPLICATION_NAV_FORM_SECTION']: ApplicationURL,
   ['MARKETPLACE_APP_SETTINGS']: MarketplaceAppSettings,
   ['SUBBED_MARKETPLACE_APPS']: SubbedMarketplaceAppCards,
 }
