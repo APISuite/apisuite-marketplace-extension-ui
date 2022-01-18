@@ -37,14 +37,14 @@ import {
   UnsubscribeToMarketplaceAppAction,
 } from './types'
 
-import { API_URL, MARKETPLACE_API_URL } from '../../constants/endpoints'
+import { getApiUrl, getMarketplaceApiUrl } from '../../constants/endpoints'
 import appDetailsMapping from '../../util/appDetailsMapping'
 
 export function* getAllMarketplaceAppsActionSaga(
   action: GetAllMarketplaceAppsAction
 ) {
   try {
-    const getAllMarketplaceAppsActionUrl = `${API_URL}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`
+    const getAllMarketplaceAppsActionUrl = `${getApiUrl()}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`
 
     const response = yield call(request, {
       url: getAllMarketplaceAppsActionUrl,
@@ -66,7 +66,7 @@ export function* getAllMarketplaceAppsActionSaga(
 
 export function* getAllMarketplaceLabelsActionSaga() {
   try {
-    const getAllMarketplaceLabelsActionUrl = `${API_URL}/apps/public/labels`
+    const getAllMarketplaceLabelsActionUrl = `${getApiUrl()}/apps/public/labels`
 
     const response = yield call(request, {
       url: getAllMarketplaceLabelsActionUrl,
@@ -84,7 +84,7 @@ export function* getAllMarketplaceLabelsActionSaga() {
 
 export function* getAllMarketplacePublishersActionSaga() {
   try {
-    const getAllMarketplacePublishersActionUrl = `${API_URL}/organizations/publishers`
+    const getAllMarketplacePublishersActionUrl = `${getApiUrl()}/organizations/publishers`
 
     const response = yield call(request, {
       url: getAllMarketplacePublishersActionUrl,
@@ -104,7 +104,7 @@ export function* getAllSubbedMarketplaceAppsActionSaga(
   action: GetAllSubbedMarketplaceAppsAction
 ) {
   try {
-    const getAllSubbedMarketplaceAppsActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions`
+    const getAllSubbedMarketplaceAppsActionUrl = `${getMarketplaceApiUrl()}/users/${action.userID}/subscriptions`
 
     const response = yield call(request, {
       url: getAllSubbedMarketplaceAppsActionUrl,
@@ -137,7 +137,7 @@ export function* subscribeToMarketplaceAppActionSaga(
   action: SubscribeToMarketplaceAppAction
 ) {
   try {
-    const subscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`
+    const subscribeToMarketplaceAppActionUrl = `${getMarketplaceApiUrl()}/users/${action.userID}/subscriptions/${action.appID}`
 
     yield call(request, {
       url: subscribeToMarketplaceAppActionUrl,
@@ -157,7 +157,7 @@ export function* unsubscribeToMarketplaceAppActionSaga(
   action: UnsubscribeToMarketplaceAppAction
 ) {
   try {
-    const unsubscribeToMarketplaceAppActionUrl = `${MARKETPLACE_API_URL}/users/${action.userID}/subscriptions/${action.appID}`
+    const unsubscribeToMarketplaceAppActionUrl = `${getMarketplaceApiUrl()}/users/${action.userID}/subscriptions/${action.appID}`
 
     yield call(request, {
       url: unsubscribeToMarketplaceAppActionUrl,
@@ -194,7 +194,7 @@ export function* getFilteredMarketplaceAppsActionSaga(
 ) {
   try {
     const pagination = `page=${action.filters.page}&pageSize=${action.filters.pageSize}`
-    let appsURL = `${API_URL}/apps/public?${pagination}`
+    let appsURL = `${getApiUrl()}/apps/public?${pagination}`
 
     const orgIDParams = buildQueryParameters(action.filters.org_id, 'org_id')
     const labelParams = buildQueryParameters(action.filters.label, 'label')
@@ -236,7 +236,7 @@ export function* getFilteredMarketplaceAppsActionSaga(
 
 export function* getAppDetailsActionSaga(action: GetAppDetailsAction) {
   try {
-    const getAppDetailsActionUrl = `${API_URL}/apps/public/${action.appID}`
+    const getAppDetailsActionUrl = `${getApiUrl()}/apps/public/${action.appID}`
 
     const response = yield call(request, {
       url: getAppDetailsActionUrl,
@@ -256,7 +256,7 @@ export function* getPublisherAppsSampleActionSaga(
   action: GetPublisherAppsSampleAction
 ) {
   try {
-    const getPublisherAppsSampleActionUrl = `${API_URL}/apps/public?org_id=${action.orgID}&sort_by=updated&order=desc&page=1&pageSize=4`
+    const getPublisherAppsSampleActionUrl = `${getApiUrl()}/apps/public?org_id=${action.orgID}&sort_by=updated&order=desc&page=1&pageSize=4`
 
     const response = yield call(request, {
       url: getPublisherAppsSampleActionUrl,
@@ -290,7 +290,7 @@ export function* getPublisherDetailsActionSaga(
 ) {
   try {
     const publisherDetails = yield call(request, {
-      url: `${API_URL}/organizations/publishers/${action.publisherID}`,
+      url: `${getApiUrl()}/organizations/publishers/${action.publisherID}`,
       method: 'GET',
     })
 
