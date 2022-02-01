@@ -17,7 +17,7 @@ const marketplaceSelector = createSelector(
       retrievedAllMarketplacePublishers:
         marketplace.retrievedAllMarketplacePublishers,
       pagination: marketplace.pagination,
-      userCurrentOrg: profile.profile.current_org,
+      userCurrentOrg: profile.profile.currentOrg,
       userProfile: profile.profile.user,
     }
   }
