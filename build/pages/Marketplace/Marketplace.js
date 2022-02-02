@@ -283,7 +283,7 @@ const Marketplace = () => {
                     generateCTACard(ROLES.baseUser.value),
                 userProfile.id &&
                     Object.keys(userCurrentOrg).length !== 0 &&
-                    userCurrentOrg.role.id !== ROLES.baseUser.value &&
+                    userCurrentOrg.role.name !== ROLES.baseUser.value &&
                     generateCTACard(userCurrentOrg.role.name))));
     };
     const displayNoMarketplaceApps = () => {
