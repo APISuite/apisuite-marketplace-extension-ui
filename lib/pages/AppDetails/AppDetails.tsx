@@ -56,7 +56,7 @@ const AppDetails: React.FC = () => {
   of all information we presently have on a user's marketplace app subscriptions. This will come in handy when
   we want to check if the currently selected app is one that the user's already subscribed to. */
   useEffect(() => {
-    if (userProfile && userProfile.id) {
+    if (userProfile && userProfile.id > 0) {
       const userID = parseInt(userProfile.id)
 
       dispatch(getAllSubbedMarketplaceAppsAction(userID))
@@ -91,7 +91,7 @@ const AppDetails: React.FC = () => {
   }, [allSubbedMarketplaceApps])
 
   const getSubscribeButtonTranslation = () => {
-    if (userProfile && userProfile.id) {
+    if (userProfile && userProfile.id > 0) {
       return isUserSubbedToApp
         ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
         : t('appMarketplace.appDetails.appSubscribeButton')
@@ -100,7 +100,7 @@ const AppDetails: React.FC = () => {
   }
 
   const handleNotLoggedUserSubscription = () => {
-    if (userProfile && userProfile.id) {
+    if (userProfile && userProfile.id > 0) {
       handleMarketplaceAppSubscription()
     } else {
       history.push(
