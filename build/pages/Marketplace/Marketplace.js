@@ -276,12 +276,12 @@ const Marketplace = () => {
                     setPagination())) : (React.createElement(Box, { pt: 5 },
                     React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.noAppsToDisplayText'))))) : (React.createElement(Box, { pt: 5 },
                     React.createElement(Typography, { variant: "body1", className: classes.noAppsToDisplay }, t('appMarketplace.retrievingAppsToDisplayText')))),
-                !userProfile.id && generateCTACard(''),
-                userProfile.id &&
+                userProfile.id <= 0 && generateCTACard(''),
+                userProfile.id > 0 &&
                     (Object.keys(userCurrentOrg).length === 0 ||
                         userCurrentOrg.role.name === ROLES.baseUser.value) &&
                     generateCTACard(ROLES.baseUser.value),
-                userProfile.id &&
+                userProfile.id > 0 &&
                     Object.keys(userCurrentOrg).length !== 0 &&
                     userCurrentOrg.role.name !== ROLES.baseUser.value &&
                     generateCTACard(userCurrentOrg.role.name))));
