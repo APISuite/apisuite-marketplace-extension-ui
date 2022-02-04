@@ -589,18 +589,18 @@ const Marketplace: React.FC = () => {
           )}
 
           {/* Unauthorised user */}
-          {!userProfile.id && generateCTACard('')}
+          {userProfile.id <= 0 && generateCTACard('')}
 
           {/* Base user */}
-          {userProfile.id &&
+          {userProfile.id > 0 &&
             (Object.keys(userCurrentOrg).length === 0 ||
               userCurrentOrg.role.name === ROLES.baseUser.value) &&
             generateCTACard(ROLES.baseUser.value)}
 
           {/* Admin, org owner, or developer */}
-          {userProfile.id &&
+          {userProfile.id > 0 &&
             Object.keys(userCurrentOrg).length !== 0 &&
-            userCurrentOrg.role.id !== ROLES.baseUser.value &&
+            userCurrentOrg.role.name !== ROLES.baseUser.value &&
             generateCTACard(userCurrentOrg.role.name)}
 
           {/* FIXME: Code is not needed for now, and should be replaced whenever feature flags are ready.
