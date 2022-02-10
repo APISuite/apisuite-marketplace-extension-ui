@@ -18,11 +18,11 @@ export type ExternalFormSectionProps = {
     setValue: UseFormSetValue<FormFields>
   }
   data: {
-    directURL: string
+    directUrl: string
   }
   userRole: string
 }
 
 export type FormFields = {
-  directURL: string
+  directUrl: string
 }

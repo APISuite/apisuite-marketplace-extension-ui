@@ -15,6 +15,7 @@ import useStyles from '../MarketplaceAppSettings/styles'
 
 export const ApplicationURL: React.FC<ExternalFormSectionProps> = ({
   formUtil,
+  data,
 }) => {
   const classes = useStyles()
 
@@ -64,14 +65,15 @@ export const ApplicationURL: React.FC<ExternalFormSectionProps> = ({
           <Box width={1}>
             <Controller
               control={formUtil.control}
-              name="directURL"
+              defaultValue={data.directUrl || ''}
+              name="directUrl"
               render={({ field }) => (
                 <TextField
                   className={classes.inputFields}
-                  error={!!formUtil.errors.directURL}
+                  error={!!formUtil.errors.directUrl}
                   {...field}
                   fullWidth
-                  helperText={formUtil.errors.directURL?.message}
+                  helperText={formUtil.errors.directUrl?.message}
                   label={t('appSettings.appDirectURLFieldLabel')}
                   margin="dense"
                   type="text"
