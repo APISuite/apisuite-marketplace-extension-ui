@@ -1,5 +1,5 @@
 import { Control, DeepMap, FieldError, UseFormGetValues, UseFormRegister, UseFormReset, UseFormSetValue } from 'react-hook-form/dist/types';
-export declare type MarketplaceAppSettingsProps = {
+export declare type ExternalFormSectionProps = {
     formUtil: {
         control: Control;
         errors: DeepMap<FormFields, FieldError>;
@@ -9,17 +9,10 @@ export declare type MarketplaceAppSettingsProps = {
         setValue: UseFormSetValue<FormFields>;
     };
     data: {
-        directURL: string;
-        labels: string[];
-        visibility: Visibility;
+        directUrl: string;
     };
     userRole: string;
 };
 export declare type FormFields = {
-    labels: string[];
-    visibility: string;
+    directUrl: string;
 };
-export declare enum Visibility {
-    PUBLIC = "public",
-    PRIVATE = "private"
-}

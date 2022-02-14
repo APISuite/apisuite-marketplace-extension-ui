@@ -5,7 +5,7 @@ export default makeStyles((theme) => ({
         fontSize: 14,
         fontWeight: 400,
         lineHeight: '17px',
-        marginBottom: 40,
+        marginBottom: theme.spacing(5),
     },
     disabledInputField: {
         // Disabled text field's label styles
@@ -16,12 +16,15 @@ export default makeStyles((theme) => ({
         '& .MuiInputBase-root': {
             '& .MuiInputBase-input': {
                 backgroundColor: 'rgba(0, 0, 0, 0.12)',
-                borderRadius: 4,
             },
         },
     },
+    disabledLabels: {
+        backgroundColor: 'rgba(0, 0, 0, 0.12)',
+        borderRadius: theme.shape.borderRadius,
+    },
     inputFields: {
-        marginBottom: 25,
+        marginBottom: theme.spacing(3),
         marginTop: 0,
         maxWidth: 400,
         width: '100%',
@@ -57,7 +60,7 @@ export default makeStyles((theme) => ({
         },
     },
     leftSubSectionContainer: {
-        marginRight: 40,
+        marginRight: theme.spacing(5),
         width: 460,
     },
     marketplaceSettingsSubSectionTitle: {
@@ -65,7 +68,7 @@ export default makeStyles((theme) => ({
         fontSize: 16,
         fontWeight: 500,
         lineHeight: '20px',
-        marginBottom: 37.5,
+        marginBottom: theme.spacing(4),
     },
     sectionSeparator: {
         border: `1px solid ${theme.palette.grey[200]}`,
