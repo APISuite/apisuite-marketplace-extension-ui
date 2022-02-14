@@ -31,7 +31,14 @@ export const ApplicationURL: React.FC<ExternalFormSectionProps> = ({
     const stringURI = uri ? uri.toString() : null
 
     if (stringURI === null || stringURI.length === 0) return true
-    if (stringURI.length > 0) return isValidURL(stringURI)
+    if (stringURI.length > 0) {
+      try {
+        new URL(stringURI)
+        return isValidURL(stringURI)
+      } catch {
+        return false
+      }
+    }
 
     return false
   }

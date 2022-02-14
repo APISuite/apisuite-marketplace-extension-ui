@@ -16,7 +16,7 @@
         "labelsFieldLabel": "Labels",
         "labelsFieldHelperText": "Each provided label should be separated by a comma.",
         "appDirectURLFieldLabel": "Application URL",
-        "invalidURL": "The provided URL is not valid.",
+        "invalidURL": "The provided URL is not valid. The URL must start with http/https.",
         "formSection": {
           "appURL": {
             "description": "Add a URL for users to directly access your application.",
