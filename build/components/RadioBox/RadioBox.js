@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, FormControlLabel, Radio, Typography, useTheme, } from '@apisuite/fe-base';
 import clsx from 'clsx';
 import useStyles from './styles';
-export const RadioBox = ({ description, disabled = false, label, selected, value, onClick, ...rest }) => {
+export const RadioBox = ({ description, disabled = false, label, onClick, selected, value, ...rest }) => {
     const classes = useStyles();
     const { palette } = useTheme();
     return (React.createElement(Box, { className: clsx(classes.radioBox, { [classes.enabled]: !disabled }), onClick: !disabled ? onClick : undefined },

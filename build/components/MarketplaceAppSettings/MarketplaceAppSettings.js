@@ -15,7 +15,8 @@ const MarketplaceAppSettings = ({ formUtil, data, userRole, }) => {
     // FIXME this role should come from a common place
     const adminRole = 'admin';
     const [visibility, setAppVisibility] = useState(Visibility.PRIVATE);
-    const [labels, setLabels] = useState('');
+    const [labels, setLabels] = useState([]);
+    const [label, setLabel] = useState('');
     const { append, fields, remove } = useFieldArray({
         name: 'labels',
         control: formUtil.control,
@@ -23,20 +24,23 @@ const MarketplaceAppSettings = ({ formUtil, data, userRole, }) => {
     useEffect(() => {
         const vi = formUtil.getValues('visibility');
         const lb = formUtil.getValues('labels');
-        if (!vi && !lb) {
-            formUtil.register('visibility', { required: true });
+        if (!lb) {
             formUtil.register('labels');
         }
         if (!vi) {
-            formUtil.setValue('visibility', data.visibility || Visibility.PRIVATE);
+            formUtil.register('visibility', { required: true });
         }
         if (!Array.isArray(lb) || !lb.length) {
-            if (data.labels && data.labels.length) {
+            if (data.labels &&
+                data.labels.length &&
+                JSON.stringify(data.labels) !== JSON.stringify(labels)) {
                 append(data.labels);
+                setLabels(data.labels);
             }
         }
     }, [data, formUtil]);
     useEffect(() => {
+        formUtil.setValue('visibility', data.visibility || Visibility.PRIVATE);
         setAppVisibility(data.visibility || Visibility.PRIVATE);
     }, [data]);
     const handleVisibilityChange = (event) => {
@@ -50,10 +54,10 @@ const MarketplaceAppSettings = ({ formUtil, data, userRole, }) => {
             .filter(Boolean);
         if (labelTags.split(',').length > 1 && tags.length > 0) {
             append(tags[0]);
-            setLabels('');
+            setLabel('');
         }
         else {
-            setLabels(labelTags);
+            setLabel(labelTags);
         }
     };
     return (React.createElement(React.Fragment, null,
@@ -78,7 +82,7 @@ const MarketplaceAppSettings = ({ formUtil, data, userRole, }) => {
                                 [classes.disabledInputField]: userRole !== adminRole,
                             }), color: "secondary", disabled: userRole !== adminRole, fullWidth: true, InputProps: {
                                 disableUnderline: true,
-                            }, margin: "dense", onChange: handleTag, style: { marginBottom: spacing(1) }, type: "text", value: labels, variant: "standard" })),
+                            }, margin: "dense", onChange: handleTag, style: { marginBottom: spacing(1) }, type: "text", value: label, variant: "standard" })),
                     React.createElement("legend", { style: { marginBottom: spacing(3) } },
                         React.createElement(Typography, { style: { color: palette.label }, variant: "caption" }, t('appSettings.labelsFieldHelperText'))))),
             React.createElement(Grid, { container: true, item: true },
