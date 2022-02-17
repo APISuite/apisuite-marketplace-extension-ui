@@ -14,9 +14,9 @@ export const RadioBox: React.FC<RadioBoxProps> = ({
   description,
   disabled = false,
   label,
+  onClick,
   selected,
   value,
-  onClick,
   ...rest
 }) => {
   const classes = useStyles()
