@@ -14,7 +14,7 @@
         "publicMarketplaceAppTitle": "Public",
         "publicMarketplaceAppSubtitle": "This application is eligible for display on the Marketplace.",
         "labelsFieldLabel": "Labels",
-        "labelsFieldHelperText": "Each provided label should be separated by a comma.",
+        "labelsFieldHelperText": "All inputed labels should be followed by a comma.",
         "appDirectURLFieldLabel": "Application URL",
         "invalidURL": "The provided URL is not valid. The URL must start with http/https.",
         "formSection": {

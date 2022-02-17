@@ -35,7 +35,9 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
   const [visibility, setAppVisibility] = useState<Visibility>(
     Visibility.PRIVATE
   )
-  const [labels, setLabels] = useState('')
+
+  const [labels, setLabels] = useState<string[]>([])
+  const [label, setLabel] = useState('')
 
   const { append, fields, remove } = useFieldArray({
     name: 'labels',
@@ -45,21 +47,26 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
   useEffect(() => {
     const vi = formUtil.getValues('visibility')
     const lb = formUtil.getValues('labels')
-    if (!vi && !lb) {
-      formUtil.register('visibility', { required: true })
+    if (!lb) {
       formUtil.register('labels')
     }
     if (!vi) {
-      formUtil.setValue('visibility', data.visibility || Visibility.PRIVATE)
+      formUtil.register('visibility', { required: true })
     }
     if (!Array.isArray(lb) || !lb.length) {
-      if (data.labels && data.labels.length) {
+      if (
+        data.labels &&
+        data.labels.length &&
+        JSON.stringify(data.labels) !== JSON.stringify(labels)
+      ) {
         append(data.labels)
+        setLabels(data.labels)
       }
     }
   }, [data, formUtil])
 
   useEffect(() => {
+    formUtil.setValue('visibility', data.visibility || Visibility.PRIVATE)
     setAppVisibility(data.visibility || Visibility.PRIVATE)
   }, [data])
 
@@ -78,9 +85,9 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
 
     if (labelTags.split(',').length > 1 && tags.length > 0) {
       append(tags[0])
-      setLabels('')
+      setLabel('')
     } else {
-      setLabels(labelTags)
+      setLabel(labelTags)
     }
   }
 
@@ -140,7 +147,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
                 onChange={handleTag}
                 style={{ marginBottom: spacing(1) }}
                 type="text"
-                value={labels}
+                value={label}
                 variant="standard"
               />
             </fieldset>
