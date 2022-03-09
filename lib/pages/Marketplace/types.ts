@@ -143,6 +143,10 @@ export interface AppDetails {
   updatedAt: string
   websiteUrl: string
   youtubeUrl: string
+  appType: {
+    id: string
+    type: string
+  }
 }
 
 export interface PublisherDetails {

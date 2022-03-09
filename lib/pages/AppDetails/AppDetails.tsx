@@ -111,6 +111,12 @@ const AppDetails: React.FC = () => {
     }
   }
 
+  const configureAppConnector = () => {
+    history.push(
+      `${encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)}`
+    )
+  }
+
   const handleMarketplaceAppSubscription = () => {
     const userID = parseInt(userProfile.id)
     const selectedAppID = selectedAppDetails.id
@@ -194,7 +200,16 @@ const AppDetails: React.FC = () => {
                 >
                   {getSubscribeButtonTranslation()}
                 </Button>
-
+                {isUserSubbedToApp &&
+                  selectedAppDetails &&
+                  selectedAppDetails.appType.type == 'blueprint' && (
+                    <Button
+                      className={classes.configureAppConnectorButton}
+                      onClick={configureAppConnector}
+                    >
+                      {t('appMarketplace.appDetails.configureAppConnector')}
+                    </Button>
+                  )}
                 {selectedAppDetails && selectedAppDetails.directUrl && (
                   <Box mt={2}>
                     <Link
