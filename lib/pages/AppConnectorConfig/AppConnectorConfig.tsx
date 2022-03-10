@@ -145,7 +145,9 @@ const AppConnectorConfig: React.FC = () => {
           />
         </Box>
         <Box>
-          <Button variant="contained">{t('appMarketplace.appConnectorConfig.back')}</Button>
+          <Button variant="contained">
+            {t('appMarketplace.appConnectorConfig.back')}
+          </Button>
         </Box>
       </section>
     </main>
