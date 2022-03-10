@@ -10,6 +10,7 @@ import {
   Icon,
   Switch,
   FormControlLabel,
+  Button,
 } from '@apisuite/fe-base'
 import { getAppConnectorConfigAction } from '../Marketplace/ducks'
 import useStyles from './styles'
@@ -142,6 +143,9 @@ const AppConnectorConfig: React.FC = () => {
             control={<Switch name="checkedA" />}
             label={t('appMarketplace.appConnectorConfig.connectionOn')}
           />
+        </Box>
+        <Box>
+          <Button variant="contained">{t('appMarketplace.appConnectorConfig.back')}</Button>
         </Box>
       </section>
     </main>
