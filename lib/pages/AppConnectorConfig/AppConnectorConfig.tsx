@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
-
-import { useTranslation } from '@apisuite/fe-base'
-
+import {
+  Box,
+  Typography,
+  useTranslation,
+  TextField,
+  Grid,
+  Icon,
+  Switch,
+  FormControlLabel,
+} from '@apisuite/fe-base'
 import { getAppConnectorConfigAction } from '../Marketplace/ducks'
 import useStyles from './styles'
 import appConnectorConfigSelector from './selector'
+import { Alert } from '@material-ui/lab'
 
 const AppConnectorConfig: React.FC = () => {
   const classes = useStyles()
@@ -48,7 +56,94 @@ const AppConnectorConfig: React.FC = () => {
 
   return (
     <main>
-      <section className={classes.appDetailsContainer}></section>
+      <section className={classes.appDetailsContainer}>
+        <Grid container spacing={3}>
+          <Grid item xs={8}>
+            <Typography variant="h3">
+              {t('appMarketplace.appConnectorConfig.title', {
+                appName: selectedAppDetails.name,
+              })}
+            </Typography>
+            <Typography variant="body1">
+              {t('appMarketplace.appConnectorConfig.description', {
+                appName: selectedAppDetails.name,
+              })}
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Alert severity="success">
+              {t('appMarketplace.appConnectorConfig.alerts.upToDate', {
+                appName: selectedAppDetails.name,
+              })}
+            </Alert>
+            <Alert severity="success">
+              {t('appMarketplace.appConnectorConfig.alerts.outdated', {
+                appName: selectedAppDetails.name,
+              })}
+            </Alert>
+          </Grid>
+        </Grid>
+        <Box>
+          <Typography variant="h4">
+            {t('appMarketplace.appConnectorConfig.apiEndpointTitle')}
+          </Typography>
+          <TextField
+            id="api_endpoint"
+            name="api_endpoint"
+            label={t('appMarketplace.appConnectorConfig.apiEndpointLabel')}
+          />
+        </Box>
+        <Box>
+          <Typography variant="h4">
+            {t('appMarketplace.appConnectorConfig.fieldMatching')}
+          </Typography>
+          <Typography variant="body1">
+            {t('appMarketplace.appConnectorConfig.fieldMatchingDescription', {
+              appName: selectedAppDetails.name,
+            })}
+          </Typography>
+        </Box>
+        <Grid container spacing={3}>
+          <Grid item xs={5}>
+            <Typography variant="body1">
+              {t('appMarketplace.appConnectorConfig.appFields', {
+                appName: selectedAppDetails.name,
+              })}
+            </Typography>
+          </Grid>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={5}>
+            <Typography variant="body1">
+              {t('appMarketplace.appConnectorConfig.apiFields')}
+            </Typography>
+          </Grid>
+          <Grid item xs={5}>
+            <TextField
+              label={t('appMarketplace.appConnectorConfig.appField')}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Icon>ArrowRightAlt</Icon>
+          </Grid>
+          <Grid item xs={5}>
+            <TextField
+              label={t('appMarketplace.appConnectorConfig.apiField')}
+            />
+          </Grid>
+        </Grid>
+        <Box>
+          <Typography variant="h4">
+            {t('appMarketplace.appConnectorConfig.connectionStatus')}
+          </Typography>
+          <Typography variant="body1">
+            {t('appMarketplace.appConnectorConfig.connectionStatusDescription')}
+          </Typography>
+          <FormControlLabel
+            control={<Switch name="checkedA" />}
+            label={t('appMarketplace.appConnectorConfig.connectionOn')}
+          />
+        </Box>
+      </section>
     </main>
   )
 }
