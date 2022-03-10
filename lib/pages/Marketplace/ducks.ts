@@ -58,6 +58,10 @@ const initialState: MarketplaceStore = {
     updatedAt: '',
     websiteUrl: '',
     youtubeUrl: '',
+    appType: {
+      id: '',
+      type: '',
+    },
   },
   retrievedSelectedAppDetails: false,
 
@@ -118,6 +122,12 @@ export const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS =
 export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
 export const GET_APP_DETAILS_ACTION_SUCCESS =
   'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS'
+
+// 'App connector config' view
+export const GET_APP_CONNECTOR_CONFIG_ACTION =
+  'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION'
+export const GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS =
+  'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS'
 
 export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION =
   'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION'
@@ -385,6 +395,15 @@ export function getAppDetailsAction(appID: string) {
 
 export function getAppDetailsActionSuccess(appDetails: AppDetails) {
   return { type: GET_APP_DETAILS_ACTION_SUCCESS, appDetails }
+}
+
+// 'App connector config' view
+export function getAppConnectorConfigAction(appID: string) {
+  return { type: GET_APP_CONNECTOR_CONFIG_ACTION, appID }
+}
+
+export function getAppConnectorConfigActionSuccess(appDetails: AppDetails) {
+  return { type: GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS, appDetails }
 }
 
 export function subscribeToMarketplaceAppAction(userID: number, appID: number) {

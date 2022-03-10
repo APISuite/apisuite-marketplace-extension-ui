@@ -4,6 +4,7 @@ import { BASE_URI } from '../helpers/constants'
 import AppDetails from '../pages/AppDetails'
 import Marketplace from '../pages/Marketplace'
 import { PublisherDetails } from '../pages/PublisherDetails'
+import AppConnectorConfig from '../pages/AppConnectorConfig'
 
 const pagesConfig: PageEntry[] = [
   {
@@ -18,6 +19,12 @@ const pagesConfig: PageEntry[] = [
     component: AppDetails,
     exact: true,
     path: `${BASE_URI}/app-details/:appID`,
+  },
+  {
+    auth: true,
+    component: AppConnectorConfig,
+    exact: true,
+    path: `${BASE_URI}/app-connector/:appID`,
   },
   {
     auth: false,
