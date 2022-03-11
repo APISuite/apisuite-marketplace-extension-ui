@@ -23,21 +23,21 @@ import {
   subscribeToMarketplaceAppActionSuccess,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   unsubscribeToMarketplaceAppActionSuccess,
-  getPublisherDetailsActionError,
+  getPublisherDetailsActionError, getAppConnectorConfigActionSuccess, GET_APP_CONNECTOR_CONFIG_ACTION
 } from './ducks'
 
 import {
   GetAllMarketplaceAppsAction,
-  GetAllSubbedMarketplaceAppsAction,
+  GetAllSubbedMarketplaceAppsAction, GetAppConnectorConfigAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
   GetPublisherAppsSampleAction,
   GetPublisherDetailsAction,
   SubscribeToMarketplaceAppAction,
-  UnsubscribeToMarketplaceAppAction,
+  UnsubscribeToMarketplaceAppAction
 } from './types'
 
-import { getApiUrl, getMarketplaceApiUrl } from '../../constants/endpoints'
+import { getApiUrl, getAppConnectorApiUrl, getMarketplaceApiUrl } from '../../constants/endpoints'
 import appDetailsMapping from '../../util/appDetailsMapping'
 
 export function* getAllMarketplaceAppsActionSaga(
@@ -260,6 +260,28 @@ export function* getAppDetailsActionSaga(action: GetAppDetailsAction) {
   }
 }
 
+export function* getAppConnectorConfigActionSaga(
+  action: GetAppConnectorConfigAction
+) {
+  try {
+    const getAppConnectorConfigActionUrl = `${getAppConnectorApiUrl()}/apps/getid/${
+      action.appID
+    }`
+    console.log('app connector api url:', getAppConnectorApiUrl())
+    const response = yield call(request, {
+      url: getAppConnectorConfigActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(getAppConnectorConfigActionSuccess(response))
+  } catch (error) {
+    console.log('Error fetching the selected app connector config')
+  }
+}
+
 export function* getPublisherAppsSampleActionSaga(
   action: GetPublisherAppsSampleAction
 ) {
@@ -346,6 +368,10 @@ function* rootSaga() {
     getPublisherAppsSampleActionSaga
   )
   yield takeLatest(GET_PUBLISHER_DETAILS_ACTION, getPublisherDetailsActionSaga)
+  yield takeLatest(
+    GET_APP_CONNECTOR_CONFIG_ACTION,
+    getAppConnectorConfigActionSaga
+  )
 }
 
 export default rootSaga

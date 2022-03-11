@@ -165,7 +165,7 @@ const AppDetails: React.FC = () => {
     if (retrievedSelectedAppDetails) {
       dispatch(
         getPublisherAppsSampleAction(
-          selectedAppDetails.orgId,
+          selectedAppDetails.org_id,
           selectedAppDetails.id
         )
       )

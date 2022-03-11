@@ -25,6 +25,8 @@ import {
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+  GET_APP_CONNECTOR_CONFIG_ACTION,
+  GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS,
 } from './ducks'
 
 export const roleNameOptions = [
@@ -88,6 +90,9 @@ export interface MarketplaceStore {
 
   pagination: Pagination
 
+  // 'App connector config' view
+  appConnectorConfigDetails: AppConnectorConfigDetails
+
   // 'App details' view
   selectedAppDetails: AppDetails
   retrievedSelectedAppDetails: boolean
@@ -146,6 +151,14 @@ export interface AppDetails {
   appType: {
     id: string
     type: string
+  }
+}
+
+export interface AppConnectorConfigDetails {
+  data: {
+    name: string
+    fieldsRaw: string[]
+    workerStatus: string
   }
 }
 
@@ -275,6 +288,16 @@ export interface GetAppDetailsActionSuccess extends Action {
   appDetails: AppDetails
 }
 
+export interface GetAppConnectorConfigAction extends Action {
+  type: typeof GET_APP_CONNECTOR_CONFIG_ACTION
+  appID: string
+}
+
+export interface GetAppConnectorConfigActionSuccess extends Action {
+  type: typeof GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS
+  appConnectorConfigDetails: AppConnectorConfigDetails
+}
+
 export interface GetPublisherAppsSampleAction extends Action {
   type: typeof GET_PUBLISHER_APPS_SAMPLE_ACTION
   orgID: number
@@ -322,6 +345,8 @@ export type MarketplaceActions =
   | GetAllSubbedMarketplaceAppsActionSuccess
   | GetAppDetailsAction
   | GetAppDetailsActionSuccess
+  | GetAppConnectorConfigAction
+  | GetAppConnectorConfigActionSuccess
   | GetFilteredAppsMarketplaceAction
   | GetFilteredAppsMarketplaceActionSuccess
   | GetPublisherAppsSampleAction

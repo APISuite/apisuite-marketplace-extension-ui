@@ -1,6 +1,7 @@
 import update from 'immutability-helper'
 
 import {
+  AppConnectorConfigDetails,
   AppDetails,
   Filters,
   MarketplaceActions,
@@ -31,6 +32,14 @@ const initialState: MarketplaceStore = {
     pageCount: 0,
     pageSize: 1,
     rowCount: 0,
+  },
+  // 'App connector config' view
+  appConnectorConfigDetails: {
+    data: {
+      name: '',
+      fieldsRaw: [],
+      workerStatus: '',
+    },
   },
 
   // 'App details' view
@@ -247,6 +256,12 @@ export default function reducer(
       })
     }
 
+    case GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorConfigDetails: { $set: action.appConnectorConfigDetails },
+      })
+    }
+
     case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION: {
       return state
     }
@@ -402,8 +417,13 @@ export function getAppConnectorConfigAction(appID: string) {
   return { type: GET_APP_CONNECTOR_CONFIG_ACTION, appID }
 }
 
-export function getAppConnectorConfigActionSuccess(appDetails: AppDetails) {
-  return { type: GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS, appDetails }
+export function getAppConnectorConfigActionSuccess(
+  appConnectorConfigDetails: AppConnectorConfigDetails
+) {
+  return {
+    type: GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS,
+    appConnectorConfigDetails,
+  }
 }
 
 export function subscribeToMarketplaceAppAction(userID: number, appID: number) {
