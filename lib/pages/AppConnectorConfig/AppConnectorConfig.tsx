@@ -60,12 +60,23 @@ const AppConnectorConfig: React.FC = () => {
               shrink: true,
             }}
             disabled={true}
+            style={{ width: 100 + '%' }}
             value={entry}
             variant="outlined"
           />
         </Grid>
         <Grid item xs={2}>
-          <Icon>arrowrightalt</Icon>
+          <Icon
+            style={{
+              width: 100 + '%',
+              height: 100 + '%',
+              textAlign: 'center',
+              lineHeight: 50 + 'px',
+              color: '#62acee',
+            }}
+          >
+            arrow_right_alt
+          </Icon>
         </Grid>
         <Grid item xs={5}>
           <TextField
@@ -73,6 +84,7 @@ const AppConnectorConfig: React.FC = () => {
             InputLabelProps={{
               shrink: true,
             }}
+            style={{ width: 100 + '%' }}
             name={entry}
             variant="outlined"
           />
@@ -108,7 +120,7 @@ const AppConnectorConfig: React.FC = () => {
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={8}>
-                <Typography variant="h3">
+                <Typography variant="h3" style={{ marginBottom: 8 + 'px' }}>
                   {t('appMarketplace.appConnectorConfig.title', {
                     appName: selectedAppDetails.name,
                   })}
@@ -135,7 +147,7 @@ const AppConnectorConfig: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             <Box>
-              <Typography variant="h4">
+              <Typography variant="h4" style={{ marginBottom: 8 + 'px' }}>
                 {t('appMarketplace.appConnectorConfig.apiEndpointTitle')}
               </Typography>
               <TextField
@@ -144,8 +156,10 @@ const AppConnectorConfig: React.FC = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                style={{ width: 80 + '%' }}
                 variant="outlined"
                 type="url"
+                placeholder="https://example.com"
                 label={t('appMarketplace.appConnectorConfig.apiEndpointLabel')}
               />
             </Box>
@@ -185,10 +199,10 @@ const AppConnectorConfig: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             <Box>
-              <Typography variant="h4">
+              <Typography variant="h4" style={{ marginBottom: 8 + 'px' }}>
                 {t('appMarketplace.appConnectorConfig.connectionStatus')}
               </Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" style={{ marginBottom: 8 + 'px' }}>
                 {t(
                   'appMarketplace.appConnectorConfig.connectionStatusDescription'
                 )}
