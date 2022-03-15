@@ -21,7 +21,6 @@ import {
 import useStyles from './styles'
 import appConnectorConfigSelector from './selector'
 import { Alert } from '@material-ui/lab'
-import appDetails from '../AppDetails'
 
 const AppConnectorConfig: React.FC = () => {
   const classes = useStyles()
@@ -158,8 +157,7 @@ const AppConnectorConfig: React.FC = () => {
     newFieldValues['apiUrl'] =
       (appConnectorSubscribed && appConnectorSubscriptionDetails.data.apiUrl) ||
       ''
-    for (let i = 0; i < appConnectorConfigDetails.data.fieldsRaw.length; i++) {
-      const entry = appConnectorConfigDetails.data.fieldsRaw[i]
+    for (const entry in appConnectorConfigDetails.data.fieldsRaw) {
       newFieldValues[entry] =
         (appConnectorSubscribed &&
           appConnectorSubscriptionDetails.data.fieldMapping[entry]) ||
