@@ -23,12 +23,17 @@ import {
   subscribeToMarketplaceAppActionSuccess,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   unsubscribeToMarketplaceAppActionSuccess,
-  getPublisherDetailsActionError, getAppConnectorConfigActionSuccess, GET_APP_CONNECTOR_CONFIG_ACTION
+  getPublisherDetailsActionError,
+  getAppConnectorConfigActionSuccess,
+  GET_APP_CONNECTOR_CONFIG_ACTION,
+  getAppConnectorSubscriptionActionSuccess,
+  getAppConnectorSubscriptionActionError,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION
 } from './ducks'
 
 import {
   GetAllMarketplaceAppsAction,
-  GetAllSubbedMarketplaceAppsAction, GetAppConnectorConfigAction,
+  GetAllSubbedMarketplaceAppsAction, GetAppConnectorConfigAction, GetAppConnectorSubscriptionAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
   GetPublisherAppsSampleAction,
@@ -282,6 +287,29 @@ export function* getAppConnectorConfigActionSaga(
   }
 }
 
+export function* getAppConnectorSubscriptionActionSaga(
+  action: GetAppConnectorSubscriptionAction
+) {
+  try {
+    const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${
+      action.appName
+    }/${action.apiName}/`
+    console.log('app connector api url:', getAppConnectorApiUrl())
+    const response = yield call(request, {
+      url: getAppConnectorSubscriptionActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(getAppConnectorSubscriptionActionSuccess(response))
+  } catch (error) {
+    console.log('Error fetching the selected app connector config')
+    yield put(getAppConnectorSubscriptionActionError())
+  }
+}
+
 export function* getPublisherAppsSampleActionSaga(
   action: GetPublisherAppsSampleAction
 ) {
@@ -371,6 +399,10 @@ function* rootSaga() {
   yield takeLatest(
     GET_APP_CONNECTOR_CONFIG_ACTION,
     getAppConnectorConfigActionSaga
+  )
+  yield takeLatest(
+    GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
+    getAppConnectorSubscriptionActionSaga
   )
 }
 

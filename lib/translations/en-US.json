@@ -90,7 +90,8 @@
           "connectionStatusDescription": "Turn this connection on or off.",
           "connectionOn": "Connection is on",
           "connectionOff": "Connection is off",
-          "back": "Back",
+          "cancel": "Cancel",
+          "save": "Save",
           "alerts": {
             "upToDate": "{{appName}} is up to date",
             "outdated": "{{appName}} configuration is outdated"

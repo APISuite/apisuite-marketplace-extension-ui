@@ -2,6 +2,7 @@ import update from 'immutability-helper'
 
 import {
   AppConnectorConfigDetails,
+  AppConnectorSubscriptionDetails,
   AppDetails,
   Filters,
   MarketplaceActions,
@@ -41,7 +42,16 @@ const initialState: MarketplaceStore = {
       workerStatus: '',
     },
   },
-
+  appConnectorSubscriptionDetails: {
+    data: {
+      appName: '',
+      fieldMapping: {},
+      apiName: '',
+      apiUrl: '',
+      status: 'stopped',
+    },
+  },
+  appConnectorSubscribed: false,
   // 'App details' view
   selectedAppDetails: {
     createdAt: '',
@@ -137,6 +147,39 @@ export const GET_APP_CONNECTOR_CONFIG_ACTION =
   'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION'
 export const GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS =
   'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS'
+
+// 'App connector subscription'
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION =
+  'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION'
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS =
+  'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS'
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR =
+  'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR'
+export const SUBSCRIBE_APP_CONNECTOR_ACTION =
+  'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION'
+export const SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS =
+  'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS'
+export const UNSUBSCRIBE_APP_CONNECTOR_ACTION =
+  'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION'
+export const UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS =
+  'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS'
+
+// 'App connector start'
+export const APP_CONNECTOR_START_ACTION =
+  'Marketplace/APP_CONNECTOR_START_ACTION'
+export const APP_CONNECTOR_START_ACTION_SUCCESS =
+  'Marketplace/APP_CONNECTOR_START_ACTION_SUCCESS'
+
+// 'App connector stop'
+export const APP_CONNECTOR_STOP_ACTION = 'Marketplace/APP_CONNECTOR_STOP_ACTION'
+export const APP_CONNECTOR_STOP_ACTION_SUCCESS =
+  'Marketplace/APP_CONNECTOR_STOP_ACTION_SUCCESS'
+
+// 'field mapping config'
+export const FIELD_MAPPING_CONFIG_ACTION =
+  'Marketplace/FIELD_MAPPING_CONFIG_ACTION'
+export const FIELD_MAPPING_CONFIG_ACTION_SUCCESS =
+  'Marketplace/FIELD_MAPPING_CONFIG_ACTION_SUCCESS'
 
 export const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION =
   'Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION'
@@ -259,6 +302,21 @@ export default function reducer(
     case GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS: {
       return update(state, {
         appConnectorConfigDetails: { $set: action.appConnectorConfigDetails },
+      })
+    }
+
+    case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorSubscriptionDetails: {
+          $set: action.appConnectorSubscriptionDetails,
+        },
+        appConnectorSubscribed: { $set: true },
+      })
+    }
+
+    case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR: {
+      return update(state, {
+        appConnectorSubscribed: { $set: false },
       })
     }
 
@@ -423,6 +481,28 @@ export function getAppConnectorConfigActionSuccess(
   return {
     type: GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS,
     appConnectorConfigDetails,
+  }
+}
+
+export function getAppConnectorSubscriptionAction(
+  appName: string,
+  apiName: string
+) {
+  return { type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION, appName, apiName }
+}
+
+export function getAppConnectorSubscriptionActionSuccess(
+  appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails
+) {
+  return {
+    type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS,
+    appConnectorSubscriptionDetails,
+  }
+}
+
+export function getAppConnectorSubscriptionActionError() {
+  return {
+    type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
   }
 }
 

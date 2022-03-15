@@ -27,6 +27,9 @@ import {
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   GET_APP_CONNECTOR_CONFIG_ACTION,
   GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
 } from './ducks'
 
 export const roleNameOptions = [
@@ -92,6 +95,9 @@ export interface MarketplaceStore {
 
   // 'App connector config' view
   appConnectorConfigDetails: AppConnectorConfigDetails
+
+  appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails
+  appConnectorSubscribed: boolean
 
   // 'App details' view
   selectedAppDetails: AppDetails
@@ -159,6 +165,15 @@ export interface AppConnectorConfigDetails {
     name: string
     fieldsRaw: string[]
     workerStatus: string
+  }
+}
+export interface AppConnectorSubscriptionDetails {
+  data: {
+    appName: string
+    apiName: string
+    apiUrl: string
+    fieldMapping: any
+    status: string
   }
 }
 
@@ -298,6 +313,22 @@ export interface GetAppConnectorConfigActionSuccess extends Action {
   appConnectorConfigDetails: AppConnectorConfigDetails
 }
 
+export interface GetAppConnectorSubscriptionAction extends Action {
+  type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION
+  appName: string
+  apiName: string
+  config: any
+}
+
+export interface GetAppConnectorSubscriptionActionSuccess extends Action {
+  type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS
+  appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails
+}
+
+export interface GetAppConnectorSubscriptionActionError extends Action {
+  type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR
+}
+
 export interface GetPublisherAppsSampleAction extends Action {
   type: typeof GET_PUBLISHER_APPS_SAMPLE_ACTION
   orgID: number
@@ -347,6 +378,9 @@ export type MarketplaceActions =
   | GetAppDetailsActionSuccess
   | GetAppConnectorConfigAction
   | GetAppConnectorConfigActionSuccess
+  | GetAppConnectorSubscriptionAction
+  | GetAppConnectorSubscriptionActionSuccess
+  | GetAppConnectorSubscriptionActionError
   | GetFilteredAppsMarketplaceAction
   | GetFilteredAppsMarketplaceActionSuccess
   | GetPublisherAppsSampleAction

@@ -7,6 +7,8 @@ const appConnectorConfigSelector = createSelector(
     return {
       selectedAppDetails: marketplace.selectedAppDetails,
       appConnectorConfigDetails: marketplace.appConnectorConfigDetails,
+      appConnectorSubscriptionDetails: marketplace.appConnectorSubscriptionDetails,
+      appConnectorSubscribed: marketplace.appConnectorSubscribed,
     }
   }
 )

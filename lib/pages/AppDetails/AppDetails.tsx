@@ -196,6 +196,7 @@ const AppDetails: React.FC = () => {
                       ? classes.appAlreadySubscribedButton
                       : classes.appSubscribeButton
                   }
+                  style={{ marginBottom: 8 + 'px' }}
                   onClick={handleNotLoggedUserSubscription}
                 >
                   {getSubscribeButtonTranslation()}

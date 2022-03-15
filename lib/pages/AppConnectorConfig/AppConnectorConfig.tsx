@@ -11,21 +11,27 @@ import {
   Switch,
   FormControlLabel,
   Button,
+  Divider,
 } from '@apisuite/fe-base'
 import {
   getAppConnectorConfigAction,
+  getAppConnectorSubscriptionAction,
   getAppDetailsAction,
 } from '../Marketplace/ducks'
 import useStyles from './styles'
 import appConnectorConfigSelector from './selector'
 import { Alert } from '@material-ui/lab'
+import appDetails from '../AppDetails'
 
 const AppConnectorConfig: React.FC = () => {
   const classes = useStyles()
 
-  const { selectedAppDetails, appConnectorConfigDetails } = useSelector(
-    appConnectorConfigSelector
-  )
+  const {
+    selectedAppDetails,
+    appConnectorConfigDetails,
+    appConnectorSubscriptionDetails,
+    appConnectorSubscribed,
+  } = useSelector(appConnectorConfigSelector)
 
   const dispatch = useDispatch()
 
@@ -42,7 +48,8 @@ const AppConnectorConfig: React.FC = () => {
   const { appID } = useParams<any>()
 
   const getSubscriptionStatus = () =>
-    appConnectorConfigDetails.data.workerStatus !== 'stopped'
+    appConnectorConfigDetails.data.workerStatus !== 'stopped' &&
+    appConnectorSubscribed
 
   const backToApp = () => {
     history.push(
@@ -86,6 +93,11 @@ const AppConnectorConfig: React.FC = () => {
             }}
             style={{ width: 100 + '%' }}
             name={entry}
+            value={
+              (appConnectorSubscribed &&
+                appConnectorSubscriptionDetails.data.fieldMapping[entry]) ||
+              ''
+            }
             variant="outlined"
           />
         </Grid>
@@ -102,6 +114,17 @@ const AppConnectorConfig: React.FC = () => {
   useEffect(() => {
     if (appID !== '') dispatch(getAppConnectorConfigAction(appID))
   }, [appID])
+
+  useEffect(() => {
+    if (selectedAppDetails && appConnectorConfigDetails)
+      dispatch(
+        getAppConnectorSubscriptionAction(
+          appConnectorConfigDetails.data.name,
+          selectedAppDetails.name
+        )
+      )
+  }, [appDetails, appConnectorConfigDetails])
+
   /* The following effect code will check if the currently selected app is one that
   the user's already subscribed to. */
 
@@ -159,6 +182,11 @@ const AppConnectorConfig: React.FC = () => {
                 style={{ width: 80 + '%' }}
                 variant="outlined"
                 type="url"
+                value={
+                  (appConnectorSubscribed &&
+                    appConnectorSubscriptionDetails.data.apiUrl) ||
+                  ''
+                }
                 placeholder="https://example.com"
                 label={t('appMarketplace.appConnectorConfig.apiEndpointLabel')}
               />
@@ -179,23 +207,31 @@ const AppConnectorConfig: React.FC = () => {
               </Typography>
             </Box>
           </Grid>
+
+          <Grid item xs={5}>
+            <Typography variant="body1">
+              {t('appMarketplace.appConnectorConfig.appFields', {
+                appName: selectedAppDetails.name,
+              })}
+            </Typography>
+          </Grid>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={5}>
+            <Typography variant="body1">
+              {t('appMarketplace.appConnectorConfig.apiFields')}
+            </Typography>
+          </Grid>
+          {renderFieldsRaw(appConnectorConfigDetails.data.fieldsRaw)}
           <Grid item xs={12}>
-            <Grid container spacing={3}>
-              <Grid item xs={5}>
-                <Typography variant="body1">
-                  {t('appMarketplace.appConnectorConfig.appFields', {
-                    appName: selectedAppDetails.name,
-                  })}
-                </Typography>
-              </Grid>
-              <Grid item xs={2}></Grid>
-              <Grid item xs={5}>
-                <Typography variant="body1">
-                  {t('appMarketplace.appConnectorConfig.apiFields')}
-                </Typography>
-              </Grid>
-              {renderFieldsRaw(appConnectorConfigDetails.data.fieldsRaw)}
-            </Grid>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: '#32C896', borderColor: '#32C896' }}
+            >
+              {t('appMarketplace.appConnectorConfig.save')}
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider variant="middle" />
           </Grid>
           <Grid item xs={12}>
             <Box>
@@ -225,10 +261,11 @@ const AppConnectorConfig: React.FC = () => {
               />
             </Box>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={10}></Grid>
+          <Grid item xs={2}>
             <Box>
               <Button variant="contained" onClick={backToApp}>
-                {t('appMarketplace.appConnectorConfig.back')}
+                {t('appMarketplace.appConnectorConfig.cancel')}
               </Button>
             </Box>
           </Grid>
