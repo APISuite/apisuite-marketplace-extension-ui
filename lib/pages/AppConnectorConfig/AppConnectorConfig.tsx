@@ -186,7 +186,7 @@ const AppConnectorConfig: React.FC = () => {
                 </Typography>
               </Grid>
               <Grid item xs={4}>
-                {appConnectorConfigDetails &&
+                {(appConnectorConfigDetails &&
                   appConnectorConfigDetails.data.workerStatus == 'stopped' && (
                     <Alert severity="error">
                       {t(
@@ -196,23 +196,29 @@ const AppConnectorConfig: React.FC = () => {
                         }
                       )}
                     </Alert>
-                  )}
-                {appConnectorSubscribed &&
-                  ((mappingIsOutdated(
-                    appConnectorSubscriptionDetails.data.fieldMapping
-                  ) && (
-                    <Alert severity="warning">
-                      {t('appMarketplace.appConnectorConfig.alerts.outdated', {
-                        appName: selectedAppDetails.name,
-                      })}
-                    </Alert>
-                  )) || (
-                    <Alert severity="success">
-                      {t('appMarketplace.appConnectorConfig.alerts.upToDate', {
-                        appName: selectedAppDetails.name,
-                      })}
-                    </Alert>
-                  ))}
+                  )) ||
+                  (appConnectorSubscribed &&
+                    ((mappingIsOutdated(
+                      appConnectorSubscriptionDetails.data.fieldMapping
+                    ) && (
+                      <Alert severity="warning">
+                        {t(
+                          'appMarketplace.appConnectorConfig.alerts.outdated',
+                          {
+                            appName: selectedAppDetails.name,
+                          }
+                        )}
+                      </Alert>
+                    )) || (
+                      <Alert severity="success">
+                        {t(
+                          'appMarketplace.appConnectorConfig.alerts.upToDate',
+                          {
+                            appName: selectedAppDetails.name,
+                          }
+                        )}
+                      </Alert>
+                    )))}
               </Grid>
             </Grid>
           </Grid>
