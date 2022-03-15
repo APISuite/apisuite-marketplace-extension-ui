@@ -93,6 +93,7 @@
           "cancel": "Cancel",
           "save": "Save",
           "alerts": {
+            "workerOffline": "{{appName}} worker is offline",
             "upToDate": "{{appName}} is up to date",
             "outdated": "{{appName}} configuration is outdated"
           }

@@ -57,6 +57,12 @@ const AppConnectorConfig: React.FC = () => {
     )
   }
 
+  const [fieldValues, setFieldValues] = useState({
+    apiUrl: '',
+    polling_toggle: getSubscriptionStatus(),
+  })
+  console.log('field values:', fieldValues)
+
   const renderFieldsRaw = (entries) => {
     return entries.map((entry, key) => (
       <React.Fragment key={key}>
@@ -93,11 +99,8 @@ const AppConnectorConfig: React.FC = () => {
             }}
             style={{ width: 100 + '%' }}
             name={entry}
-            value={
-              (appConnectorSubscribed &&
-                appConnectorSubscriptionDetails.data.fieldMapping[entry]) ||
-              ''
-            }
+            value={fieldValues[entry]}
+            onChange={changeHandler}
             variant="outlined"
           />
         </Grid>
@@ -105,8 +108,33 @@ const AppConnectorConfig: React.FC = () => {
     ))
   }
 
-  /* Triggers the retrieval and storage (on the app's Store, under 'marketplace > selectedAppDetails')
-  of all information we presently have on the currently selected marketplace app. */
+  const changeHandler = (changeEvent) => {
+    console.log(changeEvent)
+    const newFieldValues = { ...fieldValues }
+    newFieldValues[changeEvent.target.name] = changeEvent.target.value
+    setFieldValues(newFieldValues)
+  }
+
+  const updatePollingStatus = () => {
+    console.log('pooling toggle', fieldValues['polling_toggle'])
+  }
+
+  const saveSubscription = (event) => {
+    console.log('field values', fieldValues)
+    event.preventDefault()
+  }
+
+  const mappingIsOutdated = (currentMapping) => {
+    for (const currentMappingKey in currentMapping) {
+      if (
+        appConnectorConfigDetails.data.fieldsRaw.indexOf(currentMappingKey) ==
+        -1
+      )
+        return true
+    }
+    return false
+  }
+
   useEffect(() => {
     if (appID !== '') dispatch(getAppDetailsAction(appID))
   }, [appID])
@@ -123,18 +151,23 @@ const AppConnectorConfig: React.FC = () => {
           selectedAppDetails.name
         )
       )
-  }, [appDetails, appConnectorConfigDetails])
+  }, [selectedAppDetails, appConnectorConfigDetails])
 
-  /* The following effect code will check if the currently selected app is one that
-  the user's already subscribed to. */
-
-  // 3. Currently selected Marketplace app's details logic
-
-  const isURLEmpty = (providedURL: string) => {
-    return providedURL === null || providedURL === ''
-  }
-
-  // 4. 'More (Marketplace apps) from publisher' section logic
+  useEffect(() => {
+    const newFieldValues = { ...fieldValues }
+    newFieldValues['apiUrl'] =
+      (appConnectorSubscribed && appConnectorSubscriptionDetails.data.apiUrl) ||
+      ''
+    for (let i = 0; i < appConnectorConfigDetails.data.fieldsRaw.length; i++) {
+      const entry = appConnectorConfigDetails.data.fieldsRaw[i]
+      newFieldValues[entry] =
+        (appConnectorSubscribed &&
+          appConnectorSubscriptionDetails.data.fieldMapping[entry]) ||
+        ''
+    }
+    newFieldValues['polling_toggle'] = getSubscriptionStatus()
+    setFieldValues(newFieldValues)
+  }, [appConnectorSubscriptionDetails, appConnectorSubscribed])
 
   return (
     <main>
@@ -155,16 +188,33 @@ const AppConnectorConfig: React.FC = () => {
                 </Typography>
               </Grid>
               <Grid item xs={4}>
-                <Alert severity="success">
-                  {t('appMarketplace.appConnectorConfig.alerts.upToDate', {
-                    appName: selectedAppDetails.name,
-                  })}
-                </Alert>
-                <Alert severity="warning">
-                  {t('appMarketplace.appConnectorConfig.alerts.outdated', {
-                    appName: selectedAppDetails.name,
-                  })}
-                </Alert>
+                {appConnectorConfigDetails &&
+                  appConnectorConfigDetails.data.workerStatus == 'stopped' && (
+                    <Alert severity="error">
+                      {t(
+                        'appMarketplace.appConnectorConfig.alerts.workerOffline',
+                        {
+                          appName: selectedAppDetails.name,
+                        }
+                      )}
+                    </Alert>
+                  )}
+                {appConnectorSubscribed &&
+                  ((mappingIsOutdated(
+                    appConnectorSubscriptionDetails.data.fieldMapping
+                  ) && (
+                    <Alert severity="warning">
+                      {t('appMarketplace.appConnectorConfig.alerts.outdated', {
+                        appName: selectedAppDetails.name,
+                      })}
+                    </Alert>
+                  )) || (
+                    <Alert severity="success">
+                      {t('appMarketplace.appConnectorConfig.alerts.upToDate', {
+                        appName: selectedAppDetails.name,
+                      })}
+                    </Alert>
+                  ))}
               </Grid>
             </Grid>
           </Grid>
@@ -175,18 +225,15 @@ const AppConnectorConfig: React.FC = () => {
               </Typography>
               <TextField
                 id="api_endpoint"
-                name="api_endpoint"
+                name="apiUrl"
                 InputLabelProps={{
                   shrink: true,
                 }}
                 style={{ width: 80 + '%' }}
                 variant="outlined"
                 type="url"
-                value={
-                  (appConnectorSubscribed &&
-                    appConnectorSubscriptionDetails.data.apiUrl) ||
-                  ''
-                }
+                onChange={changeHandler}
+                value={fieldValues['apiUrl']}
                 placeholder="https://example.com"
                 label={t('appMarketplace.appConnectorConfig.apiEndpointLabel')}
               />
@@ -226,6 +273,7 @@ const AppConnectorConfig: React.FC = () => {
             <Button
               variant="contained"
               style={{ backgroundColor: '#32C896', borderColor: '#32C896' }}
+              onClick={saveSubscription}
             >
               {t('appMarketplace.appConnectorConfig.save')}
             </Button>
@@ -246,16 +294,17 @@ const AppConnectorConfig: React.FC = () => {
               <FormControlLabel
                 control={
                   <Switch
-                    name="checkedA"
-                    checked={getSubscriptionStatus()}
+                    name="polling_toggle"
+                    checked={fieldValues['polling_toggle']}
                     disabled={
                       appConnectorConfigDetails.data.workerStatus !== 'stopped'
                     }
+                    onChange={updatePollingStatus}
                   />
                 }
                 label={t(
-                  getSubscriptionStatus()
-                    ? 'appMarketplace.appConnectorConfig.connectionOff'
+                  fieldValues['polling_toggle']
+                    ? 'appMarketplace.appConnectorConfig.connectionOn'
                     : 'appMarketplace.appConnectorConfig.connectionOff'
                 )}
               />
