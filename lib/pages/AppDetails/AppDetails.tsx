@@ -23,6 +23,7 @@ import {
   getPublisherAppsSampleAction,
   subscribeToMarketplaceAppAction,
   unsubscribeToMarketplaceAppAction,
+  unsubscribeAppConnectorAction,
 } from '../Marketplace/ducks'
 import appDetailsSelector from './selector'
 import useStyles from './styles'
@@ -123,6 +124,9 @@ const AppDetails: React.FC = () => {
 
     if (isUserSubbedToApp) {
       dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
+      if (selectedAppDetails.appType.type == 'blueprint') {
+        dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name))
+      }
       setIsUserSubbedToApp(false)
     } else {
       dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))

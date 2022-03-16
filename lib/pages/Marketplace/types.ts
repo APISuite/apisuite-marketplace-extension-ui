@@ -30,6 +30,11 @@ import {
   GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
   GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS,
   GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
+  SUBSCRIBE_APP_CONNECTOR_ACTION,
+  SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
+  SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR,
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS, FIELD_MAPPING_CONFIG_ACTION, FIELD_MAPPING_CONFIG_ACTION_SUCCESS
 } from './ducks'
 
 export const roleNameOptions = [
@@ -317,7 +322,6 @@ export interface GetAppConnectorSubscriptionAction extends Action {
   type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION
   appName: string
   apiName: string
-  config: any
 }
 
 export interface GetAppConnectorSubscriptionActionSuccess extends Action {
@@ -329,6 +333,40 @@ export interface GetAppConnectorSubscriptionActionError extends Action {
   type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR
 }
 
+export interface SubscribeAppConnectorAction extends Action {
+  type: typeof SUBSCRIBE_APP_CONNECTOR_ACTION
+  appName: string
+  apiName: string
+  apiUrl: string
+}
+
+export interface SubscribeAppConnectorActionSuccess extends Action {
+  type: typeof SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS
+}
+
+export interface SubscribeAppConnectorActionError extends Action {
+  type: typeof SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR
+}
+
+export interface UnsubscribeAppConnectorAction extends Action {
+  type: typeof UNSUBSCRIBE_APP_CONNECTOR_ACTION
+  apiName: string
+}
+
+export interface UnsubscribeAppConnectorActionSuccess extends Action {
+  type: typeof UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS
+}
+
+export interface FieldMappingConfigAction extends Action {
+  type: typeof FIELD_MAPPING_CONFIG_ACTION
+  appName: string
+  apiName: string
+  map: any
+}
+
+export interface FieldMappingConfigActionSuccess extends Action {
+  type: typeof FIELD_MAPPING_CONFIG_ACTION_SUCCESS
+}
 export interface GetPublisherAppsSampleAction extends Action {
   type: typeof GET_PUBLISHER_APPS_SAMPLE_ACTION
   orgID: number
@@ -365,6 +403,8 @@ export interface SetMarketplaceAppLabelsAction extends Action {
 }
 
 export type MarketplaceActions =
+  | FieldMappingConfigAction
+  | FieldMappingConfigActionSuccess
   | GetAllMarketplaceAppsAction
   | GetAllMarketplaceAppsActionSuccess
   | GetAllMarketplaceLabelsAction
@@ -390,7 +430,12 @@ export type MarketplaceActions =
   | GetPublisherDetailsActionError
   | SetMarketplaceAppLabelsAction
   | SetMarketplaceAppVisibilityAction
+  | SubscribeAppConnectorAction
+  | SubscribeAppConnectorActionSuccess
+  | SubscribeAppConnectorActionError
   | SubscribeToMarketplaceAppAction
   | SubscribeToMarketplaceAppActionSuccess
+  | UnsubscribeAppConnectorAction
+  | UnsubscribeAppConnectorActionSuccess
   | UnsubscribeToMarketplaceAppAction
   | UnsubscribeToMarketplaceAppActionSuccess

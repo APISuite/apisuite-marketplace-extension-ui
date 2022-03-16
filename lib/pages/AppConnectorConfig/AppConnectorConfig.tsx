@@ -14,9 +14,11 @@ import {
   Divider,
 } from '@apisuite/fe-base'
 import {
+  fieldMappingConfigAction,
   getAppConnectorConfigAction,
   getAppConnectorSubscriptionAction,
   getAppDetailsAction,
+  subscribeAppConnectorAction,
 } from '../Marketplace/ducks'
 import useStyles from './styles'
 import appConnectorConfigSelector from './selector'
@@ -58,9 +60,7 @@ const AppConnectorConfig: React.FC = () => {
 
   const [fieldValues, setFieldValues] = useState({
     apiUrl: '',
-    polling_toggle: getSubscriptionStatus(),
   })
-  console.log('field values:', fieldValues)
 
   const renderFieldsRaw = (entries) => {
     return entries.map((entry, key) => (
@@ -114,16 +114,52 @@ const AppConnectorConfig: React.FC = () => {
     setFieldValues(newFieldValues)
   }
 
-  const updatePollingStatus = () => {
+  const updatePollingStatus = (changeEvent) => {
     console.log('pooling toggle', fieldValues['polling_toggle'])
   }
 
   const saveSubscription = (event) => {
     console.log('field values', fieldValues)
+    console.log('subscription', {
+      app_name: appConnectorConfigDetails.data.name,
+      api_name: selectedAppDetails.name,
+      api_url: fieldValues['apiUrl'],
+    })
+    dispatch(
+      subscribeAppConnectorAction(
+        appConnectorConfigDetails.data.name,
+        selectedAppDetails.name,
+        fieldValues['apiUrl']
+      )
+    )
+    const mappingPost = {
+      app_name: appConnectorConfigDetails.data.name,
+      api_name: selectedAppDetails.name,
+      map: {},
+    }
+    for (const entry of appConnectorConfigDetails.data.fieldsRaw) {
+      if (fieldValues[entry]) mappingPost.map[entry] = fieldValues[entry]
+    }
+    if (Object.keys(mappingPost.map).length !== 0) {
+      console.log('fieldMapping', mappingPost)
+      dispatch(
+        fieldMappingConfigAction(
+          mappingPost.app_name,
+          mappingPost.api_name,
+          mappingPost.map
+        )
+      )
+    }
     event.preventDefault()
   }
 
-  const mappingIsOutdated = (currentMapping) => {
+  const mappingIsOutdated = () => {
+    const currentMapping =
+      (appConnectorSubscribed &&
+        appConnectorSubscriptionDetails &&
+        appConnectorSubscriptionDetails.data &&
+        appConnectorSubscriptionDetails.data.fieldMapping) ||
+      {}
     for (const currentMappingKey in currentMapping) {
       if (
         appConnectorConfigDetails.data.fieldsRaw.indexOf(currentMappingKey) ==
@@ -140,9 +176,10 @@ const AppConnectorConfig: React.FC = () => {
 
   useEffect(() => {
     if (appID !== '') dispatch(getAppConnectorConfigAction(appID))
-  }, [appID])
+  }, [selectedAppDetails])
 
   useEffect(() => {
+    console.log(appConnectorConfigDetails)
     if (selectedAppDetails && appConnectorConfigDetails)
       dispatch(
         getAppConnectorSubscriptionAction(
@@ -150,22 +187,26 @@ const AppConnectorConfig: React.FC = () => {
           selectedAppDetails.name
         )
       )
-  }, [selectedAppDetails, appConnectorConfigDetails])
+  }, [appConnectorConfigDetails])
 
   useEffect(() => {
     const newFieldValues = { ...fieldValues }
     newFieldValues['apiUrl'] =
-      (appConnectorSubscribed && appConnectorSubscriptionDetails.data.apiUrl) ||
+      (appConnectorSubscribed &&
+        appConnectorSubscriptionDetails.data &&
+        appConnectorSubscriptionDetails.data.apiUrl) ||
       ''
-    for (const entry in appConnectorConfigDetails.data.fieldsRaw) {
+    for (const entry of appConnectorConfigDetails.data.fieldsRaw) {
       newFieldValues[entry] =
         (appConnectorSubscribed &&
+          appConnectorSubscriptionDetails &&
+          appConnectorSubscriptionDetails.data &&
+          appConnectorSubscriptionDetails.data.fieldMapping &&
           appConnectorSubscriptionDetails.data.fieldMapping[entry]) ||
         ''
     }
-    newFieldValues['polling_toggle'] = getSubscriptionStatus()
     setFieldValues(newFieldValues)
-  }, [appConnectorSubscriptionDetails, appConnectorSubscribed])
+  }, [appConnectorSubscriptionDetails])
 
   return (
     <main>
@@ -198,9 +239,7 @@ const AppConnectorConfig: React.FC = () => {
                     </Alert>
                   )) ||
                   (appConnectorSubscribed &&
-                    ((mappingIsOutdated(
-                      appConnectorSubscriptionDetails.data.fieldMapping
-                    ) && (
+                    ((mappingIsOutdated() && (
                       <Alert severity="warning">
                         {t(
                           'appMarketplace.appConnectorConfig.alerts.outdated',
@@ -299,7 +338,7 @@ const AppConnectorConfig: React.FC = () => {
                 control={
                   <Switch
                     name="polling_toggle"
-                    checked={fieldValues['polling_toggle']}
+                    checked={getSubscriptionStatus()}
                     disabled={
                       appConnectorConfigDetails.data.workerStatus !== 'stopped'
                     }

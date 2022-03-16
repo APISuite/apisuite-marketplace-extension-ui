@@ -13,6 +13,8 @@ import {
   SubbedMarketplaceApp,
   View,
 } from './types'
+import * as stream from 'stream'
+import { stringify } from 'querystring'
 
 /** Initial state */
 
@@ -159,6 +161,8 @@ export const SUBSCRIBE_APP_CONNECTOR_ACTION =
   'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION'
 export const SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS =
   'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS'
+export const SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR =
+  'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR'
 export const UNSUBSCRIBE_APP_CONNECTOR_ACTION =
   'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION'
 export const UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS =
@@ -337,6 +341,27 @@ export default function reducer(
       })
     }
 
+    case SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorSubscribed: { $set: true },
+      })
+    }
+
+    case SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR: {
+      return update(state, {
+        appConnectorSubscribed: { $set: false },
+      })
+    }
+
+    case UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorSubscriptionDetails: {
+          $set: initialState.appConnectorSubscriptionDetails,
+        },
+        appConnectorSubscribed: { $set: false },
+      })
+    }
+
     case SUBSCRIBE_TO_MARKETPLACE_APP_ACTION:
     case SUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS: {
       return state
@@ -401,6 +426,18 @@ export default function reducer(
 }
 
 /** Action builders */
+
+export function fieldMappingConfigAction(
+  appName: string,
+  apiName: string,
+  map: any
+) {
+  return { type: FIELD_MAPPING_CONFIG_ACTION, appName, apiName, map }
+}
+
+export function fieldMappingConfigActionSuccess() {
+  return { type: FIELD_MAPPING_CONFIG_ACTION_SUCCESS }
+}
 
 // 'Marketplace' view
 export function getAllMarketplaceAppsAction(pagination: {
@@ -503,6 +540,43 @@ export function getAppConnectorSubscriptionActionSuccess(
 export function getAppConnectorSubscriptionActionError() {
   return {
     type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
+  }
+}
+export function subscribeAppConnectorAction(
+  appName: string,
+  apiName: string,
+  apiUrl: string
+) {
+  return {
+    type: SUBSCRIBE_APP_CONNECTOR_ACTION,
+    appName,
+    apiName,
+    apiUrl,
+  }
+}
+
+export function subscribeAppConnectorActionSuccess() {
+  return {
+    type: SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
+  }
+}
+
+export function subscribeAppConnectorActionError() {
+  return {
+    type: SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR,
+  }
+}
+
+export function unsubscribeAppConnectorAction(apiName: string) {
+  return {
+    type: UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+    apiName,
+  }
+}
+
+export function unsubscribeAppConnectorActionSuccess() {
+  return {
+    type: UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
   }
 }
 

@@ -28,21 +28,35 @@ import {
   GET_APP_CONNECTOR_CONFIG_ACTION,
   getAppConnectorSubscriptionActionSuccess,
   getAppConnectorSubscriptionActionError,
-  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
+  subscribeAppConnectorActionSuccess,
+  subscribeAppConnectorActionError,
+  SUBSCRIBE_APP_CONNECTOR_ACTION,
+  unsubscribeAppConnectorActionSuccess,
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION, FIELD_MAPPING_CONFIG_ACTION, fieldMappingConfigActionSuccess
 } from './ducks'
 
 import {
+  FieldMappingConfigAction,
   GetAllMarketplaceAppsAction,
-  GetAllSubbedMarketplaceAppsAction, GetAppConnectorConfigAction, GetAppConnectorSubscriptionAction,
+  GetAllSubbedMarketplaceAppsAction,
+  GetAppConnectorConfigAction,
+  GetAppConnectorSubscriptionAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
   GetPublisherAppsSampleAction,
   GetPublisherDetailsAction,
+  SubscribeAppConnectorAction,
   SubscribeToMarketplaceAppAction,
-  UnsubscribeToMarketplaceAppAction
+  UnsubscribeAppConnectorAction,
+  UnsubscribeToMarketplaceAppAction,
 } from './types'
 
-import { getApiUrl, getAppConnectorApiUrl, getMarketplaceApiUrl } from '../../constants/endpoints'
+import {
+  getApiUrl,
+  getAppConnectorApiUrl,
+  getMarketplaceApiUrl,
+} from '../../constants/endpoints'
 import appDetailsMapping from '../../util/appDetailsMapping'
 
 export function* getAllMarketplaceAppsActionSaga(
@@ -272,7 +286,6 @@ export function* getAppConnectorConfigActionSaga(
     const getAppConnectorConfigActionUrl = `${getAppConnectorApiUrl()}/apps/getid/${
       action.appID
     }`
-    console.log('app connector api url:', getAppConnectorApiUrl())
     const response = yield call(request, {
       url: getAppConnectorConfigActionUrl,
       method: 'GET',
@@ -294,7 +307,6 @@ export function* getAppConnectorSubscriptionActionSaga(
     const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${
       action.appName
     }/${action.apiName}/`
-    console.log('app connector api url:', getAppConnectorApiUrl())
     const response = yield call(request, {
       url: getAppConnectorSubscriptionActionUrl,
       method: 'GET',
@@ -307,6 +319,76 @@ export function* getAppConnectorSubscriptionActionSaga(
   } catch (error) {
     console.log('Error fetching the selected app connector config')
     yield put(getAppConnectorSubscriptionActionError())
+  }
+}
+
+export function* subscribeAppConnectorActionSaga(
+  action: SubscribeAppConnectorAction
+) {
+  try {
+    const subscribeAppConnectorActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`
+    const response = yield call(request, {
+      url: subscribeAppConnectorActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        app_name: action.appName,
+        api_name: action.apiName,
+        api_url: action.apiUrl,
+      },
+    })
+
+    yield put(subscribeAppConnectorActionSuccess())
+  } catch (error) {
+    console.log('Error subscribing app connector')
+    yield put(subscribeAppConnectorActionError())
+  }
+}
+
+export function* unsubscribeAppConnectorActionSaga(
+  action: UnsubscribeAppConnectorAction
+) {
+  try {
+    const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${
+      action.apiName
+    }/`
+    const response = yield call(request, {
+      url: getAppConnectorSubscriptionActionUrl,
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(unsubscribeAppConnectorActionSuccess())
+  } catch (error) {
+    console.log('Error unsubscribing app connector')
+  }
+}
+
+export function* fieldMappingConfigActionSaga(
+  action: FieldMappingConfigAction
+) {
+  try {
+    const fieldMappingConfigActionUrl = `${getAppConnectorApiUrl()}/apps/fieldmapping/`
+    const response = yield call(request, {
+      url: fieldMappingConfigActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        app_name: action.appName,
+        api_name: action.apiName,
+        map: action.map,
+      },
+    })
+
+    yield put(fieldMappingConfigActionSuccess())
+  } catch (error) {
+    console.log('Error mapping app conector fields')
   }
 }
 
@@ -403,6 +485,18 @@ function* rootSaga() {
   yield takeLatest(
     GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
     getAppConnectorSubscriptionActionSaga
+  )
+  yield takeLatest(
+    SUBSCRIBE_APP_CONNECTOR_ACTION,
+    subscribeAppConnectorActionSaga
+  )
+  yield takeLatest(
+    UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+    unsubscribeAppConnectorActionSaga
+  )
+  yield takeLatest(
+    FIELD_MAPPING_CONFIG_ACTION,
+    fieldMappingConfigActionSaga
   )
 }
 
