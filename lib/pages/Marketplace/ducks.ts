@@ -168,16 +168,10 @@ export const UNSUBSCRIBE_APP_CONNECTOR_ACTION =
 export const UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS =
   'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS'
 
-// 'App connector start'
-export const APP_CONNECTOR_START_ACTION =
-  'Marketplace/APP_CONNECTOR_START_ACTION'
-export const APP_CONNECTOR_START_ACTION_SUCCESS =
-  'Marketplace/APP_CONNECTOR_START_ACTION_SUCCESS'
-
-// 'App connector stop'
-export const APP_CONNECTOR_STOP_ACTION = 'Marketplace/APP_CONNECTOR_STOP_ACTION'
-export const APP_CONNECTOR_STOP_ACTION_SUCCESS =
-  'Marketplace/APP_CONNECTOR_STOP_ACTION_SUCCESS'
+// 'App connector polling'
+export const SET_POLLING_STATUS_ACTION = 'Marketplace/SET_POLLING_STATUS_ACTION'
+export const SET_POLLING_STATUS_ACTION_SUCCESS =
+  'Marketplace/SET_POLLING_STATUS_ACTION_SUCCESS'
 
 // 'field mapping config'
 export const FIELD_MAPPING_CONFIG_ACTION =
@@ -542,6 +536,26 @@ export function getAppConnectorSubscriptionActionError() {
     type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
   }
 }
+
+export function setPoolingStatusAction(
+  appName: string,
+  apiName: string,
+  command: string
+) {
+  return {
+    type: SET_POLLING_STATUS_ACTION,
+    appName,
+    apiName,
+    command,
+  }
+}
+
+export function setPoolingStatusActionSuccess() {
+  return {
+    type: SET_POLLING_STATUS_ACTION_SUCCESS,
+  }
+}
+
 export function subscribeAppConnectorAction(
   appName: string,
   apiName: string,

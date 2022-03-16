@@ -33,7 +33,10 @@ import {
   subscribeAppConnectorActionError,
   SUBSCRIBE_APP_CONNECTOR_ACTION,
   unsubscribeAppConnectorActionSuccess,
-  UNSUBSCRIBE_APP_CONNECTOR_ACTION, FIELD_MAPPING_CONFIG_ACTION, fieldMappingConfigActionSuccess
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+  FIELD_MAPPING_CONFIG_ACTION,
+  fieldMappingConfigActionSuccess,
+  SET_POLLING_STATUS_ACTION, setPoolingStatusActionSuccess
 } from './ducks'
 
 import {
@@ -45,11 +48,11 @@ import {
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
   GetPublisherAppsSampleAction,
-  GetPublisherDetailsAction,
+  GetPublisherDetailsAction, SetPollingStatusAction,
   SubscribeAppConnectorAction,
   SubscribeToMarketplaceAppAction,
   UnsubscribeAppConnectorAction,
-  UnsubscribeToMarketplaceAppAction,
+  UnsubscribeToMarketplaceAppAction
 } from './types'
 
 import {
@@ -392,6 +395,28 @@ export function* fieldMappingConfigActionSaga(
   }
 }
 
+export function* setPollingStatusActionSaga(action: SetPollingStatusAction) {
+  try {
+    const pollingStatusActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`
+    const response = yield call(request, {
+      url: pollingStatusActionUrl,
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        app_name: action.appName,
+        api_name: action.apiName,
+        command: action.command,
+      },
+    })
+
+    yield put(setPoolingStatusActionSuccess())
+  } catch (error) {
+    console.log('Error setting polling status')
+  }
+}
+
 export function* getPublisherAppsSampleActionSaga(
   action: GetPublisherAppsSampleAction
 ) {
@@ -497,6 +522,10 @@ function* rootSaga() {
   yield takeLatest(
     FIELD_MAPPING_CONFIG_ACTION,
     fieldMappingConfigActionSaga
+  )
+  yield takeLatest(
+    SET_POLLING_STATUS_ACTION,
+    setPollingStatusActionSaga
   )
 }
 

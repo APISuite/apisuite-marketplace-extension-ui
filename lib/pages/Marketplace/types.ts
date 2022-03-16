@@ -34,7 +34,10 @@ import {
   SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
   SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR,
   UNSUBSCRIBE_APP_CONNECTOR_ACTION,
-  UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS, FIELD_MAPPING_CONFIG_ACTION, FIELD_MAPPING_CONFIG_ACTION_SUCCESS
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
+  FIELD_MAPPING_CONFIG_ACTION,
+  FIELD_MAPPING_CONFIG_ACTION_SUCCESS,
+  SET_POLLING_STATUS_ACTION, SET_POLLING_STATUS_ACTION_SUCCESS
 } from './ducks'
 
 export const roleNameOptions = [
@@ -402,6 +405,17 @@ export interface SetMarketplaceAppLabelsAction extends Action {
   marketplaceAppLabels: string[]
 }
 
+export interface SetPollingStatusAction extends Action {
+  type: typeof SET_POLLING_STATUS_ACTION
+  appName: string
+  apiName: string
+  command: string
+}
+
+export interface SetPollingStatusActionSuccess extends Action {
+  type: typeof SET_POLLING_STATUS_ACTION_SUCCESS
+}
+
 export type MarketplaceActions =
   | FieldMappingConfigAction
   | FieldMappingConfigActionSuccess
@@ -430,6 +444,8 @@ export type MarketplaceActions =
   | GetPublisherDetailsActionError
   | SetMarketplaceAppLabelsAction
   | SetMarketplaceAppVisibilityAction
+  | SetPollingStatusAction
+  | SetPollingStatusActionSuccess
   | SubscribeAppConnectorAction
   | SubscribeAppConnectorActionSuccess
   | SubscribeAppConnectorActionError

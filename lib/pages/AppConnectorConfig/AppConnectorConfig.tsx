@@ -18,6 +18,7 @@ import {
   getAppConnectorConfigAction,
   getAppConnectorSubscriptionAction,
   getAppDetailsAction,
+  setPoolingStatusAction,
   subscribeAppConnectorAction,
 } from '../Marketplace/ducks'
 import useStyles from './styles'
@@ -50,7 +51,11 @@ const AppConnectorConfig: React.FC = () => {
 
   const getSubscriptionStatus = () =>
     appConnectorConfigDetails.data.workerStatus !== 'stopped' &&
-    appConnectorSubscribed
+    appConnectorSubscribed &&
+    appConnectorSubscriptionDetails &&
+    appConnectorSubscriptionDetails.data &&
+    appConnectorSubscriptionDetails.data.workerStatus &&
+    appConnectorSubscriptionDetails.data.workerStatus !== 'stopped'
 
   const backToApp = () => {
     history.push(
@@ -60,6 +65,7 @@ const AppConnectorConfig: React.FC = () => {
 
   const [fieldValues, setFieldValues] = useState({
     apiUrl: '',
+    polling_toggle: false,
   })
 
   const renderFieldsRaw = (entries) => {
@@ -73,6 +79,7 @@ const AppConnectorConfig: React.FC = () => {
             }}
             disabled={true}
             style={{ width: 100 + '%' }}
+            onChange={() => null}
             value={entry}
             variant="outlined"
           />
@@ -98,7 +105,7 @@ const AppConnectorConfig: React.FC = () => {
             }}
             style={{ width: 100 + '%' }}
             name={entry}
-            value={fieldValues[entry]}
+            value={fieldValues[entry] || ''}
             onChange={changeHandler}
             variant="outlined"
           />
@@ -108,23 +115,30 @@ const AppConnectorConfig: React.FC = () => {
   }
 
   const changeHandler = (changeEvent) => {
-    console.log(changeEvent)
     const newFieldValues = { ...fieldValues }
     newFieldValues[changeEvent.target.name] = changeEvent.target.value
     setFieldValues(newFieldValues)
   }
 
   const updatePollingStatus = (changeEvent) => {
-    console.log('pooling toggle', fieldValues['polling_toggle'])
+    const newValues = { ...fieldValues }
+    newValues['polling_toggle'] = changeEvent.target.checked
+    const postValues = {
+      app_name: appConnectorConfigDetails.data.name,
+      api_name: selectedAppDetails.name,
+      command: changeEvent.target.checked ? 'start' : 'stop',
+    }
+    dispatch(
+      setPoolingStatusAction(
+        postValues.app_name,
+        postValues.api_name,
+        postValues.command
+      )
+    )
+    setFieldValues(newValues)
   }
 
   const saveSubscription = (event) => {
-    console.log('field values', fieldValues)
-    console.log('subscription', {
-      app_name: appConnectorConfigDetails.data.name,
-      api_name: selectedAppDetails.name,
-      api_url: fieldValues['apiUrl'],
-    })
     dispatch(
       subscribeAppConnectorAction(
         appConnectorConfigDetails.data.name,
@@ -141,7 +155,6 @@ const AppConnectorConfig: React.FC = () => {
       if (fieldValues[entry]) mappingPost.map[entry] = fieldValues[entry]
     }
     if (Object.keys(mappingPost.map).length !== 0) {
-      console.log('fieldMapping', mappingPost)
       dispatch(
         fieldMappingConfigAction(
           mappingPost.app_name,
@@ -179,7 +192,6 @@ const AppConnectorConfig: React.FC = () => {
   }, [selectedAppDetails])
 
   useEffect(() => {
-    console.log(appConnectorConfigDetails)
     if (selectedAppDetails && appConnectorConfigDetails)
       dispatch(
         getAppConnectorSubscriptionAction(
@@ -205,6 +217,7 @@ const AppConnectorConfig: React.FC = () => {
           appConnectorSubscriptionDetails.data.fieldMapping[entry]) ||
         ''
     }
+    newFieldValues['polling_status'] = getSubscriptionStatus()
     setFieldValues(newFieldValues)
   }, [appConnectorSubscriptionDetails])
 
@@ -338,9 +351,9 @@ const AppConnectorConfig: React.FC = () => {
                 control={
                   <Switch
                     name="polling_toggle"
-                    checked={getSubscriptionStatus()}
+                    checked={fieldValues['polling_toggle']}
                     disabled={
-                      appConnectorConfigDetails.data.workerStatus !== 'stopped'
+                      appConnectorConfigDetails.data.workerStatus == 'stopped'
                     }
                     onChange={updatePollingStatus}
                   />
