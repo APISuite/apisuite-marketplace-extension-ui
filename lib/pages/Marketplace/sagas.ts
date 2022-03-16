@@ -330,7 +330,7 @@ export function* subscribeAppConnectorActionSaga(
 ) {
   try {
     const subscribeAppConnectorActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`
-    const response = yield call(request, {
+    yield call(request, {
       url: subscribeAppConnectorActionUrl,
       method: 'POST',
       headers: {
@@ -357,7 +357,7 @@ export function* unsubscribeAppConnectorActionSaga(
     const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${
       action.apiName
     }/`
-    const response = yield call(request, {
+    yield call(request, {
       url: getAppConnectorSubscriptionActionUrl,
       method: 'DELETE',
       headers: {
@@ -376,7 +376,7 @@ export function* fieldMappingConfigActionSaga(
 ) {
   try {
     const fieldMappingConfigActionUrl = `${getAppConnectorApiUrl()}/apps/fieldmapping/`
-    const response = yield call(request, {
+    yield call(request, {
       url: fieldMappingConfigActionUrl,
       method: 'POST',
       headers: {
@@ -398,7 +398,7 @@ export function* fieldMappingConfigActionSaga(
 export function* setPollingStatusActionSaga(action: SetPollingStatusAction) {
   try {
     const pollingStatusActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`
-    const response = yield call(request, {
+    yield call(request, {
       url: pollingStatusActionUrl,
       method: 'PUT',
       headers: {

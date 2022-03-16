@@ -13,8 +13,6 @@ import {
   SubbedMarketplaceApp,
   View,
 } from './types'
-import * as stream from 'stream'
-import { stringify } from 'querystring'
 
 /** Initial state */
 
@@ -312,12 +310,6 @@ export default function reducer(
       })
     }
 
-    case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR: {
-      return update(state, {
-        appConnectorSubscribed: { $set: false },
-      })
-    }
-
     case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION: {
       return state
     }
@@ -341,6 +333,7 @@ export default function reducer(
       })
     }
 
+    case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR:
     case SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR: {
       return update(state, {
         appConnectorSubscribed: { $set: false },
