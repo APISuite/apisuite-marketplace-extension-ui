@@ -36,7 +36,8 @@ import {
   UNSUBSCRIBE_APP_CONNECTOR_ACTION,
   FIELD_MAPPING_CONFIG_ACTION,
   fieldMappingConfigActionSuccess,
-  SET_POLLING_STATUS_ACTION, setPoolingStatusActionSuccess
+  SET_POLLING_STATUS_ACTION,
+  setPoolingStatusActionSuccess,
 } from './ducks'
 
 import {
@@ -48,11 +49,12 @@ import {
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
   GetPublisherAppsSampleAction,
-  GetPublisherDetailsAction, SetPollingStatusAction,
+  GetPublisherDetailsAction,
+  SetPollingStatusAction,
   SubscribeAppConnectorAction,
   SubscribeToMarketplaceAppAction,
   UnsubscribeAppConnectorAction,
-  UnsubscribeToMarketplaceAppAction
+  UnsubscribeToMarketplaceAppAction,
 } from './types'
 
 import {
@@ -519,14 +521,8 @@ function* rootSaga() {
     UNSUBSCRIBE_APP_CONNECTOR_ACTION,
     unsubscribeAppConnectorActionSaga
   )
-  yield takeLatest(
-    FIELD_MAPPING_CONFIG_ACTION,
-    fieldMappingConfigActionSaga
-  )
-  yield takeLatest(
-    SET_POLLING_STATUS_ACTION,
-    setPollingStatusActionSaga
-  )
+  yield takeLatest(FIELD_MAPPING_CONFIG_ACTION, fieldMappingConfigActionSaga)
+  yield takeLatest(SET_POLLING_STATUS_ACTION, setPollingStatusActionSaga)
 }
 
 export default rootSaga
