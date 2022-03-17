@@ -48,7 +48,7 @@ const SubbedMarketplaceAppCards: React.FC<SubbedMarketplaceAppCardsProps> = ({
   }, [retrievedAllSubbedMarketplaceApps])
 
   const stringChecker = (providedString: string) => {
-    return providedString.length ? providedString : false
+    return providedString && providedString.length ? providedString : false
   }
 
   let allMarketplaceAppNames: string[] = []
