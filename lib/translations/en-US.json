@@ -75,7 +75,31 @@
             "text": "Publish and market your own applications on {{portalOwner}}'s Marketplace through our developer portal!"
           }
         },
+        "appConnectorConfig": {
+          "title": "{{appName}} connection setup",
+          "description": "Create a connection between {{appName}} and your own API",
+          "apiEndpointTitle": "Your API Endpoint",
+          "apiEndpointLabel": "API Endpoint",
+          "fieldMatching": "Field Matching",
+          "fieldMatchingDescription": "To effectively use the data received fields from your API need to be matched with the ones from {{appName}}.",
+          "appFields": "{{appName}} fields",
+          "apiFields": "Your API fields",
+          "appField": "App field",
+          "apiField": "API field",
+          "connectionStatus": "Connection status",
+          "connectionStatusDescription": "Turn this connection on or off.",
+          "connectionOn": "Connection is on",
+          "connectionOff": "Connection is off",
+          "cancel": "Cancel",
+          "save": "Save",
+          "alerts": {
+            "workerOffline": "{{appName}} worker is offline",
+            "upToDate": "{{appName}} is up to date",
+            "outdated": "{{appName}} configuration is outdated"
+          }
+        },
         "appDetails": {
+          "configureAppConnector": "Connect App",
           "loadingAppDetails": "Loading the selected app's details...",
           "appSubscribeButton": "Subscribe app",
           "signInToSubscribe": "Sign in to Subscribe",

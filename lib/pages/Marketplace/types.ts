@@ -25,6 +25,20 @@ import {
   SUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION_SUCCESS,
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
+  GET_APP_CONNECTOR_CONFIG_ACTION,
+  GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
+  SUBSCRIBE_APP_CONNECTOR_ACTION,
+  SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
+  SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR,
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
+  FIELD_MAPPING_CONFIG_ACTION,
+  FIELD_MAPPING_CONFIG_ACTION_SUCCESS,
+  SET_POLLING_STATUS_ACTION,
+  SET_POLLING_STATUS_ACTION_SUCCESS,
 } from './ducks'
 
 export const roleNameOptions = [
@@ -88,6 +102,12 @@ export interface MarketplaceStore {
 
   pagination: Pagination
 
+  // 'App connector config' view
+  appConnectorConfigDetails: AppConnectorConfigDetails
+
+  appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails
+  appConnectorSubscribed: boolean
+
   // 'App details' view
   selectedAppDetails: AppDetails
   retrievedSelectedAppDetails: boolean
@@ -143,6 +163,27 @@ export interface AppDetails {
   updatedAt: string
   websiteUrl: string
   youtubeUrl: string
+  appType: {
+    id: string
+    type: string
+  }
+}
+
+export interface AppConnectorConfigDetails {
+  data: {
+    name: string
+    fieldsRaw: string[]
+    workerStatus: string
+  }
+}
+export interface AppConnectorSubscriptionDetails {
+  data: {
+    appName: string
+    apiName: string
+    apiUrl: string
+    fieldMapping: any
+    status: string
+  }
 }
 
 export interface PublisherDetails {
@@ -271,6 +312,66 @@ export interface GetAppDetailsActionSuccess extends Action {
   appDetails: AppDetails
 }
 
+export interface GetAppConnectorConfigAction extends Action {
+  type: typeof GET_APP_CONNECTOR_CONFIG_ACTION
+  appID: string
+}
+
+export interface GetAppConnectorConfigActionSuccess extends Action {
+  type: typeof GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS
+  appConnectorConfigDetails: AppConnectorConfigDetails
+}
+
+export interface GetAppConnectorSubscriptionAction extends Action {
+  type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION
+  appName: string
+  apiName: string
+}
+
+export interface GetAppConnectorSubscriptionActionSuccess extends Action {
+  type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS
+  appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails
+}
+
+export interface GetAppConnectorSubscriptionActionError extends Action {
+  type: typeof GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR
+}
+
+export interface SubscribeAppConnectorAction extends Action {
+  type: typeof SUBSCRIBE_APP_CONNECTOR_ACTION
+  appName: string
+  apiName: string
+  apiUrl: string
+}
+
+export interface SubscribeAppConnectorActionSuccess extends Action {
+  type: typeof SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS
+}
+
+export interface SubscribeAppConnectorActionError extends Action {
+  type: typeof SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR
+}
+
+export interface UnsubscribeAppConnectorAction extends Action {
+  type: typeof UNSUBSCRIBE_APP_CONNECTOR_ACTION
+  apiName: string
+}
+
+export interface UnsubscribeAppConnectorActionSuccess extends Action {
+  type: typeof UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS
+}
+
+export interface FieldMappingConfigAction extends Action {
+  type: typeof FIELD_MAPPING_CONFIG_ACTION
+  appName: string
+  apiName: string
+  map: any
+}
+
+export interface FieldMappingConfigActionSuccess extends Action {
+  type: typeof FIELD_MAPPING_CONFIG_ACTION_SUCCESS
+}
+
 export interface GetPublisherAppsSampleAction extends Action {
   type: typeof GET_PUBLISHER_APPS_SAMPLE_ACTION
   orgID: number
@@ -306,9 +407,34 @@ export interface SetMarketplaceAppLabelsAction extends Action {
   marketplaceAppLabels: string[]
 }
 
+export interface SetPollingStatusAction extends Action {
+  type: typeof SET_POLLING_STATUS_ACTION
+  appName: string
+  apiName: string
+  command: string
+}
+
+export interface SetPollingStatusActionSuccess extends Action {
+  type: typeof SET_POLLING_STATUS_ACTION_SUCCESS
+}
+
 export type MarketplaceActions =
+  | FieldMappingConfigAction
+  | FieldMappingConfigActionSuccess
+  | GetAppConnectorConfigAction
+  | GetAppConnectorConfigActionSuccess
+  | GetAppConnectorSubscriptionAction
+  | GetAppConnectorSubscriptionActionSuccess
+  | GetAppConnectorSubscriptionActionError
   | GetAllMarketplaceAppsAction
+  | SetPollingStatusAction
+  | SetPollingStatusActionSuccess
+  | SubscribeAppConnectorAction
+  | SubscribeAppConnectorActionSuccess
+  | SubscribeAppConnectorActionError
   | GetAllMarketplaceAppsActionSuccess
+  | UnsubscribeAppConnectorAction
+  | UnsubscribeAppConnectorActionSuccess
   | GetAllMarketplaceLabelsAction
   | GetAllMarketplaceLabelsActionSuccess
   | GetAllMarketplacePublishersAction
