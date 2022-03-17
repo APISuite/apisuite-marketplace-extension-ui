@@ -78,7 +78,10 @@ const AppConnectorConfig: React.FC = () => {
               shrink: true,
             }}
             disabled={true}
-            style={{ width: 100 + '%' }}
+            style={{
+              width: 100 + '%',
+              color: '#84878c !important',
+            }}
             onChange={() => null}
             value={entry}
             variant="outlined"
