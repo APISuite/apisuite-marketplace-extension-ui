@@ -24,7 +24,7 @@ const SubbedMarketplaceAppCards = ({ allSubbedMarketplaceApps, getAllSubbedMarke
         setLoading(!retrievedAllSubbedMarketplaceApps);
     }, [retrievedAllSubbedMarketplaceApps]);
     const stringChecker = (providedString) => {
-        return providedString.length ? providedString : false;
+        return providedString && providedString.length ? providedString : false;
     };
     let allMarketplaceAppNames = [];
     /* Generates an 'app card' for every marketplace app a user has subscribed to. */
