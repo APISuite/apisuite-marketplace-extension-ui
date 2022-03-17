@@ -24,20 +24,44 @@ import {
   UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION,
   unsubscribeToMarketplaceAppActionSuccess,
   getPublisherDetailsActionError,
+  getAppConnectorConfigActionSuccess,
+  GET_APP_CONNECTOR_CONFIG_ACTION,
+  getAppConnectorSubscriptionActionSuccess,
+  getAppConnectorSubscriptionActionError,
+  GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
+  subscribeAppConnectorActionSuccess,
+  subscribeAppConnectorActionError,
+  SUBSCRIBE_APP_CONNECTOR_ACTION,
+  unsubscribeAppConnectorActionSuccess,
+  UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+  FIELD_MAPPING_CONFIG_ACTION,
+  fieldMappingConfigActionSuccess,
+  SET_POLLING_STATUS_ACTION,
+  setPoolingStatusActionSuccess,
 } from './ducks'
 
 import {
+  FieldMappingConfigAction,
   GetAllMarketplaceAppsAction,
   GetAllSubbedMarketplaceAppsAction,
+  GetAppConnectorConfigAction,
+  GetAppConnectorSubscriptionAction,
   GetAppDetailsAction,
   GetFilteredAppsMarketplaceAction,
   GetPublisherAppsSampleAction,
   GetPublisherDetailsAction,
   SubscribeToMarketplaceAppAction,
   UnsubscribeToMarketplaceAppAction,
+  SetPollingStatusAction,
+  SubscribeAppConnectorAction,
+  UnsubscribeAppConnectorAction,
 } from './types'
 
-import { getApiUrl, getMarketplaceApiUrl } from '../../constants/endpoints'
+import {
+  getApiUrl,
+  getAppConnectorApiUrl,
+  getMarketplaceApiUrl,
+} from '../../constants/endpoints'
 import appDetailsMapping from '../../util/appDetailsMapping'
 
 export function* getAllMarketplaceAppsActionSaga(
@@ -311,6 +335,141 @@ export function* getPublisherDetailsActionSaga(
   }
 }
 
+export function* getAppConnectorConfigActionSaga(
+  action: GetAppConnectorConfigAction
+) {
+  try {
+    const getAppConnectorConfigActionUrl = `${getAppConnectorApiUrl()}/apps/getid/${
+      action.appID
+    }`
+    const response = yield call(request, {
+      url: getAppConnectorConfigActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(getAppConnectorConfigActionSuccess(response))
+  } catch (error) {
+    console.log('Error fetching the selected app connector config')
+  }
+}
+
+export function* getAppConnectorSubscriptionActionSaga(
+  action: GetAppConnectorSubscriptionAction
+) {
+  try {
+    const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${
+      action.appName
+    }/${action.apiName}/`
+    const response = yield call(request, {
+      url: getAppConnectorSubscriptionActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(getAppConnectorSubscriptionActionSuccess(response))
+  } catch (error) {
+    console.log('Error fetching the selected app connector config')
+    yield put(getAppConnectorSubscriptionActionError())
+  }
+}
+
+export function* subscribeAppConnectorActionSaga(
+  action: SubscribeAppConnectorAction
+) {
+  try {
+    const subscribeAppConnectorActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`
+    yield call(request, {
+      url: subscribeAppConnectorActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        app_name: action.appName,
+        api_name: action.apiName,
+        api_url: action.apiUrl,
+      },
+    })
+
+    yield put(subscribeAppConnectorActionSuccess())
+  } catch (error) {
+    console.log('Error subscribing app connector')
+    yield put(subscribeAppConnectorActionError())
+  }
+}
+
+export function* unsubscribeAppConnectorActionSaga(
+  action: UnsubscribeAppConnectorAction
+) {
+  try {
+    const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${
+      action.apiName
+    }/`
+    yield call(request, {
+      url: getAppConnectorSubscriptionActionUrl,
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(unsubscribeAppConnectorActionSuccess())
+  } catch (error) {
+    console.log('Error unsubscribing app connector')
+  }
+}
+
+export function* fieldMappingConfigActionSaga(
+  action: FieldMappingConfigAction
+) {
+  try {
+    const fieldMappingConfigActionUrl = `${getAppConnectorApiUrl()}/apps/fieldmapping/`
+    yield call(request, {
+      url: fieldMappingConfigActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        app_name: action.appName,
+        api_name: action.apiName,
+        map: action.map,
+      },
+    })
+
+    yield put(fieldMappingConfigActionSuccess())
+  } catch (error) {
+    console.log('Error mapping app conector fields')
+  }
+}
+
+export function* setPollingStatusActionSaga(action: SetPollingStatusAction) {
+  try {
+    const pollingStatusActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`
+    yield call(request, {
+      url: pollingStatusActionUrl,
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        app_name: action.appName,
+        api_name: action.apiName,
+        command: action.command,
+      },
+    })
+
+    yield put(setPoolingStatusActionSuccess())
+  } catch (error) {
+    console.log('Error setting polling status')
+  }
+}
+
 function* rootSaga() {
   yield takeLatest(
     GET_ALL_MARKETPLACE_APPS_ACTION,
@@ -346,6 +505,24 @@ function* rootSaga() {
     getPublisherAppsSampleActionSaga
   )
   yield takeLatest(GET_PUBLISHER_DETAILS_ACTION, getPublisherDetailsActionSaga)
+  yield takeLatest(
+    GET_APP_CONNECTOR_CONFIG_ACTION,
+    getAppConnectorConfigActionSaga
+  )
+  yield takeLatest(
+    GET_APP_CONNECTOR_SUBSCRIPTION_ACTION,
+    getAppConnectorSubscriptionActionSaga
+  )
+  yield takeLatest(
+    SUBSCRIBE_APP_CONNECTOR_ACTION,
+    subscribeAppConnectorActionSaga
+  )
+  yield takeLatest(
+    UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+    unsubscribeAppConnectorActionSaga
+  )
+  yield takeLatest(FIELD_MAPPING_CONFIG_ACTION, fieldMappingConfigActionSaga)
+  yield takeLatest(SET_POLLING_STATUS_ACTION, setPollingStatusActionSaga)
 }
 
 export default rootSaga

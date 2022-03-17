@@ -1,6 +1,8 @@
 import update from 'immutability-helper'
 
 import {
+  AppConnectorConfigDetails,
+  AppConnectorSubscriptionDetails,
   AppDetails,
   Filters,
   MarketplaceActions,
@@ -33,6 +35,25 @@ const initialState: MarketplaceStore = {
     rowCount: 0,
   },
 
+  // 'App connector config' view
+  appConnectorConfigDetails: {
+    data: {
+      name: '',
+      fieldsRaw: [],
+      workerStatus: '',
+    },
+  },
+  appConnectorSubscriptionDetails: {
+    data: {
+      appName: '',
+      fieldMapping: {},
+      apiName: '',
+      apiUrl: '',
+      status: 'stopped',
+    },
+  },
+  appConnectorSubscribed: false,
+
   // 'App details' view
   selectedAppDetails: {
     createdAt: '',
@@ -58,6 +79,10 @@ const initialState: MarketplaceStore = {
     updatedAt: '',
     websiteUrl: '',
     youtubeUrl: '',
+    appType: {
+      id: '',
+      type: '',
+    },
   },
   retrievedSelectedAppDetails: false,
 
@@ -113,6 +138,41 @@ export const GET_FILTERED_MARKETPLACE_APPS_ACTION =
   'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION'
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS =
   'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS'
+
+// 'App connector config' view
+export const GET_APP_CONNECTOR_CONFIG_ACTION =
+  'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION'
+export const GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS =
+  'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS'
+
+// 'App connector subscription'
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION =
+  'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION'
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS =
+  'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS'
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR =
+  'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR'
+export const SUBSCRIBE_APP_CONNECTOR_ACTION =
+  'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION'
+export const SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS =
+  'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS'
+export const SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR =
+  'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR'
+export const UNSUBSCRIBE_APP_CONNECTOR_ACTION =
+  'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION'
+export const UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS =
+  'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS'
+
+// 'App connector polling'
+export const SET_POLLING_STATUS_ACTION = 'Marketplace/SET_POLLING_STATUS_ACTION'
+export const SET_POLLING_STATUS_ACTION_SUCCESS =
+  'Marketplace/SET_POLLING_STATUS_ACTION_SUCCESS'
+
+// 'field mapping config'
+export const FIELD_MAPPING_CONFIG_ACTION =
+  'Marketplace/FIELD_MAPPING_CONFIG_ACTION'
+export const FIELD_MAPPING_CONFIG_ACTION_SUCCESS =
+  'Marketplace/FIELD_MAPPING_CONFIG_ACTION_SUCCESS'
 
 // 'App details' view
 export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
@@ -237,6 +297,21 @@ export default function reducer(
       })
     }
 
+    case GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorConfigDetails: { $set: action.appConnectorConfigDetails },
+      })
+    }
+
+    case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorSubscriptionDetails: {
+          $set: action.appConnectorSubscriptionDetails,
+        },
+        appConnectorSubscribed: { $set: true },
+      })
+    }
+
     case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION: {
       return state
     }
@@ -251,6 +326,28 @@ export default function reducer(
     case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR: {
       return update(state, {
         retrievedAllSubbedMarketplaceApps: { $set: true },
+      })
+    }
+
+    case SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorSubscribed: { $set: true },
+      })
+    }
+
+    case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR:
+    case SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR: {
+      return update(state, {
+        appConnectorSubscribed: { $set: false },
+      })
+    }
+
+    case UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS: {
+      return update(state, {
+        appConnectorSubscriptionDetails: {
+          $set: initialState.appConnectorSubscriptionDetails,
+        },
+        appConnectorSubscribed: { $set: false },
       })
     }
 
@@ -318,6 +415,18 @@ export default function reducer(
 }
 
 /** Action builders */
+
+export function fieldMappingConfigAction(
+  appName: string,
+  apiName: string,
+  map: any
+) {
+  return { type: FIELD_MAPPING_CONFIG_ACTION, appName, apiName, map }
+}
+
+export function fieldMappingConfigActionSuccess() {
+  return { type: FIELD_MAPPING_CONFIG_ACTION_SUCCESS }
+}
 
 // 'Marketplace' view
 export function getAllMarketplaceAppsAction(pagination: {
@@ -486,5 +595,98 @@ export function setMarketplaceAppVisibilityAction(
   return {
     type: SET_MARKETPLACE_APP_VISIBILITY_ACTION,
     marketplaceAppVisibility,
+  }
+}
+
+// 'App connector config' view
+export function getAppConnectorConfigAction(appID: string) {
+  return { type: GET_APP_CONNECTOR_CONFIG_ACTION, appID }
+}
+
+export function getAppConnectorConfigActionSuccess(
+  appConnectorConfigDetails: AppConnectorConfigDetails
+) {
+  return {
+    type: GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS,
+    appConnectorConfigDetails,
+  }
+}
+
+export function getAppConnectorSubscriptionAction(
+  appName: string,
+  apiName: string
+) {
+  return { type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION, appName, apiName }
+}
+
+export function getAppConnectorSubscriptionActionSuccess(
+  appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails
+) {
+  return {
+    type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS,
+    appConnectorSubscriptionDetails,
+  }
+}
+
+export function getAppConnectorSubscriptionActionError() {
+  return {
+    type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
+  }
+}
+
+export function setPoolingStatusAction(
+  appName: string,
+  apiName: string,
+  command: string
+) {
+  return {
+    type: SET_POLLING_STATUS_ACTION,
+    appName,
+    apiName,
+    command,
+  }
+}
+
+export function setPoolingStatusActionSuccess() {
+  return {
+    type: SET_POLLING_STATUS_ACTION_SUCCESS,
+  }
+}
+
+export function subscribeAppConnectorAction(
+  appName: string,
+  apiName: string,
+  apiUrl: string
+) {
+  return {
+    type: SUBSCRIBE_APP_CONNECTOR_ACTION,
+    appName,
+    apiName,
+    apiUrl,
+  }
+}
+
+export function subscribeAppConnectorActionSuccess() {
+  return {
+    type: SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
+  }
+}
+
+export function subscribeAppConnectorActionError() {
+  return {
+    type: SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR,
+  }
+}
+
+export function unsubscribeAppConnectorAction(apiName: string) {
+  return {
+    type: UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+    apiName,
+  }
+}
+
+export function unsubscribeAppConnectorActionSuccess() {
+  return {
+    type: UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
   }
 }

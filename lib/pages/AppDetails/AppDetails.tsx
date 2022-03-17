@@ -23,6 +23,7 @@ import {
   getPublisherAppsSampleAction,
   subscribeToMarketplaceAppAction,
   unsubscribeToMarketplaceAppAction,
+  unsubscribeAppConnectorAction,
 } from '../Marketplace/ducks'
 import appDetailsSelector from './selector'
 import useStyles from './styles'
@@ -111,12 +112,21 @@ const AppDetails: React.FC = () => {
     }
   }
 
+  const configureAppConnector = () => {
+    history.push(
+      `${encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)}`
+    )
+  }
+
   const handleMarketplaceAppSubscription = () => {
     const userID = parseInt(userProfile.id)
     const selectedAppID = selectedAppDetails.id
 
     if (isUserSubbedToApp) {
       dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
+      if (selectedAppDetails.appType.type == 'blueprint') {
+        dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name))
+      }
       setIsUserSubbedToApp(false)
     } else {
       dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
@@ -159,7 +169,7 @@ const AppDetails: React.FC = () => {
     if (retrievedSelectedAppDetails) {
       dispatch(
         getPublisherAppsSampleAction(
-          selectedAppDetails.orgId,
+          selectedAppDetails.org_id,
           selectedAppDetails.id
         )
       )
@@ -190,10 +200,22 @@ const AppDetails: React.FC = () => {
                       ? classes.appAlreadySubscribedButton
                       : classes.appSubscribeButton
                   }
+                  style={{ marginBottom: 8 + 'px' }}
                   onClick={handleNotLoggedUserSubscription}
                 >
                   {getSubscribeButtonTranslation()}
                 </Button>
+
+                {isUserSubbedToApp &&
+                  selectedAppDetails &&
+                  selectedAppDetails.appType.type == 'blueprint' && (
+                    <Button
+                      className={classes.configureAppConnectorButton}
+                      onClick={configureAppConnector}
+                    >
+                      {t('appMarketplace.appDetails.configureAppConnector')}
+                    </Button>
+                  )}
 
                 {selectedAppDetails && selectedAppDetails.directUrl && (
                   <Box mt={2}>
