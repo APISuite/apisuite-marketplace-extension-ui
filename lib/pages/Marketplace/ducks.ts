@@ -168,12 +168,6 @@ export const SET_POLLING_STATUS_ACTION = 'Marketplace/SET_POLLING_STATUS_ACTION'
 export const SET_POLLING_STATUS_ACTION_SUCCESS =
   'Marketplace/SET_POLLING_STATUS_ACTION_SUCCESS'
 
-// 'field mapping config'
-export const FIELD_MAPPING_CONFIG_ACTION =
-  'Marketplace/FIELD_MAPPING_CONFIG_ACTION'
-export const FIELD_MAPPING_CONFIG_ACTION_SUCCESS =
-  'Marketplace/FIELD_MAPPING_CONFIG_ACTION_SUCCESS'
-
 // 'App details' view
 export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION'
 export const GET_APP_DETAILS_ACTION_SUCCESS =
@@ -335,6 +329,7 @@ export default function reducer(
       })
     }
 
+    case SUBSCRIBE_APP_CONNECTOR_ACTION:
     case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR:
     case SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR: {
       return update(state, {
@@ -415,18 +410,6 @@ export default function reducer(
 }
 
 /** Action builders */
-
-export function fieldMappingConfigAction(
-  appName: string,
-  apiName: string,
-  map: any
-) {
-  return { type: FIELD_MAPPING_CONFIG_ACTION, appName, apiName, map }
-}
-
-export function fieldMappingConfigActionSuccess() {
-  return { type: FIELD_MAPPING_CONFIG_ACTION_SUCCESS }
-}
 
 // 'Marketplace' view
 export function getAllMarketplaceAppsAction(pagination: {
@@ -656,13 +639,15 @@ export function setPoolingStatusActionSuccess() {
 export function subscribeAppConnectorAction(
   appName: string,
   apiName: string,
-  apiUrl: string
+  apiUrl: string,
+  map: any
 ) {
   return {
     type: SUBSCRIBE_APP_CONNECTOR_ACTION,
     appName,
     apiName,
     apiUrl,
+    map,
   }
 }
 

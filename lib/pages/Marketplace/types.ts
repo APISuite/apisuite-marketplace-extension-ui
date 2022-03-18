@@ -35,8 +35,6 @@ import {
   SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR,
   UNSUBSCRIBE_APP_CONNECTOR_ACTION,
   UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
-  FIELD_MAPPING_CONFIG_ACTION,
-  FIELD_MAPPING_CONFIG_ACTION_SUCCESS,
   SET_POLLING_STATUS_ACTION,
   SET_POLLING_STATUS_ACTION_SUCCESS,
 } from './ducks'
@@ -342,6 +340,7 @@ export interface SubscribeAppConnectorAction extends Action {
   appName: string
   apiName: string
   apiUrl: string
+  map: any
 }
 
 export interface SubscribeAppConnectorActionSuccess extends Action {
@@ -359,17 +358,6 @@ export interface UnsubscribeAppConnectorAction extends Action {
 
 export interface UnsubscribeAppConnectorActionSuccess extends Action {
   type: typeof UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS
-}
-
-export interface FieldMappingConfigAction extends Action {
-  type: typeof FIELD_MAPPING_CONFIG_ACTION
-  appName: string
-  apiName: string
-  map: any
-}
-
-export interface FieldMappingConfigActionSuccess extends Action {
-  type: typeof FIELD_MAPPING_CONFIG_ACTION_SUCCESS
 }
 
 export interface GetPublisherAppsSampleAction extends Action {
@@ -419,8 +407,6 @@ export interface SetPollingStatusActionSuccess extends Action {
 }
 
 export type MarketplaceActions =
-  | FieldMappingConfigAction
-  | FieldMappingConfigActionSuccess
   | GetAppConnectorConfigAction
   | GetAppConnectorConfigActionSuccess
   | GetAppConnectorSubscriptionAction
