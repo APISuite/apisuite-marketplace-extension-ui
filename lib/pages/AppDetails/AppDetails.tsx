@@ -130,6 +130,9 @@ const AppDetails: React.FC = () => {
       setIsUserSubbedToApp(false)
     } else {
       dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
+      if (selectedAppDetails.appType.type == 'blueprint') {
+        configureAppConnector()
+      }
       setIsUserSubbedToApp(true)
     }
   }

@@ -34,14 +34,11 @@ import {
   SUBSCRIBE_APP_CONNECTOR_ACTION,
   unsubscribeAppConnectorActionSuccess,
   UNSUBSCRIBE_APP_CONNECTOR_ACTION,
-  FIELD_MAPPING_CONFIG_ACTION,
-  fieldMappingConfigActionSuccess,
   SET_POLLING_STATUS_ACTION,
   setPoolingStatusActionSuccess,
 } from './ducks'
 
 import {
-  FieldMappingConfigAction,
   GetAllMarketplaceAppsAction,
   GetAllSubbedMarketplaceAppsAction,
   GetAppConnectorConfigAction,
@@ -395,7 +392,21 @@ export function* subscribeAppConnectorActionSaga(
         api_url: action.apiUrl,
       },
     })
-
+    if (Object.keys(action.map).length !== 0) {
+      const fieldMappingConfigActionUrl = `${getAppConnectorApiUrl()}/apps/fieldmapping/`
+      yield call(request, {
+        url: fieldMappingConfigActionUrl,
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        data: {
+          app_name: action.appName,
+          api_name: action.apiName,
+          map: action.map,
+        },
+      })
+    }
     yield put(subscribeAppConnectorActionSuccess())
   } catch (error) {
     console.log('Error subscribing app connector')
@@ -421,30 +432,6 @@ export function* unsubscribeAppConnectorActionSaga(
     yield put(unsubscribeAppConnectorActionSuccess())
   } catch (error) {
     console.log('Error unsubscribing app connector')
-  }
-}
-
-export function* fieldMappingConfigActionSaga(
-  action: FieldMappingConfigAction
-) {
-  try {
-    const fieldMappingConfigActionUrl = `${getAppConnectorApiUrl()}/apps/fieldmapping/`
-    yield call(request, {
-      url: fieldMappingConfigActionUrl,
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      data: {
-        app_name: action.appName,
-        api_name: action.apiName,
-        map: action.map,
-      },
-    })
-
-    yield put(fieldMappingConfigActionSuccess())
-  } catch (error) {
-    console.log('Error mapping app conector fields')
   }
 }
 
@@ -521,7 +508,6 @@ function* rootSaga() {
     UNSUBSCRIBE_APP_CONNECTOR_ACTION,
     unsubscribeAppConnectorActionSaga
   )
-  yield takeLatest(FIELD_MAPPING_CONFIG_ACTION, fieldMappingConfigActionSaga)
   yield takeLatest(SET_POLLING_STATUS_ACTION, setPollingStatusActionSaga)
 }
 

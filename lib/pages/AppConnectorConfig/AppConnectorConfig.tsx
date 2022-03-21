@@ -14,7 +14,6 @@ import {
   Divider,
 } from '@apisuite/fe-base'
 import {
-  fieldMappingConfigAction,
   getAppConnectorConfigAction,
   getAppConnectorSubscriptionAction,
   getAppDetailsAction,
@@ -44,7 +43,6 @@ const AppConnectorConfig: React.FC = () => {
   }
 
   const history = useHistory()
-  // 1. Subscription logic for the currently selected Marketplace app
 
   // Retrieves the app's ID from the browser window's URL
   const { appID } = useParams<any>()
@@ -141,32 +139,25 @@ const AppConnectorConfig: React.FC = () => {
     setFieldValues(newValues)
   }
 
-  const saveSubscription = (event) => {
-    dispatch(
-      subscribeAppConnectorAction(
-        appConnectorConfigDetails.data.name,
-        selectedAppDetails.name,
-        fieldValues['apiUrl']
-      )
-    )
-    const mappingPost = {
+  const saveSubscription = () => {
+    const data = {
       app_name: appConnectorConfigDetails.data.name,
       api_name: selectedAppDetails.name,
+      api_url: fieldValues['apiUrl'],
       map: {},
     }
     for (const entry of appConnectorConfigDetails.data.fieldsRaw) {
-      if (fieldValues[entry]) mappingPost.map[entry] = fieldValues[entry]
+      if (fieldValues[entry]) data.map[entry] = fieldValues[entry]
     }
-    if (Object.keys(mappingPost.map).length !== 0) {
-      dispatch(
-        fieldMappingConfigAction(
-          mappingPost.app_name,
-          mappingPost.api_name,
-          mappingPost.map
-        )
+
+    dispatch(
+      subscribeAppConnectorAction(
+        data.app_name,
+        data.api_name,
+        data.api_url,
+        data.map
       )
-    }
-    event.preventDefault()
+    )
   }
 
   const mappingIsOutdated = () => {
