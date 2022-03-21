@@ -139,7 +139,7 @@ const AppConnectorConfig: React.FC = () => {
     setFieldValues(newValues)
   }
 
-  const saveSubscription = (event) => {
+  const saveSubscription = () => {
     const data = {
       app_name: appConnectorConfigDetails.data.name,
       api_name: selectedAppDetails.name,
@@ -158,7 +158,6 @@ const AppConnectorConfig: React.FC = () => {
         data.map
       )
     )
-    event.preventDefault()
   }
 
   const mappingIsOutdated = () => {
