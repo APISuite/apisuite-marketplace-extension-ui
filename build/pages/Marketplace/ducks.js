@@ -15,6 +15,24 @@ const initialState = {
         pageSize: 1,
         rowCount: 0,
     },
+    // 'App connector config' view
+    appConnectorConfigDetails: {
+        data: {
+            name: '',
+            fieldsRaw: [],
+            workerStatus: '',
+        },
+    },
+    appConnectorSubscriptionDetails: {
+        data: {
+            appName: '',
+            fieldMapping: {},
+            apiName: '',
+            apiUrl: '',
+            status: 'stopped',
+        },
+    },
+    appConnectorSubscribed: false,
     // 'App details' view
     selectedAppDetails: {
         createdAt: '',
@@ -40,6 +58,10 @@ const initialState = {
         updatedAt: '',
         websiteUrl: '',
         youtubeUrl: '',
+        appType: {
+            id: '',
+            type: '',
+        },
     },
     retrievedSelectedAppDetails: false,
     allSubbedMarketplaceApps: [],
@@ -77,6 +99,21 @@ export const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION = 'Marketplace/GET_ALL_MARKET
 export const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS = 'Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS';
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION';
 export const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS = 'Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS';
+// 'App connector config' view
+export const GET_APP_CONNECTOR_CONFIG_ACTION = 'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION';
+export const GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS = 'Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS';
+// 'App connector subscription'
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION = 'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION';
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS = 'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS';
+export const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR = 'Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR';
+export const SUBSCRIBE_APP_CONNECTOR_ACTION = 'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION';
+export const SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS = 'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS';
+export const SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR = 'Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR';
+export const UNSUBSCRIBE_APP_CONNECTOR_ACTION = 'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION';
+export const UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS = 'Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS';
+// 'App connector polling'
+export const SET_POLLING_STATUS_ACTION = 'Marketplace/SET_POLLING_STATUS_ACTION';
+export const SET_POLLING_STATUS_ACTION_SUCCESS = 'Marketplace/SET_POLLING_STATUS_ACTION_SUCCESS';
 // 'App details' view
 export const GET_APP_DETAILS_ACTION = 'Marketplace/GET_APP_DETAILS_ACTION';
 export const GET_APP_DETAILS_ACTION_SUCCESS = 'Marketplace/GET_APP_DETAILS_ACTION_SUCCESS';
@@ -164,6 +201,19 @@ export default function reducer(state = initialState, action) {
                 retrievedSelectedAppDetails: { $set: true },
             });
         }
+        case GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS: {
+            return update(state, {
+                appConnectorConfigDetails: { $set: action.appConnectorConfigDetails },
+            });
+        }
+        case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS: {
+            return update(state, {
+                appConnectorSubscriptionDetails: {
+                    $set: action.appConnectorSubscriptionDetails,
+                },
+                appConnectorSubscribed: { $set: true },
+            });
+        }
         case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION: {
             return state;
         }
@@ -176,6 +226,26 @@ export default function reducer(state = initialState, action) {
         case GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION_ERROR: {
             return update(state, {
                 retrievedAllSubbedMarketplaceApps: { $set: true },
+            });
+        }
+        case SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS: {
+            return update(state, {
+                appConnectorSubscribed: { $set: true },
+            });
+        }
+        case SUBSCRIBE_APP_CONNECTOR_ACTION:
+        case GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR:
+        case SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR: {
+            return update(state, {
+                appConnectorSubscribed: { $set: false },
+            });
+        }
+        case UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS: {
+            return update(state, {
+                appConnectorSubscriptionDetails: {
+                    $set: initialState.appConnectorSubscriptionDetails,
+                },
+                appConnectorSubscribed: { $set: false },
             });
         }
         case SUBSCRIBE_TO_MARKETPLACE_APP_ACTION:
@@ -352,5 +422,72 @@ export function setMarketplaceAppVisibilityAction(marketplaceAppVisibility) {
     return {
         type: SET_MARKETPLACE_APP_VISIBILITY_ACTION,
         marketplaceAppVisibility,
+    };
+}
+// 'App connector config' view
+export function getAppConnectorConfigAction(appID) {
+    return { type: GET_APP_CONNECTOR_CONFIG_ACTION, appID };
+}
+export function getAppConnectorConfigActionSuccess(appConnectorConfigDetails) {
+    return {
+        type: GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS,
+        appConnectorConfigDetails,
+    };
+}
+export function getAppConnectorSubscriptionAction(appName, apiName) {
+    return { type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION, appName, apiName };
+}
+export function getAppConnectorSubscriptionActionSuccess(appConnectorSubscriptionDetails) {
+    return {
+        type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS,
+        appConnectorSubscriptionDetails,
+    };
+}
+export function getAppConnectorSubscriptionActionError() {
+    return {
+        type: GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR,
+    };
+}
+export function setPoolingStatusAction(appName, apiName, command) {
+    return {
+        type: SET_POLLING_STATUS_ACTION,
+        appName,
+        apiName,
+        command,
+    };
+}
+export function setPoolingStatusActionSuccess() {
+    return {
+        type: SET_POLLING_STATUS_ACTION_SUCCESS,
+    };
+}
+export function subscribeAppConnectorAction(appName, apiName, apiUrl, map) {
+    return {
+        type: SUBSCRIBE_APP_CONNECTOR_ACTION,
+        appName,
+        apiName,
+        apiUrl,
+        map,
+    };
+}
+export function subscribeAppConnectorActionSuccess() {
+    return {
+        type: SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
+    };
+}
+export function subscribeAppConnectorActionError() {
+    return {
+        type: SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR,
+    };
+}
+export function unsubscribeAppConnectorAction(apiName) {
+    return {
+        type: UNSUBSCRIBE_APP_CONNECTOR_ACTION,
+        apiName,
+    };
+}
+export function unsubscribeAppConnectorActionSuccess() {
+    return {
+        type: UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS,
     };
 }

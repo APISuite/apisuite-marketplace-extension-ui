@@ -9,7 +9,7 @@ import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded';
 import AppCatalog from '../../components/AppCatalog';
 import Link from '../../components/Link';
 import { MarkdownDisplayer } from '../../components/MarkdownDisplayer';
-import { getAllSubbedMarketplaceAppsAction, getAppDetailsAction, getPublisherAppsSampleAction, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, } from '../Marketplace/ducks';
+import { getAllSubbedMarketplaceAppsAction, getAppDetailsAction, getPublisherAppsSampleAction, subscribeToMarketplaceAppAction, unsubscribeToMarketplaceAppAction, unsubscribeAppConnectorAction, } from '../Marketplace/ducks';
 import appDetailsSelector from './selector';
 import useStyles from './styles';
 import { BASE_URI } from '../../helpers/constants';
@@ -68,15 +68,24 @@ const AppDetails = () => {
             history.push(`/auth/signin?destinationPath=${encodeURI('/marketplace/app-details/' + selectedAppDetails.id)}`);
         }
     };
+    const configureAppConnector = () => {
+        history.push(`${encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)}`);
+    };
     const handleMarketplaceAppSubscription = () => {
         const userID = parseInt(userProfile.id);
         const selectedAppID = selectedAppDetails.id;
         if (isUserSubbedToApp) {
             dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID));
+            if (selectedAppDetails.appType.type == 'blueprint') {
+                dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name));
+            }
             setIsUserSubbedToApp(false);
         }
         else {
             dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID));
+            if (selectedAppDetails.appType.type == 'blueprint') {
+                configureAppConnector();
+            }
             setIsUserSubbedToApp(true);
         }
     };
@@ -105,7 +114,7 @@ const AppDetails = () => {
     // Retrieves - at most - 3 last updated apps from the publisher
     useEffect(() => {
         if (retrievedSelectedAppDetails) {
-            dispatch(getPublisherAppsSampleAction(selectedAppDetails.orgId, selectedAppDetails.id));
+            dispatch(getPublisherAppsSampleAction(selectedAppDetails.org_id, selectedAppDetails.id));
         }
     }, [retrievedSelectedAppDetails]);
     return (React.createElement("main", null,
@@ -115,7 +124,10 @@ const AppDetails = () => {
                     selectedAppDetails && selectedAppDetails.logo !== '' ? (React.createElement("img", { className: classes.appImage, src: selectedAppDetails.logo })) : (React.createElement(Avatar, { className: classes.appAvatar }, appNameInitials ? appNameInitials : '...')),
                     React.createElement(Button, { className: isUserSubbedToApp
                             ? classes.appAlreadySubscribedButton
-                            : classes.appSubscribeButton, onClick: handleNotLoggedUserSubscription }, getSubscribeButtonTranslation()),
+                            : classes.appSubscribeButton, style: { marginBottom: 8 + 'px' }, onClick: handleNotLoggedUserSubscription }, getSubscribeButtonTranslation()),
+                    isUserSubbedToApp &&
+                        selectedAppDetails &&
+                        selectedAppDetails.appType.type == 'blueprint' && (React.createElement(Button, { className: classes.configureAppConnectorButton, onClick: configureAppConnector }, t('appMarketplace.appDetails.configureAppConnector'))),
                     selectedAppDetails && selectedAppDetails.directUrl && (React.createElement(Box, { mt: 2 },
                         React.createElement(Link, { className: classes.accessAppButton, to: selectedAppDetails.directUrl },
                             React.createElement(Button, { color: "primary", fullWidth: true, variant: "outlined" },

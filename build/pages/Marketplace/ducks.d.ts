@@ -1,4 +1,4 @@
-import { AppDetails, Filters, MarketplaceActions, MarketplacePublisher, MarketplaceStore, Pagination, PublisherDetails, SubbedMarketplaceApp, View } from './types';
+import { AppConnectorConfigDetails, AppConnectorSubscriptionDetails, AppDetails, Filters, MarketplaceActions, MarketplacePublisher, MarketplaceStore, Pagination, PublisherDetails, SubbedMarketplaceApp, View } from './types';
 /** Action types */
 export declare const GET_ALL_MARKETPLACE_APPS_ACTION = "Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION";
 export declare const GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS = "Marketplace/GET_ALL_MARKETPLACE_APPS_ACTION_SUCCESS";
@@ -8,6 +8,18 @@ export declare const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION = "Marketplace/GET_AL
 export declare const GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS = "Marketplace/GET_ALL_MARKETPLACE_PUBLISHERS_ACTION_SUCCESS";
 export declare const GET_FILTERED_MARKETPLACE_APPS_ACTION = "Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION";
 export declare const GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS = "Marketplace/GET_FILTERED_MARKETPLACE_APPS_ACTION_SUCCESS";
+export declare const GET_APP_CONNECTOR_CONFIG_ACTION = "Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION";
+export declare const GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS = "Marketplace/GET_APP_CONNECTOR_CONFIG_ACTION_SUCCESS";
+export declare const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION = "Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION";
+export declare const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS = "Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_SUCCESS";
+export declare const GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR = "Marketplace/GET_APP_CONNECTOR_SUBSCRIPTION_ACTION_ERROR";
+export declare const SUBSCRIBE_APP_CONNECTOR_ACTION = "Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION";
+export declare const SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS = "Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS";
+export declare const SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR = "Marketplace/SUBSCRIBE_APP_CONNECTOR_ACTION_ERROR";
+export declare const UNSUBSCRIBE_APP_CONNECTOR_ACTION = "Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION";
+export declare const UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS = "Marketplace/UNSUBSCRIBE_APP_CONNECTOR_ACTION_SUCCESS";
+export declare const SET_POLLING_STATUS_ACTION = "Marketplace/SET_POLLING_STATUS_ACTION";
+export declare const SET_POLLING_STATUS_ACTION_SUCCESS = "Marketplace/SET_POLLING_STATUS_ACTION_SUCCESS";
 export declare const GET_APP_DETAILS_ACTION = "Marketplace/GET_APP_DETAILS_ACTION";
 export declare const GET_APP_DETAILS_ACTION_SUCCESS = "Marketplace/GET_APP_DETAILS_ACTION_SUCCESS";
 export declare const GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION = "Marketplace/GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION";
@@ -134,4 +146,53 @@ export declare function setMarketplaceAppLabelsAction(marketplaceAppLabels: stri
 export declare function setMarketplaceAppVisibilityAction(marketplaceAppVisibility: string): {
     type: string;
     marketplaceAppVisibility: string;
+};
+export declare function getAppConnectorConfigAction(appID: string): {
+    type: string;
+    appID: string;
+};
+export declare function getAppConnectorConfigActionSuccess(appConnectorConfigDetails: AppConnectorConfigDetails): {
+    type: string;
+    appConnectorConfigDetails: AppConnectorConfigDetails;
+};
+export declare function getAppConnectorSubscriptionAction(appName: string, apiName: string): {
+    type: string;
+    appName: string;
+    apiName: string;
+};
+export declare function getAppConnectorSubscriptionActionSuccess(appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails): {
+    type: string;
+    appConnectorSubscriptionDetails: AppConnectorSubscriptionDetails;
+};
+export declare function getAppConnectorSubscriptionActionError(): {
+    type: string;
+};
+export declare function setPoolingStatusAction(appName: string, apiName: string, command: string): {
+    type: string;
+    appName: string;
+    apiName: string;
+    command: string;
+};
+export declare function setPoolingStatusActionSuccess(): {
+    type: string;
+};
+export declare function subscribeAppConnectorAction(appName: string, apiName: string, apiUrl: string, map: any): {
+    type: string;
+    appName: string;
+    apiName: string;
+    apiUrl: string;
+    map: any;
+};
+export declare function subscribeAppConnectorActionSuccess(): {
+    type: string;
+};
+export declare function subscribeAppConnectorActionError(): {
+    type: string;
+};
+export declare function unsubscribeAppConnectorAction(apiName: string): {
+    type: string;
+    apiName: string;
+};
+export declare function unsubscribeAppConnectorActionSuccess(): {
+    type: string;
 };

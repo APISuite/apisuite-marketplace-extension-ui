@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import request from '../../util/request';
-import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, GET_PUBLISHER_APPS_SAMPLE_ACTION, GET_PUBLISHER_DETAILS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionError, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, getPublisherAppsSampleActionSuccess, getPublisherDetailsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, getPublisherDetailsActionError, } from './ducks';
-import { getApiUrl, getMarketplaceApiUrl } from '../../constants/endpoints';
+import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, GET_PUBLISHER_APPS_SAMPLE_ACTION, GET_PUBLISHER_DETAILS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionError, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, getPublisherAppsSampleActionSuccess, getPublisherDetailsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, getPublisherDetailsActionError, getAppConnectorConfigActionSuccess, GET_APP_CONNECTOR_CONFIG_ACTION, getAppConnectorSubscriptionActionSuccess, getAppConnectorSubscriptionActionError, GET_APP_CONNECTOR_SUBSCRIPTION_ACTION, subscribeAppConnectorActionSuccess, subscribeAppConnectorActionError, SUBSCRIBE_APP_CONNECTOR_ACTION, unsubscribeAppConnectorActionSuccess, UNSUBSCRIBE_APP_CONNECTOR_ACTION, SET_POLLING_STATUS_ACTION, setPoolingStatusActionSuccess, } from './ducks';
+import { getApiUrl, getAppConnectorApiUrl, getMarketplaceApiUrl, } from '../../constants/endpoints';
 import appDetailsMapping from '../../util/appDetailsMapping';
 export function* getAllMarketplaceAppsActionSaga(action) {
     try {
@@ -217,6 +217,113 @@ export function* getPublisherDetailsActionSaga(action) {
         yield put(getPublisherDetailsActionError());
     }
 }
+export function* getAppConnectorConfigActionSaga(action) {
+    try {
+        const getAppConnectorConfigActionUrl = `${getAppConnectorApiUrl()}/apps/getid/${action.appID}`;
+        const response = yield call(request, {
+            url: getAppConnectorConfigActionUrl,
+            method: 'GET',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+        });
+        yield put(getAppConnectorConfigActionSuccess(response));
+    }
+    catch (error) {
+        console.log('Error fetching the selected app connector config');
+    }
+}
+export function* getAppConnectorSubscriptionActionSaga(action) {
+    try {
+        const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${action.appName}/${action.apiName}/`;
+        const response = yield call(request, {
+            url: getAppConnectorSubscriptionActionUrl,
+            method: 'GET',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+        });
+        yield put(getAppConnectorSubscriptionActionSuccess(response));
+    }
+    catch (error) {
+        console.log('Error fetching the selected app connector config');
+        yield put(getAppConnectorSubscriptionActionError());
+    }
+}
+export function* subscribeAppConnectorActionSaga(action) {
+    try {
+        const subscribeAppConnectorActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`;
+        yield call(request, {
+            url: subscribeAppConnectorActionUrl,
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            data: {
+                app_name: action.appName,
+                api_name: action.apiName,
+                api_url: action.apiUrl,
+            },
+        });
+        if (Object.keys(action.map).length !== 0) {
+            const fieldMappingConfigActionUrl = `${getAppConnectorApiUrl()}/apps/fieldmapping/`;
+            yield call(request, {
+                url: fieldMappingConfigActionUrl,
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                },
+                data: {
+                    app_name: action.appName,
+                    api_name: action.apiName,
+                    map: action.map,
+                },
+            });
+        }
+        yield put(subscribeAppConnectorActionSuccess());
+    }
+    catch (error) {
+        console.log('Error subscribing app connector');
+        yield put(subscribeAppConnectorActionError());
+    }
+}
+export function* unsubscribeAppConnectorActionSaga(action) {
+    try {
+        const getAppConnectorSubscriptionActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/${action.apiName}/`;
+        yield call(request, {
+            url: getAppConnectorSubscriptionActionUrl,
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+        });
+        yield put(unsubscribeAppConnectorActionSuccess());
+    }
+    catch (error) {
+        console.log('Error unsubscribing app connector');
+    }
+}
+export function* setPollingStatusActionSaga(action) {
+    try {
+        const pollingStatusActionUrl = `${getAppConnectorApiUrl()}/apps/subscribe/`;
+        yield call(request, {
+            url: pollingStatusActionUrl,
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+            },
+            data: {
+                app_name: action.appName,
+                api_name: action.apiName,
+                command: action.command,
+            },
+        });
+        yield put(setPoolingStatusActionSuccess());
+    }
+    catch (error) {
+        console.log('Error setting polling status');
+    }
+}
 function* rootSaga() {
     yield takeLatest(GET_ALL_MARKETPLACE_APPS_ACTION, getAllMarketplaceAppsActionSaga);
     yield takeLatest(GET_ALL_MARKETPLACE_LABELS_ACTION, getAllMarketplaceLabelsActionSaga);
@@ -228,5 +335,10 @@ function* rootSaga() {
     yield takeLatest(GET_APP_DETAILS_ACTION, getAppDetailsActionSaga);
     yield takeLatest(GET_PUBLISHER_APPS_SAMPLE_ACTION, getPublisherAppsSampleActionSaga);
     yield takeLatest(GET_PUBLISHER_DETAILS_ACTION, getPublisherDetailsActionSaga);
+    yield takeLatest(GET_APP_CONNECTOR_CONFIG_ACTION, getAppConnectorConfigActionSaga);
+    yield takeLatest(GET_APP_CONNECTOR_SUBSCRIPTION_ACTION, getAppConnectorSubscriptionActionSaga);
+    yield takeLatest(SUBSCRIBE_APP_CONNECTOR_ACTION, subscribeAppConnectorActionSaga);
+    yield takeLatest(UNSUBSCRIBE_APP_CONNECTOR_ACTION, unsubscribeAppConnectorActionSaga);
+    yield takeLatest(SET_POLLING_STATUS_ACTION, setPollingStatusActionSaga);
 }
 export default rootSaga;

@@ -9,4 +9,9 @@ export function getMarketplaceApiUrl() {
         return core().buildCloudBackendUrl('ext-marketplace');
     return process.env.MARKETPLACE_API_URL || '';
 }
+export function getAppConnectorApiUrl() {
+    if (core().IS_CLOUD)
+        return core().buildCloudBackendUrl('ext-appconnector');
+    return process.env.APP_CONNECTOR_API_URL || '';
+}
 export const INFORM_URL = process.env.INFORM_URL || '';

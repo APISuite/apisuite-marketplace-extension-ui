@@ -1,4 +1,4 @@
-import { GetAllMarketplaceAppsAction, GetAllSubbedMarketplaceAppsAction, GetAppDetailsAction, GetFilteredAppsMarketplaceAction, GetPublisherAppsSampleAction, GetPublisherDetailsAction, SubscribeToMarketplaceAppAction, UnsubscribeToMarketplaceAppAction } from './types';
+import { GetAllMarketplaceAppsAction, GetAllSubbedMarketplaceAppsAction, GetAppConnectorConfigAction, GetAppConnectorSubscriptionAction, GetAppDetailsAction, GetFilteredAppsMarketplaceAction, GetPublisherAppsSampleAction, GetPublisherDetailsAction, SubscribeToMarketplaceAppAction, UnsubscribeToMarketplaceAppAction, SetPollingStatusAction, SubscribeAppConnectorAction, UnsubscribeAppConnectorAction } from './types';
 export declare function getAllMarketplaceAppsActionSaga(action: GetAllMarketplaceAppsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allMarketplaceApps: import("./types").AppDetails[];
@@ -35,6 +35,22 @@ export declare function getPublisherAppsSampleActionSaga(action: GetPublisherApp
     type: string;
 }>, void, unknown>;
 export declare function getPublisherDetailsActionSaga(action: GetPublisherDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+}>, void, unknown>;
+export declare function getAppConnectorConfigActionSaga(action: GetAppConnectorConfigAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+    appConnectorConfigDetails: import("./types").AppConnectorConfigDetails;
+}>, void, unknown>;
+export declare function getAppConnectorSubscriptionActionSaga(action: GetAppConnectorSubscriptionAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+}>, void, unknown>;
+export declare function subscribeAppConnectorActionSaga(action: SubscribeAppConnectorAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+}>, void, unknown>;
+export declare function unsubscribeAppConnectorActionSaga(action: UnsubscribeAppConnectorAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+}>, void, unknown>;
+export declare function setPollingStatusActionSaga(action: SetPollingStatusAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
 }>, void, unknown>;
 declare function rootSaga(): Generator<import("redux-saga/effects").ForkEffect<never>, void, unknown>;
