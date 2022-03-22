@@ -91,6 +91,14 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
     }
   }
 
+  const checkIfEnter = (keyPressEvent) => {
+    if (keyPressEvent.key !== 'Enter') return
+
+    // If the 'Enter' key is pressed while typing a label, we append said label to our set of labels
+    append(label)
+    setLabel('')
+  }
+
   return (
     <>
       {/* 'Marketplace settings' section */}
@@ -145,6 +153,7 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
                 }}
                 margin="dense"
                 onChange={handleTag}
+                onKeyPress={checkIfEnter}
                 style={{ marginBottom: spacing(1) }}
                 type="text"
                 value={label}
