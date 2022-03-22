@@ -60,6 +60,13 @@ const MarketplaceAppSettings = ({ formUtil, data, userRole, }) => {
             setLabel(labelTags);
         }
     };
+    const checkIfEnter = (keyPressEvent) => {
+        if (keyPressEvent.key !== 'Enter')
+            return;
+        // If the 'Enter' key is pressed while typing a label, we append said label to our set of labels
+        append(label);
+        setLabel('');
+    };
     return (React.createElement(React.Fragment, null,
         React.createElement(Grid, { container: true, spacing: 3 },
             React.createElement(Grid, { item: true, md: 12 },
@@ -82,7 +89,7 @@ const MarketplaceAppSettings = ({ formUtil, data, userRole, }) => {
                                 [classes.disabledInputField]: userRole !== adminRole,
                             }), color: "secondary", disabled: userRole !== adminRole, fullWidth: true, InputProps: {
                                 disableUnderline: true,
-                            }, margin: "dense", onChange: handleTag, style: { marginBottom: spacing(1) }, type: "text", value: label, variant: "standard" })),
+                            }, margin: "dense", onChange: handleTag, onKeyPress: checkIfEnter, style: { marginBottom: spacing(1) }, type: "text", value: label, variant: "standard" })),
                     React.createElement("legend", { style: { marginBottom: spacing(3) } },
                         React.createElement(Typography, { style: { color: palette.label }, variant: "caption" }, t('appSettings.labelsFieldHelperText'))))),
             React.createElement(Grid, { container: true, item: true },
