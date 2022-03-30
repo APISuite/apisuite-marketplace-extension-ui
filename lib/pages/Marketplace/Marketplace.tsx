@@ -34,9 +34,6 @@ import { MARKETPLACE_APPS_PER_PAGE, ROLES } from '../../constants/globals'
 import { debounce } from '../../util/debounce'
 import AppCatalog from '../../components/AppCatalog'
 import Link from '../../components/Link'
-import marketplace from 'assets/marketplace.svg'
-import marketplaceApps from 'assets/marketplaceApps.svg'
-import spaceBackground from 'assets/space-background.svg'
 import useStyles from './styles'
 import marketplaceSelector from './selector'
 import {
@@ -46,6 +43,7 @@ import {
   getFilteredMarketplaceAppsAction,
 } from './ducks'
 import { CTACard } from '../../components/CTACard'
+import { getApiUrl } from '../../constants/endpoints'
 
 const Marketplace: React.FC = () => {
   const classes = useStyles()
@@ -74,6 +72,16 @@ const Marketplace: React.FC = () => {
   const t = (string: string, ...args) => {
     return trans.t(`extensions.marketplace.${string}`, ...args)
   }
+
+  const marketplace = `${getApiUrl()}/resources/marketplace.hero?language=${
+    trans.i18n.language
+  }`
+  const marketplaceApps = `${getApiUrl()}/resources/marketplace.apps?language=${
+    trans.i18n.language
+  }`
+  const spaceBackground = `${getApiUrl()}/resources/marketplace.background?language=${
+    trans.i18n.language
+  }`
 
   useEffect(() => {
     /* Triggers the retrieval and storage (under the 'marketplace' section of our app's Store)
