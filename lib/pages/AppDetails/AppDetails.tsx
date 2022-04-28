@@ -93,10 +93,20 @@ const AppDetails: React.FC = () => {
 
   const getSubscribeButtonTranslation = () => {
     if (userProfile && userProfile.id > 0) {
-      return isUserSubbedToApp
-        ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
-        : t('appMarketplace.appDetails.appSubscribeButton')
+      if (
+        ['blueprint', 'connector'].includes(selectedAppDetails.appType.type)
+      ) {
+        return isUserSubbedToApp
+          ? t('appMarketplace.appDetails.appAlreadyConnectedButton')
+          : t('appMarketplace.appDetails.appConnectButton')
+      } else {
+        return isUserSubbedToApp
+          ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
+          : t('appMarketplace.appDetails.appSubscribeButton')
+      }
     }
+    if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+      return t('appMarketplace.appDetails.signInToConnect')
     return t('appMarketplace.appDetails.signInToSubscribe')
   }
 
@@ -124,13 +134,15 @@ const AppDetails: React.FC = () => {
 
     if (isUserSubbedToApp) {
       dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
-      if (selectedAppDetails.appType.type == 'blueprint') {
+      if (
+        ['blueprint', 'connector'].includes(selectedAppDetails.appType.type)
+      ) {
         dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name))
       }
       setIsUserSubbedToApp(false)
     } else {
       dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
-      if (selectedAppDetails.appType.type == 'blueprint') {
+      if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type)) {
         configureAppConnector()
       }
       setIsUserSubbedToApp(true)
@@ -197,6 +209,18 @@ const AppDetails: React.FC = () => {
                   </Avatar>
                 )}
 
+                {isUserSubbedToApp &&
+                  selectedAppDetails &&
+                  ['blueprint', 'connector'].includes(
+                    selectedAppDetails.appType.type
+                  ) && (
+                    <Button
+                      className={classes.configureAppConnectorButton}
+                      onClick={configureAppConnector}
+                    >
+                      {t('appMarketplace.appDetails.configureAppConnector')}
+                    </Button>
+                  )}
                 <Button
                   className={
                     isUserSubbedToApp
@@ -208,17 +232,6 @@ const AppDetails: React.FC = () => {
                 >
                   {getSubscribeButtonTranslation()}
                 </Button>
-
-                {isUserSubbedToApp &&
-                  selectedAppDetails &&
-                  selectedAppDetails.appType.type == 'blueprint' && (
-                    <Button
-                      className={classes.configureAppConnectorButton}
-                      onClick={configureAppConnector}
-                    >
-                      {t('appMarketplace.appDetails.configureAppConnector')}
-                    </Button>
-                  )}
 
                 {selectedAppDetails && selectedAppDetails.directUrl && (
                   <Box mt={2}>

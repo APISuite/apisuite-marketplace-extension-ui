@@ -99,11 +99,14 @@
           }
         },
         "appDetails": {
-          "configureAppConnector": "Connect App",
+          "configureAppConnector": "Connection Settings",
           "loadingAppDetails": "Loading the selected app's details...",
           "appSubscribeButton": "Subscribe app",
           "signInToSubscribe": "Sign in to Subscribe",
-          "appAlreadySubscribedButton": "Subscribed to app",
+          "appAlreadySubscribedButton": "Disconnect app",
+          "appConnectButton": "Connect app",
+          "signInToConnect": "Sign in to Connect",
+          "appAlreadyConnectedButton": "Connected to app",
           "accessAppButtonLabel": "Access app",
           "subSectionTitleOne": "Application links:",
           "subSectionTitleTwo": "Published by:",
