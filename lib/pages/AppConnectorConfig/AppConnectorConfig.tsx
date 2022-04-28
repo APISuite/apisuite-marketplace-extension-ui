@@ -23,6 +23,7 @@ import {
 import useStyles from './styles'
 import appConnectorConfigSelector from './selector'
 import { Alert } from '@material-ui/lab'
+import { useQuery } from '../../util/useQuery'
 
 const AppConnectorConfig: React.FC = () => {
   const classes = useStyles()
@@ -46,7 +47,7 @@ const AppConnectorConfig: React.FC = () => {
 
   // Retrieves the app's ID from the browser window's URL
   const { appID } = useParams<any>()
-
+  const response = useQuery().get('response')
   const getSubscriptionStatus = () =>
     appConnectorConfigDetails.data.workerStatus !== 'stopped' &&
     appConnectorSubscribed &&
@@ -65,60 +66,68 @@ const AppConnectorConfig: React.FC = () => {
     apiUrl: '',
     polling_toggle: false,
   })
+  const [variableValues, setVariableValues] = useState({})
 
   const renderFieldsRaw = (entries) => {
-    return entries.map((entry, key) => (
-      <React.Fragment key={key}>
-        <Grid item xs={5}>
-          <TextField
-            label={t('appMarketplace.appConnectorConfig.appField')}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            disabled={true}
-            style={{
-              width: 100 + '%',
-              color: '#84878c !important',
-            }}
-            onChange={() => null}
-            value={entry}
-            variant="outlined"
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Icon
-            style={{
-              width: 100 + '%',
-              height: 100 + '%',
-              textAlign: 'center',
-              lineHeight: 50 + 'px',
-              color: '#62acee',
-            }}
-          >
-            arrow_right_alt
-          </Icon>
-        </Grid>
-        <Grid item xs={5}>
-          <TextField
-            label={t('appMarketplace.appConnectorConfig.apiField')}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            style={{ width: 100 + '%' }}
-            name={entry}
-            value={fieldValues[entry] || ''}
-            onChange={changeHandler}
-            variant="outlined"
-          />
-        </Grid>
-      </React.Fragment>
-    ))
+    return entries
+      .filter((entry) => isFieldVisible(entry))
+      .map((entry, key) => (
+        <React.Fragment key={key}>
+          <Grid item xs={5}>
+            <TextField
+              label={t('appMarketplace.appConnectorConfig.appField')}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              disabled={true}
+              style={{
+                width: 100 + '%',
+                color: '#84878c !important',
+              }}
+              onChange={() => null}
+              value={entry}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Icon
+              style={{
+                width: 100 + '%',
+                height: 100 + '%',
+                textAlign: 'center',
+                lineHeight: 50 + 'px',
+                color: '#62acee',
+              }}
+            >
+              arrow_right_alt
+            </Icon>
+          </Grid>
+          <Grid item xs={5}>
+            <TextField
+              label={t('appMarketplace.appConnectorConfig.apiField')}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              style={{ width: 100 + '%' }}
+              name={entry}
+              value={fieldValues[entry] || ''}
+              onChange={changeHandler}
+              variant="outlined"
+            />
+          </Grid>
+        </React.Fragment>
+      ))
   }
 
   const changeHandler = (changeEvent) => {
     const newFieldValues = { ...fieldValues }
     newFieldValues[changeEvent.target.name] = changeEvent.target.value
     setFieldValues(newFieldValues)
+  }
+  const changeVariablesHandler = (changeEvent) => {
+    const newVariableValues = { ...variableValues }
+    newVariableValues[changeEvent.target.name] = changeEvent.target.value
+    setVariableValues(newVariableValues)
   }
 
   const updatePollingStatus = (changeEvent) => {
@@ -140,11 +149,29 @@ const AppConnectorConfig: React.FC = () => {
   }
 
   const saveSubscription = () => {
+    let apiUrl = fieldValues['apiUrl']
+    if (appConnectorConfigDetails.data.variableValues) {
+      for (const variableValuesKey in variableValues) {
+        apiUrl = appConnectorConfigDetails.data.apiUrl.replace(
+          `{${variableValuesKey}}`,
+          variableValues[variableValuesKey]
+        )
+      }
+    }
+    let token =
+      (appConnectorSubscriptionDetails.data &&
+        appConnectorSubscriptionDetails.data.appToken) ||
+      ''
+    if (response) {
+      token = JSON.parse(response).token
+    }
     const data = {
       app_name: appConnectorConfigDetails.data.name,
       api_name: selectedAppDetails.name,
-      api_url: fieldValues['apiUrl'],
+      api_url: apiUrl,
+      variables: variableValues,
       map: {},
+      appToken: token,
     }
     for (const entry of appConnectorConfigDetails.data.fieldsRaw) {
       if (fieldValues[entry]) data.map[entry] = fieldValues[entry]
@@ -155,7 +182,9 @@ const AppConnectorConfig: React.FC = () => {
         data.app_name,
         data.api_name,
         data.api_url,
-        data.map
+        data.variables,
+        data.map,
+        data.appToken
       )
     )
   }
@@ -178,6 +207,22 @@ const AppConnectorConfig: React.FC = () => {
   }
 
   useEffect(() => {
+    const newVariableValues = { ...variableValues }
+    const serverVariableValues =
+      (appConnectorSubscriptionDetails.data &&
+        appConnectorSubscriptionDetails.data.variablesValues) ||
+      {}
+    for (const variableValuesKey in serverVariableValues) {
+      if (!newVariableValues[variableValuesKey])
+        newVariableValues[variableValuesKey] =
+          appConnectorSubscriptionDetails.data.variablesValues[
+            variableValuesKey
+          ]
+    }
+    setVariableValues(newVariableValues)
+  }, [fieldValues])
+
+  useEffect(() => {
     if (appID !== '') dispatch(getAppDetailsAction(appID))
   }, [appID])
 
@@ -195,26 +240,49 @@ const AppConnectorConfig: React.FC = () => {
       )
   }, [appConnectorConfigDetails])
 
+  const getFieldValue = (entry) => {
+    const mapConfig = appConnectorConfigDetails.data.fieldsMapping.filter(
+      (element) => element.fieldIn === entry
+    )
+    if (
+      appConnectorSubscribed &&
+      appConnectorSubscriptionDetails &&
+      appConnectorSubscriptionDetails.data &&
+      appConnectorSubscriptionDetails.data.fieldMapping &&
+      appConnectorSubscriptionDetails.data.fieldMapping[entry]
+    ) {
+      return appConnectorSubscriptionDetails.data.fieldMapping[entry]
+    } else if (mapConfig && mapConfig[0]) {
+      return mapConfig[0].fieldOut
+    }
+    return ''
+  }
+
+  const isFieldVisible = (entry) => {
+    const mapConfig = appConnectorConfigDetails.data.fieldsMapping.filter(
+      (element) => element.fieldIn === entry
+    )
+    if (mapConfig && mapConfig[0]) {
+      return mapConfig[0].editable
+    }
+    return false
+  }
+
   useEffect(() => {
     const newFieldValues = { ...fieldValues }
     newFieldValues['apiUrl'] =
       (appConnectorSubscribed &&
         appConnectorSubscriptionDetails.data &&
         appConnectorSubscriptionDetails.data.apiUrl) ||
+      appConnectorConfigDetails.data.apiUrl ||
       ''
+
     for (const entry of appConnectorConfigDetails.data.fieldsRaw) {
-      newFieldValues[entry] =
-        (appConnectorSubscribed &&
-          appConnectorSubscriptionDetails &&
-          appConnectorSubscriptionDetails.data &&
-          appConnectorSubscriptionDetails.data.fieldMapping &&
-          appConnectorSubscriptionDetails.data.fieldMapping[entry]) ||
-        ''
+      newFieldValues[entry] = getFieldValue(entry)
     }
     newFieldValues['polling_status'] = getSubscriptionStatus()
     setFieldValues(newFieldValues)
-  }, [appConnectorSubscriptionDetails])
-
+  }, [appConnectorSubscriptionDetails, appConnectorConfigDetails])
   return (
     <main>
       <section className={classes.appDetailsContainer}>
@@ -268,27 +336,53 @@ const AppConnectorConfig: React.FC = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Box>
-              <Typography variant="h4" style={{ marginBottom: 8 + 'px' }}>
-                {t('appMarketplace.appConnectorConfig.apiEndpointTitle')}
-              </Typography>
-              <TextField
-                id="api_endpoint"
-                name="apiUrl"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                style={{ width: 80 + '%' }}
-                variant="outlined"
-                type="url"
-                onChange={changeHandler}
-                value={fieldValues['apiUrl']}
-                placeholder="https://example.com"
-                label={t('appMarketplace.appConnectorConfig.apiEndpointLabel')}
-              />
-            </Box>
-          </Grid>
+          {!appConnectorConfigDetails.data.variableValues ||
+          appConnectorConfigDetails.data.variableValues.length == 0 ? (
+            <Grid item xs={12}>
+              <Box>
+                <Typography variant="h4" style={{ marginBottom: 8 + 'px' }}>
+                  {t('appMarketplace.appConnectorConfig.apiEndpointTitle')}
+                </Typography>
+                <TextField
+                  id="api_endpoint"
+                  name="apiUrl"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  style={{ width: 80 + '%' }}
+                  variant="outlined"
+                  type="url"
+                  onChange={changeHandler}
+                  value={fieldValues['apiUrl']}
+                  disabled={appConnectorConfigDetails.data.apiUrl !== ''}
+                  placeholder="https://example.com"
+                  label={t(
+                    'appMarketplace.appConnectorConfig.apiEndpointLabel'
+                  )}
+                />
+              </Box>
+            </Grid>
+          ) : (
+            appConnectorConfigDetails.data.variableValues.map(
+              (element, index) => (
+                <Grid key={`item${index}`} item xs={12}>
+                  <TextField
+                    name={element.key}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ width: 80 + '%' }}
+                    variant="outlined"
+                    onChange={changeVariablesHandler}
+                    value={variableValues[element.key]}
+                    helperText={element.description}
+                    label={element.friendlyName}
+                    fullWidth
+                  />
+                </Grid>
+              )
+            )
+          )}
           <Grid item xs={12}>
             <Box>
               <Typography variant="h4">
@@ -318,7 +412,7 @@ const AppConnectorConfig: React.FC = () => {
               {t('appMarketplace.appConnectorConfig.apiFields')}
             </Typography>
           </Grid>
-          {renderFieldsRaw(appConnectorConfigDetails.data.fieldsRaw)}
+          {renderFieldsRaw(appConnectorConfigDetails.data.fieldsRaw || [])}
           <Grid item xs={12}>
             <Button
               variant="contained"

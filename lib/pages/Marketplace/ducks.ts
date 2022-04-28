@@ -40,6 +40,9 @@ const initialState: MarketplaceStore = {
     data: {
       name: '',
       fieldsRaw: [],
+      fieldsMapping: [],
+      variableValues: [],
+      apiUrl: '',
       workerStatus: '',
     },
   },
@@ -50,6 +53,8 @@ const initialState: MarketplaceStore = {
       apiName: '',
       apiUrl: '',
       status: 'stopped',
+      variablesValues: {},
+      appToken: '',
     },
   },
   appConnectorSubscribed: false,
@@ -640,14 +645,18 @@ export function subscribeAppConnectorAction(
   appName: string,
   apiName: string,
   apiUrl: string,
-  map: any
+  variables: any,
+  map: any,
+  appToken: string
 ) {
   return {
     type: SUBSCRIBE_APP_CONNECTOR_ACTION,
     appName,
     apiName,
     apiUrl,
+    variables,
     map,
+    appToken,
   }
 }
 

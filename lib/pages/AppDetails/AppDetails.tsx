@@ -28,6 +28,7 @@ import {
 import appDetailsSelector from './selector'
 import useStyles from './styles'
 import { BASE_URI } from '../../helpers/constants'
+import { getAppConnectorApiUrl } from '../../constants/endpoints'
 
 const AppDetails: React.FC = () => {
   const classes = useStyles()
@@ -123,26 +124,32 @@ const AppDetails: React.FC = () => {
   }
 
   const configureAppConnector = () => {
-    history.push(
-      `${encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)}`
+    const targetURI =
+      window.location.origin +
+      encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)
+    window.open(
+      `${getAppConnectorApiUrl()}/apps/authorize/${
+        selectedAppDetails.id
+      }?cb=${targetURI}`,
+      '_self'
     )
   }
 
   const handleMarketplaceAppSubscription = () => {
     const userID = parseInt(userProfile.id)
     const selectedAppID = selectedAppDetails.id
-
+    const isConnector = ['blueprint', 'connector'].includes(
+      selectedAppDetails.appType.type
+    )
     if (isUserSubbedToApp) {
       dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
-      if (
-        ['blueprint', 'connector'].includes(selectedAppDetails.appType.type)
-      ) {
+      if (isConnector) {
         dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name))
       }
       setIsUserSubbedToApp(false)
     } else {
       dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
-      if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type)) {
+      if (isConnector) {
         configureAppConnector()
       }
       setIsUserSubbedToApp(true)
@@ -217,6 +224,7 @@ const AppDetails: React.FC = () => {
                     <Button
                       className={classes.configureAppConnectorButton}
                       onClick={configureAppConnector}
+                      style={{ marginBottom: 8 + 'px' }}
                     >
                       {t('appMarketplace.appDetails.configureAppConnector')}
                     </Button>

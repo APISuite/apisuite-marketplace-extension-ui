@@ -172,6 +172,9 @@ export interface AppConnectorConfigDetails {
     name: string
     fieldsRaw: string[]
     workerStatus: string
+    apiUrl: string
+    fieldsMapping: any[]
+    variableValues: any[]
   }
 }
 export interface AppConnectorSubscriptionDetails {
@@ -180,7 +183,9 @@ export interface AppConnectorSubscriptionDetails {
     apiName: string
     apiUrl: string
     fieldMapping: any
+    variablesValues: any
     status: string
+    appToken: string
   }
 }
 
@@ -340,7 +345,9 @@ export interface SubscribeAppConnectorAction extends Action {
   appName: string
   apiName: string
   apiUrl: string
+  variables: any
   map: any
+  appToken: string
 }
 
 export interface SubscribeAppConnectorActionSuccess extends Action {
