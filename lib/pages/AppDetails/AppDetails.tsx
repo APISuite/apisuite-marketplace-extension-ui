@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Chip,
+  Icon,
   Typography,
   useTranslation,
 } from '@apisuite/fe-base'
@@ -174,6 +175,19 @@ const AppDetails: React.FC = () => {
     return providedURL === null || providedURL === ''
   }
 
+  const getSubscribeButtonIcon = () => {
+    if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+      return !isUserSubbedToApp ? <Icon>link</Icon> : <Icon>link_off</Icon>
+    return
+  }
+
+  const getSubscribeButtonClass = () => {
+    if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+      return !isUserSubbedToApp ? classes.appSubscribeButton : undefined
+    return isUserSubbedToApp
+      ? classes.appAlreadySubscribedButton
+      : classes.appSubscribeButton
+  }
   // All images - as well as all thumbnails - must be of the same size
   const imagesArray = selectedAppDetails
     ? selectedAppDetails?.images?.map((image) => {
@@ -222,20 +236,18 @@ const AppDetails: React.FC = () => {
                     selectedAppDetails.appType.type
                   ) && (
                     <Button
-                      className={classes.configureAppConnectorButton}
                       onClick={configureAppConnector}
-                      style={{ marginBottom: 8 + 'px' }}
+                      style={{ marginBottom: 8 + 'px', width: '210px' }}
+                      variant="outlined"
                     >
                       {t('appMarketplace.appDetails.configureAppConnector')}
                     </Button>
                   )}
                 <Button
-                  className={
-                    isUserSubbedToApp
-                      ? classes.appAlreadySubscribedButton
-                      : classes.appSubscribeButton
-                  }
-                  style={{ marginBottom: 8 + 'px' }}
+                  className={getSubscribeButtonClass()}
+                  startIcon={getSubscribeButtonIcon()}
+                  variant="outlined"
+                  style={{ marginBottom: 8 + 'px', width: '210px' }}
                   onClick={handleNotLoggedUserSubscription}
                 >
                   {getSubscribeButtonTranslation()}
