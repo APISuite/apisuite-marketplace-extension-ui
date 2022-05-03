@@ -304,9 +304,7 @@ const AppConnectorConfig: React.FC = () => {
             {selectedAppDetails && selectedAppDetails.logo !== '' ? (
               <img className={classes.appImage} src={selectedAppDetails.logo} />
             ) : (
-              <Avatar className={classes.appAvatar}>
-                {appInitials ? appInitials : '...'}
-              </Avatar>
+              <Avatar className={classes.appAvatar}>{appInitials}</Avatar>
             )}
           </div>
         </section>

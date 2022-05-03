@@ -179,7 +179,6 @@ const AppDetails: React.FC = () => {
   const getSubscribeButtonIcon = () => {
     if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
       return !isUserSubbedToApp ? <Icon>link</Icon> : <Icon>link_off</Icon>
-    return
   }
 
   const getSubscribeButtonClass = () => {
