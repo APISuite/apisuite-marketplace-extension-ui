@@ -451,7 +451,7 @@ const AppConnectorConfig: React.FC = () => {
                   backgroundColor: isValid ? '#32C896' : palette.grey[50],
                   borderColor: '#32C896',
                   marginRight: '8px',
-                  color: '#FFFFFF',
+                  color: isValid ? '#FFFFFF' : palette.grey[300],
                 }}
                 onClick={saveSubscription}
                 disabled={!isValid}
