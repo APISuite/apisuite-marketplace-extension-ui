@@ -149,11 +149,12 @@ const AppDetails: React.FC = () => {
       }
       setIsUserSubbedToApp(false)
     } else {
-      dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
       if (isConnector) {
         configureAppConnector()
+      } else {
+        dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
+        setIsUserSubbedToApp(true)
       }
-      setIsUserSubbedToApp(true)
     }
   }
 
