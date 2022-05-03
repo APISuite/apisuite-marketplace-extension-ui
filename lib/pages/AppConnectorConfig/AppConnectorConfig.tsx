@@ -448,7 +448,7 @@ const AppConnectorConfig: React.FC = () => {
               <Button
                 variant="contained"
                 style={{
-                  backgroundColor: '#32C896',
+                  backgroundColor: isValid ? '#32C896' : palette.grey[50],
                   borderColor: '#32C896',
                   marginRight: '8px',
                   color: '#FFFFFF',
