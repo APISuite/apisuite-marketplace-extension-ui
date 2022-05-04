@@ -136,26 +136,8 @@ export default makeStyles((theme) => ({
     },
   },
 
-  configureAppConnectorButton: {
-    backgroundColor: theme.palette.primary.main,
-    borderColor: theme.palette.primary.main,
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.common.white,
-    fontSize: '16px',
-    fontWeight: 500,
-    textTransform: 'inherit',
-    width: '100%',
-
-    '&:active, &:hover, &:link, &:visited': {
-      backgroundColor: theme.palette.primary.main,
-      borderColor: theme.palette.primary.main,
-      borderRadius: theme.shape.borderRadius,
-      color: theme.palette.common.white,
-    },
-  },
-
   leftAppDetailsContainer: {
-    maxWidth: '200px',
+    maxWidth: '215px',
     width: '100%',
   },
 
@@ -192,7 +174,7 @@ export default makeStyles((theme) => ({
   },
 
   topMostSubSection: {
-    height: '250px',
+    height: '280px',
     width: '100%',
   },
 }))

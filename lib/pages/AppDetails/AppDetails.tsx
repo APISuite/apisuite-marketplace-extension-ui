@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Chip,
+  Icon,
   Typography,
   useTranslation,
 } from '@apisuite/fe-base'
@@ -28,6 +29,7 @@ import {
 import appDetailsSelector from './selector'
 import useStyles from './styles'
 import { BASE_URI } from '../../helpers/constants'
+import { getAppConnectorApiUrl } from '../../constants/endpoints'
 
 const AppDetails: React.FC = () => {
   const classes = useStyles()
@@ -93,10 +95,20 @@ const AppDetails: React.FC = () => {
 
   const getSubscribeButtonTranslation = () => {
     if (userProfile && userProfile.id > 0) {
-      return isUserSubbedToApp
-        ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
-        : t('appMarketplace.appDetails.appSubscribeButton')
+      if (
+        ['blueprint', 'connector'].includes(selectedAppDetails.appType.type)
+      ) {
+        return isUserSubbedToApp
+          ? t('appMarketplace.appDetails.appAlreadyConnectedButton')
+          : t('appMarketplace.appDetails.appConnectButton')
+      } else {
+        return isUserSubbedToApp
+          ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
+          : t('appMarketplace.appDetails.appSubscribeButton')
+      }
     }
+    if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+      return t('appMarketplace.appDetails.signInToConnect')
     return t('appMarketplace.appDetails.signInToSubscribe')
   }
 
@@ -113,27 +125,36 @@ const AppDetails: React.FC = () => {
   }
 
   const configureAppConnector = () => {
-    history.push(
-      `${encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)}`
+    const targetURI =
+      window.location.origin +
+      encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)
+    window.open(
+      `${getAppConnectorApiUrl()}/apps/authorize/${
+        selectedAppDetails.id
+      }?cb=${targetURI}`,
+      '_self'
     )
   }
 
   const handleMarketplaceAppSubscription = () => {
     const userID = parseInt(userProfile.id)
     const selectedAppID = selectedAppDetails.id
-
+    const isConnector = ['blueprint', 'connector'].includes(
+      selectedAppDetails.appType.type
+    )
     if (isUserSubbedToApp) {
       dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
-      if (selectedAppDetails.appType.type == 'blueprint') {
+      if (isConnector) {
         dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name))
       }
       setIsUserSubbedToApp(false)
     } else {
-      dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
-      if (selectedAppDetails.appType.type == 'blueprint') {
+      if (isConnector) {
         configureAppConnector()
+      } else {
+        dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID))
+        setIsUserSubbedToApp(true)
       }
-      setIsUserSubbedToApp(true)
     }
   }
 
@@ -155,6 +176,18 @@ const AppDetails: React.FC = () => {
     return providedURL === null || providedURL === ''
   }
 
+  const getSubscribeButtonIcon = () => {
+    if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+      return !isUserSubbedToApp ? <Icon>link</Icon> : <Icon>link_off</Icon>
+  }
+
+  const getSubscribeButtonClass = () => {
+    if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+      return !isUserSubbedToApp ? classes.appSubscribeButton : undefined
+    return isUserSubbedToApp
+      ? classes.appAlreadySubscribedButton
+      : classes.appSubscribeButton
+  }
   // All images - as well as all thumbnails - must be of the same size
   const imagesArray = selectedAppDetails
     ? selectedAppDetails?.images?.map((image) => {
@@ -197,28 +230,28 @@ const AppDetails: React.FC = () => {
                   </Avatar>
                 )}
 
-                <Button
-                  className={
-                    isUserSubbedToApp
-                      ? classes.appAlreadySubscribedButton
-                      : classes.appSubscribeButton
-                  }
-                  style={{ marginBottom: 8 + 'px' }}
-                  onClick={handleNotLoggedUserSubscription}
-                >
-                  {getSubscribeButtonTranslation()}
-                </Button>
-
                 {isUserSubbedToApp &&
                   selectedAppDetails &&
-                  selectedAppDetails.appType.type == 'blueprint' && (
+                  ['blueprint', 'connector'].includes(
+                    selectedAppDetails.appType.type
+                  ) && (
                     <Button
-                      className={classes.configureAppConnectorButton}
                       onClick={configureAppConnector}
+                      style={{ marginBottom: 8 + 'px', width: '210px' }}
+                      variant="outlined"
                     >
                       {t('appMarketplace.appDetails.configureAppConnector')}
                     </Button>
                   )}
+                <Button
+                  className={getSubscribeButtonClass()}
+                  startIcon={getSubscribeButtonIcon()}
+                  variant="outlined"
+                  style={{ marginBottom: 8 + 'px', width: '210px' }}
+                  onClick={handleNotLoggedUserSubscription}
+                >
+                  {getSubscribeButtonTranslation()}
+                </Button>
 
                 {selectedAppDetails && selectedAppDetails.directUrl && (
                   <Box mt={2}>
