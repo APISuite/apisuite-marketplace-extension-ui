@@ -176,12 +176,14 @@ export declare function setPoolingStatusAction(appName: string, apiName: string,
 export declare function setPoolingStatusActionSuccess(): {
     type: string;
 };
-export declare function subscribeAppConnectorAction(appName: string, apiName: string, apiUrl: string, map: any): {
+export declare function subscribeAppConnectorAction(appName: string, apiName: string, apiUrl: string, variables: any, map: any, appToken: string): {
     type: string;
     appName: string;
     apiName: string;
     apiUrl: string;
+    variables: any;
     map: any;
+    appToken: string;
 };
 export declare function subscribeAppConnectorActionSuccess(): {
     type: string;

@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/scss/image-gallery.scss';
 import clsx from 'clsx';
-import { Avatar, Box, Button, Chip, Typography, useTranslation, } from '@apisuite/fe-base';
+import { Avatar, Box, Button, Chip, Icon, Typography, useTranslation, } from '@apisuite/fe-base';
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded';
 import AppCatalog from '../../components/AppCatalog';
 import Link from '../../components/Link';
@@ -13,6 +13,7 @@ import { getAllSubbedMarketplaceAppsAction, getAppDetailsAction, getPublisherApp
 import appDetailsSelector from './selector';
 import useStyles from './styles';
 import { BASE_URI } from '../../helpers/constants';
+import { getAppConnectorApiUrl } from '../../constants/endpoints';
 const AppDetails = () => {
     const classes = useStyles();
     const { allSubbedMarketplaceApps, publisherAppsSample, retrievedPublisherAppsSample, retrievedSelectedAppDetails, selectedAppDetails, userProfile, } = useSelector(appDetailsSelector);
@@ -54,10 +55,19 @@ const AppDetails = () => {
     }, [allSubbedMarketplaceApps]);
     const getSubscribeButtonTranslation = () => {
         if (userProfile && userProfile.id > 0) {
-            return isUserSubbedToApp
-                ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
-                : t('appMarketplace.appDetails.appSubscribeButton');
+            if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type)) {
+                return isUserSubbedToApp
+                    ? t('appMarketplace.appDetails.appAlreadyConnectedButton')
+                    : t('appMarketplace.appDetails.appConnectButton');
+            }
+            else {
+                return isUserSubbedToApp
+                    ? t('appMarketplace.appDetails.appAlreadySubscribedButton')
+                    : t('appMarketplace.appDetails.appSubscribeButton');
+            }
         }
+        if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+            return t('appMarketplace.appDetails.signInToConnect');
         return t('appMarketplace.appDetails.signInToSubscribe');
     };
     const handleNotLoggedUserSubscription = () => {
@@ -69,24 +79,29 @@ const AppDetails = () => {
         }
     };
     const configureAppConnector = () => {
-        history.push(`${encodeURI('/marketplace/app-connector/' + selectedAppDetails.id)}`);
+        const targetURI = window.location.origin +
+            encodeURI('/marketplace/app-connector/' + selectedAppDetails.id);
+        window.open(`${getAppConnectorApiUrl()}/apps/authorize/${selectedAppDetails.id}?cb=${targetURI}`, '_self');
     };
     const handleMarketplaceAppSubscription = () => {
         const userID = parseInt(userProfile.id);
         const selectedAppID = selectedAppDetails.id;
+        const isConnector = ['blueprint', 'connector'].includes(selectedAppDetails.appType.type);
         if (isUserSubbedToApp) {
             dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID));
-            if (selectedAppDetails.appType.type == 'blueprint') {
+            if (isConnector) {
                 dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name));
             }
             setIsUserSubbedToApp(false);
         }
         else {
-            dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID));
-            if (selectedAppDetails.appType.type == 'blueprint') {
+            if (isConnector) {
                 configureAppConnector();
             }
-            setIsUserSubbedToApp(true);
+            else {
+                dispatch(subscribeToMarketplaceAppAction(userID, selectedAppID));
+                setIsUserSubbedToApp(true);
+            }
         }
     };
     // 3. Currently selected Marketplace app's details logic
@@ -100,6 +115,17 @@ const AppDetails = () => {
     }, [selectedAppDetails]);
     const isURLEmpty = (providedURL) => {
         return providedURL === null || providedURL === '';
+    };
+    const getSubscribeButtonIcon = () => {
+        if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+            return !isUserSubbedToApp ? React.createElement(Icon, null, "link") : React.createElement(Icon, null, "link_off");
+    };
+    const getSubscribeButtonClass = () => {
+        if (['blueprint', 'connector'].includes(selectedAppDetails.appType.type))
+            return !isUserSubbedToApp ? classes.appSubscribeButton : undefined;
+        return isUserSubbedToApp
+            ? classes.appAlreadySubscribedButton
+            : classes.appSubscribeButton;
     };
     // All images - as well as all thumbnails - must be of the same size
     const imagesArray = selectedAppDetails
@@ -122,12 +148,10 @@ const AppDetails = () => {
             React.createElement("section", { className: classes.leftAppDetailsContainer },
                 React.createElement("div", { className: classes.topMostSubSection },
                     selectedAppDetails && selectedAppDetails.logo !== '' ? (React.createElement("img", { className: classes.appImage, src: selectedAppDetails.logo })) : (React.createElement(Avatar, { className: classes.appAvatar }, appNameInitials ? appNameInitials : '...')),
-                    React.createElement(Button, { className: isUserSubbedToApp
-                            ? classes.appAlreadySubscribedButton
-                            : classes.appSubscribeButton, style: { marginBottom: 8 + 'px' }, onClick: handleNotLoggedUserSubscription }, getSubscribeButtonTranslation()),
                     isUserSubbedToApp &&
                         selectedAppDetails &&
-                        selectedAppDetails.appType.type == 'blueprint' && (React.createElement(Button, { className: classes.configureAppConnectorButton, onClick: configureAppConnector }, t('appMarketplace.appDetails.configureAppConnector'))),
+                        ['blueprint', 'connector'].includes(selectedAppDetails.appType.type) && (React.createElement(Button, { onClick: configureAppConnector, style: { marginBottom: 8 + 'px', width: '210px' }, variant: "outlined" }, t('appMarketplace.appDetails.configureAppConnector'))),
+                    React.createElement(Button, { className: getSubscribeButtonClass(), startIcon: getSubscribeButtonIcon(), variant: "outlined", style: { marginBottom: 8 + 'px', width: '210px' }, onClick: handleNotLoggedUserSubscription }, getSubscribeButtonTranslation()),
                     selectedAppDetails && selectedAppDetails.directUrl && (React.createElement(Box, { mt: 2 },
                         React.createElement(Link, { className: classes.accessAppButton, to: selectedAppDetails.directUrl },
                             React.createElement(Button, { color: "primary", fullWidth: true, variant: "outlined" },

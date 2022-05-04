@@ -20,6 +20,9 @@ const initialState = {
         data: {
             name: '',
             fieldsRaw: [],
+            fieldsMapping: [],
+            variableValues: [],
+            apiUrl: '',
             workerStatus: '',
         },
     },
@@ -30,6 +33,8 @@ const initialState = {
             apiName: '',
             apiUrl: '',
             status: 'stopped',
+            variablesValues: {},
+            appToken: '',
         },
     },
     appConnectorSubscribed: false,
@@ -461,13 +466,15 @@ export function setPoolingStatusActionSuccess() {
         type: SET_POLLING_STATUS_ACTION_SUCCESS,
     };
 }
-export function subscribeAppConnectorAction(appName, apiName, apiUrl, map) {
+export function subscribeAppConnectorAction(appName, apiName, apiUrl, variables, map, appToken) {
     return {
         type: SUBSCRIBE_APP_CONNECTOR_ACTION,
         appName,
         apiName,
         apiUrl,
+        variables,
         map,
+        appToken,
     };
 }
 export function subscribeAppConnectorActionSuccess() {

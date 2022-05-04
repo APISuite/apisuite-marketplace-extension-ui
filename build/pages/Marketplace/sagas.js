@@ -263,6 +263,8 @@ export function* subscribeAppConnectorActionSaga(action) {
                 app_name: action.appName,
                 api_name: action.apiName,
                 api_url: action.apiUrl,
+                variables: action.variables,
+                app_token: action.appToken,
             },
         });
         if (Object.keys(action.map).length !== 0) {
