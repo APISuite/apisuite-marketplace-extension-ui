@@ -12,6 +12,6 @@ export function getMarketplaceApiUrl() {
 export function getAppConnectorApiUrl() {
     if (core().IS_CLOUD)
         return core().buildCloudBackendUrl('ext-appconnector');
-    return process.env.APP_CONNECTOR_API_URL || '';
+    return process.env.APP_CONNECTOR_API_URL || 'https://appconnector.proxy.apisuite.io';
 }
 export const INFORM_URL = process.env.INFORM_URL || '';
