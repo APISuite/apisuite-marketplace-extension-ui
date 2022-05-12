@@ -81,7 +81,7 @@ const AppConnectorConfig: React.FC = () => {
   })
   const [isValid, setIsValid] = useState(false)
   const [variableValues, setVariableValues] = useState({})
-
+  const [isExiting, setIsExiting] = useState(false)
   const renderFieldsRaw = (entries) => {
     return entries
       .filter((entry) => isFieldVisible(entry))
@@ -137,16 +137,14 @@ const AppConnectorConfig: React.FC = () => {
     setVariableValues(newVariableValues)
   }
 
-  const removeSubscription = () => {
+  const removeSubscription = async () => {
     const userID = parseInt(userProfile.id)
     const selectedAppID = selectedAppDetails.id
-
-    dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
-    dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name))
-    history.push(
-      `${encodeURI('/marketplace/app-details/' + selectedAppDetails.id)}`
-    )
+    await dispatch(unsubscribeToMarketplaceAppAction(userID, selectedAppID))
+    await dispatch(unsubscribeAppConnectorAction(selectedAppDetails.name))
+    setIsExiting(true)
   }
+
   const saveSubscription = () => {
     if (!appConnectorSubscribed) {
       const userID = parseInt(userProfile.id)
@@ -202,6 +200,12 @@ const AppConnectorConfig: React.FC = () => {
   }
 
   useEffect(() => {
+    if (isExiting && !appConnectorSubscribed) {
+      backToApp()
+    }
+  }, [appConnectorSubscribed, isExiting])
+
+  useEffect(() => {
     const newVariableValues = { ...variableValues }
     const serverVariableValues =
       (appConnectorSubscriptionDetails.data &&
@@ -222,7 +226,10 @@ const AppConnectorConfig: React.FC = () => {
       (appConnectorConfigDetails.data &&
         appConnectorConfigDetails.data.variableValues) ||
       {}
-    let valid = true
+    let valid =
+      (appConnectorConfigDetails.data.apiUrl &&
+        appConnectorConfigDetails.data.apiUrl !== '') ||
+      fieldValues['apiUrl'] !== ''
     for (const serverVariableValue of serverVariableValues) {
       if (
         !variableValues[serverVariableValue.key] ||
