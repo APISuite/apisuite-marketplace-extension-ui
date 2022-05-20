@@ -88,7 +88,7 @@ export default makeStyles((theme) => ({
   },
 
   appMarketHeaderTitle: {
-    color: theme.palette.common.white,
+    color: theme.palette.text.secondary,
     marginBottom: theme.spacing(4),
   },
 
