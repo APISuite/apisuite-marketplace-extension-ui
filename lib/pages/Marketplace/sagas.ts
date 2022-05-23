@@ -60,6 +60,8 @@ import {
   getMarketplaceApiUrl,
 } from '../../constants/endpoints'
 import appDetailsMapping from '../../util/appDetailsMapping'
+import { openNotification } from '../../components/NotificationStack/ducks'
+import { i18n } from '@apisuite/fe-base'
 
 export function* getAllMarketplaceAppsActionSaga(
   action: GetAllMarketplaceAppsAction
@@ -409,6 +411,13 @@ export function* subscribeAppConnectorActionSaga(
         },
       })
     }
+    yield put(
+      openNotification(
+        'success',
+        i18n.t('extensions.marketplace.appDetails.appConnected'),
+        3000
+      )
+    )
     yield put(subscribeAppConnectorActionSuccess())
   } catch (error) {
     console.log('Error subscribing app connector')
@@ -430,7 +439,13 @@ export function* unsubscribeAppConnectorActionSaga(
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
-
+    yield put(
+      openNotification(
+        'success',
+        i18n.t('extensions.marketplace.appDetails.appDisconnected'),
+        3000
+      )
+    )
     yield put(unsubscribeAppConnectorActionSuccess())
   } catch (error) {
     console.log('Error unsubscribing app connector')
