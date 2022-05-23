@@ -4,4 +4,4 @@
 ///                                                                           ///
 /////////////////////////////////////////////////////////////////////////////////
 export const name = '@apisuite/apisuite-marketplace-extension-ui';
-export const version = '1.15.0';
+export const version = '1.16.0';

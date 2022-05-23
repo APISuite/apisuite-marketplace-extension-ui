@@ -41,7 +41,6 @@ export default makeStyles((theme) => ({
         background: theme.palette.primary.main,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
-        borderBottom: '4px solid rgba(20, 40, 60, 0.1)',
         height: '485px',
         paddingTop: '150px',
         width: '100%',
@@ -74,7 +73,7 @@ export default makeStyles((theme) => ({
         },
     },
     appMarketHeaderTitle: {
-        color: theme.palette.common.white,
+        color: theme.palette.text.primary,
         marginBottom: theme.spacing(4),
     },
     appMarketHeaderTitleAndSearchField: {

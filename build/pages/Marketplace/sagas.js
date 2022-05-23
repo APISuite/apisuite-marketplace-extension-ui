@@ -3,6 +3,8 @@ import request from '../../util/request';
 import { GET_ALL_MARKETPLACE_APPS_ACTION, GET_ALL_MARKETPLACE_LABELS_ACTION, GET_ALL_MARKETPLACE_PUBLISHERS_ACTION, GET_ALL_SUBBED_MARKETPLACE_APPS_ACTION, GET_APP_DETAILS_ACTION, GET_FILTERED_MARKETPLACE_APPS_ACTION, GET_PUBLISHER_APPS_SAMPLE_ACTION, GET_PUBLISHER_DETAILS_ACTION, getAllMarketplaceAppsActionSuccess, getAllMarketplaceLabelsActionSuccess, getAllMarketplacePublishersActionSuccess, getAllSubbedMarketplaceAppsActionError, getAllSubbedMarketplaceAppsActionSuccess, getAppDetailsActionSuccess, getFilteredMarketplaceAppsActionSuccess, getPublisherAppsSampleActionSuccess, getPublisherDetailsActionSuccess, SUBSCRIBE_TO_MARKETPLACE_APP_ACTION, subscribeToMarketplaceAppActionSuccess, UNSUBSCRIBE_TO_MARKETPLACE_APP_ACTION, unsubscribeToMarketplaceAppActionSuccess, getPublisherDetailsActionError, getAppConnectorConfigActionSuccess, GET_APP_CONNECTOR_CONFIG_ACTION, getAppConnectorSubscriptionActionSuccess, getAppConnectorSubscriptionActionError, GET_APP_CONNECTOR_SUBSCRIPTION_ACTION, subscribeAppConnectorActionSuccess, subscribeAppConnectorActionError, SUBSCRIBE_APP_CONNECTOR_ACTION, unsubscribeAppConnectorActionSuccess, UNSUBSCRIBE_APP_CONNECTOR_ACTION, SET_POLLING_STATUS_ACTION, setPoolingStatusActionSuccess, } from './ducks';
 import { getApiUrl, getAppConnectorApiUrl, getMarketplaceApiUrl, } from '../../constants/endpoints';
 import appDetailsMapping from '../../util/appDetailsMapping';
+import { openNotification } from '../../components/NotificationStack/ducks';
+import { i18n } from '@apisuite/fe-base';
 export function* getAllMarketplaceAppsActionSaga(action) {
     try {
         const getAllMarketplaceAppsActionUrl = `${getApiUrl()}/apps/public?page=${action.pagination.page}&pageSize=${action.pagination.pageSize}&sort_by=app&order=asc`;
@@ -282,6 +284,7 @@ export function* subscribeAppConnectorActionSaga(action) {
                 },
             });
         }
+        yield put(openNotification('success', i18n.t('extensions.marketplace.appDetails.appConnected'), 3000));
         yield put(subscribeAppConnectorActionSuccess());
     }
     catch (error) {
@@ -299,6 +302,7 @@ export function* unsubscribeAppConnectorActionSaga(action) {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
+        yield put(openNotification('success', i18n.t('extensions.marketplace.appDetails.appDisconnected'), 3000));
         yield put(unsubscribeAppConnectorActionSuccess());
     }
     catch (error) {

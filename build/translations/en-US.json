@@ -102,6 +102,8 @@
                     }
                 },
                 "appDetails": {
+                    "appConnected": "Connected to app",
+                    "appDisconnected": "Disconnected app",
                     "configureAppConnector": "Connection Settings",
                     "loadingAppDetails": "Loading the selected app's details...",
                     "appSubscribeButton": "Subscribe app",

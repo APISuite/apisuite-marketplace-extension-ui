@@ -44,12 +44,8 @@ export declare function getAppConnectorConfigActionSaga(action: GetAppConnectorC
 export declare function getAppConnectorSubscriptionActionSaga(action: GetAppConnectorSubscriptionAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
 }>, void, unknown>;
-export declare function subscribeAppConnectorActionSaga(action: SubscribeAppConnectorAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
-    type: string;
-}>, void, unknown>;
-export declare function unsubscribeAppConnectorActionSaga(action: UnsubscribeAppConnectorAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
-    type: string;
-}>, void, unknown>;
+export declare function subscribeAppConnectorActionSaga(action: SubscribeAppConnectorAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, unknown>;
+export declare function unsubscribeAppConnectorActionSaga(action: UnsubscribeAppConnectorAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, unknown>;
 export declare function setPollingStatusActionSaga(action: SetPollingStatusAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
 }>, void, unknown>;
