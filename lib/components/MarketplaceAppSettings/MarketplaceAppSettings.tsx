@@ -21,6 +21,9 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
   formUtil,
   data,
   userRole,
+  showLabels,
+  showVisibility,
+  visibilityEnabled,
 }) => {
   const classes = useStyles()
   const trans = useTranslation()
@@ -103,151 +106,168 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
     <>
       {/* 'Marketplace settings' section */}
       <Grid container spacing={3}>
-        <Grid item md={12}>
-          <Grid item md={6}>
-            <Box pb={1.5}>
-              <Typography variant="h6" display="block" gutterBottom>
-                {t('appSettings.labelsFieldLabel')}
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
-
-        {/* 'Labels' subsection */}
-        <Grid item md={12}>
-          <Box width={1}>
-            <fieldset
-              className={clsx(classes.inputFields, {
-                [classes.disabledLabels]: userRole !== adminRole,
-              })}
-              style={{
-                border: `1px solid ${palette.divider}`,
-                borderRadius: shape.borderRadius,
-                marginBottom: spacing(1),
-              }}
-            >
-              <legend>
-                <Typography style={{ color: palette.label }} variant="caption">
-                  {t('appSettings.labelsFieldLabel')}
-                </Typography>
-              </legend>
-              {fields.map((field, index) => (
-                <Chip
-                  color="secondary"
-                  disabled={userRole !== adminRole}
-                  key={field.id}
-                  label={formUtil.getValues(`labels.${index}` as const)}
-                  onDelete={() => remove(index)}
-                  style={{ margin: spacing(1) }}
-                />
-              ))}
-              <TextField
-                className={clsx(classes.inputFields, {
-                  [classes.disabledInputField]: userRole !== adminRole,
-                })}
-                color="secondary"
-                disabled={userRole !== adminRole}
-                fullWidth
-                InputProps={{
-                  disableUnderline: true,
-                }}
-                margin="dense"
-                onChange={handleTag}
-                onKeyPress={checkIfEnter}
-                style={{ marginBottom: spacing(1) }}
-                type="text"
-                value={label}
-                variant="standard"
-              />
-            </fieldset>
-            <legend style={{ marginBottom: spacing(3) }}>
-              <Typography style={{ color: palette.label }} variant="caption">
-                {t('appSettings.labelsFieldHelperText')}
-              </Typography>
-            </legend>
-          </Box>
-        </Grid>
-
-        {/* 'App visibility' subsection */}
-        <Grid container item>
-          <Grid container item md={12}>
-            <Grid item md={6}>
-              <Box pb={1.5}>
-                <Typography variant="h6" display="block" gutterBottom>
-                  {t('appSettings.marketplaceSettings.visibility.title')} *
-                </Typography>
-              </Box>
+        {showLabels && (
+          <>
+            <Grid item md={12}>
+              <Grid item md={6}>
+                <Box pb={1.5}>
+                  <Typography variant="h6" display="block" gutterBottom>
+                    {t('appSettings.labelsFieldLabel')}
+                  </Typography>
+                </Box>
+              </Grid>
             </Grid>
-            <Grid item md={6}>
-              <Box pb={5}>
-                <Typography
-                  variant="body2"
-                  display="block"
-                  gutterBottom
-                  style={{ color: palette.text.secondary }}
+            {/* 'Labels' subsection */}
+            <Grid item md={12}>
+              <Box width={1}>
+                <fieldset
+                  className={clsx(classes.inputFields, {
+                    [classes.disabledLabels]: userRole !== adminRole,
+                  })}
+                  style={{
+                    border: `1px solid ${palette.divider}`,
+                    borderRadius: shape.borderRadius,
+                    marginBottom: spacing(1),
+                  }}
                 >
-                  {t('appSettings.marketplaceSettings.visibility.description')}
-                </Typography>
+                  <legend>
+                    <Typography
+                      style={{ color: palette.label }}
+                      variant="caption"
+                    >
+                      {t('appSettings.labelsFieldLabel')}
+                    </Typography>
+                  </legend>
+                  {fields.map((field, index) => (
+                    <Chip
+                      color="secondary"
+                      disabled={userRole !== adminRole}
+                      key={field.id}
+                      label={formUtil.getValues(`labels.${index}` as const)}
+                      onDelete={() => remove(index)}
+                      style={{ margin: spacing(1) }}
+                    />
+                  ))}
+                  <TextField
+                    className={clsx(classes.inputFields, {
+                      [classes.disabledInputField]: userRole !== adminRole,
+                    })}
+                    color="secondary"
+                    disabled={userRole !== adminRole}
+                    fullWidth
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
+                    margin="dense"
+                    onChange={handleTag}
+                    onKeyPress={checkIfEnter}
+                    style={{ marginBottom: spacing(1) }}
+                    type="text"
+                    value={label}
+                    variant="standard"
+                  />
+                </fieldset>
+                <legend style={{ marginBottom: spacing(3) }}>
+                  <Typography
+                    style={{ color: palette.label }}
+                    variant="caption"
+                  >
+                    {t('appSettings.labelsFieldHelperText')}
+                  </Typography>
+                </legend>
               </Box>
             </Grid>
-          </Grid>
-          <Grid item md={12}>
-            <Controller
-              control={formUtil.control}
-              defaultValue={Visibility.PRIVATE}
-              name="visibility"
-              render={({ field }) => (
-                <FormControl component="fieldset" style={{ width: '100%' }}>
-                  <RadioGroup
-                    aria-label="app visibility"
-                    name="visibility"
-                    onChange={handleVisibilityChange}
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                    value={visibility}
+          </>
+        )}
+        {/* 'App visibility' subsection */}
+        {showVisibility && (
+          <Grid container item>
+            <Grid container item md={12}>
+              <Grid item md={6}>
+                <Box pb={1.5}>
+                  <Typography variant="h6" display="block" gutterBottom>
+                    {t('appSettings.marketplaceSettings.visibility.title')}{' '}
+                    {showLabels && showVisibility && '*'}
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item md={showLabels ? 6 : 12}>
+                <Box pb={5}>
+                  <Typography
+                    variant="body2"
+                    display="block"
+                    gutterBottom
+                    style={{ color: palette.text.secondary }}
                   >
-                    <RadioBox
-                      description={t(
-                        'appSettings.privateMarketplaceAppSubtitle'
-                      )}
-                      label={t('appSettings.privateMarketplaceAppTitle')}
-                      {...field}
-                      onClick={() => {
-                        formUtil.setValue('visibility', Visibility.PRIVATE, {
-                          shouldDirty: visibility === Visibility.PUBLIC,
-                        })
-                        setAppVisibility(Visibility.PRIVATE)
+                    {t(
+                      'appSettings.marketplaceSettings.visibility.description'
+                    )}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid item md={12}>
+              <Controller
+                control={formUtil.control}
+                defaultValue={Visibility.PRIVATE}
+                name="visibility"
+                render={({ field }) => (
+                  <FormControl component="fieldset" style={{ width: '100%' }}>
+                    <RadioGroup
+                      aria-label="app visibility"
+                      name="visibility"
+                      onChange={handleVisibilityChange}
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                       }}
-                      selected={visibility}
-                      value={Visibility.PRIVATE}
-                    />
-                    <RadioBox
-                      description={t(
-                        'appSettings.publicMarketplaceAppSubtitle'
-                      )}
-                      {...field}
-                      label={t('appSettings.publicMarketplaceAppTitle')}
-                      onClick={() => {
-                        formUtil.setValue('visibility', Visibility.PUBLIC, {
-                          shouldDirty: visibility === Visibility.PRIVATE,
-                        })
-                        setAppVisibility(Visibility.PUBLIC)
-                      }}
-                      selected={visibility}
-                      value={Visibility.PUBLIC}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              )}
-              rules={{ required: true }}
-            />
+                      value={visibility}
+                      aria-disabled={!visibilityEnabled}
+                    >
+                      <RadioBox
+                        description={t(
+                          'appSettings.privateMarketplaceAppSubtitle'
+                        )}
+                        label={t('appSettings.privateMarketplaceAppTitle')}
+                        {...field}
+                        onClick={() => {
+                          formUtil.setValue('visibility', Visibility.PRIVATE, {
+                            shouldDirty: visibility === Visibility.PUBLIC,
+                          })
+                          setAppVisibility(Visibility.PRIVATE)
+                        }}
+                        selected={visibility}
+                        value={Visibility.PRIVATE}
+                        disabled={!visibilityEnabled}
+                      />
+                      <RadioBox
+                        description={t(
+                          'appSettings.publicMarketplaceAppSubtitle'
+                        )}
+                        {...field}
+                        label={t('appSettings.publicMarketplaceAppTitle')}
+                        onClick={() => {
+                          formUtil.setValue('visibility', Visibility.PUBLIC, {
+                            shouldDirty: visibility === Visibility.PRIVATE,
+                          })
+                          setAppVisibility(Visibility.PUBLIC)
+                        }}
+                        selected={visibility}
+                        value={Visibility.PUBLIC}
+                        disabled={!visibilityEnabled}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                )}
+                rules={{ required: showLabels && showVisibility }}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
-
-      <hr className={classes.sectionSeparator} />
+      {showLabels && showVisibility && (
+        <hr className={classes.sectionSeparator} />
+      )}
     </>
   )
 }
