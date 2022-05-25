@@ -38,7 +38,7 @@ export default makeStyles((theme) => ({
     },
     appMarketHeader: {
         // First color is a fallback one - do not remove!
-        background: theme.palette.primary.main,
+        background: theme.palette.grey[100],
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         height: '485px',

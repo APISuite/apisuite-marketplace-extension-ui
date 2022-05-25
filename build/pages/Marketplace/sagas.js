@@ -284,7 +284,7 @@ export function* subscribeAppConnectorActionSaga(action) {
                 },
             });
         }
-        yield put(openNotification('success', i18n.t('extensions.marketplace.appDetails.appConnected'), 3000));
+        yield put(openNotification('success', i18n.t('extensions.marketplace.appMarketplace.appDetails.appConnected'), 3000));
         yield put(subscribeAppConnectorActionSuccess());
     }
     catch (error) {
@@ -302,7 +302,7 @@ export function* unsubscribeAppConnectorActionSaga(action) {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        yield put(openNotification('success', i18n.t('extensions.marketplace.appDetails.appDisconnected'), 3000));
+        yield put(openNotification('success', i18n.t('extensions.marketplace.appMarketplace.appDetails.appDisconnected'), 3000));
         yield put(unsubscribeAppConnectorActionSuccess());
     }
     catch (error) {
