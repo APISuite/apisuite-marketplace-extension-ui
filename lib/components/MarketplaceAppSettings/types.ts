@@ -23,6 +23,9 @@ export type MarketplaceAppSettingsProps = {
     visibility: Visibility
   }
   userRole: string
+  showLabels: boolean
+  showVisibility: boolean
+  visibilityEnabled: boolean
 }
 
 export type FormFields = {
