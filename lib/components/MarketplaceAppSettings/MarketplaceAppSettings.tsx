@@ -186,11 +186,12 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
               <Grid item md={6}>
                 <Box pb={1.5}>
                   <Typography variant="h6" display="block" gutterBottom>
-                    {t('appSettings.marketplaceSettings.visibility.title')} *
+                    {t('appSettings.marketplaceSettings.visibility.title')}{' '}
+                    {showLabels && showVisibility && '*'}
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item md={6}>
+              <Grid item md={showLabels ? 6 : 12}>
                 <Box pb={5}>
                   <Typography
                     variant="body2"
@@ -258,14 +259,15 @@ const MarketplaceAppSettings: React.FC<MarketplaceAppSettingsProps> = ({
                     </RadioGroup>
                   </FormControl>
                 )}
-                rules={{ required: true }}
+                rules={{ required: showLabels && showVisibility }}
               />
             </Grid>
           </Grid>
         )}
       </Grid>
-
-      <hr className={classes.sectionSeparator} />
+      {showLabels && showVisibility && (
+        <hr className={classes.sectionSeparator} />
+      )}
     </>
   )
 }
