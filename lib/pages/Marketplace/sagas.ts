@@ -414,7 +414,7 @@ export function* subscribeAppConnectorActionSaga(
     yield put(
       openNotification(
         'success',
-        i18n.t('extensions.marketplace.appDetails.appConnected'),
+        i18n.t('extensions.marketplace.appMarketplace.appDetails.appConnected'),
         3000
       )
     )
@@ -442,7 +442,9 @@ export function* unsubscribeAppConnectorActionSaga(
     yield put(
       openNotification(
         'success',
-        i18n.t('extensions.marketplace.appDetails.appDisconnected'),
+        i18n.t(
+          'extensions.marketplace.appMarketplace.appDetails.appDisconnected'
+        ),
         3000
       )
     )
