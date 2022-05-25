@@ -60,7 +60,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-between',
     margin: '0px auto',
     maxWidth: '1200px',
-    padding: '70px 60px 0px 60px',
+    padding: '70px 132px 0px 132px',
     width: '100%',
   },
 
@@ -71,7 +71,7 @@ export default makeStyles((theme) => ({
   },
 
   appMarketHeaderSearchField: {
-    maxWidth: '425px',
+    maxWidth: '470px',
     width: '100%',
 
     // The input field itself
@@ -92,7 +92,7 @@ export default makeStyles((theme) => ({
   },
 
   appMarketHeaderTitleAndSearchField: {
-    maxWidth: '425px',
+    maxWidth: '470px',
     width: '100%',
   },
 
@@ -291,11 +291,11 @@ export default makeStyles((theme) => ({
     marginBottom: '-5px',
 
     '& > :first-child': {
-      color: theme.palette.text.secondary,
+      color: theme.palette.primary.main,
     },
 
     '& > :last-child': {
-      color: theme.palette.text.secondary,
+      color: theme.palette.primary.main,
     },
   },
 
@@ -305,11 +305,11 @@ export default makeStyles((theme) => ({
     marginBottom: '-5px',
 
     '& > :first-child': {
-      color: theme.palette.action.focus,
+      color: theme.palette.primary.main,
     },
 
     '& > :last-child': {
-      color: theme.palette.action.focus,
+      color: theme.palette.primary.main,
       fontWeight: 500,
     },
   },
