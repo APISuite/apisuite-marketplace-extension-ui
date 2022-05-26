@@ -248,7 +248,7 @@ export default makeStyles((theme) => ({
             color: theme.palette.primary.main,
         },
         '& > :last-child': {
-            color: theme.palette.primary.main,
+            color: theme.palette.text.secondary,
         },
     },
     selectedFilter: {
