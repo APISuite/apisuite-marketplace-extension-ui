@@ -37,7 +37,7 @@ export default makeStyles((theme) => ({
   },
 
   marketplaceAppCardAvatar: {
-    background: theme.palette.gradient.light,
+    background: theme.palette.gradient.main,
     fontSize: '20px',
     fontWeight: 300,
     height: '120px',
@@ -47,7 +47,7 @@ export default makeStyles((theme) => ({
   },
 
   marketplaceAppCardBottomSection: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.primary.light,
     padding: `${theme.spacing(1.5, 3, 3, 3)}`,
   },
 
