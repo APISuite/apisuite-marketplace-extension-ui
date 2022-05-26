@@ -295,7 +295,7 @@ export default makeStyles((theme) => ({
     },
 
     '& > :last-child': {
-      color: theme.palette.primary.main,
+      color: theme.palette.text.secondary,
     },
   },
 
