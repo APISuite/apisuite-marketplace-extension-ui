@@ -51,7 +51,7 @@ export default makeStyles((theme) => ({
         justifyContent: 'space-between',
         margin: '0px auto',
         maxWidth: '1200px',
-        padding: '70px 60px 0px 60px',
+        padding: '70px 132px 0px 132px',
         width: '100%',
     },
     appMarketHeaderImage: {
@@ -60,7 +60,7 @@ export default makeStyles((theme) => ({
         width: '100%',
     },
     appMarketHeaderSearchField: {
-        maxWidth: '425px',
+        maxWidth: '470px',
         width: '100%',
         // The input field itself
         '& input': {
@@ -77,7 +77,7 @@ export default makeStyles((theme) => ({
         marginBottom: theme.spacing(4),
     },
     appMarketHeaderTitleAndSearchField: {
-        maxWidth: '425px',
+        maxWidth: '470px',
         width: '100%',
     },
     createAppButtonStyling: {
@@ -245,10 +245,10 @@ export default makeStyles((theme) => ({
         fontWeight: 400,
         marginBottom: '-5px',
         '& > :first-child': {
-            color: theme.palette.text.secondary,
+            color: theme.palette.primary.main,
         },
         '& > :last-child': {
-            color: theme.palette.text.secondary,
+            color: theme.palette.primary.main,
         },
     },
     selectedFilter: {
@@ -256,10 +256,10 @@ export default makeStyles((theme) => ({
         fontWeight: 400,
         marginBottom: '-5px',
         '& > :first-child': {
-            color: theme.palette.action.focus,
+            color: theme.palette.primary.main,
         },
         '& > :last-child': {
-            color: theme.palette.action.focus,
+            color: theme.palette.primary.main,
             fontWeight: 500,
         },
     },
